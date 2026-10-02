@@ -1,0 +1,9 @@
+{
+  // Separate Cloudflare Workers project (static assets only). Not related to PostVIA.
+  "name": "vonex-templates",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}

@@ -1,0 +1,25 @@
+---
+import { site } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-line/70">
+  <div
+    class="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-10 text-sm text-muted sm:flex-row sm:items-center sm:justify-between"
+  >
+    <p>© {year} {site.name}</p>
+    <div class="flex flex-wrap gap-x-5 gap-y-2">
+      <a class="hover:text-fg" href={site.framerProfile} target="_blank" rel="noopener noreferrer"
+        >Framer profile</a
+      >
+      {site.email && <a class="hover:text-fg" href={`mailto:${site.email}`}>{site.email}</a>}
+      {
+        site.socials.map((s) => (
+          <a class="hover:text-fg" href={s.href} target="_blank" rel="noopener noreferrer">
+            {s.label}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</footer>

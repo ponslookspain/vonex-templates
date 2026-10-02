@@ -1,0 +1,60 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  template: CollectionEntry<'templates'>;
+}
+const { template } = Astro.props;
+const t = template.data;
+const href = t.remixUrl ?? t.url;
+const free = t.price === 0;
+const extraTags = t.tags.filter((tag) => tag.toLowerCase() !== t.category.toLowerCase()).slice(0, 3);
+---
+
+<li
+  class="template-card"
+  data-name={t.name.toLowerCase()}
+  data-search={[t.name, t.tagline, t.description, t.category, ...t.tags].join(' ').toLowerCase()}
+  data-category={t.category}
+  data-price={t.price}
+  data-added={t.added.getTime()}
+>
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface transition duration-200 hover:-translate-y-0.5 hover:border-white/25 hover:bg-surface-2"
+  >
+    <div class="relative aspect-[16/9] overflow-hidden bg-surface-2">
+      <Image
+        src={t.image}
+        alt={`${t.name} template preview`}
+        widths={[480, 720, 1000]}
+        sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
+        class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+      />
+      <span
+        class:list={[
+          'absolute right-3 top-3 rounded-full px-2.5 py-1 text-xs font-medium backdrop-blur',
+          free ? 'bg-accent text-white' : 'bg-black/60 text-fg ring-1 ring-white/15',
+        ]}
+      >
+        {free ? 'Free' : `$${t.price}`}
+      </span>
+    </div>
+    <div class="flex flex-1 flex-col gap-2 p-5">
+      <div class="flex items-center justify-between gap-3">
+        <h3 class="text-lg font-semibold tracking-tight">{t.name}</h3>
+        <span aria-hidden="true" class="text-muted transition group-hover:translate-x-0.5 group-hover:text-fg">↗</span>
+      </div>
+      <p class="text-sm text-fg/80">{t.tagline}</p>
+      <p class="line-clamp-2 text-sm text-muted">{t.description}</p>
+      <div class="mt-auto flex flex-wrap gap-1.5 pt-3">
+        <span class="rounded-full border border-line px-2.5 py-0.5 text-xs text-muted">{t.category}</span>
+        {extraTags.map((tag) => <span class="rounded-full border border-line px-2.5 py-0.5 text-xs text-muted">{tag}</span>)}
+      </div>
+    </div>
+    <span class="sr-only">Opens on Framer Marketplace in a new tab</span>
+  </a>
+</li>
