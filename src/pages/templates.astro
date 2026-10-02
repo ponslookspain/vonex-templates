@@ -1,0 +1,139 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import TemplateCard from '../components/TemplateCard.astro';
+
+const templates = (await getCollection('templates')).sort(
+  (a, b) => b.data.added.getTime() - a.data.added.getTime(),
+);
+const categories = [...new Set(templates.map((t) => t.data.category))].sort();
+---
+
+<Base title="All templates" description="Browse every Framer template by Vonex Design. Search by name or filter by category and price.">
+  <section class="mx-auto max-w-6xl px-5 pb-6 pt-16 sm:pt-20">
+    <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">All templates</h1>
+    <p class="mt-4 max-w-xl text-muted">Every template opens on Framer Marketplace, where you can preview and remix it.</p>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-5 pb-20" aria-label="Templates">
+    <form id="filters" class="mb-8 flex flex-col gap-4 lg:flex-row lg:items-center" role="search" onsubmit="return false">
+      <label class="relative block flex-1">
+        <span class="sr-only">Search templates</span>
+        <input
+          id="q"
+          type="search"
+          placeholder="Search templates"
+          autocomplete="off"
+          class="w-full rounded-full border border-line bg-surface px-5 py-3 text-sm placeholder:text-muted focus:border-white/30 focus:outline-none"
+        />
+      </label>
+      <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Category">
+        <button type="button" data-category="" aria-pressed="true" class="chip">All</button>
+        {categories.map((c) => <button type="button" data-category={c} aria-pressed="false" class="chip">{c}</button>)}
+      </div>
+      <div class="flex items-center gap-3 text-sm">
+        <label class="sr-only" for="price">Price</label>
+        <select id="price" class="rounded-full border border-line bg-surface px-4 py-2.5 text-sm">
+          <option value="">Any price</option>
+          <option value="free">Free</option>
+          <option value="paid">Paid</option>
+        </select>
+        <label class="sr-only" for="sort">Sort by</label>
+        <select id="sort" class="rounded-full border border-line bg-surface px-4 py-2.5 text-sm">
+          <option value="new">Newest</option>
+          <option value="name">Name</option>
+          <option value="price-asc">Price: low to high</option>
+          <option value="price-desc">Price: high to low</option>
+        </select>
+      </div>
+    </form>
+
+    <p id="count" class="mb-4 text-sm text-muted" aria-live="polite"></p>
+    <ul id="grid" class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {templates.map((t) => <TemplateCard template={t} />)}
+    </ul>
+    <p id="empty" hidden class="rounded-2xl border border-dashed border-line p-10 text-center text-muted">
+      No templates match your search.
+      <button type="button" id="reset" class="ml-1 text-fg underline underline-offset-4">Clear filters</button>
+    </p>
+  </section>
+</Base>
+
+<style is:global>
+  .chip {
+    border: 1px solid var(--color-line);
+    background: var(--color-surface);
+    color: var(--color-muted);
+    border-radius: 9999px;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  }
+  .chip:hover { color: var(--color-fg); border-color: rgb(255 255 255 / 0.3); }
+  .chip[aria-pressed='true'] { background: var(--color-fg); color: var(--color-bg); border-color: var(--color-fg); }
+</style>
+
+<script>
+  // Client-side search, filter and sort. State lives in the URL (?q=&category=&price=&sort=)
+  // so a filtered view can be shared.
+  const $ = <T extends Element>(s: string) => document.querySelector<T>(s)!;
+  const grid = $<HTMLUListElement>('#grid');
+  const cards = [...grid.querySelectorAll<HTMLElement>('.template-card')];
+  const q = $<HTMLInputElement>('#q');
+  const price = $<HTMLSelectElement>('#price');
+  const sort = $<HTMLSelectElement>('#sort');
+  const count = $<HTMLElement>('#count');
+  const empty = $<HTMLElement>('#empty');
+  const chips = [...document.querySelectorAll<HTMLButtonElement>('.chip')];
+  let category = '';
+
+  const params = new URLSearchParams(location.search);
+  q.value = params.get('q') ?? '';
+  price.value = params.get('price') ?? '';
+  sort.value = params.get('sort') ?? 'new';
+  category = params.get('category') ?? '';
+
+  const num = (el: HTMLElement, key: string) => Number(el.dataset[key]);
+  const sorters: Record<string, (a: HTMLElement, b: HTMLElement) => number> = {
+    new: (a, b) => num(b, 'added') - num(a, 'added'),
+    name: (a, b) => (a.dataset.name ?? '').localeCompare(b.dataset.name ?? ''),
+    'price-asc': (a, b) => num(a, 'price') - num(b, 'price'),
+    'price-desc': (a, b) => num(b, 'price') - num(a, 'price'),
+  };
+
+  function apply() {
+    const terms = q.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    let shown = 0;
+    cards.sort(sorters[sort.value] ?? sorters.new).forEach((card) => {
+      const text = card.dataset.search ?? '';
+      const p = num(card, 'price');
+      const ok =
+        terms.every((t) => text.includes(t)) &&
+        (!category || card.dataset.category === category) &&
+        (!price.value || (price.value === 'free' ? p === 0 : p > 0));
+      card.hidden = !ok;
+      if (ok) shown++;
+      grid.append(card);
+    });
+    chips.forEach((c) => c.setAttribute('aria-pressed', String((c.dataset.category ?? '') === category)));
+    count.textContent = `${shown} ${shown === 1 ? 'template' : 'templates'}`;
+    empty.hidden = shown > 0;
+
+    const next = new URLSearchParams();
+    if (q.value.trim()) next.set('q', q.value.trim());
+    if (category) next.set('category', category);
+    if (price.value) next.set('price', price.value);
+    if (sort.value !== 'new') next.set('sort', sort.value);
+    const qs = next.toString();
+    history.replaceState(null, '', location.pathname + (qs ? `?${qs}` : ''));
+  }
+
+  q.addEventListener('input', apply);
+  price.addEventListener('change', apply);
+  sort.addEventListener('change', apply);
+  chips.forEach((c) => c.addEventListener('click', () => { category = c.dataset.category ?? ''; apply(); }));
+  $<HTMLButtonElement>('#reset').addEventListener('click', () => {
+    q.value = ''; price.value = ''; sort.value = 'new'; category = ''; apply();
+  });
+  apply();
+</script>
