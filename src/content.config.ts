@@ -13,8 +13,8 @@ const templates = defineCollection({
       description: z.string(),
       // Framer Marketplace page. The whole card links here.
       url: z.url(),
-      // Optional Framer remix/affiliate link. If set, the card uses it instead of `url`.
-      remixUrl: z.url().optional(),
+      // Optional Framer affiliate link (framer.link, redirects to the Marketplace page). If set, the card uses it instead of `url`.
+      affiliateUrl: z.url().optional(),
       preview: z.url().optional(),
       category: z.string(),
       price: z.number().min(0), // 0 = Free

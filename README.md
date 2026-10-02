@@ -21,7 +21,7 @@ name: My Template
 tagline: Short one-line subtitle
 description: One or two sentences shown on the card.
 url: https://www.framer.com/marketplace/templates/my-template/   # card links here
-# remixUrl: https://...   # optional Framer remix/affiliate link; used instead of `url` when set
+# affiliateUrl: https://...   # optional Framer affiliate link (framer.link/...); used instead of `url` when set
 preview: https://my-template.framer.website/                      # optional
 category: Portfolio
 price: 0            # 0 = Free, otherwise the price in USD

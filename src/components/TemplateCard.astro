@@ -7,7 +7,7 @@ interface Props {
 }
 const { template } = Astro.props;
 const t = template.data;
-const href = t.remixUrl ?? t.url;
+const href = t.affiliateUrl ?? t.url;
 const free = t.price === 0;
 const extraTags = t.tags.filter((tag) => tag.toLowerCase() !== t.category.toLowerCase()).slice(0, 3);
 ---
