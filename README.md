@@ -13,7 +13,7 @@ A minimal dark catalog of Framer templates. Two pages: a landing page with featu
 
 ## Add a template
 
-1. Add a preview image to `src/assets/templates/` (16:9, about 1200x675, `.webp` or `.jpg`), named after the template, for example `my-template.webp`.
+1. Add a preview image to `src/assets/templates/` (4:3, 1200x900, `.webp` or `.jpg`), named after the template, for example `my-template.webp`.
 2. Copy `src/content/templates/softic-studio.yaml` to `src/content/templates/my-template.yaml` and edit it:
 
 ```yaml
