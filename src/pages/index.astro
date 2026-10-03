@@ -44,7 +44,7 @@ const points = [
       <a href="/templates/" class="rounded-full bg-fg px-5 py-3 text-sm font-medium text-bg transition hover:bg-white/85">Browse all templates</a>
       <a href={site.framerProfile} target="_blank" rel="noopener noreferrer" class="rounded-full border border-line px-5 py-3 text-sm font-medium text-fg transition hover:border-white/30">Framer profile ↗</a>
     </div>
-    <div class="relative mt-6 min-h-40 w-full flex-1">
+    <div class="relative mb-[5vh] mt-10 min-h-40 w-full flex-1">
       <Image
         src={heroMonitor}
         alt="A monitor on a wooden desk showing the Softic Studio template"
@@ -52,7 +52,7 @@ const points = [
         sizes="(min-width: 1024px) 800px, 100vw"
         loading="eager"
         fetchpriority="high"
-        class="hero-monitor absolute inset-0 h-full w-full object-contain object-bottom"
+        class="hero-monitor absolute inset-x-0 bottom-0 mx-auto h-full w-auto max-w-[88vw] object-contain object-bottom sm:max-w-[min(42rem,42vw)]"
       />
     </div>
   </section>
