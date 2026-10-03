@@ -100,6 +100,7 @@ Vertical spacing: sections use `--space-section` (3.5rem phone, 5rem from 640px)
 | `FaqItem` | `question` (+ answer as the slot) | Native `<details>`, no JavaScript |
 | `TemplateCard` | `template`, `class` | One catalog entry |
 | `InlineIcon` | `name`, `tone` | Icon inside a line of big text; add icons to `paths` in the file |
+| `TemplateGallery` | `items`, `name` | Picture slider with arrows, swipe, counter and thumbnails (pictures only) |
 | `FeatureCard` | `title`, `text`, `icon` or `step`, `connector`, `as`, `class` + slot `illustration` | Card with an illustration stage on top; used for the steps and the "why" blocks |
 | `Icon` | `name`, `class`, `strokeWidth` | Line icon in `currentColor`; icons are defined in `components/icons.ts` |
 | `IconTile` | `name` | Icon on a tinted rounded square |
@@ -111,7 +112,7 @@ Vertical spacing: sections use `--space-section` (3.5rem phone, 5rem from 640px)
 
 ## Template pages
 
-Each template in `src/content/templates/` gets a page at `/templates/<slug>/` from `src/pages/templates/[slug].astro`: breadcrumb, large preview, price, description, tags, "Open on Framer" and "Live preview" buttons, facts, a `Product` and `BreadcrumbList` structured-data block and a "More templates" row. Its social preview image is `public/og/<slug>.png`, made by `npm run og` from the template's name, tagline, price and cover. Template cards on the home page and on `/templates/` link to these pages; the page links on to Framer.
+Each template in `src/content/templates/` gets a page at `/templates/<slug>/` from `src/pages/templates/[slug].astro`. Left: a picture gallery (`TemplateGallery`) that stays pinned while the page scrolls. Right (with an empty column between the two): name, price and buttons, numbers, then the description as numbered sections (About, the benefits, Features, Pages, Best for, Built with Framer, Updates, Support). Below: FAQ built from the template's data, and more templates. `src/lib/template-content.ts` decides how each imported section is shown from its title, so templates written in different styles all work; this page is intentionally more editorial than the rest of the site. Its social preview image is `public/og/<slug>.png`, made by `npm run og` from the template's name, tagline, price and cover. Template cards on the home page and on `/templates/` link to these pages; the page links on to Framer.
 
 ## Recipes
 

@@ -1,12 +1,15 @@
 ---
 import { getCollection } from 'astro:content';
-import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Section from '../../components/Section.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
 import Button from '../../components/Button.astro';
+import FaqItem from '../../components/FaqItem.astro';
+import Icon from '../../components/Icon.astro';
 import TemplateCard from '../../components/TemplateCard.astro';
+import TemplateGallery from '../../components/TemplateGallery.astro';
 import { site } from '../../data/site';
+import { buildContent, buildFaq, richText, plainText } from '../../lib/template-content';
 
 export async function getStaticPaths() {
   const templates = await getCollection('templates');
@@ -15,6 +18,8 @@ export async function getStaticPaths() {
 
 const { template, all } = Astro.props;
 const t = template.data;
+const c = buildContent(t);
+const faq = buildFaq(t, c, { siteEmail: site.email });
 const others = all.filter((x) => x.id !== template.id).sort((a, b) => b.data.added.getTime() - a.data.added.getTime());
 
 const free = t.price === 0;
@@ -22,19 +27,27 @@ const priceLabel = free ? 'Free' : `$${t.price}`;
 const buyUrl = t.affiliateUrl ?? t.url;
 const pageUrl = new URL(`/templates/${template.id}/`, Astro.site).href;
 const ogPath = `/og/${template.id}.png`;
-const added = t.added.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+const pad = (n: number) => String(n).padStart(2, '0');
+
+const gallery = t.gallery.length ? t.gallery : [{ type: 'image' as const, src: t.image, alt: `${t.name} Framer template` }];
+const updatedAt = t.updated ?? t.added;
+const updatedLabel = updatedAt.toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+
+const stats = [
+  c.pages.length ? { value: pad(c.pages.length), label: 'Pages' } : c.sectionNames.length ? { value: pad(c.sectionNames.length), label: 'Sections' } : null,
+  { value: c.hasCms ? 'Yes' : 'No', label: 'CMS' },
+  t.framerFeatures.length ? { value: pad(t.framerFeatures.length), label: 'Framer features' } : null,
+  { value: updatedLabel, label: 'Updated' },
+].filter((x): x is { value: string; label: string } => x !== null);
 
 // Search results show about 160 characters.
 const article = /^[aeiou]/i.test(t.category) ? 'an' : 'a';
 const fullDescription = `${t.name} is ${article} ${t.category.toLowerCase()} Framer template by ${site.name}. ${t.description}`;
 const description = fullDescription.length > 160 ? fullDescription.slice(0, 157).replace(/\s+\S*$/, '') + '…' : fullDescription;
 
-const facts = [
-  { label: 'Category', value: t.category },
-  { label: 'Price', value: priceLabel },
-  { label: 'Platform', value: 'Framer' },
-  { label: 'Added', value: added },
-];
+// The imported intro often starts with a one-line headline, followed by the real text.
+const leadHead = c.leadTitle ?? (c.lead.length > 1 && c.lead[0].length < 110 ? c.lead[0] : undefined);
+const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
 ---
 
 <Base
@@ -68,73 +81,186 @@ const facts = [
           { '@type': 'ListItem', position: 3, name: t.name, item: pageUrl },
         ],
       },
+      {
+        '@type': 'FAQPage',
+        mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: plainText(f.a) } })),
+      },
     ],
   }}
 >
   <Section flush="bottom" class="pt-10 sm:pt-12" label={`${t.name} template`}>
-    <nav aria-label="Breadcrumb" class="type-small mb-6 text-muted">
+    <nav aria-label="Breadcrumb" class="type-small mb-8 text-muted">
       <a href="/templates/" class="transition-colors duration-fast hover:text-fg">Templates</a>
       <span aria-hidden="true" class="mx-2">/</span>
       <span class="text-fg-soft">{t.name}</span>
     </nav>
 
-    <div class="grid-12 gap-y-10">
-      <div class="col-span-12 lg:col-span-7">
-        <div class="panel p-3">
-          <div class="relative aspect-[4/3] overflow-hidden rounded-surface bg-surface-2">
-            <Image
-              src={t.image}
-              alt={`${t.name} Framer template: ${t.tagline}`}
-              widths={[640, 1000, 1200]}
-              sizes="(min-width: 1024px) 640px, 100vw"
-              loading="eager"
-              fetchpriority="high"
-              class="h-full w-full object-cover"
-            />
-          </div>
-        </div>
+    <div class="grid-12 gap-y-12">
+      <!-- Left: the gallery stays in view while the page text scrolls -->
+      <div class="col-span-12 lg:sticky lg:top-28 lg:col-span-6 lg:self-start">
+        <TemplateGallery items={gallery} name={t.name} />
       </div>
 
-      <div class="col-span-12 flex flex-col lg:col-span-5">
-        <span class="eyebrow">{t.category} Framer template</span>
-        <h1 class="type-h1 text-balance">{t.name}</h1>
-        <p class="type-lead mt-4">{t.tagline}</p>
+      <!-- Right: everything about the template. The empty column between the two is the breathing room. -->
+      <div class="doc col-span-12 lg:col-span-5 lg:col-start-8">
+        <header>
+          <p class="kicker-row">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span>{t.category} Framer template</span>
+          </p>
+          <h1 class="title-xl">{t.name}</h1>
+          <p class="tagline">{t.tagline}</p>
 
-        <p class:list={['type-h2 mt-8', free && 'text-accent']}>{priceLabel}</p>
-        <p class="type-body mt-4 text-fg-soft">{t.description}</p>
+          <div class="buy">
+            <p class="price-label">Price</p>
+            <p class="price">{priceLabel}</p>
+            <div class="buy-actions">
+              <Button href={buyUrl} target="_blank" rel={t.affiliateUrl ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}>
+                Open on Framer
+              </Button>
+              {t.preview && (
+                <Button href={t.preview} variant="ghost" target="_blank" rel="noopener noreferrer">
+                  Live preview
+                </Button>
+              )}
+            </div>
+          </div>
+        </header>
 
-        {t.tags.length > 0 && (
-          <ul class="mt-5 flex flex-wrap gap-2">
-            {t.tags.map((tag) => <li class="tag">{tag}</li>)}
-          </ul>
-        )}
-
-        <div class="mt-8 flex flex-wrap gap-3">
-          <Button href={buyUrl} target="_blank" rel={t.affiliateUrl ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}>
-            Open on Framer
-          </Button>
-          {t.preview && (
-            <Button href={t.preview} variant="ghost" target="_blank" rel="noopener noreferrer">
-              Live preview
-            </Button>
-          )}
-        </div>
-        <p class="type-caption mt-3 text-muted">Opens Framer Marketplace in a new tab. Remix the template into your own Framer project.</p>
-
-        <dl class="mt-10 grid grid-cols-2 gap-x-5 gap-y-4 border-t border-line pt-6">
-          {facts.map((f) => (
-            <div>
-              <dt class="type-caption text-muted">{f.label}</dt>
-              <dd class="type-small mt-1 text-fg">{f.value}</dd>
+        <dl class="stats">
+          {stats.map((s) => (
+            <div class="stat">
+              <dt class="stat-label">{s.label}</dt>
+              <dd class="stat-value">{s.value}</dd>
             </div>
           ))}
         </dl>
+
+        {(leadHead || leadText.length > 0) && (
+          <div class="lead">
+            {leadHead && <h2 class="lead-head">{leadHead}</h2>}
+            {leadText.map((p) => <p set:html={richText(p)} />)}
+          </div>
+        )}
+
+        {c.about.length > 0 && (
+          <section class="doc-section" aria-labelledby="about">
+            <h2 class="kicker" id="about">About</h2>
+            <div class="big-text">
+              {c.about.map((p) => <p set:html={richText(p)} />)}
+            </div>
+          </section>
+        )}
+
+        {c.benefits.length > 0 && (
+          <section class="doc-section" aria-labelledby="benefits">
+            <h2 class="kicker" id="benefits">{c.benefitsTitle}</h2>
+            <ol class="benefits">
+              {c.benefits.map((b, i) => (
+                <li>
+                  <span class="benefit-num" aria-hidden="true">{pad(i + 1)}</span>
+                  <div>
+                    <h3>{b.title}</h3>
+                    <p set:html={richText(b.text)} />
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
+
+        {c.blocks.map((b) => (
+          <section class="doc-section" aria-labelledby={b.id}>
+            <h2 class="kicker" id={b.id}>{b.title}</h2>
+            {b.kind === 'text' && (
+              <div class="body-text">
+                {b.paragraphs.map((p) => <p set:html={richText(p)} />)}
+              </div>
+            )}
+            {(b.kind === 'features' || b.kind === 'included' || b.kind === 'list') && (
+              <ul class:list={['checks', b.kind === 'features' && 'checks-2']}>
+                {b.items.map((item) => (
+                  <li>
+                    <Icon name="check" class="check" strokeWidth={2.2} />
+                    <span set:html={richText(item)} />
+                  </li>
+                ))}
+              </ul>
+            )}
+            {(b.kind === 'pages' || b.kind === 'sections') && (
+              <ol class="pages">
+                {b.items.map((item, i) => (
+                  <li>
+                    <span class="pages-num" aria-hidden="true">{pad(i + 1)}</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ol>
+            )}
+            {b.kind === 'bestFor' && (
+              <ul class="flex flex-wrap gap-2">
+                {b.items.map((item) => <li class="tag tag-lg">{item}</li>)}
+              </ul>
+            )}
+          </section>
+        ))}
+
+        {(t.framerFeatures.length > 0 || t.styles.length > 0) && (
+          <section class="doc-section" aria-labelledby="built-with">
+            <h2 class="kicker" id="built-with">Built with Framer</h2>
+            {t.framerFeatures.length > 0 && (
+              <ul class="flex flex-wrap gap-2">
+                {t.framerFeatures.map((f) => <li class="tag tag-lg tag-accent">{f}</li>)}
+              </ul>
+            )}
+            {t.styles.length > 0 && (
+              <>
+                <p class="mini-label">Style</p>
+                <ul class="flex flex-wrap gap-2">
+                  {t.styles.map((s) => <li class="tag tag-lg">{s}</li>)}
+                </ul>
+              </>
+            )}
+          </section>
+        )}
+
+        {c.updates.length > 0 && (
+          <section class="doc-section" aria-labelledby="updates">
+            <h2 class="kicker" id="updates">Updates</h2>
+            <ol class="timeline">
+              {c.updates.map((u) => (
+                <li>
+                  <h3>{u.title}</h3>
+                  <ul>
+                    {u.items.map((item) => <li set:html={richText(item)} />)}
+                  </ul>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
+
+        {c.support && (
+          <section class="doc-section" aria-labelledby="support">
+            <h2 class="kicker" id="support">Support</h2>
+            <p class="body-text support" set:html={richText(c.support)} />
+          </section>
+        )}
+      </div>
+    </div>
+  </Section>
+
+  <Section labelledby="faq-title" id="faq">
+    <SectionHeader id="faq-title" eyebrow="FAQ" title={`Questions about ${t.name}`} />
+    <div class="grid-12 mt-10">
+      <div class="col-span-12 flex flex-col gap-3 lg:col-span-8 lg:col-start-3">
+        {faq.map((f) => <FaqItem question={f.q}><Fragment set:html={richText(f.a)} /></FaqItem>)}
       </div>
     </div>
   </Section>
 
   {others.length > 0 && (
-    <Section labelledby="more-title">
+    <Section labelledby="more-title" flush="top">
       <SectionHeader id="more-title" title="More Framer templates" lead="Other templates by Vonex Design." />
       <ul class="grid-12 mt-12 gap-y-10">
         {others.map((o, i) => (
@@ -147,3 +273,305 @@ const facts = [
     </Section>
   )}
 </Base>
+
+<style>
+  /* This page is deliberately more editorial than the rest of the site: big type, numbered
+     sections and hairlines instead of boxes. It still uses the design tokens. */
+  .doc {
+    counter-reset: sec;
+    min-width: 0;
+  }
+
+  /* header */
+  .kicker-row {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    font-size: var(--text-small);
+    font-weight: 500;
+    color: var(--color-accent);
+  }
+  .status-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: var(--color-success);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-success) 22%, transparent);
+  }
+  .title-xl {
+    margin-top: 1.25rem;
+    font-size: clamp(3.25rem, 2.1rem + 4.2vw, 5.25rem);
+    line-height: 0.95;
+    font-weight: 700;
+    letter-spacing: -0.055em;
+    text-wrap: balance;
+    overflow-wrap: anywhere;
+  }
+  .tagline {
+    margin-top: 1rem;
+    font-size: 1.375rem;
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+    color: var(--color-muted);
+  }
+  .buy {
+    margin-top: 2.25rem;
+  }
+  .price-label {
+    font-size: var(--text-small);
+    color: var(--color-muted);
+  }
+  .price {
+    margin-top: 0.375rem;
+    font-size: 2.75rem;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: -0.045em;
+  }
+  .buy-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  /* numbers */
+  /* Four small cards: two by two in the narrow column, four across when the column is full width. */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 2.5rem;
+  }
+  @media (min-width: 40rem) and (max-width: 63.99rem) {
+    .stats {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 1rem 1.125rem 1.125rem;
+    background: var(--color-surface);
+    border-radius: var(--radius-surface);
+    box-shadow: inset 0 0 0 1px var(--color-outline);
+  }
+  .stat-label {
+    font-size: var(--text-caption);
+    line-height: 1.35;
+    color: var(--color-muted);
+  }
+  .stat-value {
+    font-size: 1.75rem;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+  }
+
+  /* text blocks */
+  .lead {
+    margin-top: 3rem;
+  }
+  .lead-head {
+    font-size: 1.5rem;
+    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+  .lead p,
+  .body-text p {
+    margin-top: 1rem;
+    color: var(--color-fg-soft);
+    line-height: 1.6;
+  }
+  .lead p:first-of-type {
+    margin-top: 1rem;
+  }
+  .doc-section {
+    counter-increment: sec;
+    margin-top: 4rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--color-line);
+  }
+  .kicker {
+    display: flex;
+    align-items: baseline;
+    gap: 0.875rem;
+    margin-bottom: 1.5rem;
+    font-size: var(--text-caption);
+    line-height: 1.35;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-fg-soft);
+  }
+  .kicker::before {
+    content: counter(sec, decimal-leading-zero);
+    color: var(--color-accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .big-text p {
+    font-size: 1.375rem;
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+    color: var(--color-fg);
+  }
+  .big-text p + p {
+    margin-top: 1.25rem;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    letter-spacing: 0;
+    color: var(--color-fg-soft);
+  }
+  /* Links inside the imported text (not buttons). */
+  .doc :global(a:not(.btn)) {
+    color: var(--color-fg);
+    text-decoration: underline;
+    text-decoration-color: var(--color-outline-strong);
+    text-underline-offset: 4px;
+    transition: text-decoration-color var(--duration-fast) var(--ease-soft);
+  }
+  .doc :global(a:not(.btn):hover) {
+    text-decoration-color: var(--color-accent);
+  }
+
+  /* numbered benefits */
+  .benefits li {
+    display: grid;
+    grid-template-columns: 3rem minmax(0, 1fr);
+    gap: 0.5rem;
+    padding: 1.25rem 0;
+    border-top: 1px solid var(--color-line);
+  }
+  .benefits li:first-child {
+    border-top: 0;
+    padding-top: 0;
+  }
+  .benefit-num {
+    padding-top: 0.2rem;
+    font-size: var(--text-small);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-muted);
+  }
+  .benefits h3 {
+    font-size: 1.1875rem;
+    line-height: 1.3;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+  }
+  .benefits p {
+    margin-top: 0.5rem;
+    font-size: var(--text-small);
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  /* check lists */
+  .checks {
+    display: grid;
+    gap: 0.75rem 1.5rem;
+  }
+  @media (min-width: 40rem) {
+    .checks-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  .checks li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: var(--text-small);
+    line-height: 1.45;
+    color: var(--color-fg-soft);
+  }
+  /* The icon is drawn by the Icon component, so the page's scoped styles need :global here. */
+  .checks :global(.check) {
+    flex: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    margin-top: 0.05rem;
+    color: var(--color-accent);
+  }
+
+  /* pages */
+  .pages {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1.5rem;
+  }
+  .pages li {
+    display: flex;
+    gap: 0.875rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--color-line);
+    font-size: var(--text-small);
+    color: var(--color-fg-soft);
+  }
+  .pages-num {
+    font-variant-numeric: tabular-nums;
+    color: var(--color-muted);
+  }
+
+  /* tags */
+  .tag-lg {
+    padding: 0.4rem 0.9rem;
+    font-size: var(--text-small);
+  }
+  .tag-accent {
+    color: var(--color-accent);
+    background: var(--color-accent-tint);
+    box-shadow: none;
+  }
+  .mini-label {
+    margin: 1.5rem 0 0.75rem;
+    font-size: var(--text-caption);
+    color: var(--color-muted);
+  }
+
+  /* updates */
+  .timeline {
+    position: relative;
+    margin-left: 0.4rem;
+    padding-left: 1.5rem;
+    border-left: 1px solid var(--color-line);
+  }
+  .timeline > li {
+    position: relative;
+  }
+  .timeline > li + li {
+    margin-top: 1.75rem;
+  }
+  .timeline > li::before {
+    content: '';
+    position: absolute;
+    left: calc(-1.5rem - 4px);
+    top: 0.45rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: var(--color-accent);
+    box-shadow: 0 0 0 4px var(--color-bg);
+  }
+  .timeline h3 {
+    font-size: 1.0625rem;
+    font-weight: 500;
+    letter-spacing: -0.025em;
+  }
+  .timeline ul {
+    margin-top: 0.75rem;
+    display: grid;
+    gap: 0.4rem;
+  }
+  .timeline ul li {
+    font-size: var(--text-small);
+    line-height: 1.5;
+    color: var(--color-muted);
+  }
+  .support {
+    margin-top: 0;
+  }
+</style>

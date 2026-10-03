@@ -6,7 +6,89 @@ affiliateUrl: https://framer.link/pfbx5EP
 preview: https://sanctun.framer.website/
 category: Wedding
 price: 49
-tags: [wedding, minimal, rsvp]
+tags:
+  - wedding
+  - minimal
+  - rsvp
 image: ../../assets/templates/sanctun.webp
 featured: true
 added: 2026-06-05
+updated: 2026-06-05
+framerId: "62621"
+categories:
+  - Personal
+  - Landing Page
+styles:
+  - Typographic
+  - Light
+  - Animated
+  - Minimal
+  - Pastel
+framerFeatures:
+  - Appear Effects
+  - Sticky Scrolling
+  - CMS
+  - Rich Media
+  - Forms
+  - Layout Templates
+  - Variable Fonts
+intro: []
+sections:
+  - title: Create a beautiful, elegant wedding website in minutes.
+    paragraphs:
+      - Sanctun is a premium wedding template that combines sophisticated minimal design with effortless customization.
+      - Replace the placeholder content with your own photos, names, wedding date, venue, and details — and your website is ready to publish in minutes. No coding, no complicated setup, and no design experience required. Everything is carefully designed to help you launch a professional wedding website quickly and beautifully.
+      - The template also includes ready-made color styles and typography systems that can be changed in seconds, allowing you to instantly personalize the overall look and atmosphere of your site.
+      - Sanctun was created for couples who want a refined, timeless, and emotional wedding website without the stress. Clean layouts, elegant typography, soft motion, and thoughtful spacing create a premium experience that keeps the focus on your story.
+  - title: Easy Content Editing
+    paragraphs:
+      - Quickly update names, schedules, venue information, images, and FAQ content directly inside Framer without touching code.
+  - title: Lightning-Fast Setup
+    paragraphs:
+      - Simply replace the content and publish. Most websites can be fully customized in under 30 minutes.
+  - title: Elegant & Modern Design
+    paragraphs:
+      - Sophisticated typography, generous whitespace, and a refined aesthetic that feels premium, emotional, and timeless.
+  - title: Built-in RSVP Form
+    paragraphs:
+      - Guests can respond directly through your website, with submissions delivered straight to your email.
+  - title: Fully Responsive
+    paragraphs:
+      - Carefully optimized for mobile, tablet, and desktop devices.
+  - title: Smooth Animations & Premium Interactions
+    paragraphs:
+      - Subtle animations and polished transitions create a modern, high-end browsing experience.
+  - title: All-in-One Wedding Website
+    paragraphs:
+      - Everything your guests need — schedule, location, RSVP, FAQ, and wedding details — in one beautifully designed experience.
+  - title: Included Sections
+    items:
+      - Hero
+      - Save the Date
+      - Our Story
+      - The Venue
+      - Where to Stay
+      - Dress Code
+      - Schedule (with progress bar)
+      - Gift Registry
+      - RSVP Form
+      - FAQ
+      - Contact
+      - Footer
+  - title: Who It’s For
+    paragraphs:
+      - Sanctun is perfect for couples who want a high-end, elegant wedding website without spending weeks designing or learning code. Ideal for classic, luxury, garden, castle, or destination weddings.
+  - title: Why Choose Sanctun?
+    paragraphs:
+      - Stop wasting time piecing together templates or paying thousands for a custom site. Get a polished, professional wedding website that you can fully customize yourself — in minutes.Refund Policy
+      - Due to the digital nature of this product, returns are not accepted.
+  - title: Support
+    paragraphs:
+      - If you have questions about using or customizing the template, feel free to reach out via email [ponslookdesign@gmail.com](mailto:ponslookdesign@gmail.com) or [X](https://x.com/ponslookdesign)
+gallery:
+  - type: image
+    src: ../../assets/templates/sanctun.webp
+    alt: Sanctun template, preview 1
+  - type: image
+    src: ../../assets/templates/sanctun/framer-2.webp
+    alt: Sanctun template, preview 2

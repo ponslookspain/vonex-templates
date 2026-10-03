@@ -6,7 +6,94 @@ affiliateUrl: https://framer.link/NOKcI58
 preview: https://ethan-walker.framer.website/
 category: Portfolio
 price: 0
-tags: [portfolio, minimal, designer, cms]
+tags:
+  - portfolio
+  - minimal
+  - designer
+  - cms
 image: ../../assets/templates/ethan-walker.webp
 featured: true
 added: 2026-07-03
+updated: 2026-09-18
+framerId: "68816"
+categories:
+  - Personal
+  - Portfolio
+  - Graphic Design
+  - Free
+  - Services
+styles:
+  - Large Type
+  - Typographic
+  - Modern
+  - Minimal
+framerFeatures:
+  - Appear Effects
+  - Slideshows/Tickers
+  - Scroll Effects
+  - CMS
+  - Forms
+  - Text Effects
+  - Code Components
+intro: []
+sections:
+  - title: Walker — Framer Portfolio Template for Creative Professionals
+    paragraphs:
+      - Walker is a premium Framer portfolio template for designers, freelancers, creative professionals, and digital creators who want to showcase their work with a clean, modern, and timeless website.
+  - title: About
+    paragraphs:
+      - Walker combines bold typography, spacious layouts, smooth interactions, and a refined minimalist aesthetic to create a portfolio that keeps the focus on your work. Whether you're building a personal brand or presenting client projects, Walker helps you launch a professional website in Framer without writing code.
+  - title: Why Walker
+  - title: Designed for Creative Professionals
+    paragraphs:
+      - Perfect for UI/UX designers, graphic designers, freelancers, creative developers, photographers, and digital creatives looking for a polished online portfolio.
+  - title: CMS-Powered Portfolio
+    paragraphs:
+      - Manage projects effortlessly with Framer CMS and update your portfolio without editing the design.
+  - title: Minimal Design with Strong Visual Hierarchy
+    paragraphs:
+      - Clean layouts, large typography, generous spacing, and subtle animations create a premium browsing experience.
+  - title: Fast & SEO Ready
+    paragraphs:
+      - Built with responsive layouts, optimized performance, semantic structure, and SEO best practices.
+  - title: Features
+    items:
+      - Premium Framer portfolio template
+      - Fully responsive design
+      - Modern minimalist aesthetic
+      - CMS Projects
+      - CMS Services
+      - CMS Privacy Policy
+      - Smooth animations
+      - Elegant hover interactions
+      - Contact form
+      - Fast loading performance
+      - SEO optimized
+      - No-code customization
+  - title: Pages Included
+    items:
+      - Home
+      - About
+      - Work
+      - Project (CMS)
+      - Contact
+      - Privacy Policy (CMS)
+      - "404"
+  - title: Best For
+    items:
+      - Designer Portfolio
+      - Creative Portfolio
+      - Freelancer Website
+      - UI/UX Designer
+      - Graphic Designer
+      - Creative Developer
+      - Personal Brand
+      - Digital Creator
+      - Framer Portfolio Template
+  - title: "Support:"
+    paragraphs:
+      - If you have any questions about using or customizing the template, feel free to reach out via [ponslookdesign@gmail.com](mailto:ponslookdesign@gmail.com) or [X](https://x.com/ponslookdesign).
+gallery:
+  - type: image
+    src: ../../assets/templates/ethan-walker.webp
+    alt: Ethan Walker template, preview 1

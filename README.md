@@ -10,7 +10,8 @@ A minimal dark catalog of Framer templates for any kind of website. Two pages: a
 | `npm run dev` | Local dev server at http://localhost:4321 |
 | `npm run build` | Build the site into `dist/` |
 | `npm run check` | Type-check content and components |
-| `npm run add-template -- <url>` | Add a template from its Framer Marketplace URL (also makes its preview image) |
+| `npm run add-template -- <url>` | Add a template from its Framer Marketplace URL (data, pictures, preview image) |
+| `npm run sync-templates` | Refresh every template from its Marketplace page |
 | `npm run og` | Regenerate the social preview images in `public/og/` |
 
 ## Check the site locally before deploy
@@ -25,37 +26,44 @@ Open http://localhost:4321 in the browser. Stop the server with Ctrl+C. Nothing 
 
 ## Add a template
 
-### Quick way: from a Framer link
+Give the script the template's Framer Marketplace link and everything is imported: description sections, categories, styles, Framer features, price, dates and the pictures.
 
 ```
 npm run add-template -- https://www.framer.com/marketplace/templates/my-template/ --affiliate https://framer.link/xxxx --tags "dark, portfolio" --featured
 ```
 
-The script reads the Marketplace page, downloads the cover (resized to 1200x900 WebP) and writes the YAML file for you. Options: `--price`, `--category`, `--description`, `--affiliate`, `--tags`, `--featured`, `--force`, `--dry-run` (see `npm run add-template -- --help`). If the price or category cannot be detected it stops and asks for `--price` / `--category`. The script also makes the social preview image for the template (`public/og/<slug>.png`, shown when the page is shared on X, Threads and so on). Always open the generated file afterwards and write a proper `description`; then commit and push (including the new image in `public/og/`).
+What it does:
 
-Every template gets its own page at `/templates/<slug>/` automatically, with its own title, description, preview image and structured data, and it is added to the sitemap. If you change a template's name, tagline, price or cover, run `npm run og` to refresh the preview images.
+1. Reads the Marketplace page and saves the data to `src/content/templates/<slug>.yaml`.
+2. Downloads the pictures the template has on its Framer page (the first is the cover; if there are two, the gallery has two, and so on). Nothing else is added: no screenshots, no videos.
+3. Makes the social preview image `public/og/<slug>.png`.
+4. The page `/templates/<slug>/` and its sitemap entry appear automatically.
+
+Options: `--affiliate` (your referral link for "Open on Framer"), `--category`, `--tags`, `--description` (short text for the card), `--featured` (first 3 featured are on the landing page), `--refresh-media` (download the pictures again), `--dry-run`. Run `npm run add-template -- --help` for the list.
+
+Afterwards: open the generated YAML and write a proper `description`, then commit and push, including the new files in `src/assets/templates/` and `public/og/`.
+
+### Refresh from Framer
+
+```
+npm run sync-templates
+```
+
+Updates every template from its Marketplace page (new text, price, categories, features). What you wrote yourself is kept: `description`, `affiliateUrl`, `featured`, `tags`, `category`, `added`, `preview`.
+
+### Where the files live
+
+| What | Where | Notes |
+| --- | --- | --- |
+| Template data and text | `src/content/templates/<slug>.yaml` | In the repository |
+| Cover and gallery pictures | `src/assets/templates/<slug>.webp` and `src/assets/templates/<slug>/` | In the repository; Astro makes the sizes and WebP at build time |
+| Social preview images | `public/og/<slug>.png` | In the repository |
+
+All pictures are served from the site itself (Cloudflare), nothing is loaded from Framer while visitors browse. If you change the name, tagline, price or cover, run `npm run og` to refresh the preview images.
 
 ### By hand
 
-1. Add a preview image to `src/assets/templates/` (4:3, 1200x900, `.webp` or `.jpg`), named after the template, for example `my-template.webp`.
-2. Copy `src/content/templates/softic-studio.yaml` to `src/content/templates/my-template.yaml` and edit it:
-
-```yaml
-name: My Template
-tagline: Short one-line subtitle
-description: One or two sentences shown on the card.
-url: https://www.framer.com/marketplace/templates/my-template/   # card links here
-# affiliateUrl: https://...   # optional Framer affiliate link (framer.link/...); used instead of `url` when set
-preview: https://my-template.framer.website/                      # optional
-category: Portfolio
-price: 0            # 0 = Free, otherwise the price in USD
-tags: [dark, minimal]
-image: ../../assets/templates/my-template.webp
-featured: false     # featured templates fill the landing page (first 3)
-added: 2026-10-02
-```
-
-3. Commit to the repository (this can be done in the GitHub web editor). The site rebuilds and redeploys automatically. If a field is missing or wrong, the build fails and names the file.
+You can also write the YAML yourself; copy an existing file from `src/content/templates/` and put the cover into `src/assets/templates/`. If a required field is missing or wrong, the build fails and names the file.
 
 ## Design system
 

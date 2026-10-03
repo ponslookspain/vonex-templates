@@ -6,7 +6,106 @@ affiliateUrl: https://framer.link/Luw53Xm
 preview: https://softic-studio.framer.website/
 category: Agency
 price: 0
-tags: [dark, portfolio, agency, cms]
+tags:
+  - dark
+  - portfolio
+  - agency
+  - cms
 image: ../../assets/templates/softic-studio.webp
 featured: true
 added: 2026-04-24
+updated: 2026-09-18
+framerId: "61777"
+categories:
+  - Personal
+  - Portfolio
+  - Graphic Design
+  - Free
+styles:
+  - Gradient
+  - Large Type
+  - Professional
+  - Minimal
+framerFeatures:
+  - Appear Effects
+  - Slideshows/Tickers
+  - Sticky Scrolling
+  - Scroll Effects
+  - CMS
+  - Forms
+  - Layout Templates
+  - Text Effects
+  - Selection Styles
+  - Variable Fonts
+intro:
+  - Softic Studio — Framer Template for Design Agencies, Studios & Freelancers
+  - Softic Studio is a premium Framer template for design agencies, creative studios, freelancers, and designers who need a modern website that builds trust and wins clients.
+sections:
+  - title: About
+    paragraphs:
+      - Built with a clean dark aesthetic, bold typography, responsive layouts, and smooth interactions, Softic Studio helps showcase your portfolio, services, and brand professionally.
+      - Launch fast in Framer. No code required.
+  - title: Why Softic Studio
+  - title: Built for Creative Businesses
+    paragraphs:
+      - Designed for design studios, branding agencies, UI/UX designers, freelancers, and creative teams looking for a professional Framer website.
+  - title: Portfolio & Case Studies
+    paragraphs:
+      - Show projects, case studies, visuals, and results with CMS-powered Work pages that are easy to manage.
+  - title: Premium User Experience
+    paragraphs:
+      - Smooth scroll animations, subtle hover effects, and clean navigation create a modern experience.
+  - title: Fast & SEO Ready
+    paragraphs:
+      - Optimized for fast loading, responsive performance, and search visibility.
+  - title: Features
+    items:
+      - Premium Framer website template
+      - Fully responsive design
+      - Dark modern aesthetic
+      - Portfolio showcase pages
+      - CMS Projects section
+      - CMS Team section
+      - Smooth animations
+      - Contact form with notifications
+      - Fast loading performance
+      - SEO optimized structure
+      - No-code customization
+  - title: Pages Included
+    items:
+      - Home
+      - About
+      - Works
+      - Project (CMS)
+      - Contact
+      - Privacy Policy
+      - "404"
+  - title: Best For
+    items:
+      - Design Agency Website
+      - Creative Studio Website
+      - Branding Agency
+      - UI UX Designer Portfolio
+      - Freelancer Portfolio
+      - Digital Designer Website
+      - Boutique Agency Website
+      - Framer Portfolio Template
+  - title: Included
+    items:
+      - Full Framer remix link
+      - Easy customization
+      - Priority support
+  - title: Updates
+  - title: v1.2 — Hero Refresh
+    items:
+      - Completely redesigned Hero section
+      - Improved visual hierarchy and first-screen experience
+      - Minor UI refinements throughout the template
+      - Enhanced spacing and overall consistency
+  - title: "Support:"
+    paragraphs:
+      - If you have any questions about using or customizing the template, feel free to reach out via [ponslookdesign@gmail.com](mailto:ponslookdesign@gmail.com) or [X](https://x.com/ponslookdesign).
+gallery:
+  - type: image
+    src: ../../assets/templates/softic-studio.webp
+    alt: Softic Studio template, preview 1

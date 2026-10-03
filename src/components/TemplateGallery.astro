@@ -1,0 +1,227 @@
+---
+import { Image } from 'astro:assets';
+import Icon from './Icon.astro';
+import type { CollectionEntry } from 'astro:content';
+
+// Gallery of a template page: big slide with arrows, swipe and counter, thumbnails below.
+// Pictures only. Slides scroll with CSS scroll-snap, so swiping works natively on phones.
+type Item = CollectionEntry<'templates'>['data']['gallery'][number];
+interface Props {
+  items: Item[];
+  name: string;
+}
+const { items, name } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <div class="gallery" data-gallery role="group" aria-roledescription="carousel" aria-label={`${name} template gallery`} tabindex="0">
+      <div class="gallery-stage">
+        <ul class="gallery-track" data-track>
+          {items.map((item, i) => (
+            <li class="gallery-slide" aria-roledescription="slide" aria-label={`${i + 1} of ${items.length}`}>
+              <Image
+                src={item.src}
+                alt={item.alt}
+                widths={[640, 960, 1280, 1600]}
+                sizes="(min-width: 1024px) 640px, 100vw"
+                loading={i === 0 ? 'eager' : 'lazy'}
+                fetchpriority={i === 0 ? 'high' : 'auto'}
+                class="gallery-image"
+              />
+            </li>
+          ))}
+        </ul>
+
+        {items.length > 1 && (
+          <>
+            <button type="button" class="gallery-arrow gallery-prev" data-prev aria-label="Previous picture">
+              <Icon name="arrow" class="size-5 rotate-180" />
+            </button>
+            <button type="button" class="gallery-arrow gallery-next" data-next aria-label="Next picture">
+              <Icon name="arrow" class="size-5" />
+            </button>
+            <p class="gallery-count type-caption" data-count aria-live="polite">1 / {items.length}</p>
+          </>
+        )}
+      </div>
+
+      {
+        items.length > 1 && (
+          <ul class="gallery-thumbs">
+            {items.map((item, i) => (
+              <li>
+                <button type="button" class="gallery-thumb" data-thumb aria-label={`Show picture ${i + 1}`} aria-current={i === 0 ? 'true' : undefined}>
+                  <Image src={item.src} alt="" widths={[120, 240]} sizes="96px" loading="lazy" class="h-full w-full object-cover" />
+                </button>
+              </li>
+            ))}
+          </ul>
+        )
+      }
+    </div>
+  )
+}
+
+<style>
+  .gallery {
+    outline: none;
+  }
+  .gallery:focus-visible .gallery-stage {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 4px;
+  }
+  .gallery-stage {
+    position: relative;
+    border-radius: var(--radius-panel);
+    background: var(--color-surface);
+    box-shadow: inset 0 0 0 1px var(--color-outline);
+    padding: 0.5rem;
+  }
+  .gallery-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    border-radius: var(--radius-surface);
+    overscroll-behavior-x: contain;
+  }
+  .gallery-track::-webkit-scrollbar {
+    display: none;
+  }
+  .gallery-slide {
+    position: relative;
+    flex: 0 0 100%;
+    aspect-ratio: 4 / 3;
+    scroll-snap-align: center;
+    background: var(--color-surface-2);
+  }
+  .gallery-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .gallery-arrow {
+    position: absolute;
+    top: 50%;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin-top: -1.375rem;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--color-bg) 70%, transparent);
+    backdrop-filter: blur(8px);
+    box-shadow: inset 0 0 0 1px var(--color-outline-strong);
+    color: var(--color-fg);
+    transition: background-color var(--duration-fast) var(--ease-soft), opacity var(--duration-fast) var(--ease-soft);
+  }
+  .gallery-arrow:hover {
+    background: color-mix(in srgb, var(--color-bg) 90%, transparent);
+  }
+  .gallery-arrow[disabled] {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .gallery-prev {
+    left: 1.25rem;
+  }
+  .gallery-next {
+    right: 1.25rem;
+  }
+  .gallery-count {
+    position: absolute;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    padding: 0.25rem 0.625rem;
+    border-radius: 9999px;
+    background: color-mix(in srgb, var(--color-bg) 70%, transparent);
+    backdrop-filter: blur(8px);
+    color: var(--color-fg-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .gallery-thumbs {
+    display: flex;
+    gap: 0.625rem;
+    margin-top: 0.75rem;
+    overflow-x: auto;
+    padding: 2px;
+    scrollbar-width: none;
+  }
+  .gallery-thumbs::-webkit-scrollbar {
+    display: none;
+  }
+  .gallery-thumb {
+    position: relative;
+    display: block;
+    width: 6rem;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radius-control);
+    background: var(--color-surface-2);
+    opacity: 0.65;
+    box-shadow: 0 0 0 1px var(--color-outline-strong);
+    transition: opacity var(--duration-fast) var(--ease-soft), box-shadow var(--duration-fast) var(--ease-soft);
+  }
+  .gallery-thumb:hover {
+    opacity: 0.9;
+  }
+  .gallery-thumb[aria-current='true'] {
+    opacity: 1;
+    box-shadow: 0 0 0 2px var(--color-accent);
+  }
+</style>
+
+<script>
+  // One script for every gallery on the page.
+  document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((root) => {
+    const track = root.querySelector<HTMLElement>('[data-track]')!;
+    const slideCount = track.children.length;
+    const thumbs = [...root.querySelectorAll<HTMLElement>('[data-thumb]')];
+    const prev = root.querySelector<HTMLButtonElement>('[data-prev]');
+    const next = root.querySelector<HTMLButtonElement>('[data-next]');
+    const count = root.querySelector<HTMLElement>('[data-count]');
+    let current = 0;
+
+    const show = (i: number, smooth = true) => {
+      const target = Math.max(0, Math.min(slideCount - 1, i));
+      track.scrollTo({ left: target * track.clientWidth, behavior: smooth ? 'smooth' : 'auto' });
+    };
+
+    const update = () => {
+      const i = Math.round(track.scrollLeft / Math.max(track.clientWidth, 1));
+      if (i === current) return;
+      current = i;
+      thumbs.forEach((t, n) => (n === i ? t.setAttribute('aria-current', 'true') : t.removeAttribute('aria-current')));
+      thumbs[i]?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+      if (count) count.textContent = `${i + 1} / ${slideCount}`;
+      if (prev) prev.disabled = i === 0;
+      if (next) next.disabled = i === slideCount - 1;
+    };
+
+    let ticking = false;
+    track.addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        update();
+        ticking = false;
+      });
+    });
+    prev?.addEventListener('click', () => show(current - 1));
+    next?.addEventListener('click', () => show(current + 1));
+    thumbs.forEach((t, i) => t.addEventListener('click', () => show(i)));
+    root.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') (e.preventDefault(), show(current + 1));
+      if (e.key === 'ArrowLeft') (e.preventDefault(), show(current - 1));
+    });
+    if (prev) prev.disabled = true;
+
+    // Keep the current slide in place when the window is resized.
+    new ResizeObserver(() => show(current, false)).observe(track);
+  });
+</script>
