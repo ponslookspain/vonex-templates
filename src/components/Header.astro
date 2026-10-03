@@ -47,7 +47,7 @@ const path = Astro.url.pathname;
           ))
         }
       </ul>
-      <Button href="/templates/" size="compact">Browse templates</Button>
+      {!/^\/templates\/?$/.test(path) && <Button href="/templates/" size="compact">Browse templates</Button>}
       <button
         type="button"
         id="menu-toggle"

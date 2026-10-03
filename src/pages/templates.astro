@@ -37,7 +37,8 @@ const templates = (await getCollection('templates')).sort(
     />
   </Section>
 
-  <Section label="Templates" flush="top" class="pt-10">
+  <Section labelledby="list-title" flush="top" class="pt-10">
+    <h2 id="list-title" class="sr-only">Templates</h2>
     <ul class="grid-12 gap-y-10">
       {templates.map((t) => <TemplateCard template={t} class="col-span-12 sm:col-span-6 lg:col-span-4" />)}
     </ul>
