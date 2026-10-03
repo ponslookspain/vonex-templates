@@ -10,6 +10,7 @@ import { readFile, writeFile, access, mkdir } from 'node:fs/promises';
 import { parseArgs } from 'node:util';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 import sharp from 'sharp';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -196,6 +197,8 @@ if (opt['dry-run']) {
   await writeFile(imagePath, webp);
   await writeFile(yamlPath, yaml);
   console.log(`Created ${path.relative(root, yamlPath)}\nCreated ${path.relative(root, imagePath)}`);
+  // Social preview image for the template page: public/og/<slug>.png
+  execFileSync(process.execPath, [path.join(root, 'scripts/generate-og.mjs'), slug], { stdio: 'inherit' });
 }
 if (!opt.affiliate) notes.push('no --affiliate link given, the card links to the Marketplace page directly');
 if (notes.length) console.log(`\nCheck:\n${notes.map((n) => `  - ${n}`).join('\n')}`);

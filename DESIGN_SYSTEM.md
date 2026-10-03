@@ -95,6 +95,7 @@ Vertical spacing: sections use `--space-section` (3.5rem phone, 5rem from 640px)
 | `SectionHeader` | `title`, `id`, `eyebrow`, `lead`, `level` (1 or 2) | Centered heading on the middle 8 columns |
 | `Button` | `href`, `variant` (primary / ghost), `size` (md / compact) | The only way to make a button; renders `<a>` when `href` is set |
 | `Badge` | `tone` | Small status label |
+| `.tag` (class) | none | Outlined pill for tags and categories, e.g. `<li class="tag">dark</li>` |
 | `Card` | `variant` (surface / panel), `padded`, `as`, `class` | Flat block; pass grid classes via `class` |
 | `FaqItem` | `question` (+ answer as the slot) | Native `<details>`, no JavaScript |
 | `TemplateCard` | `template`, `class` | One catalog entry |
@@ -107,6 +108,10 @@ Vertical spacing: sections use `--space-section` (3.5rem phone, 5rem from 640px)
 | `HeroStage` | `templates` | Template strip plus the 3D logo (reads colors from tokens) |
 | `Header`, `Footer`, `Logo`, `SocialIcon` | | Site chrome |
 | `GridOverlay` | none | Debug columns, toggled by G |
+
+## Template pages
+
+Each template in `src/content/templates/` gets a page at `/templates/<slug>/` from `src/pages/templates/[slug].astro`: breadcrumb, large preview, price, description, tags, "Open on Framer" and "Live preview" buttons, facts, a `Product` and `BreadcrumbList` structured-data block and a "More templates" row. Its social preview image is `public/og/<slug>.png`, made by `npm run og` from the template's name, tagline, price and cover. Template cards on the home page and on `/templates/` link to these pages; the page links on to Framer.
 
 ## Recipes
 

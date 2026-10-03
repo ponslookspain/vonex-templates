@@ -9,15 +9,13 @@ interface Props {
 }
 const { template, class: className } = Astro.props;
 const t = template.data;
-const href = t.affiliateUrl ?? t.url;
+const href = `/templates/${template.id}/`;
 const free = t.price === 0;
 ---
 
 <li class:list={['template-card', className]}>
   <a
     href={href}
-    target="_blank"
-    rel="noopener noreferrer"
     class="group panel flex h-full flex-col gap-4 p-3 transition-colors duration-fast hover:bg-surface-2"
   >
     <div class="relative aspect-[4/3] overflow-hidden rounded-surface bg-surface-2">
@@ -34,6 +32,5 @@ const free = t.price === 0;
       <p class="type-small text-muted">{t.tagline}</p>
       <p class:list={['type-small mt-1 font-medium', free ? 'text-accent' : 'text-fg']}>{free ? 'Free' : `$${t.price}`}</p>
     </div>
-    <span class="sr-only">Opens on Framer Marketplace in a new tab</span>
   </a>
 </li>

@@ -10,7 +10,8 @@ A minimal dark catalog of Framer templates for any kind of website. Two pages: a
 | `npm run dev` | Local dev server at http://localhost:4321 |
 | `npm run build` | Build the site into `dist/` |
 | `npm run check` | Type-check content and components |
-| `npm run add-template -- <url>` | Add a template from its Framer Marketplace URL |
+| `npm run add-template -- <url>` | Add a template from its Framer Marketplace URL (also makes its preview image) |
+| `npm run og` | Regenerate the social preview images in `public/og/` |
 
 ## Check the site locally before deploy
 
@@ -30,7 +31,9 @@ Open http://localhost:4321 in the browser. Stop the server with Ctrl+C. Nothing 
 npm run add-template -- https://www.framer.com/marketplace/templates/my-template/ --affiliate https://framer.link/xxxx --tags "dark, portfolio" --featured
 ```
 
-The script reads the Marketplace page, downloads the cover (resized to 1200x900 WebP) and writes the YAML file for you. Options: `--price`, `--category`, `--description`, `--affiliate`, `--tags`, `--featured`, `--force`, `--dry-run` (see `npm run add-template -- --help`). If the price or category cannot be detected it stops and asks for `--price` / `--category`. Always open the generated file afterwards and write a proper `description`; then commit and push.
+The script reads the Marketplace page, downloads the cover (resized to 1200x900 WebP) and writes the YAML file for you. Options: `--price`, `--category`, `--description`, `--affiliate`, `--tags`, `--featured`, `--force`, `--dry-run` (see `npm run add-template -- --help`). If the price or category cannot be detected it stops and asks for `--price` / `--category`. The script also makes the social preview image for the template (`public/og/<slug>.png`, shown when the page is shared on X, Threads and so on). Always open the generated file afterwards and write a proper `description`; then commit and push (including the new image in `public/og/`).
+
+Every template gets its own page at `/templates/<slug>/` automatically, with its own title, description, preview image and structured data, and it is added to the sitemap. If you change a template's name, tagline, price or cover, run `npm run og` to refresh the preview images.
 
 ### By hand
 

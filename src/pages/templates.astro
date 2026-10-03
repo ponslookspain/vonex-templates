@@ -24,7 +24,7 @@ const templates = (await getCollection('templates')).sort(
         '@type': 'ListItem',
         position: i + 1,
         name: `${t.data.name}: ${t.data.tagline}`,
-        url: t.data.affiliateUrl ?? t.data.url,
+        url: new URL(`/templates/${t.id}/`, Astro.site).href,
       })),
     },
   }}
