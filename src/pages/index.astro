@@ -9,6 +9,19 @@ const featured = all
   .sort((a, b) => Number(b.data.featured) - Number(a.data.featured) || b.data.added.getTime() - a.data.added.getTime())
   .slice(0, 3);
 
+const steps = [
+  { n: 1, title: 'Choose a template', text: 'Browse the collection and open the one that fits your project.' },
+  { n: 2, title: 'Remix it in Framer', text: 'One click on Framer Marketplace copies the template into your own Framer account.' },
+  { n: 3, title: 'Make it yours and publish', text: 'Replace the text and images, adjust the style and put your site live.' },
+];
+
+const faq = [
+  { q: 'How do I use a template?', a: 'Open a template from the catalog, press the remix button on its Framer Marketplace page and the template is copied to your Framer account, ready to edit.' },
+  { q: 'Are the templates free?', a: 'Some are free and some are paid. The price is shown on every card.' },
+  { q: 'Do I need to know how to code?', a: 'No. Everything is edited visually in Framer, including text, images and CMS content.' },
+  { q: 'Will the templates work on mobile?', a: 'Yes. Every template is built to be responsive on phone, tablet and desktop.' },
+];
+
 const points = [
   { title: 'Responsive', text: 'Every template is built to look right on phone, tablet and desktop.' },
   { title: 'No code needed', text: 'Remix on Framer and edit text, images and CMS content visually.' },
@@ -44,8 +57,31 @@ const points = [
     </div>
   </section>
 
+  <section class="mx-auto max-w-6xl px-5 py-24 text-center sm:py-32" aria-label="Tagline">
+    <p class="mx-auto max-w-4xl text-balance text-4xl font-semibold leading-[1.1] tracking-tight sm:text-6xl">
+      Pick it. <span class="text-muted">Remix it.</span><br />
+      Make it yours. <span class="text-accent">Ship it.</span>
+    </p>
+  </section>
+
+  <section id="how" class="mx-auto max-w-6xl px-5 pb-8" aria-labelledby="how-title">
+    <h2 id="how-title" class="max-w-xl text-3xl font-semibold tracking-tight sm:text-4xl">Three steps to your new website</h2>
+    <p class="mt-3 max-w-xl text-muted">From choosing a template to a live site, without writing code.</p>
+    <ol class="mt-10 grid gap-5 sm:grid-cols-3">
+      {steps.map((st) => (
+        <li class="flex min-h-56 flex-col justify-between rounded-2xl border border-line bg-surface p-6">
+          <span class="self-end text-5xl font-light italic text-muted">{st.n}</span>
+          <div>
+            <h3 class="text-xl font-medium">{st.title}</h3>
+            <p class="mt-2 text-sm text-muted">{st.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
   <section id="about" class="mx-auto max-w-6xl px-5 py-20" aria-labelledby="about-title">
-    <h2 id="about-title" class="text-2xl font-semibold tracking-tight">Why Vonex Design</h2>
+    <h2 id="about-title" class="text-2xl font-semibold tracking-tight">Why these templates</h2>
     <p class="mt-3 max-w-2xl text-muted">
       Templates made by {site.name} with a focus on clean typography, calm layouts and smooth details.
     </p>
@@ -57,5 +93,28 @@ const points = [
         </li>
       ))}
     </ul>
+  </section>
+  <section id="faq" class="mx-auto max-w-3xl px-5 pb-20" aria-labelledby="faq-title">
+    <h2 id="faq-title" class="text-2xl font-semibold tracking-tight">Questions</h2>
+    <div class="mt-6 divide-y divide-line border-y border-line">
+      {faq.map((f) => (
+        <details class="group py-5">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-medium">
+            {f.q}
+            <span aria-hidden="true" class="text-muted transition group-open:rotate-45">+</span>
+          </summary>
+          <p class="mt-3 text-muted">{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="mx-auto max-w-6xl px-5 pb-24" aria-labelledby="cta-title">
+    <div class="relative overflow-hidden rounded-3xl border border-line bg-surface px-8 py-14 sm:px-14 sm:py-20">
+      <div aria-hidden="true" class="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-accent/25 blur-3xl"></div>
+      <h2 id="cta-title" class="relative max-w-xl text-balance text-3xl font-semibold tracking-tight sm:text-5xl">Launch your website today</h2>
+      <p class="relative mt-4 max-w-lg text-muted">Choose a template, remix it in Framer and have your site online in an afternoon.</p>
+      <a href="/templates/" class="relative mt-8 inline-block rounded-full bg-fg px-6 py-3 text-sm font-medium text-bg transition hover:bg-white/85">Discover templates</a>
+    </div>
   </section>
 </Base>
