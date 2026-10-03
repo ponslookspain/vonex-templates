@@ -100,7 +100,7 @@ const points = [
     </div>
     <ol class="mt-12 grid gap-5 sm:grid-cols-3">
       {steps.map((st) => (
-        <li class="flex min-h-48 flex-col justify-between py-2">
+        <li class="flex min-h-48 flex-col justify-between rounded-xl bg-surface p-6">
           <span class="self-end text-5xl font-light italic text-muted">{st.n}</span>
           <div>
             <h3 class="text-xl font-medium">{st.title}</h3>
@@ -121,7 +121,7 @@ const points = [
     </div>
     <ul class="mt-12 grid gap-5 sm:grid-cols-3">
       {points.map((p) => (
-        <li class="py-2">
+        <li class="rounded-xl bg-surface p-6">
           <h3 class="font-medium">{p.title}</h3>
           <p class="mt-2 text-sm text-muted">{p.text}</p>
         </li>
@@ -135,7 +135,7 @@ const points = [
     </div>
     <div class="mt-10 flex flex-col gap-3">
       {faq.map((f) => (
-        <details class="group rounded-xl border border-line bg-surface px-5 py-5">
+        <details class="group rounded-xl bg-surface px-5 py-5">
           <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-medium">
             {f.q}
             <span aria-hidden="true" class="text-lg text-fg transition group-open:rotate-45">+</span>
@@ -147,7 +147,7 @@ const points = [
   </section>
 
   <section class="mx-auto max-w-6xl px-5 pb-24" aria-labelledby="cta-title">
-    <div class="relative overflow-hidden rounded-2xl border border-line bg-surface px-8 py-14 sm:px-14 sm:py-20">
+    <div class="relative overflow-hidden rounded-2xl bg-surface px-8 py-14 sm:px-14 sm:py-20">
       <div aria-hidden="true" class="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-accent/25 blur-3xl"></div>
       <h2 id="cta-title" class="relative max-w-xl text-balance text-4xl font-bold sm:text-5xl">Launch your website today</h2>
       <p class="relative mt-4 max-w-lg text-muted">Choose a Framer template, remix it and have your website online in an afternoon.</p>
