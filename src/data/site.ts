@@ -6,7 +6,10 @@ export const site = {
   name: 'Vonex Design',
   tagline: 'Framer templates, designed with care.',
   description:
-    'Minimal, modern Framer templates by Vonex Design. Browse the collection and remix any template on Framer.',
+    'Clean, responsive Framer templates for portfolios, agencies and weddings by Vonex Design. Pick a template, remix it on Framer and launch your website without code.',
+  // Cloudflare Web Analytics token (Cloudflare dashboard > Analytics & Logs > Web Analytics).
+  // Leave empty to disable. Nothing is sent until a token is set.
+  analyticsToken: '',
   framerProfile: 'https://www.framer.com/@vonexdesign/',
   email: 'ponslookdesign@gmail.com',
   socials: [

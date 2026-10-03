@@ -11,14 +11,7 @@ const href = t.affiliateUrl ?? t.url;
 const free = t.price === 0;
 ---
 
-<li
-  class="template-card"
-  data-name={t.name.toLowerCase()}
-  data-search={[t.name, t.tagline, t.description, t.category, ...t.tags].join(' ').toLowerCase()}
-  data-category={t.category}
-  data-price={t.price}
-  data-added={t.added.getTime()}
->
+<li class="template-card">
   <a
     href={href}
     target="_blank"
@@ -28,7 +21,7 @@ const free = t.price === 0;
     <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-surface-2 ring-1 ring-white/5">
       <Image
         src={t.image}
-        alt={`${t.name} template preview`}
+        alt={`${t.name} Framer template: ${t.tagline}`}
         widths={[480, 720, 1000]}
         sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
         class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
