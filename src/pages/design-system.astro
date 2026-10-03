@@ -1,0 +1,291 @@
+---
+// Living style guide. Every token is read from src/styles/global.css at build time,
+// so this page can never drift from the real values. Not indexed, not in the sitemap.
+import { readFileSync } from 'node:fs';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Section from '../components/Section.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import Button from '../components/Button.astro';
+import Badge from '../components/Badge.astro';
+import Card from '../components/Card.astro';
+import FaqItem from '../components/FaqItem.astro';
+import Glow from '../components/Glow.astro';
+import InlineIcon from '../components/InlineIcon.astro';
+import Logo from '../components/Logo.astro';
+import SocialIcon from '../components/SocialIcon.astro';
+import TemplateCard from '../components/TemplateCard.astro';
+
+type Token = { name: string; value: string; note: string; wide?: string };
+
+const css = readFileSync('src/styles/global.css', 'utf8');
+const themeBlock = css.match(/@theme static \{([\s\S]*?)\n\}/)?.[1] ?? '';
+const overrideBlock = css.match(/@media \(min-width: 40rem\) \{\s*:root \{([\s\S]*?)\}/)?.[1] ?? '';
+
+const wide = new Map<string, string>();
+for (const m of overrideBlock.matchAll(/(--[\w-]+):\s*([^;]+);/g)) wide.set(m[1], m[2].trim());
+
+const tokens: Token[] = [...themeBlock.matchAll(/^\s*(--[\w-]+):\s*([^;]+);(?:\s*\/\*\s*(.*?)\s*\*\/)?/gm)].map((m) => ({
+  name: m[1],
+  value: m[2].trim(),
+  note: m[3] ?? '',
+  wide: wide.get(m[1]),
+}));
+const group = (prefix: string) => tokens.filter((t) => t.name.startsWith(prefix));
+
+const colors = group('--color-');
+const radii = group('--radius-');
+const widths = group('--container-');
+const gridTokens = [...group('--grid-'), ...group('--space-')];
+const motion = [...group('--duration-'), ...group('--ease-')];
+const typeTokens = group('--text-');
+const typeRoles = [
+  { cls: 'type-display', token: '--text-display', sample: 'Framer templates for any kind of website.', use: 'Hero headline, once per page' },
+  { cls: 'type-statement', token: '--text-statement', sample: 'Pick it. Remix it.', use: 'Big tagline' },
+  { cls: 'type-h1', token: '--text-h1', sample: 'All Framer templates', use: 'Page title (h1)' },
+  { cls: 'type-h2', token: '--text-h2', sample: 'Featured Framer templates', use: 'Section title (h2)' },
+  { cls: 'type-h3', token: '--text-h3', sample: 'Choose a Framer template', use: 'Card title (h3)' },
+  { cls: 'type-title', token: '--text-title', sample: 'Softic Studio', use: 'Small title, template name' },
+  { cls: 'type-lead', token: '--text-lead', sample: 'Ready-made, responsive designs. Pick a template, remix it and publish.', use: 'Intro paragraph' },
+  { cls: 'type-body', token: '--text-body', sample: 'Default text for paragraphs and descriptions.', use: 'Body text' },
+  { cls: 'type-small', token: '--text-small', sample: 'Secondary text, buttons and navigation.', use: 'Secondary text' },
+  { cls: 'type-caption', token: '--text-caption', sample: 'Labels and badges', use: 'Captions' },
+  { cls: 'type-numeral', token: '--text-numeral', sample: '1', use: 'Step numbers' },
+];
+const sizeOf = (token: string) => {
+  const t = tokens.find((x) => x.name === token);
+  return t ? (t.wide ? `${t.value} → ${t.wide} from 640px` : t.value) : '';
+};
+
+const templates = await getCollection('templates');
+const sample = templates[0];
+
+const spans = [
+  { label: '12', cls: 'col-span-12' },
+  { label: '8 + 4', cls: 'col-span-8' },
+  { label: '6 + 6', cls: 'col-span-6' },
+  { label: '4 + 4 + 4', cls: 'col-span-4' },
+  { label: '3 × 4', cls: 'col-span-3' },
+];
+---
+
+<Base
+  title="Design system"
+  description="Vonex Design system: tokens, type scale, 12-column grid and components"
+  noindex
+  gridOverlay
+>
+  <Section flush="bottom" class="pt-10 sm:pt-12">
+    <SectionHeader
+      level={1}
+      eyebrow="Design system"
+      title="One source of truth for the whole site"
+      lead="Tokens live in src/styles/global.css, components in src/components. Change a token and the whole site follows."
+    />
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <Button variant="ghost" data-grid-toggle>Toggle grid overlay (G)</Button>
+    </div>
+  </Section>
+
+  <!-- COLORS -->
+  <Section labelledby="ds-colors" flush="bottom">
+    <h2 id="ds-colors" class="type-h2 mb-2">Color</h2>
+    <p class="type-small mb-8 text-muted">Use the semantic name (surface, muted, accent), never a raw hex value.</p>
+    <ul class="grid-12">
+      {colors.map((c) => (
+        <li class="col-span-6 sm:col-span-4 lg:col-span-3">
+          <Card padded={false} class="p-3">
+            <div class="h-20 rounded-control border border-line" style={`background:var(${c.name})`}></div>
+            <p class="type-small mt-3 font-medium">{c.name.replace('--color-', '')}</p>
+            <p class="type-caption text-muted">{c.value}</p>
+            <p class="type-caption mt-1 text-muted">{c.note}</p>
+            <p class="type-caption mt-1 text-fg-soft">Tailwind: <code>bg-{c.name.replace('--color-', '')}</code> <code>text-{c.name.replace('--color-', '')}</code></p>
+          </Card>
+        </li>
+      ))}
+    </ul>
+  </Section>
+
+  <!-- TYPOGRAPHY -->
+  <Section labelledby="ds-type" flush="bottom">
+    <h2 id="ds-type" class="type-h2 mb-2">Typography</h2>
+    <p class="type-small mb-8 text-muted">Font: Inter Variable. Apply a role class; sizes scale at 640px through the tokens.</p>
+    <div class="flex flex-col">
+      {typeRoles.map((r) => (
+        <div class="grid-12 items-baseline border-t border-line py-6">
+          <div class="col-span-12 lg:col-span-3">
+            <p class="type-small font-medium">.{r.cls}</p>
+            <p class="type-caption text-muted">{r.use}</p>
+            <p class="type-caption mt-1 text-fg-soft">{r.token}: {sizeOf(r.token)}</p>
+          </div>
+          <div class="col-span-12 mt-3 lg:col-span-9 lg:mt-0">
+            <p class:list={[r.cls, 'break-words']}>{r.sample}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+    <p class="type-small mt-6 text-muted">Tagline with inline icons:</p>
+    <p class="type-statement mt-2">
+      <span class="whitespace-nowrap">Pick it. <InlineIcon name="pick" /></span>
+      <span class="whitespace-nowrap text-muted">Remix it. <InlineIcon name="remix" /></span>
+      <span class="whitespace-nowrap">Make it yours. <InlineIcon name="make" /></span>
+      <span class="whitespace-nowrap text-accent">Ship it. <InlineIcon name="ship" tone="accent" /></span>
+    </p>
+  </Section>
+
+  <!-- GRID -->
+  <Section labelledby="ds-grid" flush="bottom">
+    <h2 id="ds-grid" class="type-h2 mb-2">Grid and layout</h2>
+    <p class="type-small mb-8 text-muted">
+      12 columns inside <code>.container-page</code> (max 72rem, 20px side padding, 20px gutter). Mobile first: every item is
+      <code>col-span-12</code>, then narrows with <code>sm:</code> (640), <code>md:</code> (768), <code>lg:</code> (1024). Press G to see the columns on any page.
+    </p>
+    <div class="flex flex-col gap-6">
+      {spans.map((s) => (
+        <div>
+          <p class="type-caption mb-2 text-muted">{s.label}: <code>{s.cls}</code></p>
+          <div class="grid-12">
+            {Array.from({ length: 12 / Number(s.cls.split('-')[2]) }, () => (
+              <div class:list={[s.cls, 'surface type-caption py-4 text-center text-muted']}>{s.cls.replace('col-span-', '')}</div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+    <div class="mt-10 grid-12 gap-y-6">
+      <div class="col-span-12 lg:col-span-6">
+        <h3 class="type-title mb-3">Layout tokens</h3>
+        <ul class="type-small flex flex-col gap-2">
+          {[...widths, ...gridTokens].map((t) => (
+            <li class="flex justify-between gap-4 border-b border-line pb-2">
+              <span><code>{t.name}</code><span class="type-caption block text-muted">{t.note}</span></span>
+              <span class="shrink-0 text-fg-soft">{t.wide ? `${t.value} → ${t.wide}` : t.value}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div class="col-span-12 lg:col-span-6">
+        <h3 class="type-title mb-3">Section recipe</h3>
+        <pre class="surface type-caption overflow-x-auto p-4 text-fg-soft"><code>{`<Section id="x" labelledby="x-title">
+  <SectionHeader id="x-title" eyebrow="…" title="…" lead="…" />
+  <ul class="grid-12 mt-12">
+    <Card as="li"
+      class="col-span-12 sm:col-span-6 lg:col-span-3">…</Card>
+  </ul>
+</Section>`}</code></pre>
+      </div>
+    </div>
+  </Section>
+
+  <!-- RADIUS + MOTION -->
+  <Section labelledby="ds-shape" flush="bottom">
+    <h2 id="ds-shape" class="type-h2 mb-8">Radius and motion</h2>
+    <div class="grid-12 gap-y-6">
+      {radii.map((r) => (
+        <div class="col-span-6 lg:col-span-3">
+          <div class="h-24 border border-line bg-surface-2" style={`border-radius:var(${r.name})`}></div>
+          <p class="type-small mt-3 font-medium">{r.name.replace('--radius-', 'rounded-')}</p>
+          <p class="type-caption text-muted">{r.value}. {r.note}</p>
+        </div>
+      ))}
+    </div>
+    <ul class="type-small mt-10 flex flex-col gap-2">
+      {motion.map((t) => (
+        <li class="flex justify-between gap-4 border-b border-line pb-2">
+          <span><code>{t.name}</code><span class="type-caption block text-muted">{t.note}</span></span>
+          <span class="shrink-0 text-fg-soft">{t.value}</span>
+        </li>
+      ))}
+    </ul>
+  </Section>
+
+  <!-- COMPONENTS -->
+  <Section labelledby="ds-components" flush="bottom">
+    <h2 id="ds-components" class="type-h2 mb-8">Components</h2>
+
+    <div class="grid-12 gap-y-12">
+      <div class="col-span-12">
+        <h3 class="type-title mb-1">Button</h3>
+        <p class="type-caption mb-4 text-muted"><code>&lt;Button variant="primary | ghost" size="md | compact" href="…"&gt;</code></p>
+        <div class="flex flex-wrap items-center gap-3">
+          <Button href="#">Primary</Button>
+          <Button href="#" variant="ghost">Ghost</Button>
+          <Button href="#" size="compact">Compact</Button>
+        </div>
+      </div>
+
+      <div class="col-span-12 sm:col-span-6">
+        <h3 class="type-title mb-1">Badge</h3>
+        <p class="type-caption mb-4 text-muted"><code>&lt;Badge tone="success"&gt;</code></p>
+        <Badge>New</Badge>
+      </div>
+
+      <div class="col-span-12 sm:col-span-6">
+        <h3 class="type-title mb-1">Logo and social icons</h3>
+        <p class="type-caption mb-4 text-muted"><code>Logo</code>, <code>SocialIcon name="x | threads | tiktok"</code></p>
+        <div class="flex items-center gap-4">
+          <Logo class="h-8 w-auto" />
+          <SocialIcon name="x" class="size-5" />
+          <SocialIcon name="threads" class="size-5" />
+          <SocialIcon name="tiktok" class="size-5" />
+        </div>
+      </div>
+
+      <div class="col-span-12">
+        <h3 class="type-title mb-1">Card</h3>
+        <p class="type-caption mb-4 text-muted"><code>&lt;Card variant="surface | panel" padded as="li"&gt;</code></p>
+        <div class="grid-12">
+          <Card class="col-span-12 sm:col-span-6">
+            <p class="font-medium">surface</p>
+            <p class="type-small mt-2 text-muted">Cards inside a section: steps, points, FAQ. Radius surface.</p>
+          </Card>
+          <Card variant="panel" class="col-span-12 sm:col-span-6">
+            <p class="font-medium">panel</p>
+            <p class="type-small mt-2 text-muted">Large blocks: template card, call to action. Radius panel.</p>
+          </Card>
+        </div>
+      </div>
+
+      <div class="col-span-12 lg:col-span-8">
+        <h3 class="type-title mb-1">FaqItem</h3>
+        <p class="type-caption mb-4 text-muted"><code>&lt;FaqItem question="…"&gt;answer&lt;/FaqItem&gt;</code></p>
+        <div class="flex flex-col gap-3">
+          <FaqItem question="What is a Framer template?">A ready-made website design you copy into your own Framer account and edit visually.</FaqItem>
+          <FaqItem question="Are the templates responsive?">Yes. Every template works on phone, tablet and desktop.</FaqItem>
+        </div>
+      </div>
+
+      <div class="col-span-12 lg:col-span-4">
+        <h3 class="type-title mb-1">TemplateCard</h3>
+        <p class="type-caption mb-4 text-muted"><code>&lt;TemplateCard template class="col-span-…"&gt;</code></p>
+        <ul class="grid-12">
+          {sample && <TemplateCard template={sample} class="col-span-12" />}
+        </ul>
+      </div>
+
+      <div class="col-span-12">
+        <h3 class="type-title mb-1">Glow</h3>
+        <p class="type-caption mb-4 text-muted"><code>&lt;Glow /&gt;</code> inside a <code>relative overflow-hidden</code> parent</p>
+        <div class="panel relative h-48 overflow-hidden">
+          <Glow />
+          <p class="type-small relative p-6 text-fg-soft">Content sits above the moving light.</p>
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  <Section label="Rules" class="pb-24">
+    <div class="grid-12">
+      <div class="col-span-12 lg:col-span-8 lg:col-start-3">
+        <h2 class="type-h2 mb-4">Rules</h2>
+        <ul class="type-body flex list-disc flex-col gap-2 pl-5 text-muted">
+          <li>No raw colors, font sizes or radii in components: use tokens and the <code>type-*</code> roles.</li>
+          <li>Every page is built from <code>Section</code> → <code>Container</code> → <code>.grid-12</code>.</li>
+          <li>Need a new value? Add a token in <code>global.css</code> with a comment: it appears here automatically.</li>
+          <li>Need a new block? Make a component in <code>src/components</code> and add a sample to this page.</li>
+          <li>Full guide: <code>DESIGN_SYSTEM.md</code> in the repository root.</li>
+        </ul>
+      </div>
+    </div>
+  </Section>
+</Base>

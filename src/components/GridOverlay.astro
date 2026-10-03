@@ -1,0 +1,35 @@
+---
+// Debug overlay that draws the 12 columns of the page grid. Press "G" to toggle.
+// Shown automatically in `npm run dev`; on other pages add it explicitly.
+---
+
+<div id="grid-overlay" hidden aria-hidden="true" class="pointer-events-none fixed inset-0 z-[100]">
+  <div class="container-page h-full">
+    <div class="grid-12 h-full">
+      {Array.from({ length: 12 }, (_, i) => (
+        <div class="grid-overlay-col relative h-full">
+          <span class="type-caption absolute left-1/2 top-1 -translate-x-1/2 text-accent">{i + 1}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .grid-overlay-col {
+    background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-accent) 30%, transparent);
+  }
+</style>
+
+<script>
+  const overlay = document.getElementById('grid-overlay');
+  const toggle = () => overlay && (overlay.hidden = !overlay.hidden);
+  addEventListener('keydown', (e) => {
+    const t = e.target as HTMLElement;
+    if (e.key.toLowerCase() !== 'g' || e.metaKey || e.ctrlKey || e.altKey) return;
+    if (t.closest('input, textarea, select, [contenteditable]')) return;
+    toggle();
+  });
+  document.querySelectorAll('[data-grid-toggle]').forEach((b) => b.addEventListener('click', toggle));
+</script>

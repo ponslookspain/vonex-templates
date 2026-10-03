@@ -2,17 +2,19 @@
 import { site, nav } from '../data/site';
 import SocialIcon from './SocialIcon.astro';
 import Logo from './Logo.astro';
+import Container from './Container.astro';
+import Button from './Button.astro';
 const path = Astro.url.pathname;
 ---
 
 <header class="fixed inset-x-0 top-0 z-40 bg-gradient-to-b from-bg via-bg/80 to-transparent pb-5 pt-4">
-  <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5">
-    <a href="/" class="flex items-center gap-2.5 text-lg font-extrabold uppercase tracking-tight">
-      <Logo class="size-7" />
-      {site.name}
+  <Container class="flex items-center justify-between gap-3">
+    <a href="/" class="flex shrink-0 items-center gap-2 whitespace-nowrap text-base font-extrabold uppercase tracking-tight sm:gap-2.5 sm:text-lg">
+      <Logo class="h-7 w-auto" />
+      <span class="sr-only lg:not-sr-only">{site.name}</span>
     </a>
 
-    <div class="flex items-center gap-1 text-sm sm:gap-2">
+    <div class="flex items-center gap-0.5 text-sm sm:gap-2">
       <nav aria-label="Main" class="hidden items-center md:flex">
         {
           nav.map((item) => (
@@ -21,7 +23,7 @@ const path = Astro.url.pathname;
               target={item.external ? '_blank' : undefined}
               rel={item.external ? 'noopener noreferrer' : undefined}
               aria-current={path === item.href ? 'page' : undefined}
-              class="px-3 py-2 text-fg/80 transition-colors hover:text-fg aria-[current=page]:text-fg"
+              class="px-3 py-2 text-fg-soft transition-colors hover:text-fg aria-[current=page]:text-fg"
             >
               {item.label}
             </a>
@@ -45,7 +47,79 @@ const path = Astro.url.pathname;
           ))
         }
       </ul>
-      <a href="/templates/" class="btn">Browse templates</a>
+      <Button href="/templates/" size="compact">Browse templates</Button>
+      <button
+        type="button"
+        id="menu-toggle"
+        class="grid size-10 shrink-0 place-items-center rounded-control text-fg transition-colors hover:bg-white/10 md:hidden"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true" class="size-6">
+          <path class="menu-open" d="M4 8h16M4 16h16"></path>
+          <path class="menu-close" d="M6 6l12 12M18 6 6 18"></path>
+        </svg>
+      </button>
     </div>
+  </Container>
+
+  <Container>
+  <div id="mobile-menu" hidden class="panel border border-line p-3 md:hidden">
+    <nav aria-label="Mobile" class="flex flex-col">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            target={item.external ? '_blank' : undefined}
+            rel={item.external ? 'noopener noreferrer' : undefined}
+            aria-current={path === item.href ? 'page' : undefined}
+            class="rounded-control px-3 py-3 text-base text-fg-soft transition-colors hover:bg-white/5 hover:text-fg aria-[current=page]:text-fg"
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+    <ul class="mt-2 flex items-center gap-1 border-t border-line px-1 pt-3">
+      {
+        site.socials.map((s) => (
+          <li>
+            <a
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={s.label}
+              class="grid size-10 place-items-center rounded-control text-muted transition-colors hover:bg-white/5 hover:text-fg"
+            >
+              <SocialIcon name={s.icon} class="size-[18px]" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </div>
+  </Container>
 </header>
+
+<style>
+  #menu-toggle .menu-close { display: none; }
+  #menu-toggle[aria-expanded='true'] .menu-open { display: none; }
+  #menu-toggle[aria-expanded='true'] .menu-close { display: inline; }
+</style>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  if (toggle && menu) {
+    const set = (open: boolean) => {
+      menu.hidden = !open;
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    };
+    toggle.addEventListener('click', () => set(Boolean(menu.hidden)));
+    menu.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) set(false); });
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') set(false); });
+    matchMedia('(min-width: 768px)').addEventListener('change', (e) => { if (e.matches) set(false); });
+  }
+</script>

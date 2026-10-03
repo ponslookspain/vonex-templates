@@ -1,15 +1,88 @@
 @import 'tailwindcss';
 @import '@fontsource-variable/inter';
 
-@theme {
-  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
-  --color-bg: #000000;
-  --color-surface: #111113;
-  --color-surface-2: #121214;
-  --color-line: #222226;
-  --color-fg: #f4f4f5;
-  --color-muted: #9a9aa3;
-  --color-accent: #0099ff;
+/*
+  VONEX DESIGN SYSTEM: single source of truth.
+  Everything visual on the site is built from the tokens below. To change the look of the
+  whole site, change a token here. The /design-system/ page reads this file and lists every
+  token automatically, so a comment after a token becomes its description there.
+
+  Naming: --color-*, --text-*, --radius-*, --container-*, --duration-*, --ease-*, --grid-*, --space-*.
+  Names say what a value is FOR (surface, muted, panel), never what it looks like (dark-gray).
+  See DESIGN_SYSTEM.md for the rules.
+*/
+
+@theme static {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif; /* Interface and headings */
+
+  /* Color: neutrals */
+  --color-bg: #000000; /* Page background */
+  --color-surface: #111113; /* Cards, panels, form-like blocks */
+  --color-surface-2: #121214; /* Hover state of a surface */
+  --color-line: #222226; /* Borders and dividers */
+  --color-outline: rgb(255 255 255 / 0.06); /* Hairline around media on dark backgrounds */
+  --color-fg: #f4f4f5; /* Primary text */
+  --color-fg-soft: rgb(244 244 245 / 0.8); /* Secondary text that must stay readable (nav, labels) */
+  --color-muted: #9a9aa3; /* Descriptions and captions */
+
+  /* Color: brand and effects */
+  --color-accent: #0099ff; /* Brand blue: links, eyebrows, focus, highlights */
+  --color-accent-indigo: #6366f1; /* Second glow color */
+  --color-accent-sky: #38bdf8; /* Third glow color */
+  --color-accent-violet: #a855f7; /* 3D logo light only */
+  --color-chrome: #f2f4fa; /* 3D logo base metal */
+  --color-success: #34d399; /* "New" and positive labels */
+
+  /* Radius: by role */
+  --radius-control: 0.5rem; /* Buttons and small controls */
+  --radius-surface: 0.75rem; /* Cards inside a section: steps, points, FAQ */
+  --radius-panel: 1rem; /* Large panels: template card, call to action */
+  --radius-media: 1.5rem; /* Big preview images */
+
+  /* Layout widths */
+  --container-page: 72rem; /* Page content width, 12-column grid lives inside */
+  --container-measure-display: 48rem; /* Longest line of a hero headline */
+  --container-measure-title: 40rem; /* Longest line of a section title */
+  --container-measure-lead: 36rem; /* Longest line of a lead paragraph */
+  --container-measure-body: 28rem; /* Longest line of a section intro */
+
+  /* Grid and spacing */
+  --grid-columns: 12; /* Number of columns */
+  --grid-gutter: 1.25rem; /* Gap between columns and between stacked cards */
+  --space-page: 1.25rem; /* Left and right page padding */
+  --space-section: 3.5rem; /* Vertical padding of a section (top and bottom each) */
+  --space-card: 1.5rem; /* Padding inside a card */
+
+  /* Type scale: mobile values here, larger values from 640px below */
+  --text-display: 3rem; /* Hero headline */
+  --text-statement: 2.4rem; /* Big tagline */
+  --text-h1: 3rem; /* Page title */
+  --text-h2: 2.25rem; /* Section title */
+  --text-h3: 1.25rem; /* Card title */
+  --text-title: 1.125rem; /* Small title, template name */
+  --text-lead: 1.125rem; /* Intro paragraph */
+  --text-body: 1rem; /* Default text */
+  --text-small: 0.875rem; /* Secondary text, buttons, nav */
+  --text-caption: 0.75rem; /* Labels and badges */
+  --text-numeral: 3rem; /* Big step numbers */
+
+  /* Motion */
+  --duration-fast: 150ms; /* Color and state changes */
+  --duration-base: 300ms; /* Transitions of blocks */
+  --duration-slow: 500ms; /* Image zoom on hover */
+  --duration-marquee: 60s; /* One full loop of the template strip */
+  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1); /* Default easing */
+}
+
+/* Responsive values of the tokens above. Add new breakpoints here, never inside components. */
+@media (min-width: 40rem) {
+  :root {
+    --text-display: 4.5rem;
+    --text-statement: 4.5rem;
+    --text-h1: 3.75rem;
+    --text-h2: 3rem;
+    --space-section: 5rem;
+  }
 }
 
 @layer base {
@@ -38,14 +111,239 @@
   * { transition: none !important; animation: none !important; }
 }
 
+/* ---------- Layout: container, 12-column grid, sections ---------- */
 @layer components {
-  .eyebrow {
-    @apply mb-4 block text-sm font-medium text-accent;
+  /* Page container. Always the outermost wrapper of content. */
+  .container-page {
+    width: 100%;
+    max-width: var(--container-page);
+    margin-inline: auto;
+    padding-inline: var(--space-page);
   }
+
+  /*
+    12-column grid. Place children with Tailwind's col-span-* and col-start-* utilities.
+    Mobile first: every item is col-span-12, then narrows at sm / md / lg.
+      3 per row on desktop:  col-span-12 sm:col-span-6 lg:col-span-4
+      4 per row on desktop:  col-span-12 sm:col-span-6 lg:col-span-3
+      centered 8 columns:    col-span-12 lg:col-start-3 lg:col-span-8
+  */
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+    column-gap: var(--grid-gutter);
+    row-gap: var(--grid-gutter);
+  }
+
+  /* Vertical rhythm between sections. */
+  .section {
+    padding-block: var(--space-section);
+  }
+  .section-flush-top {
+    padding-top: 0;
+  }
+  .section-flush-bottom {
+    padding-bottom: 0;
+  }
+}
+
+/* ---------- Typography roles ---------- */
+@layer components {
+  .type-display {
+    font-size: var(--text-display);
+    line-height: 1.02;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+  .type-statement {
+    font-size: var(--text-statement);
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+  }
+  .type-h1 {
+    font-size: var(--text-h1);
+    line-height: 1.05;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+  }
+  .type-h2 {
+    font-size: var(--text-h2);
+    line-height: 1.1;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+  }
+  .type-h3 {
+    font-size: var(--text-h3);
+    line-height: 1.4;
+    font-weight: 500;
+    letter-spacing: -0.04em;
+  }
+  .type-title {
+    font-size: var(--text-title);
+    line-height: 1.55;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+  .type-lead {
+    font-size: var(--text-lead);
+    line-height: 1.55;
+    color: var(--color-muted);
+    text-wrap: pretty;
+  }
+  .type-body {
+    font-size: var(--text-body);
+    line-height: 1.5;
+  }
+  .type-small {
+    font-size: var(--text-small);
+    line-height: 1.45;
+  }
+  .type-caption {
+    font-size: var(--text-caption);
+    line-height: 1.35;
+  }
+  .type-numeral {
+    font-size: var(--text-numeral);
+    line-height: 1;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--color-muted);
+  }
+  .eyebrow {
+    display: block;
+    margin-bottom: 1rem;
+    font-size: var(--text-small);
+    line-height: 1.45;
+    font-weight: 500;
+    color: var(--color-accent);
+  }
+}
+
+/* ---------- Components ---------- */
+@layer components {
+  /* Button: <Button variant="primary|ghost" size="md|compact"> */
   .btn {
-    @apply inline-flex items-center justify-center rounded-lg bg-fg px-4 py-2.5 text-sm font-medium text-bg transition hover:bg-white/80;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    border-radius: var(--radius-control);
+    padding: 0.625rem 1rem;
+    font-size: var(--text-small);
+    line-height: 1.45;
+    font-weight: 500;
+    transition: background-color var(--duration-fast) var(--ease-soft), border-color var(--duration-fast) var(--ease-soft);
+  }
+  .btn-primary {
+    background: var(--color-fg);
+    color: var(--color-bg);
+  }
+  .btn-primary:hover {
+    background: color-mix(in srgb, #fff 80%, transparent);
   }
   .btn-ghost {
-    @apply inline-flex items-center justify-center rounded-lg border border-line px-4 py-2.5 text-sm font-medium text-fg transition hover:border-white/30 hover:bg-surface-2;
+    border: 1px solid var(--color-line);
+    color: var(--color-fg);
   }
+  .btn-ghost:hover {
+    border-color: rgb(255 255 255 / 0.3);
+    background: var(--color-surface-2);
+  }
+  /* Smaller on phones, regular from 640px. Used in the header. */
+  .btn-compact {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+  @media (min-width: 40rem) {
+    .btn-compact {
+      padding: 0.625rem 1rem;
+      font-size: var(--text-small);
+    }
+  }
+
+  /* Surfaces: flat blocks on the page background. */
+  .surface {
+    background: var(--color-surface);
+    border-radius: var(--radius-surface);
+  }
+  .panel {
+    background: var(--color-surface);
+    border-radius: var(--radius-panel);
+  }
+  .card-padding {
+    padding: var(--space-card);
+  }
+
+  /* Small status label: <Badge tone="success">New</Badge> */
+  .badge {
+    display: inline-block;
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.375rem;
+    font-size: var(--text-caption);
+    line-height: 1.35;
+    font-weight: 500;
+  }
+  .badge-success {
+    background: color-mix(in srgb, var(--color-success) 20%, transparent);
+    color: var(--color-success);
+  }
+
+  /* Icon that sits inside a line of big text, aligned to the capital letters. */
+  .inline-icon {
+    display: inline-flex;
+    width: 0.95em;
+    height: 0.95em;
+    align-items: center;
+    justify-content: center;
+    vertical-align: -0.112em;
+    margin-inline-start: 0.1em;
+    color: var(--color-fg);
+  }
+  .inline-icon-accent {
+    color: var(--color-accent);
+  }
+  .inline-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Drifting light behind a block: <Glow /> inside a relative, overflow-hidden parent. */
+  .glow-blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(56px);
+    will-change: transform;
+  }
+  .glow-blob-a {
+    right: -6rem; top: -7rem; width: 26rem; height: 26rem;
+    background: color-mix(in srgb, var(--color-accent) 32%, transparent);
+    animation: glow-drift-a 16s ease-in-out infinite alternate;
+  }
+  .glow-blob-b {
+    right: 18%; bottom: -10rem; width: 22rem; height: 22rem;
+    background: color-mix(in srgb, var(--color-accent-indigo) 26%, transparent);
+    animation: glow-drift-b 21s ease-in-out infinite alternate;
+  }
+  .glow-blob-c {
+    left: 28%; top: -9rem; width: 18rem; height: 18rem;
+    background: color-mix(in srgb, var(--color-accent-sky) 20%, transparent);
+    animation: glow-drift-c 25s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes glow-drift-a {
+  to { transform: translate(-14rem, 7rem) scale(1.25); }
+}
+@keyframes glow-drift-b {
+  to { transform: translate(-9rem, -5rem) scale(0.85); }
+}
+@keyframes glow-drift-c {
+  to { transform: translate(10rem, 6rem) scale(1.3); }
 }

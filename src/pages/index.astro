@@ -1,9 +1,19 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import { Image } from 'astro:assets';
 import TemplateCard from '../components/TemplateCard.astro';
-import heroMonitor from '../assets/hero-monitor.webp';
+import HeroStage from '../components/HeroStage.astro';
+import Container from '../components/Container.astro';
+import Section from '../components/Section.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import Button from '../components/Button.astro';
+import Badge from '../components/Badge.astro';
+import Card from '../components/Card.astro';
+import FaqItem from '../components/FaqItem.astro';
+import Glow from '../components/Glow.astro';
+import InlineIcon from '../components/InlineIcon.astro';
+import { Image } from 'astro:assets';
+import ctaMonitor from '../assets/cta-monitor.webp';
 import { site } from '../data/site';
 
 const all = await getCollection('templates');
@@ -12,28 +22,31 @@ const featured = all
   .slice(0, 3);
 
 const steps = [
-  { n: 1, title: 'Choose a Framer template', text: 'Browse portfolio, agency and wedding templates and open the one that fits your project.' },
+  { n: 1, title: 'Choose a Framer template', text: 'Browse the catalog and open the template that fits your project. Each one has a live preview.' },
   { n: 2, title: 'Remix it in Framer', text: 'One click on Framer Marketplace copies the template into your own Framer account.' },
-  { n: 3, title: 'Customize and publish', text: 'Replace the text and images, adjust the style and publish your website.' },
+  { n: 3, title: 'Customize and publish', text: 'Replace the text and images, adjust the style and publish your website on your own domain.' },
 ];
 
 const faq = [
+  { q: 'What is a Framer template?', a: 'A Framer template is a ready-made website design that you copy into your own Framer account and edit visually. The layout, styles and animations are already done, you only add your content.' },
   { q: 'How do I use a Framer template?', a: 'Open a template from the catalog, press the remix button on its Framer Marketplace page and the template is copied to your Framer account, ready to edit and publish.' },
-  { q: 'Are the Framer templates free?', a: 'Some templates are free and some are premium. The price, or the word Free, is shown on every card.' },
+  { q: 'Are the Framer templates free?', a: 'The catalog has both free and premium templates. The price, or the word Free, is shown on every card.' },
   { q: 'Do I need to know how to code?', a: 'No. Everything is edited visually in Framer, including text, images and CMS content.' },
   { q: 'Are the templates responsive?', a: 'Yes. Every template is built to look right on phone, tablet and desktop.' },
+  { q: 'Can I use a template for my own project or client work?', a: 'Yes. After you remix a template it is your own Framer project, so you can edit it, publish it on your domain and adapt it to your needs. Check the license on the template page for the exact terms.' },
 ];
 
 const points = [
-  { title: 'Responsive design', text: 'Every Framer template is built to look right on phone, tablet and desktop.' },
+  { title: 'Responsive design', text: 'Every template is built to look right on phone, tablet and desktop.' },
   { title: 'No code needed', text: 'Remix on Framer and edit text, images and CMS content visually.' },
-  { title: 'Free and premium', text: 'Start with a free template or pick a premium one for a specific use case.' },
+  { title: 'Free and premium', text: 'Start with a free template or choose a premium one with more features.' },
+  { title: 'Always growing', text: 'The catalog keeps expanding, so there is a new design to choose from every time you visit.' },
 ];
 ---
 
 <Base
   overlayHeader
-  title="Framer Templates for Portfolios and Agencies"
+  title="Framer Templates for Any Website"
   jsonLd={{
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
@@ -44,121 +57,115 @@ const points = [
     })),
   }}
 >
-  <section class="flex h-svh min-h-[36rem] flex-col items-center px-5 pt-36 text-center md:pt-32" aria-labelledby="hero-title">
-    <p class="mb-6 inline-flex items-center gap-2 text-sm text-fg/80">
-      <span class="rounded bg-emerald-500/20 px-1.5 py-0.5 text-xs font-medium text-emerald-400">New</span>
-      Framer templates by {site.name}
-    </p>
-    <h1 id="hero-title" class="max-w-3xl text-balance text-5xl font-bold leading-[1.02] sm:text-7xl">
-      Framer templates for portfolios, agencies and weddings.
-    </h1>
-    <p class="mt-6 max-w-xl text-pretty text-lg text-muted">
-      Clean, responsive templates by {site.name}. Pick one, remix it on Framer and launch your website without code.
-    </p>
-    <div class="mt-9 flex flex-wrap justify-center gap-3">
-      <a href="/templates/" class="btn">Browse all templates</a>
-    </div>
-    <div class="relative mb-[5vh] mt-10 min-h-40 w-full flex-1">
-      <Image
-        src={heroMonitor}
-        alt="Softic Studio Framer template shown on a monitor"
-        widths={[640, 960, 1249]}
-        sizes="(min-width: 1024px) 800px, 100vw"
-        loading="eager"
-        fetchpriority="high"
-        class="hero-monitor absolute inset-x-0 bottom-0 mx-auto h-full w-auto max-w-[88vw] object-contain object-bottom sm:max-w-[min(42rem,42vw)]"
-      />
-    </div>
+  <!-- Hero: fills the first screen, text on top, 3D logo and template strip below -->
+  <section class="flex h-svh min-h-[36rem] flex-col pt-36 text-center md:pt-32" aria-labelledby="hero-title">
+    <Container class="flex flex-1 flex-col items-center">
+      <p class="type-small mb-6 inline-flex items-center gap-2 text-fg-soft">
+        <Badge>New</Badge>
+        Framer templates by {site.name}
+      </p>
+      <h1 id="hero-title" class="type-display max-w-measure-display">Framer templates for any kind of website.</h1>
+      <p class="type-lead mt-6 max-w-measure-lead">
+        Ready-made, responsive designs by {site.name}. Pick a template, remix it in Framer and publish your website without writing code.
+      </p>
+      <div class="mt-9 flex flex-wrap justify-center gap-3">
+        <Button href="/templates/">Browse all templates</Button>
+      </div>
+      <div class="relative mb-[3vh] mt-6 min-h-72 w-full flex-1">
+        <HeroStage templates={all} />
+      </div>
+    </Container>
   </section>
 
-  <section id="templates" class="mx-auto max-w-6xl px-5 pb-8" aria-labelledby="featured-title">
-    <div class="mb-12 flex flex-col items-center text-center">
-      <span class="eyebrow">Framer Templates</span>
-      <h2 id="featured-title" class="text-4xl font-bold sm:text-5xl">Featured Framer templates</h2>
-      <p class="mt-4 max-w-md text-muted">Selected Framer templates for portfolios, agencies and weddings.</p>
-    </div>
-    <ul class="grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-      {featured.map((t) => <TemplateCard template={t} />)}
+  <Section id="templates" labelledby="featured-title" flush="bottom">
+    <SectionHeader
+      id="featured-title"
+      eyebrow="Framer Templates"
+      title="Featured Framer templates"
+      lead="Our top picks from the catalog. Open one to preview it live."
+    />
+    <ul class="grid-12 mt-12 gap-y-10">
+      {featured.map((t) => <TemplateCard template={t} class="col-span-12 sm:col-span-6 lg:col-span-4" />)}
     </ul>
     <div class="mt-10 flex justify-center">
-      <a href="/templates/" class="btn">View all templates</a>
+      <Button href="/templates/">View all templates</Button>
     </div>
-  </section>
+  </Section>
 
-  <section class="mx-auto max-w-6xl px-5 py-24 text-center sm:py-32" aria-label="Tagline">
-    <p class="mx-auto max-w-4xl text-balance text-5xl font-bold leading-[1.05] sm:text-7xl">
-      Pick it. <span class="text-muted">Remix it.</span><br />
-      Make it yours. <span class="text-accent">Ship it.</span>
-    </p>
-  </section>
-
-  <section id="how" class="mx-auto max-w-6xl px-5 pb-8" aria-labelledby="how-title">
-    <div class="flex flex-col items-center text-center">
-      <span class="eyebrow">How it works</span>
-      <h2 id="how-title" class="max-w-xl text-4xl font-bold sm:text-5xl">From template to live website in three steps</h2>
-      <p class="mt-4 max-w-md text-muted">Choose, remix and publish a Framer template without writing code.</p>
+  <Section label="Tagline" class="text-center">
+    <div class="grid-12">
+      <p class="type-statement col-span-12 mx-auto max-w-[64rem]">
+        <span class="mx-[0.12em] whitespace-nowrap">Pick it. <InlineIcon name="pick" /></span>
+        <span class="mx-[0.12em] whitespace-nowrap text-muted">Remix it. <InlineIcon name="remix" /></span><br class="hidden sm:block" />
+        <span class="mx-[0.12em] whitespace-nowrap">Make it yours. <InlineIcon name="make" /></span>
+        <span class="mx-[0.12em] whitespace-nowrap text-accent">Ship it. <InlineIcon name="ship" tone="accent" /></span>
+      </p>
     </div>
-    <ol class="mt-12 grid gap-5 sm:grid-cols-3">
+  </Section>
+
+  <Section id="how" labelledby="how-title" flush="bottom">
+    <SectionHeader
+      id="how-title"
+      eyebrow="How it works"
+      title="From template to live website in three steps"
+      lead="Choose, remix and publish a Framer template in an afternoon."
+    />
+    <ol class="grid-12 mt-12">
       {steps.map((st) => (
-        <li class="flex min-h-48 flex-col justify-between rounded-xl bg-surface p-6">
-          <span class="self-end text-5xl font-light italic text-muted">{st.n}</span>
+        <Card as="li" class="col-span-12 flex min-h-48 flex-col justify-between sm:col-span-4">
+          <span class="type-numeral self-end">{st.n}</span>
           <div>
-            <h3 class="text-xl font-medium">{st.title}</h3>
-            <p class="mt-2 text-sm text-muted">{st.text}</p>
+            <h3 class="type-h3">{st.title}</h3>
+            <p class="type-small mt-2 text-muted">{st.text}</p>
           </div>
-        </li>
+        </Card>
       ))}
     </ol>
-  </section>
+  </Section>
 
-  <section id="about" class="mx-auto max-w-6xl px-5 py-20" aria-labelledby="about-title">
-    <div class="flex flex-col items-center text-center">
-    <span class="eyebrow">Why Vonex</span>
-    <h2 id="about-title" class="text-4xl font-bold sm:text-5xl">Why choose Vonex Framer templates</h2>
-    <p class="mt-4 max-w-md text-muted">
-      Framer templates made by {site.name}, with clean typography, calm layouts and smooth details.
-    </p>
-    </div>
-    <ul class="mt-12 grid gap-5 sm:grid-cols-3">
+  <Section id="about" labelledby="about-title">
+    <SectionHeader
+      id="about-title"
+      eyebrow="Why Vonex"
+      title="Why choose Vonex Framer templates"
+      lead={`Framer templates by ${site.name} with clean typography, calm layouts and smooth details, ready to use from the first minute.`}
+    />
+    <ul class="grid-12 mt-12">
       {points.map((p) => (
-        <li class="rounded-xl bg-surface p-6">
+        <Card as="li" class="col-span-12 sm:col-span-6 lg:col-span-3">
           <h3 class="font-medium">{p.title}</h3>
-          <p class="mt-2 text-sm text-muted">{p.text}</p>
-        </li>
+          <p class="type-small mt-2 text-muted">{p.text}</p>
+        </Card>
       ))}
     </ul>
-  </section>
-  <section id="faq" class="mx-auto max-w-3xl px-5 pb-20" aria-labelledby="faq-title">
-    <div class="flex flex-col items-center text-center">
-      <span class="eyebrow">FAQ</span>
-      <h2 id="faq-title" class="text-4xl font-bold sm:text-5xl">Everything you need to know</h2>
-    </div>
-    <div class="mt-10 flex flex-col gap-3">
-      {faq.map((f) => (
-        <details class="group rounded-xl bg-surface px-5 py-5">
-          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-medium">
-            {f.q}
-            <span aria-hidden="true" class="text-lg text-fg transition group-open:rotate-45">+</span>
-          </summary>
-          <p class="mt-3 text-muted">{f.a}</p>
-        </details>
-      ))}
-    </div>
-  </section>
+  </Section>
 
-  <section class="mx-auto max-w-6xl px-5 pb-24" aria-labelledby="cta-title">
-    <div class="relative overflow-hidden rounded-2xl bg-surface px-8 py-14 sm:px-14 sm:py-20">
-      <div aria-hidden="true" class="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-accent/25 blur-3xl"></div>
-      <h2 id="cta-title" class="relative max-w-xl text-balance text-4xl font-bold sm:text-5xl">Launch your website today</h2>
-      <p class="relative mt-4 max-w-lg text-muted">Choose a Framer template, remix it and have your website online in an afternoon.</p>
-      <a href="/templates/" class="btn relative mt-8">Discover templates</a>
+  <Section id="faq" labelledby="faq-title" flush="top">
+    <SectionHeader id="faq-title" eyebrow="FAQ" title="Everything you need to know" />
+    <div class="grid-12 mt-10">
+      <div class="col-span-12 flex flex-col gap-3 lg:col-span-8 lg:col-start-3">
+        {faq.map((f) => <FaqItem question={f.q}>{f.a}</FaqItem>)}
+      </div>
     </div>
-  </section>
+  </Section>
+
+  <Section labelledby="cta-title" flush="top" class="pb-24">
+    <Card variant="panel" padded={false} class="cta-card relative overflow-hidden px-8 pt-14 sm:px-14 sm:pt-20 lg:pb-20">
+      <Glow />
+      <div class="grid-12 relative z-10 text-center lg:text-left">
+        <div class="col-span-12 lg:col-span-6">
+          <h2 id="cta-title" class="type-h2 mx-auto max-w-measure-title text-balance lg:mx-0">Launch your website today</h2>
+          <p class="mx-auto mt-4 max-w-measure-body text-muted lg:mx-0 lg:max-w-sm xl:max-w-md">Choose a Framer template, remix it and have your website online today.</p>
+          <Button href="/templates/" class="mt-8">Discover templates</Button>
+        </div>
+      </div>
+      <Image
+        src={ctaMonitor}
+        alt="A Framer template shown on a monitor"
+        widths={[640, 1000, 1343]}
+        sizes="(min-width: 1024px) 700px, 100vw"
+        class="pointer-events-none relative -mb-px -ml-[15%] mt-10 w-[130%] max-w-none md:-ml-[7.5%] md:w-[115%] lg:absolute lg:left-1/2 lg:top-[-9%] lg:m-0 lg:w-[67%]"
+      />
+    </Card>
+  </Section>
 </Base>
-
-<style>
-  /* Fade the bottom edge of the desk into the page background. */
-  .hero-monitor {
-    mask-image: linear-gradient(to bottom, #000 80%, transparent);
-  }
-</style>

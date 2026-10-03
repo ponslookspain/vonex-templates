@@ -1,6 +1,6 @@
 # Vonex Design: Framer templates catalog
 
-A minimal dark catalog of Framer templates. Two pages: a landing page with featured templates and `/templates/` as a simple grid. Every card opens its page on Framer Marketplace. Static site built with [Astro](https://astro.build) and Tailwind CSS, deployed on Cloudflare (Workers static assets).
+A minimal dark catalog of Framer templates for any kind of website. Two pages: a landing page with featured templates and `/templates/` as a simple grid. Every card opens its page on Framer Marketplace. Static site built with [Astro](https://astro.build) and Tailwind CSS, deployed on Cloudflare (Workers static assets).
 
 ## Commands
 
@@ -53,6 +53,10 @@ added: 2026-10-02
 ```
 
 3. Commit to the repository (this can be done in the GitHub web editor). The site rebuilds and redeploys automatically. If a field is missing or wrong, the build fails and names the file.
+
+## Design system
+
+Colors, type, radii, spacing and the 12-column grid are defined once, as tokens in `src/styles/global.css`; components live in `src/components`. Run `npm run dev` and open http://localhost:4321/design-system/ for the live style guide (press **G** on any page to see the grid). The rules and recipes are in [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md).
 
 ## SEO and analytics
 

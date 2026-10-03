@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import GridOverlay from '../components/GridOverlay.astro';
 import { site } from '../data/site';
 
 interface Props {
@@ -11,8 +12,12 @@ interface Props {
   overlayHeader?: boolean;
   // Extra structured data (JSON-LD) for this page.
   jsonLd?: Record<string, unknown>;
+  // Keep the page out of search results (internal pages such as the design system).
+  noindex?: boolean;
+  // Include the 12-column grid overlay (toggle with the G key). Always on in dev.
+  gridOverlay?: boolean;
 }
-const { title, description = site.description, overlayHeader = false, jsonLd } = Astro.props;
+const { title, description = site.description, overlayHeader = false, jsonLd, noindex = false, gridOverlay = false } = Astro.props;
 const fullTitle = title ? `${title} | ${site.name}` : `${site.name}: ${site.tagline}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL('/og-image.png', Astro.site).href;
@@ -45,6 +50,7 @@ const schemas = jsonLd ? [...siteSchema, jsonLd] : siteSchema;
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -77,7 +83,7 @@ const schemas = jsonLd ? [...siteSchema, jsonLd] : siteSchema;
   <body class="min-h-dvh flex flex-col">
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-fg focus:px-3 focus:py-2 focus:text-bg"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-control focus:bg-fg focus:px-3 focus:py-2 focus:text-bg"
       >Skip to content</a
     >
     <Header />
@@ -85,5 +91,6 @@ const schemas = jsonLd ? [...siteSchema, jsonLd] : siteSchema;
       <slot />
     </main>
     <Footer />
+    {(gridOverlay || import.meta.env.DEV) && <GridOverlay />}
   </body>
 </html>

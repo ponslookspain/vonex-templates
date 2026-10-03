@@ -1,0 +1,25 @@
+---
+// Icon that sits inside a line of large text (the tagline). Add new icons to `paths`.
+interface Props {
+  name: 'pick' | 'remix' | 'make' | 'ship';
+  tone?: 'default' | 'accent';
+}
+const { name, tone = 'default' } = Astro.props;
+
+const paths: Record<Props['name'], string[]> = {
+  pick: ['M9 9l5.5 13 2.2-5.3L22 14.5 9 9z', 'M5 5l2 2M3 10h3M10 3v3M14.5 5l-2 2'],
+  remix: ['M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5'],
+  make: ['M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z'],
+  ship: [
+    'M4.5 16.5c-1.5 1.3-2 5-2 5s3.7-.5 5-2c.7-.8.7-2.1-.1-2.9a2.2 2.2 0 0 0-2.9-.1z',
+    'M12 15 9 12a22 22 0 0 1 2-4 12.9 12.9 0 0 1 11-6c0 2.7-.8 7.5-6 11a22 22 0 0 1-4 2z',
+    'M9 12H4s.6-3 2-4c1.6-1.1 5 0 5 0M12 15v5s3-.6 4-2c1.1-1.6 0-5 0-5',
+  ],
+};
+---
+
+<span class:list={['inline-icon', tone === 'accent' && 'inline-icon-accent']}>
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    {paths[name].map((d) => <path d={d} />)}
+  </svg>
+</span>

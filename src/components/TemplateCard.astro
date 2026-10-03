@@ -4,33 +4,35 @@ import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   template: CollectionEntry<'templates'>;
+  // Grid placement, e.g. "col-span-12 sm:col-span-6 lg:col-span-4"
+  class?: string;
 }
-const { template } = Astro.props;
+const { template, class: className } = Astro.props;
 const t = template.data;
 const href = t.affiliateUrl ?? t.url;
 const free = t.price === 0;
 ---
 
-<li class="template-card">
+<li class:list={['template-card', className]}>
   <a
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    class="group flex h-full flex-col gap-4 rounded-2xl bg-surface p-3 transition-colors hover:bg-surface-2"
+    class="group panel flex h-full flex-col gap-4 p-3 transition-colors duration-fast hover:bg-surface-2"
   >
-    <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-surface-2">
+    <div class="relative aspect-[4/3] overflow-hidden rounded-surface bg-surface-2">
       <Image
         src={t.image}
         alt={`${t.name} Framer template: ${t.tagline}`}
         widths={[480, 720, 1000]}
         sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
-        class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
+        class="h-full w-full object-cover transition-transform duration-slow ease-soft group-hover:scale-[1.03]"
       />
     </div>
     <div class="flex flex-col gap-1 px-2 pb-2">
-      <h3 class="text-lg font-semibold tracking-tight">{t.name}</h3>
-      <p class="text-sm text-muted">{t.tagline}</p>
-      <p class:list={['mt-1 text-sm font-medium', free ? 'text-accent' : 'text-fg']}>{free ? 'Free' : `$${t.price}`}</p>
+      <h3 class="type-title">{t.name}</h3>
+      <p class="type-small text-muted">{t.tagline}</p>
+      <p class:list={['type-small mt-1 font-medium', free ? 'text-accent' : 'text-fg']}>{free ? 'Free' : `$${t.price}`}</p>
     </div>
     <span class="sr-only">Opens on Framer Marketplace in a new tab</span>
   </a>

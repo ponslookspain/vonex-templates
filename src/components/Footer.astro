@@ -2,6 +2,7 @@
 import { site } from '../data/site';
 import SocialIcon from './SocialIcon.astro';
 import Logo from './Logo.astro';
+import Container from './Container.astro';
 const year = new Date().getFullYear();
 ---
 
@@ -11,17 +12,18 @@ const year = new Date().getFullYear();
     class="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-56 bg-gradient-to-t from-accent/25 via-accent/5 to-transparent"
   >
   </div>
-  <div class="mx-auto grid max-w-6xl gap-10 px-5 py-14 text-sm sm:grid-cols-[1.4fr_1fr_1fr]">
-    <div>
+  <Container class="py-14 text-sm">
+  <div class="grid-12 gap-y-10">
+    <div class="col-span-12 sm:col-span-6">
       <p class="flex items-center gap-2.5 text-lg font-extrabold uppercase tracking-tight">
-        <Logo class="size-7" />
+        <Logo class="h-7 w-auto" />
         {site.name}
       </p>
       <p class="mt-3 max-w-xs text-muted">{site.tagline}</p>
       <a class="mt-5 inline-block text-fg underline decoration-line underline-offset-4 transition hover:decoration-fg" href={`mailto:${site.email}`}>{site.email}</a>
     </div>
 
-    <div>
+    <div class="col-span-12 sm:col-span-3">
       <p class="mb-4 text-muted">Follow</p>
       <ul class="flex flex-col gap-3">
         {
@@ -37,7 +39,7 @@ const year = new Date().getFullYear();
       </ul>
     </div>
 
-    <div>
+    <div class="col-span-12 sm:col-span-3">
       <p class="mb-4 text-muted">More</p>
       <ul class="flex flex-col gap-3">
         <li><a class="transition-colors hover:text-muted" href="/templates/">All templates</a></li>
@@ -46,8 +48,9 @@ const year = new Date().getFullYear();
       </ul>
     </div>
   </div>
-  <div class="mx-auto flex max-w-6xl justify-between px-5 pb-8 text-xs text-fg/70">
+  </Container>
+  <Container class="type-caption flex flex-col gap-1 pb-8 text-fg-soft sm:flex-row sm:justify-between">
     <span>Made by {site.name}</span>
     <span>© {year} {site.name}. All rights reserved.</span>
-  </div>
+  </Container>
 </footer>

@@ -1,0 +1,27 @@
+---
+import Container from './Container.astro';
+
+// A page section: vertical rhythm from --space-section plus the page container.
+// Put a `.grid-12` (or a SectionHeader and a grid) inside.
+interface Props {
+  id?: string;
+  // id of the heading that names this section (for screen readers)
+  labelledby?: string;
+  label?: string;
+  // Remove the vertical padding on one side when two sections should touch.
+  flush?: 'top' | 'bottom';
+  class?: string;
+}
+const { id, labelledby, label, flush, class: className } = Astro.props;
+---
+
+<section
+  id={id}
+  aria-labelledby={labelledby}
+  aria-label={labelledby ? undefined : label}
+  class:list={['section', flush === 'top' && 'section-flush-top', flush === 'bottom' && 'section-flush-bottom', className]}
+>
+  <Container>
+    <slot />
+  </Container>
+</section>

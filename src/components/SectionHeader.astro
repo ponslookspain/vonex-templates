@@ -1,0 +1,24 @@
+---
+// Centered section heading: optional eyebrow, title, optional lead. Sits on the middle
+// 8 columns of the grid from 1024px, full width below.
+interface Props {
+  title: string;
+  // Used for aria-labelledby on the parent Section.
+  id?: string;
+  eyebrow?: string;
+  lead?: string;
+  // h1 for the single main title of a page, h2 for sections.
+  level?: 1 | 2;
+  class?: string;
+}
+const { title, id, eyebrow, lead, level = 2, class: className } = Astro.props;
+const Tag = `h${level}` as 'h1' | 'h2';
+---
+
+<header class:list={['grid-12', className]}>
+  <div class="col-span-12 flex flex-col items-center text-center lg:col-span-8 lg:col-start-3">
+    {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+    <Tag id={id} class:list={['max-w-measure-title text-balance', level === 1 ? 'type-h1' : 'type-h2']}>{title}</Tag>
+    {lead && <p class="mt-4 max-w-measure-body text-muted">{lead}</p>}
+  </div>
+</header>
