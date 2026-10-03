@@ -1,25 +1,43 @@
 ---
 import { site } from '../data/site';
+import SocialIcon from './SocialIcon.astro';
 const year = new Date().getFullYear();
 ---
 
 <footer class="border-t border-line/70">
-  <div
-    class="mx-auto flex max-w-6xl flex-col gap-4 px-5 py-10 text-sm text-muted sm:flex-row sm:items-center sm:justify-between"
-  >
-    <p>© {year} {site.name}</p>
-    <div class="flex flex-wrap gap-x-5 gap-y-2">
-      <a class="hover:text-fg" href={site.framerProfile} target="_blank" rel="noopener noreferrer"
-        >Framer profile</a
-      >
-      {site.email && <a class="hover:text-fg" href={`mailto:${site.email}`}>{site.email}</a>}
-      {
-        site.socials.map((s) => (
-          <a class="hover:text-fg" href={s.href} target="_blank" rel="noopener noreferrer">
-            {s.label}
-          </a>
-        ))
-      }
+  <div class="mx-auto grid max-w-6xl gap-10 px-5 py-14 text-sm sm:grid-cols-[1.4fr_1fr_1fr]">
+    <div>
+      <p class="text-base font-semibold tracking-tight">{site.name}</p>
+      <p class="mt-3 max-w-xs text-muted">{site.tagline}</p>
+      <a class="mt-5 inline-block text-fg underline decoration-line underline-offset-4 transition hover:decoration-fg" href={`mailto:${site.email}`}>{site.email}</a>
     </div>
+
+    <div>
+      <p class="mb-4 text-muted">Follow</p>
+      <ul class="flex flex-col gap-3">
+        {
+          site.socials.map((s) => (
+            <li>
+              <a class="inline-flex items-center gap-2.5 transition-colors hover:text-muted" href={s.href} target="_blank" rel="noopener noreferrer">
+                <SocialIcon name={s.icon} class="size-4" />
+                {s.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div>
+      <p class="mb-4 text-muted">More</p>
+      <ul class="flex flex-col gap-3">
+        <li><a class="transition-colors hover:text-muted" href="/templates/">All templates</a></li>
+        <li><a class="transition-colors hover:text-muted" href={site.framerProfile} target="_blank" rel="noopener noreferrer">Framer profile ↗</a></li>
+        {site.projects.map((p) => <li><a class="transition-colors hover:text-muted" href={p.href} target="_blank" rel="noopener noreferrer">{p.label} ↗</a></li>)}
+      </ul>
+    </div>
+  </div>
+  <div class="border-t border-line/70">
+    <div class="mx-auto max-w-6xl px-5 py-6 text-xs text-muted">© {year} {site.name}</div>
   </div>
 </footer>
