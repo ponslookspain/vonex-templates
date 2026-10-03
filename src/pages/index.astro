@@ -7,7 +7,6 @@ import Container from '../components/Container.astro';
 import Section from '../components/Section.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import Button from '../components/Button.astro';
-import Badge from '../components/Badge.astro';
 import Card from '../components/Card.astro';
 import FaqItem from '../components/FaqItem.astro';
 import InlineIcon from '../components/InlineIcon.astro';
@@ -37,7 +36,7 @@ const steps = [
 const faq = [
   { q: 'What is a Framer template?', a: 'A Framer template is a ready-made website design that you copy into your own Framer account and edit visually. The layout, styles and animations are already done, you only add your content.' },
   { q: 'How do I use a Framer template?', a: 'Open a template from the catalog, press the remix button on its Framer Marketplace page and the template is copied to your Framer account, ready to edit and publish.' },
-  { q: 'Are the Framer templates free?', a: 'The catalog has both free and premium templates. The price, or the word Free, is shown on every card.' },
+  { q: 'Are the Framer templates free?', a: 'The catalog has both free and premium templates. Every card shows whether a template is free or its price.' },
   { q: 'Do I need to know how to code?', a: 'No. Everything is edited visually in Framer, including text, images and CMS content.' },
   { q: 'Are the templates responsive?', a: 'Yes. Every template is built to look right on phone, tablet and desktop.' },
   { q: 'Can I use a template for my own project or client work?', a: 'Yes. After you remix a template it is your own Framer project, so you can edit it, publish it on your domain and adapt it to your needs. Check the license on the template page for the exact terms.' },
@@ -67,8 +66,7 @@ const points = [
   <!-- Hero: fills the first screen, text on top, 3D logo and template strip below -->
   <section class="flex h-svh min-h-[36rem] flex-col pt-36 text-center md:pt-32" aria-labelledby="hero-title">
     <Container class="flex flex-1 flex-col items-center">
-      <p class="type-small mb-6 inline-flex items-center gap-2 text-fg-soft">
-        <Badge>New</Badge>
+      <p class="type-small mb-6 text-fg-soft">
         Framer templates by {site.name}
       </p>
       <h1 id="hero-title" class="type-display max-w-measure-display">Framer templates for any kind of website.</h1>
@@ -76,7 +74,7 @@ const points = [
         Ready-made, responsive designs by {site.name}. Pick a template, remix it in Framer and publish your website without writing code.
       </p>
       <div class="mt-9 flex flex-wrap justify-center gap-3">
-        <Button href="/templates/">Browse all templates</Button>
+        <Button href="/templates/">Browse templates</Button>
       </div>
       <div class="relative mb-[3vh] mt-6 min-h-72 w-full flex-1">
         <HeroStage templates={all} />
@@ -94,7 +92,7 @@ const points = [
       {featured.map((t) => <TemplateCard template={t} class="col-span-12 sm:col-span-6 lg:col-span-4" />)}
     </ul>
     <div class="mt-10 flex justify-center">
-      <Button href="/templates/">View all templates</Button>
+      <Button href="/templates/">Browse templates</Button>
     </div>
   </Section>
 
@@ -163,7 +161,7 @@ const points = [
         <div class="col-span-12 lg:col-span-6">
           <h2 id="cta-title" class="type-h2 mx-auto max-w-measure-title text-balance lg:mx-0">Launch your website today</h2>
           <p class="mx-auto mt-4 max-w-measure-body text-muted lg:mx-0 lg:max-w-sm xl:max-w-md">Choose a Framer template, remix it and have your website online today.</p>
-          <Button href="/templates/" class="mt-8">Discover templates</Button>
+          <Button href="/templates/" class="mt-8">Browse templates</Button>
         </div>
       </div>
       <Image

@@ -20,7 +20,11 @@ const { template, all } = Astro.props;
 const t = template.data;
 const c = buildContent(t);
 const faq = buildFaq(t, c, { siteEmail: site.email });
-const others = all.filter((x) => x.id !== template.id).sort((a, b) => b.data.added.getTime() - a.data.added.getTime());
+// The three newest other templates.
+const others = all
+  .filter((x) => x.id !== template.id)
+  .sort((a, b) => b.data.added.getTime() - a.data.added.getTime())
+  .slice(0, 3);
 
 const free = t.price === 0;
 const priceLabel = free ? 'Free' : `$${t.price}`;
@@ -90,6 +94,8 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
 >
   <Section flush="bottom" class="pt-10 sm:pt-12" label={`${t.name} template`}>
     <nav aria-label="Breadcrumb" class="type-small mb-8 text-muted">
+      <a href="/" class="transition-colors duration-fast hover:text-fg">Home</a>
+      <span aria-hidden="true" class="mx-2">/</span>
       <a href="/templates/" class="transition-colors duration-fast hover:text-fg">Templates</a>
       <span aria-hidden="true" class="mx-2">/</span>
       <span class="text-fg-soft">{t.name}</span>
