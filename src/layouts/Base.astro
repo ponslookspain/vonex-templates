@@ -61,6 +61,7 @@ const schemas = jsonLd ? [...siteSchema, jsonLd] : siteSchema;
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap.xml" />
     <meta name="theme-color" content="#000000" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
@@ -97,6 +98,39 @@ const schemas = jsonLd ? [...siteSchema, jsonLd] : siteSchema;
     </main>
     <Footer />
     {(gridOverlay || import.meta.env.DEV) && <GridOverlay />}
+    <script is:inline>
+      // Scroll reveal: every block of a section fades up once as it comes into view. Blocks in
+      // the same row follow each other by a short delay. Marking happens here, before the first
+      // paint, so nothing flashes. If anything fails, everything is shown after 3 seconds.
+      (function () {
+        var root = document.documentElement;
+        if (!('IntersectionObserver' in window)) { root.classList.remove('js'); return; }
+        var targets = [];
+        // Layout wrappers are transparent: their children are what appears.
+        var wrapper = '.grid-12, .doc, .faq-list';
+        function collect(el) {
+          var i = 0;
+          for (var c = el.firstElementChild; c; c = c.nextElementSibling) {
+            if (c.matches(wrapper)) { collect(c); continue; }
+            c.setAttribute('data-reveal', '');
+            c.style.setProperty('--reveal-delay', Math.min(i, 6) * 80 + 'ms');
+            targets.push(c);
+            i++;
+          }
+        }
+        document.querySelectorAll('main .container-page, footer .container-page').forEach(collect);
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting || e.boundingClientRect.bottom < 0) {
+              e.target.classList.add('is-visible');
+              io.unobserve(e.target);
+            }
+          });
+        }, { rootMargin: '0px 0px -8% 0px' });
+        targets.forEach(function (t) { io.observe(t); });
+        setTimeout(function () { targets.forEach(function (t) { t.classList.add('is-visible'); }); }, 3000);
+      })();
+    </script>
     <script>
       // Mark decorative blocks as off screen so their CSS animations pause.
       const blocks = document.querySelectorAll('[data-pause-offscreen]');
