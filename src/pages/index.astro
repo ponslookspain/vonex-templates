@@ -12,45 +12,56 @@ const featured = all
   .slice(0, 3);
 
 const steps = [
-  { n: 1, title: 'Choose a template', text: 'Browse the collection and open the one that fits your project.' },
+  { n: 1, title: 'Choose a Framer template', text: 'Browse portfolio, agency and wedding templates and open the one that fits your project.' },
   { n: 2, title: 'Remix it in Framer', text: 'One click on Framer Marketplace copies the template into your own Framer account.' },
-  { n: 3, title: 'Make it yours and publish', text: 'Replace the text and images, adjust the style and put your site live.' },
+  { n: 3, title: 'Customize and publish', text: 'Replace the text and images, adjust the style and publish your website.' },
 ];
 
 const faq = [
-  { q: 'How do I use a template?', a: 'Open a template from the catalog, press the remix button on its Framer Marketplace page and the template is copied to your Framer account, ready to edit.' },
-  { q: 'Are the templates free?', a: 'Some are free and some are paid. The price is shown on every card.' },
+  { q: 'How do I use a Framer template?', a: 'Open a template from the catalog, press the remix button on its Framer Marketplace page and the template is copied to your Framer account, ready to edit and publish.' },
+  { q: 'Are the Framer templates free?', a: 'Some templates are free and some are premium. The price, or the word Free, is shown on every card.' },
   { q: 'Do I need to know how to code?', a: 'No. Everything is edited visually in Framer, including text, images and CMS content.' },
-  { q: 'Will the templates work on mobile?', a: 'Yes. Every template is built to be responsive on phone, tablet and desktop.' },
+  { q: 'Are the templates responsive?', a: 'Yes. Every template is built to look right on phone, tablet and desktop.' },
 ];
 
 const points = [
-  { title: 'Responsive', text: 'Every template is built to look right on phone, tablet and desktop.' },
+  { title: 'Responsive design', text: 'Every Framer template is built to look right on phone, tablet and desktop.' },
   { title: 'No code needed', text: 'Remix on Framer and edit text, images and CMS content visually.' },
   { title: 'Free and premium', text: 'Start with a free template or pick a premium one for a specific use case.' },
 ];
 ---
 
-<Base overlayHeader>
+<Base
+  overlayHeader
+  title="Framer Templates for Portfolios and Agencies"
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faq.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  }}
+>
   <section class="flex h-svh min-h-[36rem] flex-col items-center px-5 pt-36 text-center md:pt-32" aria-labelledby="hero-title">
     <p class="mb-6 inline-flex items-center gap-2 text-sm text-fg/80">
       <span class="rounded bg-emerald-500/20 px-1.5 py-0.5 text-xs font-medium text-emerald-400">New</span>
       Framer templates by {site.name}
     </p>
     <h1 id="hero-title" class="max-w-3xl text-balance text-5xl font-bold leading-[1.02] sm:text-7xl">
-      Minimal Framer templates for modern websites.
+      Framer templates for portfolios, agencies and weddings.
     </h1>
     <p class="mt-6 max-w-xl text-pretty text-lg text-muted">
-      Portfolios, agencies and weddings. Pick a template, remix it on Framer and make it yours.
+      Clean, responsive templates by {site.name}. Pick one, remix it on Framer and launch your website without code.
     </p>
     <div class="mt-9 flex flex-wrap justify-center gap-3">
       <a href="/templates/" class="btn">Browse all templates</a>
-      <a href={site.framerProfile} target="_blank" rel="noopener noreferrer" class="btn-ghost">Framer profile ↗</a>
     </div>
     <div class="relative mb-[5vh] mt-10 min-h-40 w-full flex-1">
       <Image
         src={heroMonitor}
-        alt="A monitor on a wooden desk showing the Softic Studio template"
+        alt="Softic Studio Framer template shown on a monitor"
         widths={[640, 960, 1249]}
         sizes="(min-width: 1024px) 800px, 100vw"
         loading="eager"
@@ -63,8 +74,8 @@ const points = [
   <section id="templates" class="mx-auto max-w-6xl px-5 pb-8" aria-labelledby="featured-title">
     <div class="mb-12 flex flex-col items-center text-center">
       <span class="eyebrow">Framer Templates</span>
-      <h2 id="featured-title" class="text-4xl font-bold sm:text-5xl">Featured Framer Templates</h2>
-      <p class="mt-4 max-w-md text-muted">Explore selected Framer templates for portfolios, agencies, weddings and more.</p>
+      <h2 id="featured-title" class="text-4xl font-bold sm:text-5xl">Featured Framer templates</h2>
+      <p class="mt-4 max-w-md text-muted">Selected Framer templates for portfolios, agencies and weddings.</p>
     </div>
     <ul class="grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
       {featured.map((t) => <TemplateCard template={t} />)}
@@ -84,12 +95,12 @@ const points = [
   <section id="how" class="mx-auto max-w-6xl px-5 pb-8" aria-labelledby="how-title">
     <div class="flex flex-col items-center text-center">
       <span class="eyebrow">How it works</span>
-      <h2 id="how-title" class="max-w-xl text-4xl font-bold sm:text-5xl">Three steps to your new website</h2>
-      <p class="mt-4 max-w-md text-muted">From choosing a template to a live site, without writing code.</p>
+      <h2 id="how-title" class="max-w-xl text-4xl font-bold sm:text-5xl">From template to live website in three steps</h2>
+      <p class="mt-4 max-w-md text-muted">Choose, remix and publish a Framer template without writing code.</p>
     </div>
     <ol class="mt-12 grid gap-5 sm:grid-cols-3">
       {steps.map((st) => (
-        <li class="flex min-h-56 flex-col justify-between rounded-xl border border-line bg-surface p-6">
+        <li class="flex min-h-48 flex-col justify-between py-2">
           <span class="self-end text-5xl font-light italic text-muted">{st.n}</span>
           <div>
             <h3 class="text-xl font-medium">{st.title}</h3>
@@ -103,14 +114,14 @@ const points = [
   <section id="about" class="mx-auto max-w-6xl px-5 py-20" aria-labelledby="about-title">
     <div class="flex flex-col items-center text-center">
     <span class="eyebrow">Why Vonex</span>
-    <h2 id="about-title" class="text-4xl font-bold sm:text-5xl">Why these templates</h2>
+    <h2 id="about-title" class="text-4xl font-bold sm:text-5xl">Why choose Vonex Framer templates</h2>
     <p class="mt-4 max-w-md text-muted">
-      Templates made by {site.name} with a focus on clean typography, calm layouts and smooth details.
+      Framer templates made by {site.name}, with clean typography, calm layouts and smooth details.
     </p>
     </div>
     <ul class="mt-12 grid gap-5 sm:grid-cols-3">
       {points.map((p) => (
-        <li class="rounded-xl border border-line bg-surface p-6">
+        <li class="py-2">
           <h3 class="font-medium">{p.title}</h3>
           <p class="mt-2 text-sm text-muted">{p.text}</p>
         </li>
@@ -139,7 +150,7 @@ const points = [
     <div class="relative overflow-hidden rounded-2xl border border-line bg-surface px-8 py-14 sm:px-14 sm:py-20">
       <div aria-hidden="true" class="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-accent/25 blur-3xl"></div>
       <h2 id="cta-title" class="relative max-w-xl text-balance text-4xl font-bold sm:text-5xl">Launch your website today</h2>
-      <p class="relative mt-4 max-w-lg text-muted">Choose a template, remix it in Framer and have your site online in an afternoon.</p>
+      <p class="relative mt-4 max-w-lg text-muted">Choose a Framer template, remix it and have your website online in an afternoon.</p>
       <a href="/templates/" class="btn relative mt-8">Discover templates</a>
     </div>
   </section>

@@ -1,6 +1,6 @@
 # Vonex Design: Framer templates catalog
 
-A minimal dark catalog of Framer templates. Two pages: a landing page with featured templates and `/templates/` with search, category and price filters. Every card opens its page on Framer Marketplace. Static site built with [Astro](https://astro.build) and Tailwind CSS, deployed on Cloudflare (Workers static assets).
+A minimal dark catalog of Framer templates. Two pages: a landing page with featured templates and `/templates/` as a simple grid. Every card opens its page on Framer Marketplace. Static site built with [Astro](https://astro.build) and Tailwind CSS, deployed on Cloudflare (Workers static assets).
 
 ## Commands
 
@@ -53,6 +53,13 @@ added: 2026-10-02
 ```
 
 3. Commit to the repository (this can be done in the GitHub web editor). The site rebuilds and redeploys automatically. If a field is missing or wrong, the build fails and names the file.
+
+## SEO and analytics
+
+- `/sitemap.xml` and `/robots.txt` are generated at build time. A new page must be added to the `pages` list in `src/pages/sitemap.xml.ts`.
+- Page titles, descriptions, Open Graph image (`public/og-image.png`) and structured data (JSON-LD) are set in `src/layouts/Base.astro`; each page passes its own `title` and `description`.
+- Cloudflare Web Analytics: in the Cloudflare dashboard open Analytics & Logs, Web Analytics, add the site and copy the token into `analyticsToken` in `src/data/site.ts`. Nothing is sent while it is empty.
+- When a custom domain is connected, change `site` in `astro.config.mjs`; the sitemap, canonical links and Open Graph URLs follow.
 
 ## Structure and extending the site
 

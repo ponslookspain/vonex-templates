@@ -1,10 +1,11 @@
 ---
 import { site } from '../data/site';
 import SocialIcon from './SocialIcon.astro';
+import Logo from './Logo.astro';
 const year = new Date().getFullYear();
 ---
 
-<footer class="relative isolate mt-10 overflow-hidden border-t border-line/70">
+<footer class="relative isolate mt-10 overflow-hidden">
   <div
     aria-hidden="true"
     class="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-56 bg-gradient-to-t from-accent/25 via-accent/5 to-transparent"
@@ -12,7 +13,10 @@ const year = new Date().getFullYear();
   </div>
   <div class="mx-auto grid max-w-6xl gap-10 px-5 py-14 text-sm sm:grid-cols-[1.4fr_1fr_1fr]">
     <div>
-      <p class="text-lg font-extrabold uppercase tracking-tight">{site.name}</p>
+      <p class="flex items-center gap-2.5 text-lg font-extrabold uppercase tracking-tight">
+        <Logo class="size-7" />
+        {site.name}
+      </p>
       <p class="mt-3 max-w-xs text-muted">{site.tagline}</p>
       <a class="mt-5 inline-block text-fg underline decoration-line underline-offset-4 transition hover:decoration-fg" href={`mailto:${site.email}`}>{site.email}</a>
     </div>

@@ -1,12 +1,16 @@
 ---
 import { site, nav } from '../data/site';
 import SocialIcon from './SocialIcon.astro';
+import Logo from './Logo.astro';
 const path = Astro.url.pathname;
 ---
 
 <header class="fixed inset-x-0 top-0 z-40 bg-gradient-to-b from-bg via-bg/80 to-transparent pb-5 pt-4">
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5">
-    <a href="/" class="text-lg font-extrabold uppercase tracking-tight">{site.name}</a>
+    <a href="/" class="flex items-center gap-2.5 text-lg font-extrabold uppercase tracking-tight">
+      <Logo class="size-7" />
+      {site.name}
+    </a>
 
     <div class="flex items-center gap-1 text-sm sm:gap-2">
       <nav aria-label="Main" class="hidden items-center md:flex">
