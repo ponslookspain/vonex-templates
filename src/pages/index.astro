@@ -9,6 +9,7 @@ import SectionHeader from '../components/SectionHeader.astro';
 import Button from '../components/Button.astro';
 import Card from '../components/Card.astro';
 import FaqItem from '../components/FaqItem.astro';
+import FaqBlock from '../components/FaqBlock.astro';
 import InlineIcon from '../components/InlineIcon.astro';
 import FeatureCard from '../components/FeatureCard.astro';
 import StepChoose from '../components/illustrations/StepChoose.astro';
@@ -146,14 +147,9 @@ const points = [
     </ul>
   </Section>
 
-  <Section id="faq" labelledby="faq-title" flush="top">
-    <SectionHeader id="faq-title" title="Everything you need to know" />
-    <div class="grid-12 mt-10">
-      <div class="col-span-12 flex flex-col gap-3 lg:col-span-8 lg:col-start-3">
-        {faq.map((f) => <FaqItem question={f.q}>{f.a}</FaqItem>)}
-      </div>
-    </div>
-  </Section>
+  <FaqBlock title="Everything you need to know" flush="top">
+    {faq.map((f) => <FaqItem question={f.q}>{f.a}</FaqItem>)}
+  </FaqBlock>
 
   <Section labelledby="cta-title" flush="top" class="pb-24">
     <Card variant="panel" padded={false} class="cta-card relative overflow-hidden px-8 pt-14 sm:px-14 sm:pt-20 lg:pb-20">

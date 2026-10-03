@@ -5,6 +5,7 @@ import Section from '../../components/Section.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
 import Button from '../../components/Button.astro';
 import FaqItem from '../../components/FaqItem.astro';
+import FaqBlock from '../../components/FaqBlock.astro';
 import Icon from '../../components/Icon.astro';
 import TemplateCard from '../../components/TemplateCard.astro';
 import TemplateGallery from '../../components/TemplateGallery.astro';
@@ -263,14 +264,9 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     </div>
   </Section>
 
-  <Section labelledby="faq-title" id="faq">
-    <SectionHeader id="faq-title" title={`Questions about ${t.name}`} />
-    <div class="grid-12 mt-10">
-      <div class="col-span-12 flex flex-col gap-3 lg:col-span-8 lg:col-start-3">
-        {faq.map((f) => <FaqItem question={f.q}><Fragment set:html={richText(f.a)} /></FaqItem>)}
-      </div>
-    </div>
-  </Section>
+  <FaqBlock title={`Questions about ${t.name}`}>
+    {faq.map((f) => <FaqItem question={f.q}><Fragment set:html={richText(f.a)} /></FaqItem>)}
+  </FaqBlock>
 
   <Section labelledby="get-title" flush="top">
     <div class="grid-12">

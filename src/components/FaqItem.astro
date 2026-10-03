@@ -1,15 +1,16 @@
 ---
 // One collapsible question. Native <details>, so it works without JavaScript.
+// The answer opens with a height and fade transition where the browser supports it.
 interface Props {
   question: string;
 }
 const { question } = Astro.props;
 ---
 
-<details class="surface group px-5 py-5">
-  <summary class="type-title flex cursor-pointer list-none items-center justify-between gap-4 font-medium">
+<details class="faq-item group">
+  <summary class="type-title flex cursor-pointer list-none items-center justify-between gap-6 py-5 font-medium transition-colors duration-fast hover:text-fg-soft">
     {question}
-    <span aria-hidden="true" class="type-title text-fg transition-transform duration-base group-open:rotate-45">+</span>
+    <span aria-hidden="true" class="faq-plus type-title shrink-0 text-fg">+</span>
   </summary>
-  <p class="type-prose mt-3 max-w-measure-title text-muted"><slot /></p>
+  <p class="type-prose max-w-measure-title pb-6 text-muted"><slot /></p>
 </details>

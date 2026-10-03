@@ -102,6 +102,7 @@
     text-wrap: pretty;
   }
   html {
+    interpolate-size: allow-keywords;
     color-scheme: dark;
     background: var(--color-bg);
     scroll-behavior: smooth;
@@ -229,6 +230,38 @@
     font-style: italic;
     color: var(--color-muted);
   }
+  /* FAQ: hairline rows, no panels. The answer slides open where the browser can animate it. */
+  .faq-list {
+    border-top: 1px solid var(--color-line);
+  }
+  .faq-item {
+    border-bottom: 1px solid var(--color-line);
+  }
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-plus {
+    transition: transform var(--duration-base) var(--ease-soft);
+  }
+  .faq-item[open] .faq-plus {
+    transform: rotate(45deg);
+  }
+  @supports selector(::details-content) {
+    .faq-item::details-content {
+      block-size: 0;
+      overflow: clip;
+      opacity: 0;
+      transition:
+        block-size var(--duration-base) var(--ease-soft),
+        opacity var(--duration-base) var(--ease-soft),
+        content-visibility var(--duration-base) allow-discrete;
+    }
+    .faq-item[open]::details-content {
+      block-size: auto;
+      opacity: 1;
+    }
+  }
+
   /* Running text on a dark ground: a little more leading than the default body. */
   .type-prose {
     font-size: var(--text-body);
