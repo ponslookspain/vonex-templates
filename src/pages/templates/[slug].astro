@@ -95,38 +95,39 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
       <span class="text-fg-soft">{t.name}</span>
     </nav>
 
-    <div class="grid-12 gap-y-12">
-      <!-- Left: the gallery stays in view while the page text scrolls -->
-      <div class="col-span-12 lg:sticky lg:top-28 lg:col-span-6 lg:self-start">
+    <!-- On phones the name, price and Framer button come first, then the gallery, then the text.
+         From 1024px the gallery stays in view on the left while the right column scrolls. -->
+    <div class="grid-12 gap-y-10 lg:gap-y-0">
+      <header class="col-span-12 lg:col-span-5 lg:col-start-8 lg:row-start-1">
+        <p class="kicker-row">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>{t.category} Framer template</span>
+        </p>
+        <h1 class="title-xl">{t.name}</h1>
+        <p class="tagline">{t.tagline}</p>
+
+        <div class="buy">
+          <p class="price-label">Price</p>
+          <p class="price">{priceLabel}</p>
+          <div class="buy-actions">
+            <Button href={buyUrl} target="_blank" rel={t.affiliateUrl ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}>
+              Open on Framer
+            </Button>
+            {t.preview && (
+              <Button href={t.preview} variant="ghost" target="_blank" rel="noopener noreferrer">
+                Live preview
+              </Button>
+            )}
+          </div>
+        </div>
+      </header>
+
+      <div class="col-span-12 lg:sticky lg:top-28 lg:col-span-6 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:self-start">
         <TemplateGallery items={gallery} name={t.name} />
       </div>
 
       <!-- Right: everything about the template. The empty column between the two is the breathing room. -->
-      <div class="doc col-span-12 lg:col-span-5 lg:col-start-8">
-        <header>
-          <p class="kicker-row">
-            <span class="status-dot" aria-hidden="true"></span>
-            <span>{t.category} Framer template</span>
-          </p>
-          <h1 class="title-xl">{t.name}</h1>
-          <p class="tagline">{t.tagline}</p>
-
-          <div class="buy">
-            <p class="price-label">Price</p>
-            <p class="price">{priceLabel}</p>
-            <div class="buy-actions">
-              <Button href={buyUrl} target="_blank" rel={t.affiliateUrl ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}>
-                Open on Framer
-              </Button>
-              {t.preview && (
-                <Button href={t.preview} variant="ghost" target="_blank" rel="noopener noreferrer">
-                  Live preview
-                </Button>
-              )}
-            </div>
-          </div>
-        </header>
-
+      <div class="doc col-span-12 lg:col-span-5 lg:col-start-8 lg:row-start-2">
         <dl class="stats">
           {stats.map((s) => (
             <div class="stat">
@@ -266,8 +267,27 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     </div>
   </Section>
 
+  <Section labelledby="get-title" flush="top">
+    <div class="grid-12">
+      <div class="col-span-12 flex flex-col items-center text-center lg:col-span-8 lg:col-start-3">
+        <h2 id="get-title" class="type-h2 max-w-measure-title text-balance">Get {t.name}</h2>
+        <p class="mt-4 text-muted">{free ? 'Free' : `$${t.price}`} on Framer Marketplace</p>
+        <div class="buy-actions justify-center">
+          <Button href={buyUrl} target="_blank" rel={t.affiliateUrl ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}>
+            Open on Framer
+          </Button>
+          {t.preview && (
+            <Button href={t.preview} variant="ghost" target="_blank" rel="noopener noreferrer">
+              Live preview
+            </Button>
+          )}
+        </div>
+      </div>
+    </div>
+  </Section>
+
   {others.length > 0 && (
-    <Section labelledby="more-title" flush="top">
+    <Section labelledby="more-title">
       <SectionHeader id="more-title" title="More Framer templates" lead="Other templates by Vonex Design." />
       <ul class="grid-12 mt-12 gap-y-10">
         {others.map((o, i) => (
@@ -348,7 +368,11 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.75rem;
-    margin-top: 2.5rem;
+  }
+  @media (min-width: 64rem) {
+    .stats {
+      margin-top: 2.5rem;
+    }
   }
   @media (min-width: 40rem) and (max-width: 63.99rem) {
     .stats {
