@@ -191,7 +191,7 @@ Name at 3.25rem to 5.25rem, tagline, price and two buttons (Open on Framer, Live
 - **Do** keep a visible 2px Signal Blue focus ring with 3px offset on every interactive element.
 
 ### Don't:
-- **Don't** add glows, blurred blobs, dot grids or gradient washes as decoration.
+- **Don't** add glows, blurred blobs or dot grids. The one gradient is the accent rising from the bottom edge, used only on the footer and the closing call-to-action panel.
 - **Don't** put a blue label (eyebrow) above section headings.
 - **Don't** use shadows for elevation.
 - **Don't** use Signal Blue as a button fill or for body text.

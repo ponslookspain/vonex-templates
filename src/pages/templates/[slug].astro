@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import Section from '../../components/Section.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
@@ -269,19 +270,32 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
   </FaqBlock>
 
   <Section labelledby="get-title" flush="top">
-    <div class="grid-12">
-      <div class="col-span-12 flex flex-col items-center text-center lg:col-span-8 lg:col-start-3">
-        <h2 id="get-title" class="type-h2 max-w-measure-title text-balance">Get {t.name}</h2>
-        <p class="mt-4 text-muted">{free ? 'Free' : `$${t.price}`} on Framer Marketplace</p>
-        <div class="buy-actions justify-center">
-          <Button href={buyUrl} target="_blank" rel={t.affiliateUrl ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}>
-            Open on Framer
-          </Button>
-          {t.preview && (
-            <Button href={t.preview} variant="ghost" target="_blank" rel="noopener noreferrer">
-              Live preview
+    <div class="panel isolate relative overflow-hidden px-8 pb-0 pt-12 sm:px-14 sm:pt-16 lg:pb-16">
+      <!-- The accent rises from the bottom of the panel, like the footer. -->
+      <div aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-accent/30 via-accent/10 to-transparent"></div>
+      <div class="grid-12 items-center gap-y-10">
+        <div class="relative z-10 col-span-12 text-center lg:col-span-5 lg:text-left">
+          <h2 id="get-title" class="type-h2 text-balance">Get {t.name}</h2>
+          <p class="type-lead mt-4">{free ? 'Free' : `$${t.price}`} on Framer Marketplace</p>
+          <div class="buy-actions justify-center lg:justify-start">
+            <Button href={buyUrl} target="_blank" rel={t.affiliateUrl ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}>
+              Open on Framer
             </Button>
-          )}
+            {t.preview && (
+              <Button href={t.preview} variant="ghost" target="_blank" rel="noopener noreferrer">
+                Live preview
+              </Button>
+            )}
+          </div>
+        </div>
+        <div class="relative z-10 col-span-12 lg:col-span-6 lg:col-start-7">
+          <Image
+            src={t.image}
+            alt=""
+            widths={[480, 720, 1000]}
+            sizes="(min-width: 1024px) 480px, 90vw"
+            class="get-cover aspect-[4/3] w-full rounded-t-surface object-cover lg:rounded-surface"
+          />
         </div>
       </div>
     </div>
@@ -347,6 +361,9 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     line-height: 1;
     font-weight: 600;
     letter-spacing: -0.04em;
+  }
+  .get-cover {
+    box-shadow: 0 24px 48px -16px rgb(0 0 0 / 0.6);
   }
   .buy-actions {
     display: flex;
