@@ -9,7 +9,6 @@ const { template } = Astro.props;
 const t = template.data;
 const href = t.affiliateUrl ?? t.url;
 const free = t.price === 0;
-const extraTags = t.tags.filter((tag) => tag.toLowerCase() !== t.category.toLowerCase()).slice(0, 3);
 ---
 
 <li
@@ -48,12 +47,7 @@ const extraTags = t.tags.filter((tag) => tag.toLowerCase() !== t.category.toLowe
         <h3 class="text-lg font-semibold tracking-tight">{t.name}</h3>
         <span aria-hidden="true" class="text-muted transition group-hover:translate-x-0.5 group-hover:text-fg">↗</span>
       </div>
-      <p class="text-sm text-fg/80">{t.tagline}</p>
-      <p class="line-clamp-2 text-sm text-muted">{t.description}</p>
-      <div class="mt-auto flex flex-wrap gap-1.5 pt-3">
-        <span class="rounded-full border border-line px-2.5 py-0.5 text-xs text-muted">{t.category}</span>
-        {extraTags.map((tag) => <span class="rounded-full border border-line px-2.5 py-0.5 text-xs text-muted">{tag}</span>)}
-      </div>
+      <p class="text-sm text-muted">{t.tagline}</p>
     </div>
     <span class="sr-only">Opens on Framer Marketplace in a new tab</span>
   </a>
