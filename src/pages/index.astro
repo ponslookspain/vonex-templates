@@ -87,7 +87,6 @@ const points = [
   <Section id="templates" labelledby="featured-title" flush="bottom">
     <SectionHeader
       id="featured-title"
-      eyebrow="Framer Templates"
       title="Featured Framer templates"
       lead="Our top picks from the catalog. Open one to preview it live."
     />
@@ -113,7 +112,6 @@ const points = [
   <Section id="how" labelledby="how-title" flush="bottom">
     <SectionHeader
       id="how-title"
-      eyebrow="How it works"
       title="From template to live website in three steps"
       lead="Choose, remix and publish a Framer template in an afternoon."
     />
@@ -133,7 +131,6 @@ const points = [
   <Section id="about" labelledby="about-title">
     <SectionHeader
       id="about-title"
-      eyebrow="Why Vonex"
       title="Why choose Vonex Framer templates"
       lead={`Framer templates by ${site.name} with clean typography, calm layouts and smooth details, ready to use from the first minute.`}
     />
@@ -152,7 +149,7 @@ const points = [
   </Section>
 
   <Section id="faq" labelledby="faq-title" flush="top">
-    <SectionHeader id="faq-title" eyebrow="FAQ" title="Everything you need to know" />
+    <SectionHeader id="faq-title" title="Everything you need to know" />
     <div class="grid-12 mt-10">
       <div class="col-span-12 flex flex-col gap-3 lg:col-span-8 lg:col-start-3">
         {faq.map((f) => <FaqItem question={f.q}>{f.a}</FaqItem>)}

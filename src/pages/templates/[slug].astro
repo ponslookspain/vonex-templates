@@ -258,7 +258,7 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
   </Section>
 
   <Section labelledby="faq-title" id="faq">
-    <SectionHeader id="faq-title" eyebrow="FAQ" title={`Questions about ${t.name}`} />
+    <SectionHeader id="faq-title" title={`Questions about ${t.name}`} />
     <div class="grid-12 mt-10">
       <div class="col-span-12 flex flex-col gap-3 lg:col-span-8 lg:col-start-3">
         {faq.map((f) => <FaqItem question={f.q}><Fragment set:html={richText(f.a)} /></FaqItem>)}
