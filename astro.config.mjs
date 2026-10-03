@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 // Fully static output: Cloudflare serves ./dist as static assets.
 export default defineConfig({
   output: 'static',
-  // Update if a custom domain is connected.
-  site: 'https://vonex-templates.ponslookdesign.workers.dev',
+  // Canonical address of the site (used for canonical links, sitemap and social previews).
+  site: 'https://vonexdesign.com',
   vite: { plugins: [tailwindcss()] },
 });
