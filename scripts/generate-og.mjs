@@ -12,6 +12,7 @@ import { readFile, readdir, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
+import { parse as parseYaml } from 'yaml';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const dir = path.join(root, 'src/content/templates');
@@ -20,19 +21,6 @@ const only = process.argv.slice(2);
 
 const FONT = "Segoe UI, Arial, sans-serif";
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-// Very small reader for the flat `key: value` YAML files of this project.
-function readYaml(text) {
-  const out = {};
-  for (const line of text.split(/\r?\n/)) {
-    const m = line.match(/^([A-Za-z]+):\s*(.*)$/);
-    if (!m) continue;
-    let v = m[2].trim();
-    if (v.startsWith('"')) v = JSON.parse(v);
-    out[m[1]] = v;
-  }
-  return out;
-}
 
 // Split text into at most `maxLines` lines of about `max` characters.
 function wrap(text, max, maxLines) {
@@ -57,9 +45,10 @@ function wrap(text, max, maxLines) {
 const logo = `<g transform="translate(70 62) scale(0.052)" fill="#fff"><polygon points="114.725 87.033 0 613.187 233.407 846.593 348.132 320.44 114.725 87.033"/><polygon points="901.978 233.407 668.571 0 553.846 526.154 233.407 846.593 466.813 1080 700.219 846.593 680.957 653.265 787.253 759.56 901.978 233.407"/></g>`;
 
 async function makeOne(slug) {
-  const t = readYaml(await readFile(path.join(dir, `${slug}.yaml`), 'utf8'));
-  const coverFile = (await readdir(path.join(root, 'src/assets/templates'))).find((f) => f.startsWith(`${slug}.`));
-  if (!coverFile) throw new Error(`no cover image for ${slug} in src/assets/templates`);
+  const t = parseYaml(await readFile(path.join(dir, `${slug}.yaml`), 'utf8'));
+  // The cover is the `image` field of the YAML, relative to the YAML file.
+  if (!t.image) throw new Error(`no image in src/content/templates/${slug}.yaml`);
+  const coverPath = path.resolve(dir, t.image);
 
   const price = Number(t.price) === 0 ? 'Free' : `$${t.price}`;
   const nameLines = wrap(t.name, 13, 2);
@@ -90,7 +79,7 @@ ${taglineLines.map((l, i) => `<text x="70" y="${taglineY + i * 42}" font-family=
 </svg>`;
 
   const mask = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${coverW}" height="${coverH}"><rect width="${coverW}" height="${coverH}" rx="24" fill="#fff"/></svg>`);
-  const cover = await sharp(path.join(root, 'src/assets/templates', coverFile))
+  const cover = await sharp(coverPath)
     .resize(coverW, coverH, { fit: 'cover' })
     .composite([{ input: mask, blend: 'dest-in' }])
     .png()
@@ -99,7 +88,8 @@ ${taglineLines.map((l, i) => `<text x="70" y="${taglineY + i * 42}" font-family=
   await mkdir(outDir, { recursive: true });
   await sharp(Buffer.from(svg))
     .composite([{ input: cover, left: coverX, top: coverY }])
-    .png({ compressionLevel: 9 })
+    // Palette PNG: about 3x smaller, looks the same.
+    .png({ palette: true, quality: 90, effort: 10, compressionLevel: 9 })
     .toFile(path.join(outDir, `${slug}.png`));
   console.log(`public/og/${slug}.png`);
 }
