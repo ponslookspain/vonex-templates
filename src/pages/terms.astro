@@ -1,0 +1,41 @@
+---
+import LegalPage from '../components/LegalPage.astro';
+import { site } from '../data/site';
+---
+
+<LegalPage title="Terms of Use" description={`Terms for using the ${site.name} template catalog, including the referral link disclosure.`} updated="October 3, 2026">
+  <p>
+    By using this site you agree to these terms. {site.name} is a catalog that presents Framer templates made by {site.name}. Nothing is sold on this site.
+  </p>
+
+  <h2>Buying and using templates</h2>
+  <p>
+    Templates are previewed, bought and remixed on <a href="https://www.framer.com/" target="_blank" rel="noopener noreferrer">Framer</a>.{' '}
+    Purchases, payments, refunds and licenses are handled by Framer under its own terms and the license shown on each
+    template's Framer page.
+  </p>
+
+  <h2>Referral links</h2>
+  <p>
+    Some links to Framer on this site are referral links. If you sign up for or upgrade a Framer plan after following
+    one, {site.name} may earn a commission. It costs you nothing extra and does not change which templates we show.
+  </p>
+
+  <h2>Content</h2>
+  <p>
+    Template names, previews, descriptions and the site design belong to {site.name}. Please don't copy them without
+    permission. Prices, features and availability are shown in good faith; the Framer page is the final word.
+  </p>
+
+  <h2>No warranty</h2>
+  <p>
+    The site is provided as is. We are not responsible for third-party sites we link to, and to the extent the law
+    allows, we are not liable for any loss arising from using this site.
+  </p>
+
+  <h2>Contact</h2>
+  <p>Questions: <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+
+  <h2>Changes</h2>
+  <p>We may update these terms. The current version is always on this page.</p>
+</LegalPage>

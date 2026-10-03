@@ -2,7 +2,7 @@ import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 
 // Static pages are listed here; every template page is added automatically from the collection.
-const pages = ['/', '/templates/'];
+const pages = ['/', '/templates/', '/privacy/', '/terms/'];
 
 export const GET: APIRoute = async ({ site }) => {
   const templates = await getCollection('templates');

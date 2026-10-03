@@ -51,6 +51,10 @@ const year = new Date().getFullYear();
   </Container>
   <Container class="type-caption flex flex-col gap-1 pb-8 text-fg-soft sm:flex-row sm:justify-between">
     <span>Made by {site.name}</span>
-    <span>© {year} {site.name}. All rights reserved.</span>
+    <span class="flex flex-wrap gap-x-5 gap-y-1">
+      <a class="transition-colors hover:text-fg" href="/privacy/">Privacy</a>
+      <a class="transition-colors hover:text-fg" href="/terms/">Terms</a>
+      <span>© {year} {site.name}. All rights reserved.</span>
+    </span>
   </Container>
 </footer>
