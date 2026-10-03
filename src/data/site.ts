@@ -9,7 +9,7 @@ export const site = {
     'Ready-made, responsive Framer templates by Vonex Design. Pick a template, remix it in Framer, make it yours and publish your website without writing code.',
   // Cloudflare Web Analytics token (Cloudflare dashboard > Analytics & Logs > Web Analytics).
   // Leave empty to disable. Nothing is sent until a token is set.
-  analyticsToken: '',
+  analyticsToken: 'a8496556ef3645b5902ace2d122d7198',
   framerProfile: 'https://www.framer.com/@vonexdesign/',
   email: 'ponslookdesign@gmail.com',
   socials: [
