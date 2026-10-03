@@ -23,9 +23,9 @@ const free = t.price === 0;
     href={href}
     target="_blank"
     rel="noopener noreferrer"
-    class="group flex h-full flex-col overflow-hidden rounded-2xl border border-line bg-surface transition duration-200 hover:-translate-y-0.5 hover:border-white/25 hover:bg-surface-2"
+    class="group flex h-full flex-col gap-4 outline-offset-4"
   >
-    <div class="relative aspect-[4/3] overflow-hidden bg-surface-2">
+    <div class="relative aspect-[4/3] overflow-hidden rounded-xl bg-surface-2 ring-1 ring-white/5">
       <Image
         src={t.image}
         alt={`${t.name} template preview`}
@@ -33,21 +33,11 @@ const free = t.price === 0;
         sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
         class="h-full w-full object-cover transition duration-500 group-hover:scale-[1.03]"
       />
-      <span
-        class:list={[
-          'absolute right-3 top-3 rounded-full px-2.5 py-1 text-xs font-medium backdrop-blur',
-          free ? 'bg-accent text-white' : 'bg-black/60 text-fg ring-1 ring-white/15',
-        ]}
-      >
-        {free ? 'Free' : `$${t.price}`}
-      </span>
     </div>
-    <div class="flex flex-1 flex-col gap-2 p-5">
-      <div class="flex items-center justify-between gap-3">
-        <h3 class="text-lg font-semibold tracking-tight">{t.name}</h3>
-        <span aria-hidden="true" class="text-muted transition group-hover:translate-x-0.5 group-hover:text-fg">↗</span>
-      </div>
+    <div class="flex flex-col gap-1">
+      <h3 class="text-lg font-semibold tracking-tight">{t.name}</h3>
       <p class="text-sm text-muted">{t.tagline}</p>
+      <p class:list={['mt-1 text-sm font-medium', free ? 'text-accent' : 'text-fg']}>{free ? 'Free' : `$${t.price}`}</p>
     </div>
     <span class="sr-only">Opens on Framer Marketplace in a new tab</span>
   </a>

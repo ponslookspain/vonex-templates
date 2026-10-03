@@ -3,16 +3,19 @@
 
 @theme {
   --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
-  --color-bg: #0a0a0b;
-  --color-surface: #111113;
-  --color-surface-2: #17171a;
-  --color-line: #26262b;
+  --color-bg: #000000;
+  --color-surface: #0a0a0b;
+  --color-surface-2: #121214;
+  --color-line: #222226;
   --color-fg: #f4f4f5;
   --color-muted: #9a9aa3;
   --color-accent: #0099ff;
 }
 
 @layer base {
+  h1, h2, h3 {
+    letter-spacing: -0.04em;
+  }
   html {
     color-scheme: dark;
     background: var(--color-bg);
@@ -33,4 +36,16 @@
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   * { transition: none !important; animation: none !important; }
+}
+
+@layer components {
+  .eyebrow {
+    @apply mb-4 block text-sm font-medium text-accent;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center rounded-lg bg-fg px-4 py-2.5 text-sm font-medium text-bg transition hover:bg-white/80;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center rounded-lg border border-line px-4 py-2.5 text-sm font-medium text-fg transition hover:border-white/30 hover:bg-surface-2;
+  }
 }
