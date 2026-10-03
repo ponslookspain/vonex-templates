@@ -7,8 +7,10 @@ import { site } from '../data/site';
 interface Props {
   title?: string;
   description?: string;
+  // Home page only: the hero fills the first screen and sits under the fixed header.
+  overlayHeader?: boolean;
 }
-const { title, description = site.description } = Astro.props;
+const { title, description = site.description, overlayHeader = false } = Astro.props;
 const fullTitle = title ? `${title} | ${site.name}` : `${site.name}: ${site.tagline}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
@@ -36,7 +38,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       >Skip to content</a
     >
     <Header />
-    <main id="main" class="flex-1">
+    <main id="main" class:list={['flex-1', !overlayHeader && 'pt-28 md:pt-20']}>
       <slot />
     </main>
     <Footer />
