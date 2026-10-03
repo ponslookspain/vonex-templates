@@ -246,6 +246,13 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
             <p class="body-text support" set:html={richText(c.support)} />
           </section>
         )}
+
+        {c.policy && (
+          <section class="doc-section" aria-labelledby="policy">
+            <h2 class="kicker" id="policy">{c.policy.title}</h2>
+            <p class="body-text support" set:html={richText(c.policy.text)} />
+          </section>
+        )}
       </div>
     </div>
   </Section>

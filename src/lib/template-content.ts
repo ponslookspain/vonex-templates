@@ -34,6 +34,8 @@ export interface TemplateContent {
   blocks: (ListBlock | TextBlock)[];
   updates: Update[];
   support?: string;
+  // Small print such as a refund policy, shown after Support instead of among the benefits.
+  policy?: { title: string; text: string };
   pages: string[];
   // Named parts of a one-page template ("Included Sections") when it has no separate pages.
   sectionNames: string[];
@@ -45,6 +47,7 @@ const norm = (s: string) => s.toLowerCase().replace(/[:.?]+$/g, '').trim();
 const isAbout = (t: string) => /^about\b/.test(t);
 const isWhyHeader = (t: string) => /^why\b/.test(t);
 const isSupport = (t: string) => /^support\b/.test(t);
+const isPolicy = (t: string) => /\b(refunds?|returns?)\b.*\bpolicy\b/.test(t);
 const isUpdates = (t: string) => /^(updates?|changelog|what.?s new)$/.test(t);
 const isVersion = (t: string) => /^v?\d+(\.\d+)*\b/.test(t);
 
@@ -97,6 +100,11 @@ export function buildContent(t: Template): TemplateContent {
 
     if (isSupport(title)) {
       out.support = paragraphs.join(' ');
+      inBenefits = inUpdates = false;
+      continue;
+    }
+    if (isPolicy(title) && paragraphs.length) {
+      out.policy = { title: s.title.replace(/:$/, ''), text: paragraphs.join(' ') };
       inBenefits = inUpdates = false;
       continue;
     }

@@ -97,7 +97,13 @@ export function parseBlocks(html) {
       if (text) blocks.push({ type: 'heading', level: Number(tag[1]), text });
     } else if (tag === 'p') {
       const text = inline(m[2]);
-      if (text) blocks.push({ type: 'p', text });
+      // A heading typed at the end of the previous paragraph ("…in minutes.Refund Policy")
+      // is split back into a paragraph and a heading.
+      const glued = text.match(/^(.*[.!?])([A-Z][A-Za-z’'& ]{2,40})$/);
+      if (glued) {
+        blocks.push({ type: 'p', text: glued[1] });
+        blocks.push({ type: 'heading', level: 3, text: glued[2].trim() });
+      } else if (text) blocks.push({ type: 'p', text });
     } else {
       const items = [...m[2].matchAll(/<li\b[^>]*>([\s\S]*?)<\/li>/gi)].map((x) => inline(x[1])).filter(Boolean);
       if (items.length) blocks.push({ type: 'list', items });
