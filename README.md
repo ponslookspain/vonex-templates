@@ -12,6 +12,16 @@ A minimal dark catalog of Framer templates. Two pages: a landing page with featu
 | `npm run check` | Type-check content and components |
 | `npm run add-template -- <url>` | Add a template from its Framer Marketplace URL |
 
+## Check the site locally before deploy
+
+```
+npm install        # once
+npm run dev        # live preview at http://localhost:4321, updates as you edit
+npm run build && npm run preview   # exact production build, also at http://localhost:4321
+```
+
+Open http://localhost:4321 in the browser. Stop the server with Ctrl+C. Nothing is deployed until your change is merged into `main`.
+
 ## Add a template
 
 ### Quick way: from a Framer link
