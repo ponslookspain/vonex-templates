@@ -67,6 +67,10 @@
   --text-small: 0.875rem; /* Secondary text, buttons, nav */
   --text-caption: 0.75rem; /* Labels and badges */
   --text-numeral: 3rem; /* Big step numbers */
+  --text-section: 1.5rem; /* Section heading inside a long text page */
+  --text-lead-lg: 1.375rem; /* Opening paragraph and tagline of a template page */
+  --text-stat: 1.75rem; /* Value in a small stat card */
+  --text-price: 2.75rem; /* Price on a template page */
 
   /* Motion */
   --duration-fast: 150ms; /* Color and state changes */
@@ -91,6 +95,10 @@
 @layer base {
   h1, h2, h3 {
     letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
   }
   html {
     color-scheme: dark;
@@ -219,6 +227,12 @@
     font-weight: 300;
     font-style: italic;
     color: var(--color-muted);
+  }
+  /* Running text on a dark ground: a little more leading than the default body. */
+  .type-prose {
+    font-size: var(--text-body);
+    line-height: 1.65;
+    color: var(--color-fg-soft);
   }
   .eyebrow {
     display: block;

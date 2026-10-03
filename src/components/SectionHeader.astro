@@ -19,6 +19,6 @@ const Tag = `h${level}` as 'h1' | 'h2';
   <div class="col-span-12 flex flex-col items-center text-center lg:col-span-8 lg:col-start-3">
     {eyebrow && <span class="eyebrow">{eyebrow}</span>}
     <Tag id={id} class:list={['max-w-measure-title text-balance', level === 1 ? 'type-h1' : 'type-h2']}>{title}</Tag>
-    {lead && <p class="mt-4 max-w-measure-body text-muted">{lead}</p>}
+    {lead && <p class="type-lead mt-4 max-w-measure-body">{lead}</p>}
   </div>
 </header>

@@ -7,9 +7,9 @@ const { question } = Astro.props;
 ---
 
 <details class="surface group px-5 py-5">
-  <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-medium">
+  <summary class="type-title flex cursor-pointer list-none items-center justify-between gap-4 font-medium">
     {question}
-    <span aria-hidden="true" class="text-lg text-fg transition-transform duration-base group-open:rotate-45">+</span>
+    <span aria-hidden="true" class="type-title text-fg transition-transform duration-base group-open:rotate-45">+</span>
   </summary>
-  <p class="mt-3 text-muted"><slot /></p>
+  <p class="type-prose mt-3 max-w-measure-title text-muted"><slot /></p>
 </details>
