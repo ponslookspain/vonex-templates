@@ -2,7 +2,7 @@
 
 One rule: **every visual value comes from a token, every page is built from the same layout components on the same 12-column grid.** This file explains how, and how to change things safely.
 
-A live version of everything below is at `/design-system/` (run `npm run dev`, open http://localhost:4321/design-system/). It reads `src/styles/global.css` at build time, so it always shows the real values. It is not indexed and not in the sitemap.
+A live version of everything below is at `/design-system/` (run `npm run dev`, open http://localhost:4321/design-system/). It reads `src/styles/global.css` at build time, so it always shows the real values. It exists only in dev: `astro.config.mjs` removes it from the production build.
 
 ## Where things live
 

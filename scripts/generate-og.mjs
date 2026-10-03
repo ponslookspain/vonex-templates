@@ -88,7 +88,8 @@ ${taglineLines.map((l, i) => `<text x="70" y="${taglineY + i * 42}" font-family=
   await mkdir(outDir, { recursive: true });
   await sharp(Buffer.from(svg))
     .composite([{ input: cover, left: coverX, top: coverY }])
-    .png({ compressionLevel: 9 })
+    // Palette PNG: about 3x smaller, looks the same.
+    .png({ palette: true, quality: 90, effort: 10, compressionLevel: 9 })
     .toFile(path.join(outDir, `${slug}.png`));
   console.log(`public/og/${slug}.png`);
 }

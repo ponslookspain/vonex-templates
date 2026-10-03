@@ -69,7 +69,7 @@ You can also write the YAML yourself; copy an existing file from `src/content/te
 
 ## Design system
 
-Colors, type, radii, spacing and the 12-column grid are defined once, as tokens in `src/styles/global.css`; components live in `src/components`. Run `npm run dev` and open http://localhost:4321/design-system/ for the live style guide (press **G** on any page to see the grid). The rules and recipes are in [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md).
+Colors, type, radii, spacing and the 12-column grid are defined once, as tokens in `src/styles/global.css`; components live in `src/components`. Run `npm run dev` and open http://localhost:4321/design-system/ for the live style guide (it exists only in dev and is removed from the production build) (press **G** on any page to see the grid). The rules and recipes are in [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md).
 
 ## SEO and analytics
 
@@ -110,4 +110,4 @@ Response headers (long cache for `/_astro/*`, basic security headers) are in `pu
 
 ## Workflow
 
-Every change goes through a pull request into `main`. Check it locally (see above) or in the PR, then merge; Cloudflare deploys it.
+Every change goes through a pull request into `main`. GitHub Actions (`.github/workflows/check.yml`) type-checks and builds every pull request; merge only when the check is green. Cloudflare then deploys `main`.

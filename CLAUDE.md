@@ -34,7 +34,7 @@ Guide for Claude (and anyone else) working on this repository. Read it before ch
 | `src/pages/templates.astro` | All templates, newest first. |
 | `src/pages/templates/[slug].astro` | Template page: gallery, description blocks, stats, FAQ, other templates. |
 | `src/lib/template-content.ts` | Turns the imported Marketplace description into page blocks and FAQ. |
-| `src/pages/design-system.astro` | Live style guide (`/design-system/`, noindex, not in the sitemap). |
+| `src/pages/design-system.astro` | Live style guide at `/design-system/`, only in `npm run dev`: `astro.config.mjs` removes it from the production build. |
 | `src/pages/sitemap.xml.ts`, `robots.txt.ts` | Generated at build. Static pages are listed by hand in the sitemap; template pages are added automatically. |
 | `src/layouts/Base.astro` | `<head>` (SEO, Open Graph, JSON-LD, analytics), header, footer. |
 | `src/components/` | UI and layout components; `illustrations/` holds the small drawings of the landing blocks. |
@@ -73,4 +73,4 @@ npm run build   # must build all pages
 npm run dev     # http://localhost:4321, /design-system/ for the style guide, G toggles the grid
 ```
 
-There is no automated test suite and no CI yet; Cloudflare builds `main` on every merge.
+GitHub Actions (`.github/workflows/check.yml`) runs `npm run check` and `npm run build` on every pull request and push to `main`. There is no test suite. Cloudflare builds and deploys `main` on every merge.
