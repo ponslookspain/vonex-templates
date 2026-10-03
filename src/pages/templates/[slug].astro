@@ -100,7 +100,6 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     <div class="grid-12 gap-y-10 lg:gap-y-0">
       <header class="col-span-12 lg:col-span-5 lg:col-start-8 lg:row-start-1">
         <p class="kicker-row">
-          <span class="status-dot" aria-hidden="true"></span>
           <span>{t.category} Framer template</span>
         </p>
         <h1 class="title-xl">{t.name}</h1>
@@ -317,13 +316,6 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     font-size: var(--text-small);
     font-weight: 500;
     color: var(--color-accent);
-  }
-  .status-dot {
-    width: 0.5rem;
-    height: 0.5rem;
-    border-radius: 9999px;
-    background: var(--color-success);
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--color-success) 22%, transparent);
   }
   .title-xl {
     margin-top: 1.25rem;

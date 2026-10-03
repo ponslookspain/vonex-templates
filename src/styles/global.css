@@ -357,10 +357,7 @@
     height: 12rem;
     overflow: hidden;
     border-radius: var(--radius-surface);
-    background:
-      radial-gradient(ellipse 80% 70% at 50% 120%, color-mix(in srgb, var(--color-accent) 22%, transparent), transparent),
-      radial-gradient(circle, rgb(255 255 255 / 0.07) 1px, transparent 1px) 0 0 / 16px 16px,
-      var(--color-bg);
+    background: var(--color-bg);
   }
   /* Small stand-in for an app window or card inside an illustration. */
   .mini-window {
