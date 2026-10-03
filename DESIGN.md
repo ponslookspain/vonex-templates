@@ -166,7 +166,7 @@ Rounded, calm corners by role: 8px for controls, 12px for cards inside sections,
 
 ### Cards / Containers
 - **Template card:** Graphite panel, 16px radius, 12px inner padding, 4:3 image at 12px radius, then name (Title), tagline (Ash) and a line "Category · Price". Hover raises the panel tone and scales the image to 1.03.
-- **Feature card:** Graphite surface with an illustration stage on Void.
+- **Feature card:** Graphite surface, no outline, with an illustration stage on Void. Illustrations are flat tonal tiles with at most one accent color and a slow 9s loop (typing, reflow, highlight passing, a tile arriving); no photos, gradients or icons.
 - **Border:** hairline via inset outline only.
 
 ### Chips

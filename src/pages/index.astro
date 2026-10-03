@@ -117,7 +117,7 @@ const points = [
       {steps.map((st, i) => (
         <FeatureCard as="li" step={st.n} title={st.title} text={st.text} connector={i < steps.length - 1} class="col-span-12 sm:col-span-4">
           <Fragment slot="illustration">
-            {i === 0 && <StepChoose templates={all} />}
+            {i === 0 && <StepChoose />}
             {i === 1 && <StepRemix />}
             {i === 2 && <StepPublish />}
           </Fragment>
@@ -134,12 +134,12 @@ const points = [
     />
     <ul class="grid-12 mt-12">
       {points.map((p, i) => (
-        <FeatureCard as="li" icon={p.icon} title={p.title} text={p.text} class={`col-span-12 md:col-span-6 ${p.span}`}>
+        <FeatureCard as="li" title={p.title} text={p.text} class={`col-span-12 md:col-span-6 ${p.span}`}>
           <Fragment slot="illustration">
             {i === 0 && <FeatureResponsive />}
             {i === 1 && <FeatureNoCode />}
             {i === 2 && <FeaturePricing />}
-            {i === 3 && <FeatureGrowing templates={all} />}
+            {i === 3 && <FeatureGrowing />}
           </Fragment>
         </FeatureCard>
       ))}

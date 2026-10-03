@@ -1,29 +1,14 @@
 ---
-import { Image } from 'astro:assets';
-import Icon from '../Icon.astro';
-import type { CollectionEntry } from 'astro:content';
-
-// Step 1: a row of template previews, the middle one selected, with a cursor.
-interface Props {
-  templates: CollectionEntry<'templates'>[];
-}
-const shown = Astro.props.templates.slice(0, 3);
+// Step 1: three flat tiles, the highlight moves from one to the next.
 ---
 
-<div class="absolute inset-0 flex items-center justify-center gap-2.5 px-4">
+<div class="absolute inset-0 flex items-center justify-center gap-3 px-6">
   {
-    shown.map((t, i) => (
-      <div
-        class:list={[
-          'relative aspect-[4/3] w-[30%] overflow-hidden rounded-control',
-          i === 1 ? 'z-10 scale-110 shadow-lg ring-2 ring-accent' : 'scale-95 opacity-80 ring-1 ring-outline-strong',
-        ]}
-      >
-        <Image src={t.data.image} alt="" widths={[160, 320]} sizes="140px" class="h-full w-full object-cover" />
+    [0, 1, 2].map((i) => (
+      <div class="ill-tile ill-pick w-[28%] p-2.5" style={`animation-delay: ${i * 3}s`}>
+        <div class="ill-line w-3/5"></div>
+        <div class="ill-block mt-2.5 aspect-[4/3]"></div>
       </div>
     ))
   }
-  <span class="anim-float pointer-events-none absolute left-[55%] top-[56%] z-20">
-    <Icon name="pick" class="size-8 fill-bg stroke-fg drop-shadow-lg" />
-  </span>
 </div>

@@ -296,14 +296,14 @@ const spans = [
       <div class="col-span-12">
         <h3 class="type-title mb-1">FeatureCard and illustrations</h3>
         <p class="type-caption mb-4 text-muted">
-          <code>&lt;FeatureCard icon | step title text connector&gt;</code> with the picture in <code>slot="illustration"</code>. Illustrations live in <code>components/illustrations</code>.
+          <code>&lt;FeatureCard step title text connector&gt;</code> with the picture in <code>slot="illustration"</code>. Illustrations live in <code>components/illustrations</code>.
         </p>
         <div class="grid-12">
-          <FeatureCard icon="blocks" title="With an icon" text="Used for the 'why' blocks. The illustration stage has a dot grid and a blue glow." class="col-span-12 md:col-span-6">
+          <FeatureCard title="Plain" text="Used for the 'why' blocks. Flat tonal shapes on a black stage, one accent, a slow loop." class="col-span-12 md:col-span-6">
             <Fragment slot="illustration"><FeatureNoCode /></Fragment>
           </FeatureCard>
           <FeatureCard step={1} title="With a step number" text="Used for the three steps. Use connector to add the arrow between steps." class="col-span-12 md:col-span-6">
-            <Fragment slot="illustration">{templates.length > 0 ? <StepChoose templates={templates} /> : <StepPublish />}</Fragment>
+            <Fragment slot="illustration"><StepChoose /></Fragment>
           </FeatureCard>
         </div>
       </div>
