@@ -1,0 +1,16 @@
+---
+import Icon from '../Icon.astro';
+
+// Two price tags: one free, one premium.
+---
+
+<div class="absolute inset-0 flex items-center justify-center gap-4 px-4">
+  <div class="mini-window anim-float -rotate-6 px-4 py-3">
+    <p class="type-caption flex items-center gap-1.5 text-accent"><Icon name="tag" class="size-3.5" /> Free</p>
+    <p class="type-h3 mt-1">$0</p>
+  </div>
+  <div class="mini-window rotate-3 px-4 py-3">
+    <p class="type-caption flex items-center gap-1.5 text-muted"><Icon name="tag" class="size-3.5" /> Premium</p>
+    <p class="type-h3 mt-1">$49</p>
+  </div>
+</div>

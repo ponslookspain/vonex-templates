@@ -1,0 +1,15 @@
+---
+import Icon from './Icon.astro';
+import type { IconName } from './icons';
+
+// Icon on a tinted rounded square, used next to card titles.
+interface Props {
+  name: IconName;
+  class?: string;
+}
+const { name, class: className } = Astro.props;
+---
+
+<span class:list={['grid size-10 shrink-0 place-items-center rounded-control bg-accent-tint text-accent', className]}>
+  <Icon name={name} class="size-5" />
+</span>

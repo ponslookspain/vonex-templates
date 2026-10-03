@@ -23,12 +23,12 @@ Add a comment after a token (`--color-x: #fff; /* what it is for */`) and the de
 
 | Group | Tokens | Tailwind utility |
 | --- | --- | --- |
-| Color | `--color-bg`, `surface`, `surface-2`, `line`, `outline`, `fg`, `fg-soft`, `muted`, `accent`, `accent-indigo`, `accent-sky`, `accent-violet`, `chrome`, `success` | `bg-surface`, `text-muted`, `border-line`, `from-bg`… |
+| Color | `--color-bg`, `surface`, `surface-2`, `line`, `outline`, `outline-strong`, `fg`, `fg-soft`, `muted`, `accent`, `accent-tint`, `accent-indigo`, `accent-sky`, `accent-violet`, `chrome`, `success` | `bg-surface`, `text-muted`, `border-line`, `from-bg`… |
 | Radius | `--radius-control` (buttons), `surface` (cards in sections), `panel` (large panels), `media` (big previews) | `rounded-control`, `rounded-surface`, `rounded-panel`, `rounded-media` |
 | Width | `--container-page` (72rem), `--container-measure-display / title / lead / body` (max line length of text) | `max-w-page`, `max-w-measure-title`… |
 | Grid and space | `--grid-columns` (12), `--grid-gutter` (1.25rem), `--space-page` (side padding), `--space-section` (section padding), `--space-card` | used by `.grid-12`, `.container-page`, `.section`, `.card-padding` |
 | Type | `--text-display`, `statement`, `h1`, `h2`, `h3`, `title`, `lead`, `body`, `small`, `caption`, `numeral` | used by the `.type-*` classes |
-| Motion | `--duration-fast / base / slow / marquee`, `--ease-soft` | `duration-fast`, `duration-base`, `duration-slow`, `ease-soft` |
+| Motion | `--duration-fast / base / slow / ambient / marquee`, `--ease-soft` | `duration-fast`, `duration-base`, `duration-slow`, `ease-soft` |
 
 **Responsive values** are tokens too. `--text-display` is `3rem` on phones and `4.5rem` from 640px. To change that, edit the token in the `@media` block, never inside a component.
 
@@ -99,6 +99,10 @@ Vertical spacing: sections use `--space-section` (3.5rem phone, 5rem from 640px)
 | `FaqItem` | `question` (+ answer as the slot) | Native `<details>`, no JavaScript |
 | `TemplateCard` | `template`, `class` | One catalog entry |
 | `InlineIcon` | `name`, `tone` | Icon inside a line of big text; add icons to `paths` in the file |
+| `FeatureCard` | `title`, `text`, `icon` or `step`, `connector`, `as`, `class` + slot `illustration` | Card with an illustration stage on top; used for the steps and the "why" blocks |
+| `Icon` | `name`, `class`, `strokeWidth` | Line icon in `currentColor`; icons are defined in `components/icons.ts` |
+| `IconTile` | `name` | Icon on a tinted rounded square |
+| `illustrations/*` | `templates` (some) | Small pictures built from HTML/CSS for `FeatureCard`: `StepChoose`, `StepRemix`, `StepPublish`, `FeatureResponsive`, `FeatureNoCode`, `FeaturePricing`, `FeatureGrowing` |
 | `Glow` | none | Drifting light, inside a `relative overflow-hidden` parent |
 | `HeroStage` | `templates` | Template strip plus the 3D logo (reads colors from tokens) |
 | `Header`, `Footer`, `Logo`, `SocialIcon` | | Site chrome |
@@ -115,6 +119,10 @@ Vertical spacing: sections use `--space-section` (3.5rem phone, 5rem from 640px)
 **Add a section to the home page**: copy the closest existing section in `src/pages/index.astro` (same `Section` and `SectionHeader`), change the content, keep the grid classes.
 
 **Change the look of the whole site**: edit tokens in `src/styles/global.css`. Examples: the brand color is `--color-accent`; button and card roundness is `--radius-control` / `--radius-surface` / `--radius-panel`; the heading size is `--text-h2`.
+
+**Add an icon**: add its path data (24x24 grid, drawn with a stroke) to `src/components/icons.ts`, then use `<Icon name="…" />`. It shows up on the design-system page automatically.
+
+**Add an illustration**: create a component in `src/components/illustrations/` that fills its parent (`absolute inset-0`), build it from `.mini-window`, `.skeleton`, tokens and `Icon`, and pass it to `FeatureCard` through `slot="illustration"`. Keep it readable on a dark stage: templates are dark, so give thumbnails a `ring-1 ring-outline-strong`.
 
 **Add a token**: add it to the `@theme static` block with a comment. If it needs a different value on larger screens, also set it in the `@media (min-width: 40rem)` block.
 

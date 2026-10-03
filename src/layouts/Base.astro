@@ -3,6 +3,8 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import GridOverlay from '../components/GridOverlay.astro';
+// Preload the Latin subset of the font: it is needed for the first paint.
+import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 import { site } from '../data/site';
 
 interface Props {
@@ -49,6 +51,7 @@ const schemas = jsonLd ? [...siteSchema, jsonLd] : siteSchema;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -92,5 +95,15 @@ const schemas = jsonLd ? [...siteSchema, jsonLd] : siteSchema;
     </main>
     <Footer />
     {(gridOverlay || import.meta.env.DEV) && <GridOverlay />}
+    <script>
+      // Mark decorative blocks as off screen so their CSS animations pause.
+      const blocks = document.querySelectorAll('[data-pause-offscreen]');
+      if (blocks.length && 'IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+          for (const e of entries) e.target.toggleAttribute('data-offscreen', !e.isIntersecting);
+        }, { rootMargin: '100px' });
+        blocks.forEach((b) => io.observe(b));
+      }
+    </script>
   </body>
 </html>

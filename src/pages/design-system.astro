@@ -15,6 +15,13 @@ import InlineIcon from '../components/InlineIcon.astro';
 import Logo from '../components/Logo.astro';
 import SocialIcon from '../components/SocialIcon.astro';
 import TemplateCard from '../components/TemplateCard.astro';
+import Icon from '../components/Icon.astro';
+import IconTile from '../components/IconTile.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import StepChoose from '../components/illustrations/StepChoose.astro';
+import StepPublish from '../components/illustrations/StepPublish.astro';
+import FeatureNoCode from '../components/illustrations/FeatureNoCode.astro';
+import { icons } from '../components/icons';
 
 type Token = { name: string; value: string; note: string; wide?: string };
 
@@ -261,6 +268,34 @@ const spans = [
         <ul class="grid-12">
           {sample && <TemplateCard template={sample} class="col-span-12" />}
         </ul>
+      </div>
+
+      <div class="col-span-12">
+        <h3 class="type-title mb-1">Icon and IconTile</h3>
+        <p class="type-caption mb-4 text-muted"><code>&lt;Icon name="…" class="size-5" /&gt;</code> uses currentColor. Add icons in <code>components/icons.ts</code>.</p>
+        <ul class="flex flex-wrap gap-3">
+          {Object.keys(icons).map((name) => (
+            <li class="surface flex w-24 flex-col items-center gap-2 py-4">
+              <IconTile name={name as keyof typeof icons} />
+              <span class="type-caption text-muted">{name}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="col-span-12">
+        <h3 class="type-title mb-1">FeatureCard and illustrations</h3>
+        <p class="type-caption mb-4 text-muted">
+          <code>&lt;FeatureCard icon | step title text connector&gt;</code> with the picture in <code>slot="illustration"</code>. Illustrations live in <code>components/illustrations</code>.
+        </p>
+        <div class="grid-12">
+          <FeatureCard icon="blocks" title="With an icon" text="Used for the 'why' blocks. The illustration stage has a dot grid and a blue glow." class="col-span-12 md:col-span-6">
+            <Fragment slot="illustration"><FeatureNoCode /></Fragment>
+          </FeatureCard>
+          <FeatureCard step={1} title="With a step number" text="Used for the three steps. Use connector to add the arrow between steps." class="col-span-12 md:col-span-6">
+            <Fragment slot="illustration">{templates.length > 0 ? <StepChoose templates={templates} /> : <StepPublish />}</Fragment>
+          </FeatureCard>
+        </div>
       </div>
 
       <div class="col-span-12">

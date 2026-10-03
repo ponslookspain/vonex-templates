@@ -12,6 +12,14 @@ import Card from '../components/Card.astro';
 import FaqItem from '../components/FaqItem.astro';
 import Glow from '../components/Glow.astro';
 import InlineIcon from '../components/InlineIcon.astro';
+import FeatureCard from '../components/FeatureCard.astro';
+import StepChoose from '../components/illustrations/StepChoose.astro';
+import StepRemix from '../components/illustrations/StepRemix.astro';
+import StepPublish from '../components/illustrations/StepPublish.astro';
+import FeatureResponsive from '../components/illustrations/FeatureResponsive.astro';
+import FeatureNoCode from '../components/illustrations/FeatureNoCode.astro';
+import FeaturePricing from '../components/illustrations/FeaturePricing.astro';
+import FeatureGrowing from '../components/illustrations/FeatureGrowing.astro';
 import { Image } from 'astro:assets';
 import ctaMonitor from '../assets/cta-monitor.webp';
 import { site } from '../data/site';
@@ -37,11 +45,11 @@ const faq = [
 ];
 
 const points = [
-  { title: 'Responsive design', text: 'Every template is built to look right on phone, tablet and desktop.' },
-  { title: 'No code needed', text: 'Remix on Framer and edit text, images and CMS content visually.' },
-  { title: 'Free and premium', text: 'Start with a free template or choose a premium one with more features.' },
-  { title: 'Always growing', text: 'The catalog keeps expanding, so there is a new design to choose from every time you visit.' },
-];
+  { icon: 'responsive', title: 'Responsive design', text: 'Every template is built to look right on phone, tablet and desktop.', span: 'lg:col-span-7' },
+  { icon: 'blocks', title: 'No code needed', text: 'Remix on Framer and edit text, images and CMS content visually.', span: 'lg:col-span-5' },
+  { icon: 'tag', title: 'Free and premium', text: 'Start with a free template or choose a premium one with more features.', span: 'lg:col-span-5' },
+  { icon: 'sparkles', title: 'Always growing', text: 'The catalog keeps expanding, so there is a new design to choose from every time you visit.', span: 'lg:col-span-7' },
+] as const;
 ---
 
 <Base
@@ -111,14 +119,14 @@ const points = [
       lead="Choose, remix and publish a Framer template in an afternoon."
     />
     <ol class="grid-12 mt-12">
-      {steps.map((st) => (
-        <Card as="li" class="col-span-12 flex min-h-48 flex-col justify-between sm:col-span-4">
-          <span class="type-numeral self-end">{st.n}</span>
-          <div>
-            <h3 class="type-h3">{st.title}</h3>
-            <p class="type-small mt-2 text-muted">{st.text}</p>
-          </div>
-        </Card>
+      {steps.map((st, i) => (
+        <FeatureCard as="li" step={st.n} title={st.title} text={st.text} connector={i < steps.length - 1} class="col-span-12 sm:col-span-4">
+          <Fragment slot="illustration">
+            {i === 0 && <StepChoose templates={all} />}
+            {i === 1 && <StepRemix />}
+            {i === 2 && <StepPublish />}
+          </Fragment>
+        </FeatureCard>
       ))}
     </ol>
   </Section>
@@ -131,11 +139,15 @@ const points = [
       lead={`Framer templates by ${site.name} with clean typography, calm layouts and smooth details, ready to use from the first minute.`}
     />
     <ul class="grid-12 mt-12">
-      {points.map((p) => (
-        <Card as="li" class="col-span-12 sm:col-span-6 lg:col-span-3">
-          <h3 class="font-medium">{p.title}</h3>
-          <p class="type-small mt-2 text-muted">{p.text}</p>
-        </Card>
+      {points.map((p, i) => (
+        <FeatureCard as="li" icon={p.icon} title={p.title} text={p.text} class={`col-span-12 md:col-span-6 ${p.span}`}>
+          <Fragment slot="illustration">
+            {i === 0 && <FeatureResponsive />}
+            {i === 1 && <FeatureNoCode />}
+            {i === 2 && <FeaturePricing />}
+            {i === 3 && <FeatureGrowing templates={all} />}
+          </Fragment>
+        </FeatureCard>
       ))}
     </ul>
   </Section>
@@ -163,6 +175,7 @@ const points = [
         src={ctaMonitor}
         alt="A Framer template shown on a monitor"
         widths={[640, 1000, 1343]}
+        quality={70}
         sizes="(min-width: 1024px) 700px, 100vw"
         class="pointer-events-none relative -mb-px -ml-[15%] mt-10 w-[130%] max-w-none md:-ml-[7.5%] md:w-[115%] lg:absolute lg:left-1/2 lg:top-[-9%] lg:m-0 lg:w-[67%]"
       />

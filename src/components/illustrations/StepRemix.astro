@@ -1,0 +1,25 @@
+---
+import Icon from '../Icon.astro';
+
+// Step 2: the Marketplace template is copied into your own Framer project.
+---
+
+<div class="absolute inset-0 flex items-center justify-center gap-3 px-4">
+  <div class="mini-window w-[34%] p-2.5">
+    <div class="skeleton w-2/3"></div>
+    <div class="skeleton mt-2 w-full"></div>
+    <div class="skeleton mt-1.5 w-4/5"></div>
+    <div class="mt-3 aspect-[4/3] rounded-[0.35rem] bg-fg/10"></div>
+    <p class="type-caption mt-2 text-muted">Marketplace</p>
+  </div>
+  <span class="anim-float grid size-9 shrink-0 place-items-center rounded-full bg-accent text-bg">
+    <Icon name="remix" class="size-4" />
+  </span>
+  <div class="mini-window w-[34%] p-2.5 shadow-[inset_0_0_0_1px_var(--color-accent)]">
+    <div class="skeleton w-2/3"></div>
+    <div class="skeleton mt-2 w-full"></div>
+    <div class="skeleton mt-1.5 w-4/5"></div>
+    <div class="mt-3 aspect-[4/3] rounded-[0.35rem] bg-accent-tint"></div>
+    <p class="type-caption mt-2 text-accent">Your project</p>
+  </div>
+</div>
