@@ -1,0 +1,41 @@
+---
+import LegalPage from '../components/LegalPage.astro';
+import { site } from '../data/site';
+---
+
+<LegalPage title="Privacy Policy" description={`How ${site.name} handles data: no accounts, no cookies, privacy-friendly analytics.`} updated="October 3, 2026">
+  <p>
+    {site.name} is a catalog of Framer templates. You can browse it without an account, and it has no forms, no
+    newsletter and no checkout. This page explains the little data that is involved.
+  </p>
+
+  <h2>What we collect</h2>
+  <p>
+    We use <a href="https://www.cloudflare.com/web-analytics/" target="_blank" rel="noopener noreferrer">Cloudflare Web Analytics</a> to count visits. It does not use cookies or local storage and does not track you across websites. It records
+    aggregated data such as page views, the referring site, country, browser and device type, and page load speed.
+  </p>
+  <p>
+    The site is hosted on Cloudflare. Like any web server, Cloudflare processes your IP address and request details to
+    deliver pages and protect the site from abuse. See the <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare Privacy Policy</a>.
+  </p>
+  <p>If you email us, we receive your email address and message and use them only to reply.</p>
+
+  <h2>Cookies</h2>
+  <p>This site does not set any cookies.</p>
+
+  <h2>Links to other sites</h2>
+  <p>
+    Template pages link to Framer, where templates are previewed, bought and remixed, and the footer links to our social
+    profiles. Those sites have their own privacy policies, and they may set cookies once you visit them. Some links to
+    Framer are referral links; see the <a href="/terms/">Terms</a> for details.
+  </p>
+
+  <h2>Your rights</h2>
+  <p>
+    We do not sell or share personal data and keep no visitor profiles. To ask about, correct or delete anything you have
+    sent us, write to <a href={`mailto:${site.email}`}>{site.email}</a>.
+  </p>
+
+  <h2>Changes</h2>
+  <p>If this policy changes, the new version will be posted here with a new date.</p>
+</LegalPage>
