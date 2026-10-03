@@ -52,7 +52,7 @@
   --grid-columns: 12; /* Number of columns */
   --grid-gutter: 1.25rem; /* Gap between columns and between stacked cards */
   --space-page: 1.25rem; /* Left and right page padding */
-  --space-section: 3.5rem; /* Vertical padding of a section (top and bottom each) */
+  --space-section: 4.25rem; /* Vertical padding of a section (top and bottom each) */
   --space-card: 1.5rem; /* Padding inside a card */
 
   /* Type scale: mobile values here, larger values from 640px below */
@@ -88,7 +88,7 @@
     --text-statement: 4.5rem;
     --text-h1: 3.75rem;
     --text-h2: 3rem;
-    --space-section: 5rem;
+    --space-section: 6rem;
   }
 }
 

@@ -52,7 +52,7 @@ spacing:
   page: "20px"
   gutter: "20px"
   card: "24px"
-  section: "56px"
+  section: "68px"
 components:
   button-primary:
     backgroundColor: "{colors.paper}"
@@ -84,7 +84,7 @@ components:
 
 The site is a dark room with the templates hung on the wall. The shell stays out of the way: black ground, one typeface, one blue accent, hairlines instead of boxes. Every template is a piece of work with its own typography and palette, so the storefront must never compete with it.
 
-The system is flat and typographic. Weight and size carry hierarchy; color is rationed. Pages are short sequences of one idea each, centered headings over a 12-column grid, generous vertical air (56px on phones, 80px from 640px). The template detail page is the one deliberately editorial surface: large type, numbered sections, hairline rules.
+The system is flat and typographic. Weight and size carry hierarchy; color is rationed. Pages are short sequences of one idea each, centered headings over a 12-column grid, generous vertical air (68px on phones, 96px from 640px). The template detail page is the one deliberately editorial surface: large type, numbered sections, hairline rules.
 
 Decoration was removed on purpose (drifting glows, dot grids, footer gradient, status dots). Anything added back must earn its place by showing real work.
 
