@@ -1,22 +1,19 @@
 ---
-import IconTile from './IconTile.astro';
 import Icon from './Icon.astro';
-import type { IconName } from './icons';
 
 // Card with an illustration on top and a title and text below.
 // Pass the picture through the "illustration" slot (see ./illustrations).
-// Use `icon` for feature cards, or `step` for numbered steps.
+// Use `step` for numbered steps; leave it out for plain feature cards.
 interface Props {
   title: string;
   text: string;
-  icon?: IconName;
   step?: number;
   // Show a small arrow in the gap after the card (between steps, from 640px).
   connector?: boolean;
   as?: keyof HTMLElementTagNameMap;
   class?: string;
 }
-const { title, text, icon, step, connector = false, as: Tag = 'div', class: className } = Astro.props;
+const { title, text, step, connector = false, as: Tag = 'div', class: className } = Astro.props;
 ---
 
 <Tag class:list={['feature-card', className]}>
@@ -25,11 +22,10 @@ const { title, text, icon, step, connector = false, as: Tag = 'div', class: clas
   </div>
   <div class="flex flex-1 flex-col px-3 pb-3 pt-5 sm:px-4 sm:pb-4">
     <div class="flex items-center gap-3">
-      {icon && <IconTile name={icon} />}
-      {step !== undefined && <span class="type-small grid size-10 shrink-0 place-items-center rounded-full border border-outline-strong font-medium text-accent">{step}</span>}
+      {step !== undefined && <span class="type-small grid size-8 shrink-0 place-items-center rounded-full bg-accent-tint font-medium text-accent">{step}</span>}
       <h3 class="type-h3">{title}</h3>
     </div>
-    <p class="type-small mt-3 text-muted">{text}</p>
+    <p class="type-body mt-3 text-muted">{text}</p>
   </div>
   {
     connector && (

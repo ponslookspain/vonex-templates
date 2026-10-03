@@ -1,13 +1,33 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
+import SectionHeader from '../components/SectionHeader.astro';
 import Button from '../components/Button.astro';
+import TemplateCard from '../components/TemplateCard.astro';
+
+// Old links to a renamed template land here most often, so the templates are shown right away.
+const templates = (await getCollection('templates')).sort((a, b) => b.data.added.getTime() - a.data.added.getTime());
 ---
 
 <Base title="Page not found">
-  <Section label="Page not found" class="py-32 text-center">
-    <p class="type-small text-accent">404</p>
-    <h1 class="type-h2 mt-3">Page not found</h1>
-    <Button href="/" class="mt-8">Back to home</Button>
+  <Section flush="bottom" class="pt-10 sm:pt-12" labelledby="nf-title">
+    <SectionHeader
+      id="nf-title"
+      level={1}
+      title="Page not found"
+      lead="This page doesn't exist or has moved. The templates are all still here."
+    />
+    <div class="mt-8 flex flex-wrap justify-center gap-3">
+      <Button href="/templates/">Browse templates</Button>
+      <Button href="/" variant="ghost">Back to home</Button>
+    </div>
+  </Section>
+
+  <Section labelledby="nf-list-title" flush="top" class="pt-12">
+    <h2 id="nf-list-title" class="sr-only">Templates</h2>
+    <ul class="grid-12 gap-y-10">
+      {templates.map((t) => <TemplateCard template={t} class="col-span-12 sm:col-span-6 lg:col-span-4" />)}
+    </ul>
   </Section>
 </Base>

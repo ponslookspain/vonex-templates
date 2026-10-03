@@ -12,7 +12,7 @@ const year = new Date().getFullYear();
     class="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-56 bg-gradient-to-t from-accent/25 via-accent/5 to-transparent"
   >
   </div>
-  <Container class="py-14 text-sm">
+  <Container class="type-small py-14">
   <div class="grid-12 gap-y-10">
     <div class="col-span-12 sm:col-span-6">
       <p class="flex items-center gap-2.5 text-lg font-extrabold uppercase tracking-tight">
@@ -29,7 +29,7 @@ const year = new Date().getFullYear();
         {
           site.socials.map((s) => (
             <li>
-              <a class="inline-flex items-center gap-2.5 transition-colors hover:text-muted" href={s.href} target="_blank" rel="noopener noreferrer">
+              <a class="inline-flex items-center gap-2.5 text-fg-soft transition-colors hover:text-fg" href={s.href} target="_blank" rel="noopener noreferrer">
                 <SocialIcon name={s.icon} class="size-4" />
                 {s.label}
               </a>
@@ -42,9 +42,9 @@ const year = new Date().getFullYear();
     <div class="col-span-12 sm:col-span-3">
       <p class="mb-4 text-muted">More</p>
       <ul class="flex flex-col gap-3">
-        <li><a class="transition-colors hover:text-muted" href="/templates/">All templates</a></li>
-        <li><a class="transition-colors hover:text-muted" href={site.framerProfile} target="_blank" rel="noopener noreferrer">Framer profile ↗</a></li>
-        {site.projects.map((p) => <li><a class="transition-colors hover:text-muted" href={p.href} target="_blank" rel="noopener noreferrer">{p.label} ↗</a></li>)}
+        <li><a class="text-fg-soft transition-colors hover:text-fg" href="/templates/">All templates</a></li>
+        <li><a class="text-fg-soft transition-colors hover:text-fg" href={site.framerProfile} target="_blank" rel="noopener noreferrer">Framer profile ↗</a></li>
+        {site.projects.map((p) => <li><a class="text-fg-soft transition-colors hover:text-fg" href={p.href} target="_blank" rel="noopener noreferrer">{p.label} ↗</a></li>)}
       </ul>
     </div>
   </div>

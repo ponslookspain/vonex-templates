@@ -30,7 +30,9 @@ const free = t.price === 0;
     <div class="flex flex-col gap-1 px-2 pb-2">
       <h3 class="type-title">{t.name}</h3>
       <p class="type-small text-muted">{t.tagline}</p>
-      <p class:list={['type-small mt-1 font-medium', free ? 'text-accent' : 'text-fg']}>{free ? 'Free' : `$${t.price}`}</p>
+      <p class="type-small mt-1 text-muted">
+        {t.category}<span aria-hidden="true" class="mx-1.5">·</span><span class="font-medium text-fg">{free ? 'Free' : `$${t.price}`}</span>
+      </p>
     </div>
   </a>
 </li>

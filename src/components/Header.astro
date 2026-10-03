@@ -14,7 +14,7 @@ const path = Astro.url.pathname;
       <span class="sr-only lg:not-sr-only">{site.name}</span>
     </a>
 
-    <div class="flex items-center gap-0.5 text-sm sm:gap-2">
+    <div class="type-small flex items-center gap-0.5 sm:gap-2">
       <nav aria-label="Main" class="hidden items-center md:flex">
         {
           nav.map((item) => (
@@ -47,7 +47,7 @@ const path = Astro.url.pathname;
           ))
         }
       </ul>
-      <Button href="/templates/" size="compact">Browse templates</Button>
+      {!/^\/templates\/?$/.test(path) && <Button href="/templates/" size="compact">Browse templates</Button>}
       <button
         type="button"
         id="menu-toggle"
@@ -74,7 +74,7 @@ const path = Astro.url.pathname;
             target={item.external ? '_blank' : undefined}
             rel={item.external ? 'noopener noreferrer' : undefined}
             aria-current={path === item.href ? 'page' : undefined}
-            class="rounded-control px-3 py-3 text-base text-fg-soft transition-colors hover:bg-white/5 hover:text-fg aria-[current=page]:text-fg"
+            class="rounded-control type-body px-3 py-3 text-fg-soft transition-colors hover:bg-white/5 hover:text-fg aria-[current=page]:text-fg"
           >
             {item.label}
           </a>

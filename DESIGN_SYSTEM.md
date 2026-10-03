@@ -84,7 +84,7 @@ Mobile first: every item is `col-span-12`, then narrows at `sm:` (640), `md:` (7
 
 Press **G** on any page to overlay the 12 columns (always available in `npm run dev`; on production pages only where `<Base gridOverlay>` is set, like the design-system page).
 
-Vertical spacing: sections use `--space-section` (3.5rem phone, 5rem from 640px) top and bottom. Use `flush="top"` or `flush="bottom"` on `Section` to remove one side when two sections should sit closer together.
+Vertical spacing: sections use `--space-section` (4.25rem phone, 6rem from 640px) top and bottom. Use `flush="top"` or `flush="bottom"` on `Section` to remove one side when two sections should sit closer together.
 
 ## Components
 

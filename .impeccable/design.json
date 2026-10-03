@@ -1,0 +1,288 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-03T15:23:00.435Z",
+  "title": "Design System: Vonex Design",
+  "extensions": {
+    "colorMeta": {
+      "void": {
+        "role": "neutral",
+        "displayName": "Void",
+        "canonical": "#000000",
+        "tonalRamp": [
+          "#000000",
+          "#0a0a0a",
+          "#141414",
+          "#1f1f1f",
+          "#2e2e2e",
+          "#4a4a4a",
+          "#8a8a8a",
+          "#f2f2f2"
+        ]
+      },
+      "signal-blue": {
+        "role": "primary",
+        "displayName": "Signal Blue",
+        "canonical": "#0099ff",
+        "tonalRamp": [
+          "#002e4d",
+          "#004c80",
+          "#006bb3",
+          "#008ae6",
+          "#1aa3ff",
+          "#66c2ff",
+          "#a3daff",
+          "#e5f5ff"
+        ]
+      },
+      "graphite": {
+        "role": "neutral",
+        "displayName": "Graphite",
+        "canonical": "#111113",
+        "tonalRamp": [
+          "#242428",
+          "#3c3c43",
+          "#54545e",
+          "#6c6c79",
+          "#868693",
+          "#aeaeb7",
+          "#cfcfd4",
+          "#f2f2f3"
+        ]
+      },
+      "ash": {
+        "role": "neutral",
+        "displayName": "Ash",
+        "canonical": "#9a9aa3",
+        "tonalRamp": [
+          "#242428",
+          "#3d3d43",
+          "#55555d",
+          "#6d6d78",
+          "#878792",
+          "#afafb6",
+          "#cfcfd3",
+          "#f2f2f3"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper",
+        "canonical": "#f4f4f5",
+        "tonalRamp": [
+          "#242428",
+          "#3d3d43",
+          "#55555e",
+          "#6d6d78",
+          "#878792",
+          "#afafb6",
+          "#cfcfd3",
+          "#f2f2f3"
+        ]
+      },
+      "go-green": {
+        "role": "tertiary",
+        "displayName": "Go Green",
+        "canonical": "#34d399",
+        "tonalRamp": [
+          "#0e3f2d",
+          "#17694b",
+          "#209369",
+          "#29bd87",
+          "#42d6a0",
+          "#81e4c0",
+          "#b4efd9",
+          "#eafaf4"
+        ]
+      },
+      "indigo-light": {
+        "role": "secondary",
+        "displayName": "Indigo Light",
+        "canonical": "#6366f1",
+        "tonalRamp": [
+          "#060846",
+          "#0b0d75",
+          "#0f12a4",
+          "#1317d3",
+          "#2c30ec",
+          "#7375f2",
+          "#abacf7",
+          "#e8e8fd"
+        ]
+      },
+      "sky-light": {
+        "role": "secondary",
+        "displayName": "Sky Light",
+        "canonical": "#38bdf8",
+        "tonalRamp": [
+          "#03344a",
+          "#04577b",
+          "#0679ac",
+          "#089cde",
+          "#21b5f7",
+          "#6bcefa",
+          "#a6e2fc",
+          "#e6f7fe"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Home hero headline only."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section and page titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Template names on cards."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running text."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Tags and badges."
+      }
+    },
+    "shadows": [
+      {
+        "name": "hairline-rest",
+        "value": "inset 0 0 0 1px rgb(255 255 255 / 0.06)",
+        "purpose": "Outline around media and cards at rest."
+      },
+      {
+        "name": "hairline-strong",
+        "value": "inset 0 0 0 1px rgb(255 255 255 / 0.14)",
+        "purpose": "Outline on hover, selection and tags."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-soft",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "Default easing for all state changes."
+      },
+      {
+        "name": "duration-fast",
+        "value": "150ms",
+        "purpose": "Color and state changes."
+      },
+      {
+        "name": "duration-base",
+        "value": "300ms",
+        "purpose": "Transitions of blocks."
+      },
+      {
+        "name": "duration-slow",
+        "value": "500ms",
+        "purpose": "Image zoom on card hover."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Main action; Paper fill on black.",
+      "html": "<a class=\"ds-btn ds-btn-primary\" href=\"#\">Open on Framer</a>",
+      "css": ".ds-btn{font-family:Inter Variable,ui-sans-serif,system-ui,sans-serif;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;border-radius:8px;padding:10px 16px;font-size:14px;line-height:1.45;font-weight:500;text-decoration:none;cursor:pointer;transition:background-color 150ms cubic-bezier(.22,1,.36,1),border-color 150ms cubic-bezier(.22,1,.36,1);}.ds-btn-primary{background:#f4f4f5;color:#000}.ds-btn-primary:hover{background:rgba(255,255,255,.8)}.ds-btn:focus-visible{outline:2px solid #0099ff;outline-offset:3px}"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Secondary action; hairline border.",
+      "html": "<a class=\"ds-btn ds-btn-ghost\" href=\"#\">Live preview</a>",
+      "css": ".ds-btn{font-family:Inter Variable,ui-sans-serif,system-ui,sans-serif;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;border-radius:8px;padding:10px 16px;font-size:14px;line-height:1.45;font-weight:500;text-decoration:none;cursor:pointer;transition:background-color 150ms cubic-bezier(.22,1,.36,1),border-color 150ms cubic-bezier(.22,1,.36,1);}.ds-btn-ghost{border:1px solid #222226;color:#f4f4f5;background:transparent}.ds-btn-ghost:hover{border-color:rgba(255,255,255,.3);background:#121214}.ds-btn:focus-visible{outline:2px solid #0099ff;outline-offset:3px}"
+    },
+    {
+      "name": "Tag",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "Outlined pill for categories and features.",
+      "html": "<span class=\"ds-tag\">Minimal</span>",
+      "css": ".ds-tag{display:inline-block;border-radius:9999px;padding:4px 12px;font:500 12px/1.35 Inter Variable,ui-sans-serif,system-ui,sans-serif;color:rgba(244,244,245,.8);box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}"
+    },
+    {
+      "name": "Template Card",
+      "kind": "card",
+      "refersTo": "template-card",
+      "description": "Catalog entry: framed image, name, tagline, category and price.",
+      "html": "<a class=\"ds-card\" href=\"#\"><div class=\"ds-card-img\"></div><div class=\"ds-card-body\"><h3>Sanctun</h3><p>Elegant Minimal Wedding Template</p><p class=\"ds-card-meta\">Wedding <span aria-hidden=\"true\">·</span> <b>$49</b></p></div></a>",
+      "css": ".ds-card{display:flex;flex-direction:column;gap:16px;width:280px;padding:12px;background:#111113;border-radius:16px;color:#f4f4f5;text-decoration:none;font-family:Inter Variable,ui-sans-serif,system-ui,sans-serif;transition:background-color 150ms cubic-bezier(.22,1,.36,1)}.ds-card:hover{background:#121214}.ds-card-img{aspect-ratio:4/3;border-radius:12px;background:linear-gradient(135deg,#222226,#0a0a0a)}.ds-card-body{padding:0 8px 8px}.ds-card h3{margin:0;font-size:18px;font-weight:600;letter-spacing:-.025em;line-height:1.55}.ds-card p{margin:4px 0 0;font-size:14px;line-height:1.45;color:#9a9aa3}.ds-card-meta b{color:#f4f4f5;font-weight:500}.ds-card:focus-visible{outline:2px solid #0099ff;outline-offset:3px}"
+    },
+    {
+      "name": "Header Navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "Fixed header: logo, nav links, one compact CTA.",
+      "html": "<nav class=\"ds-nav\"><b class=\"ds-logo\">VONEX DESIGN</b><span class=\"ds-links\"><a href=\"#\" class=\"ds-cur\">Home</a><a href=\"#\">Templates</a></span><a class=\"ds-cta\" href=\"#\">Browse templates</a></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 20px;background:#000;font-family:Inter Variable,ui-sans-serif,system-ui,sans-serif;font-size:14px;color:#f4f4f5}.ds-logo{font-weight:800;letter-spacing:-.02em}.ds-links a{padding:8px 12px;color:rgba(244,244,245,.8);text-decoration:none;transition:color 150ms}.ds-links a:hover,.ds-links a.ds-cur{color:#f4f4f5}.ds-cta{background:#f4f4f5;color:#000;border-radius:8px;padding:8px 12px;font-size:13px;font-weight:500;text-decoration:none}.ds-cta:hover{background:rgba(255,255,255,.8)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Gallery",
+    "overview": "The site is a dark room with the templates hung on the wall. The shell stays out of the way: black ground, one typeface, one blue accent, hairlines instead of boxes. Every template is a piece of work with its own typography and palette, so the storefront must never compete with it.",
+    "keyCharacteristics": [
+      "Pure black ground with near-white text; the accent appears only on interaction and focus.",
+      "Inter Variable for everything, tight negative tracking on headings.",
+      "Flat surfaces, hairline outlines, no soft shadows.",
+      "Real template imagery is the only ornament.",
+      "One call to action wording: \"Browse templates\"."
+    ],
+    "rules": [
+      {
+        "name": "The One Voice Rule",
+        "body": "Signal Blue appears on interaction and focus, not as a fill. If a screen needs a color to feel alive, the templates' own images are the color.",
+        "section": "colors"
+      },
+      {
+        "name": "The Grey-Free Rule",
+        "body": "Secondary text is Paper at reduced opacity or Ash, nothing between.",
+        "section": "colors"
+      },
+      {
+        "name": "The Role Rule",
+        "body": "Text size always comes from a type-* role, never from raw Tailwind sizes.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-By-Default Rule",
+        "body": "Surfaces never lift. State is shown with a tone or hairline change, not a shadow.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do let template imagery carry color and character; keep the shell black and white.",
+      "Do use `Browse templates` for every link to the catalog.",
+      "Do keep the main action (\"Open on Framer\") on the first phone screen of every template page.",
+      "Do build with tokens from `global.css`; add a token before adding a raw value.",
+      "Do keep a visible 2px Signal Blue focus ring with 3px offset on every interactive element."
+    ],
+    "donts": [
+      "Don't add glows, blurred blobs, dot grids or gradient washes as decoration.",
+      "Don't put a blue label (eyebrow) above section headings.",
+      "Don't use shadows for elevation.",
+      "Don't use Signal Blue as a button fill or for body text.",
+      "Don't add a second typeface without a specific reason tied to the work shown."
+    ]
+  }
+}

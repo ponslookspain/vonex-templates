@@ -1,0 +1,22 @@
+---
+// FAQ section: the title on the left (it stays in view while you read), the questions on the
+// right as hairline-separated rows. Put <FaqItem> children in the default slot.
+import Section from './Section.astro';
+
+interface Props {
+  title: string;
+  id?: string;
+  sectionId?: string;
+  flush?: 'top' | 'bottom';
+}
+const { title, id = 'faq-title', sectionId = 'faq', flush } = Astro.props;
+---
+
+<Section id={sectionId} labelledby={id} flush={flush}>
+  <div class="grid-12 gap-y-8">
+    <h2 id={id} class="type-h2 col-span-12 text-balance lg:sticky lg:top-28 lg:col-span-4 lg:self-start">{title}</h2>
+    <div class="faq-list col-span-12 lg:col-span-7 lg:col-start-6">
+      <slot />
+    </div>
+  </div>
+</Section>
