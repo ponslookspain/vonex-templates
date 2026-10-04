@@ -64,20 +64,17 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': 'Product',
+        // CreativeWork, not Product: the site sells nothing itself, so Google should not
+        // treat template pages as merchant listings (no offers, ratings or shipping).
+        '@type': 'CreativeWork',
         name: `${t.name}: ${t.tagline}`,
         description: t.description,
         image: new URL(ogPath, Astro.site).href,
         url: pageUrl,
-        category: `${t.category} Framer template`,
-        brand: { '@type': 'Brand', name: site.name },
-        offers: {
-          '@type': 'Offer',
-          price: t.price,
-          priceCurrency: 'USD',
-          availability: 'https://schema.org/InStock',
-          url: buyUrl,
-        },
+        genre: `${t.category} Framer template`,
+        isAccessibleForFree: t.price === 0,
+        creator: { '@type': 'Organization', name: site.name, url: new URL('/', Astro.site).href },
+        sameAs: t.url,
       },
       {
         '@type': 'BreadcrumbList',
