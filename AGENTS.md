@@ -49,7 +49,7 @@ Never push straight to `main`, never force-push. Delete branches once they are m
 | `src/data/site.ts` | Site name, texts, contacts, socials, nav, analytics token. |
 | `scripts/add-template.mjs` | Import / refresh templates from Framer Marketplace. |
 | `scripts/generate-og.mjs` | Social preview images `public/og/<slug>.png`. |
-| `public/` | Served as is: favicons, `og-image.png`, `og/`, `_headers`. |
+| `public/` | Served as is: favicons, `og-image.png`, `og/`, `pins/` (Pinterest pin images, see below), `_headers`. |
 
 ## Adding or changing a template
 
@@ -67,6 +67,10 @@ After changing a name, tagline, price or cover, run `npm run og` (or `npm run og
 Template cards show only the cover, the price/Free badge, the name and the tagline. Do not add descriptions or tags to cards.
 
 Category filtering is planned as static SEO pages (`/templates/category/<x>/`) once a category has 2+ templates; until then there is no filter.
+
+## Pinterest pins
+
+`public/pins/<slug>-NN-<layout>-<background>.jpg` are the Pinterest pin images (1000x1500, text-free). They live here only because Pinterest's CSV bulk upload needs a public URL for every image: `https://vonexdesign.com/pins/<file>.jpg`. Nothing on the site links to them. They are made, with the CSV, by the local `pinterest-pins` skill (`.claude/skills/pinterest-pins`). Each pin links to the template page on this site with UTM tags (`utm_source=pinterest`), not straight to Framer.
 
 ## Template offers
 
