@@ -13,6 +13,8 @@ export const site = {
   framerProfile: 'https://www.framer.com/@vonexdesign/',
   // Bing Webmaster Tools ownership check (msvalidate.01). Public, keep it: removing it unverifies the site.
   bingSiteVerification: 'F41F52232C55B72905DD1670886C1709',
+  // Pinterest website claim (p:domain_verify). Public, keep it: removing it unclaims the site.
+  pinterestDomainVerify: '12d900f69dd936e707bd97f4974e4cab',
   // Framer referral link to framer.com, for sign-up and plan links in the guides (not for templates:
   // each template has its own `affiliateUrl`). Links using it get rel="sponsored".
   framerReferral: 'https://framer.link/vonex-studio',
