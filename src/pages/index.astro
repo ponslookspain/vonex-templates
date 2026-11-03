@@ -69,22 +69,22 @@ const faq = [
     <Container>
       <!-- Each label sits on a white backing so the column lines never run through the text. -->
       <div class="type-label grid-4 py-lg">
-        <span class="col-span-2 md:col-span-1"><span class="bg-bg py-xs pr-sm">Framer templates</span></span>
-        <span class="hidden text-center md:col-span-2 md:block"><span class="bg-bg px-sm py-xs">{pad(all.length)} templates · {pad(freeCount)} free</span></span>
-        <span class="col-span-2 text-right md:col-span-1"><span class="bg-bg py-xs pl-sm">{site.name}</span></span>
+        <span class="col-span-2 md:col-span-1"><span class="inline-block bg-bg py-xs pr-sm">Framer templates</span></span>
+        <span class="hidden text-center md:col-span-2 md:block"><span class="inline-block bg-bg px-sm py-xs">{pad(all.length)} templates · {pad(freeCount)} free</span></span>
+        <span class="col-span-2 text-right md:col-span-1"><span class="inline-block bg-bg py-xs pl-sm">{site.name}</span></span>
       </div>
 
       <h1 id="hero-title" class="type-display mt-xl bg-bg text-center">Framer<br /><em class="type-accent">templates</em>.</h1>
 
       <div class="grid-4 mt-xl items-end gap-y-xl">
-        <div class="order-2 col-span-4 bg-bg md:order-1 md:col-span-1">
+        <div class="order-2 col-span-4 bg-bg lg:order-1 lg:col-span-1">
           <p class="type-body type-pillar">Ready-made websites, set in Framer. Pick one, remix it, publish it today.</p>
           <Button href="/templates/" arrow class="mt-lg">Explore</Button>
         </div>
-        <HeroSlider templates={slides} class="order-1 col-span-4 md:order-2 md:col-span-2" />
-        <div class="order-3 col-span-4 flex flex-col gap-sm bg-bg md:col-span-1 md:items-end">
+        <HeroSlider templates={slides} class="order-1 col-span-4 lg:order-2 lg:col-span-2" />
+        <div class="order-3 col-span-4 flex flex-col gap-sm bg-bg lg:col-span-1 lg:items-end">
           <Button href={buyLink(slides[0].data).href} variant="secondary" target="_blank" rel={buyLink(slides[0].data).sponsored ? 'noopener noreferrer sponsored' : 'noopener noreferrer'} arrow data-hero-cta>{buyLink(slides[0].data).direct ? 'Buy template' : 'View on Framer'}</Button>
-          <p class="type-label"><span class="bg-bg py-xs">Built in Framer · No code</span></p>
+          <p class="type-label"><span class="inline-block bg-bg py-xs">Built in Framer · No code</span></p>
         </div>
       </div>
     </Container>

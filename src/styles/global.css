@@ -274,6 +274,10 @@
     margin-bottom: var(--space-section);
     color: var(--color-muted);
   }
+  /* Long labels (price · category on template pages) wrap instead of pushing past a phone screen. */
+  .section-bar > * {
+    min-width: 0;
+  }
   /* Two halves on the rails, split by the center line (stacked, with a line between, on phones).
      <div class="split flush-rails"><div class="split-cell">…</div><div>…</div></div> */
   .split {
@@ -399,7 +403,9 @@
     align-items: center;
     justify-content: center;
     gap: var(--spacing-sm);
-    white-space: nowrap;
+    /* One line where it fits; a long label wraps on a narrow phone instead of running off screen. */
+    max-width: 100%;
+    text-align: center;
     padding: var(--spacing-sm) var(--spacing-lg);
     border: var(--border-hairline) solid var(--color-fg);
     font-family: var(--font-mono);

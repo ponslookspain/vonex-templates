@@ -110,7 +110,8 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
         <span aria-hidden="true" class="mx-2">/</span>
         <span>{t.name}</span>
       </nav>
-      <span class="text-right">{priceLabel} · {templateKind}</span>
+      <!-- Hidden on phones: no room next to the breadcrumb, and the kicker below says the same. -->
+      <span class="hidden text-right sm:inline">{priceLabel} · {templateKind}</span>
     </div>
 
     <!-- A spec sheet on the page rails: the gallery on the left, everything about the template on
@@ -369,6 +370,8 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
      center hairline; the gallery stays in view while the details scroll. */
   .product {
     display: grid;
+    /* minmax(0, 1fr): an implicit auto column grows to its widest content and pushes the page past the phone screen. */
+    grid-template-columns: minmax(0, 1fr);
     grid-template-areas: 'head' 'gallery' 'doc';
     /* Same place as the page rails: keeps them visible past the opaque stat cells. */
     border-inline: var(--border-hairline) solid var(--color-line);
