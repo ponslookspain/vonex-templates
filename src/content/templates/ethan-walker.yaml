@@ -2,8 +2,12 @@ name: Ethan Walker
 tagline: Digital Designer Portfolio
 description: Bold typography and spacious layouts for designers, with a CMS-powered portfolio.
 url: https://www.framer.com/marketplace/templates/ethan-walker/
-affiliateUrl: https://framer.link/NOKcI58
+affiliateUrl: https://framer.link/OOMlcTk
 preview: https://ethan-walker.framer.website/
+pageKind: "Portfolio"
+seoDescription: "Ethan Walker is a free Framer portfolio template for designers and freelancers, with CMS projects and services. See included pages and the live demo."
+overview: "Build a portfolio around your own projects rather than a long introduction. Ethan Walker pairs large typography with CMS project pages, so you can add work as your portfolio grows."
+preparation: "Prepare project images, case-study text and service descriptions. Review the included CMS collections against your Framer plan before publishing."
 category: Portfolio
 price: 0
 tags:

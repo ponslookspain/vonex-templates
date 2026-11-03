@@ -51,6 +51,12 @@ const isPolicy = (t: string) => /\b(refunds?|returns?)\b.*\bpolicy\b/.test(t);
 const isUpdates = (t: string) => /^(updates?|changelog|what.?s new)$/.test(t);
 const isVersion = (t: string) => /^v?\d+(\.\d+)*\b/.test(t);
 
+function describesCms(text: string): boolean {
+  // Marketplace feature arrays can be empty even when named CMS pages are included.
+  if (/\b(?:no|without|not|doesn't)\b[^.!?;]*\bcms\b/i.test(text)) return false;
+  return /\bcms[- ]powered\b|\bcms\s+(?:blog|changelog|projects?|services?|team|collections?)\b|\(\s*cms\s*\)/i.test(text);
+}
+
 function listKind(t: string): ListBlock['kind'] | null {
   if (/^features?\b/.test(t)) return 'features';
   if (/pages?\b.*included|included\b.*pages?|^pages?$/.test(t)) return 'pages';
@@ -72,7 +78,9 @@ export function buildContent(t: Template): TemplateContent {
     pages: [],
     sectionNames: [],
     cmsParts: [],
-    hasCms: t.framerFeatures.some((f) => /^cms$/i.test(f)),
+    hasCms: t.framerFeatures.some((f) => /^cms$/i.test(f)) || sections.some((section) =>
+      [section.title, ...(section.items ?? []), ...(section.paragraphs ?? [])].some(describesCms),
+    ),
   };
 
   let i = 0;

@@ -1,0 +1,95 @@
+---
+import LegalPage from '../../components/LegalPage.astro';
+import Button from '../../components/Button.astro';
+import { site } from '../../data/site';
+import { getEntry } from 'astro:content';
+import GuideFigure from '../../components/GuideFigure.astro';
+
+const alpine = await getEntry('templates', 'alpine-app');
+
+const title = 'How to use a Framer template';
+const description = 'Copy a Framer template, replace the content, check mobile and publish your site. Includes what is free, what costs money and what to check first.';
+const url = new URL('/guides/how-to-use-framer-templates/', Astro.site).href;
+const steps = [
+  ['Open the template on Framer', 'Press "View on Framer" on any template page. Look at the live demo first, and read the list of included pages.'],
+  ['Copy it to your account', 'Press the remix button on the Marketplace page and sign in to Framer. The template is copied into your own project. The original stays untouched.'],
+  ['Replace the content', 'Click any text or image and change it. Start with the home page, then move to the other pages. Colors and fonts are set once in the styles panel, so a new look is quick.'],
+  ['Check every size', 'Switch between desktop, tablet and phone in the editor. Fix long words, small images and crowded buttons before you publish.'],
+  ['Publish', 'Press Publish in Framer. You get a free framer.website address to share and test. Add your own domain when you are ready.'],
+];
+---
+
+<LegalPage accent="template"
+  kicker="Guide"
+  title={title}
+  seoTitle={`${title}: copy, edit and publish`}
+  description={description}
+  updated="November 3, 2026"
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: title,
+    description,
+    url,
+    step: steps.map(([name, text], i) => ({ '@type': 'HowToStep', position: i + 1, name, text })),
+  }}
+>
+  <p>
+    A Framer template is a finished website you copy into your own Framer account. You change the words, pictures and
+    colors in the editor. You do not write code.
+  </p>
+  {alpine && <GuideFigure template={alpine} picture={0} caption="Alpine App, one of our free templates, as it comes" />}
+
+  <h2>Five steps</h2>
+  <ol>
+    {steps.map(([name, text]) => <li><strong>{name}.</strong> {text}</li>)}
+  </ol>
+
+  <h2>Before you start</h2>
+  <ul>
+    <li>Make a <a href={site.framerReferral} target="_blank" rel="noopener noreferrer sponsored">free Framer account</a>. Editing a template needs one.</li>
+    <li>Collect your text, logo and images first. Editing goes fast when the content is ready.</li>
+    <li>Pick a template that already looks like your site. It is easier to fill a layout than to rebuild one.</li>
+  </ul>
+
+  <h2>What it costs</h2>
+  <p>There are three separate costs. Mixing them up is the most common surprise.</p>
+  <ul>
+    <li><strong>The template.</strong> Some are free, some are paid once. Our <a href="/templates/free/">free templates</a> cost nothing to copy. Paid templates show their price on the template page.</li>
+    <li><strong>The Framer plan.</strong> You can build and test on a free account. A custom domain, and higher page and CMS limits, need a paid site plan. Plans and limits change, so read the <a href="https://www.framer.com/pricing/" target="_blank" rel="noopener noreferrer">current Framer pricing</a>.</li>
+    <li><strong>The domain.</strong> A name like yourname.com is bought from a domain seller, not from us.</li>
+  </ul>
+  <p>
+    A free template does not mean free publishing on your own domain. Plan for the Framer plan and the domain.
+    The full breakdown is in <a href="/guides/framer-pricing/">Framer pricing explained</a>.
+  </p>
+
+  <h2>Check before you publish</h2>
+  <ul>
+    <li>Replace every sample name, email, link and image.</li>
+    <li>Set the page title, description and social image for each page.</li>
+    <li>Open the site on a real phone.</li>
+    <li>Click every button and test every form.</li>
+    <li>If the template has a CMS, check that the number of items fits your plan.</li>
+    <li>Update the privacy and legal pages so they describe your own site.</li>
+  </ul>
+
+  <h2>Using a template for a client</h2>
+  <p>
+    Read the license on the template's Framer page first. It sets what you may do. We do not add terms of our own on top.
+  </p>
+
+  <h2>Get help</h2>
+  <p>
+    Stuck on one of our templates? Write to <a href={`mailto:${site.email}`}>{site.email}</a>. Questions about using or
+    customizing a Vonex template are welcome. For account and billing questions, use <a href="https://www.framer.com/help/" target="_blank" rel="noopener noreferrer">Framer's help center</a>.
+  </p>
+  <p>
+    Want a worked example? <a href="/guides/framer-portfolio-template/">Build a portfolio with Ethan Walker</a>.
+  </p>
+
+  <div class="mt-xl flex flex-wrap gap-sm">
+    <Button href="/templates/free/" arrow>Free templates</Button>
+    <Button href="/templates/" variant="secondary" arrow>All templates</Button>
+  </div>
+</LegalPage>

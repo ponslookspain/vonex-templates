@@ -1,0 +1,82 @@
+---
+import { getEntry } from 'astro:content';
+import LegalPage from '../../components/LegalPage.astro';
+import Button from '../../components/Button.astro';
+import TemplateRoundup from '../../components/TemplateRoundup.astro';
+import GuideFigure from '../../components/GuideFigure.astro';
+
+const harrier = await getEntry('templates', 'harrier');
+const alpine = await getEntry('templates', 'alpine-app');
+if (!harrier || !alpine) throw new Error('The SaaS roundup needs harrier and alpine-app.');
+
+const title = 'Best free Framer SaaS and app templates';
+const description = 'Free Framer templates for SaaS products, AI tools and mobile app launches, with who each one suits and what a launch page needs.';
+const url = new URL('/guides/framer-saas-app-templates/', Astro.site).href;
+
+// By other creators, free on Framer Marketplace on November 3, 2026. The focus line is what the
+// creator states on the listing.
+const saas = [
+  { name: 'Saasbright', by: 'John Nicholson', slug: 'saasbright', focus: 'A light, editorial SaaS site.', fit: 'Products that want a calm, text-led site.' },
+  { name: 'Alytics', by: 'Asad Khaleel', slug: 'alytics', focus: 'A SaaS landing page.', fit: 'A single page for a product launch.' },
+  { name: 'Kero', by: 'Davide Pacilio', slug: 'kero', focus: 'An AI and SaaS landing page.', fit: 'AI tools that need one strong page.' },
+  { name: 'Aigent', by: 'Framer Geeks', slug: 'aigent', focus: 'A template for AI agent and automation products.', fit: 'AI agent startups.' },
+  { name: 'Verity', by: 'Kadir Calik', slug: 'verity', focus: 'An AI automation template.', fit: 'Automation services and tools.' },
+];
+const apps = [
+  { name: 'Habitline', by: 'Salim from Webestica', slug: 'habitline', focus: 'A mobile and web app landing page.', fit: 'Apps that run on phone and web.' },
+  { name: 'AppNext', by: 'Naveed Shah', slug: 'appnext', focus: 'A SaaS and mobile app template.', fit: 'Products with an app and a web dashboard.' },
+  { name: 'Swift App', by: 'Yousef Osman', slug: 'swift-app', focus: 'A mobile app landing page.', fit: 'Health and lifestyle apps.' },
+  { name: 'Stash', by: 'Berci Hazman', slug: 'stash', focus: 'A mobile app waitlist page.', fit: 'Apps that are not out yet.' },
+  { name: 'Glow', by: 'Offset UI', slug: 'glow', focus: 'A fintech mobile app landing page.', fit: 'Finance and payment apps.' },
+];
+---
+
+<LegalPage accent="app"
+  kicker="Roundup"
+  title={title}
+  seoTitle="12 best free Framer SaaS and app templates (2026)"
+  description={description}
+  updated="November 3, 2026"
+  jsonLd={{ '@context': 'https://schema.org', '@type': 'Article', headline: title, description, url, mainEntityOfPage: url, dateModified: '2026-11-03', author: { '@type': 'Organization', name: 'Vonex Design', url: new URL('/', Astro.site).href } }}
+>
+  <p>
+    A product site has one job: explain what the product does and get a sign-up or a download. These free Framer
+    templates are built for that. Two are ours, and we say so; the rest are by other creators and were free on
+    Framer Marketplace on November 3, 2026.
+  </p>
+
+  <h2>What a launch page needs</h2>
+  <ul>
+    <li>A headline that says what the product does, and one clear action.</li>
+    <li>Real screenshots or a short screen recording.</li>
+    <li>Pricing, even if it is "free while in beta".</li>
+    <li>For apps: store links, and the support and privacy pages app stores ask for.</li>
+  </ul>
+
+  <h2>1. {harrier.data.name} (ours)</h2>
+  <GuideFigure template={harrier} caption={`${harrier.data.name}: ${harrier.data.tagline}`} />
+  <p>An editorial site for AI and SaaS products, with features, plan comparison, a CMS blog and a changelog.</p>
+  <p><strong>Best for:</strong> software that ships updates and wants to show them.</p>
+  <p><a href={`/templates/${harrier.id}/`}>See {harrier.data.name}</a></p>
+
+  <h2>2. {alpine.data.name} (ours)</h2>
+  <GuideFigure template={alpine} caption={`${alpine.data.name}: ${alpine.data.tagline}`} />
+  <p>A monochrome app landing page with a phone preview, store buttons, a Free/Pro pricing table, and the Support and Legal pages app stores ask for.</p>
+  <p><strong>Best for:</strong> mobile apps getting ready for App Store and Google Play.</p>
+  <p><a href={`/templates/${alpine.id}/`}>See {alpine.data.name}</a></p>
+
+  <TemplateRoundup entries={saas} start={3} />
+  <TemplateRoundup entries={apps} start={3 + saas.length} />
+
+  <h2>How to choose</h2>
+  <ul>
+    <li><strong>One page or several?</strong> A new product often needs one page. Add a blog and changelog once you ship regularly.</li>
+    <li><strong>Check the CMS.</strong> A blog or changelog lives in the CMS; it affects which Framer plan you need. See <a href="/guides/framer-pricing/">Framer pricing explained</a>.</li>
+    <li><strong>Try it with your screenshots.</strong> A template that looks great with sample art may not suit your product's UI.</li>
+  </ul>
+
+  <div class="mt-xl flex flex-wrap gap-sm">
+    <Button href="/templates/free/" arrow>Our free templates</Button>
+    <Button href="/guides/" variant="secondary" arrow>More guides</Button>
+  </div>
+</LegalPage>

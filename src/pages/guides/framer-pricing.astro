@@ -1,0 +1,146 @@
+---
+import LegalPage from '../../components/LegalPage.astro';
+import Button from '../../components/Button.astro';
+import { site } from '../../data/site';
+
+const title = 'Is Framer free? Framer pricing explained';
+const description = 'What the free Framer plan includes, when you need Basic or Pro, what a custom domain costs and which plan each Vonex template needs. Checked November 2026.';
+const url = new URL('/guides/framer-pricing/', Astro.site).href;
+const pricing = 'https://www.framer.com/pricing';
+
+// Plan limits as published on framer.com/pricing on November 3, 2026.
+const plans = [
+  { name: 'Free', price: '$0', domain: 'framer.website address', pages: '1,000', cms: '10 collections', bandwidth: '1 GB', fit: 'Trying Framer, non-commercial sites' },
+  { name: 'Basic', price: '$10 / mo', domain: 'Your own domain', pages: '30', cms: '2 collections, 1,000 items', bandwidth: '50 GB', fit: 'Portfolios and personal sites' },
+  { name: 'Pro', price: '$30 / mo', domain: 'Your own domain', pages: '150', cms: '10 collections, 2,500 items', bandwidth: '100 GB', fit: 'Business sites, blogs, teams' },
+];
+
+// What each Vonex template uses, from its Marketplace listing.
+const templates = [
+  { name: 'Alpine App', slug: 'alpine-app', cms: 'None', pages: '4', plan: 'Basic' },
+  { name: 'Ethan Walker', slug: 'ethan-walker', cms: '3 (Projects, Services, Privacy Policy)', pages: '7', plan: 'Pro, or Basic after removing one collection' },
+  { name: 'Harrier', slug: 'harrier', cms: '2 (Blog, Changelog)', pages: 'Several plus CMS pages', plan: 'Basic' },
+  { name: 'Softic Studio', slug: 'softic-studio', cms: '2 (Projects, Team)', pages: '7', plan: 'Basic' },
+  { name: 'Sanctun', slug: 'sanctun', cms: 'None', pages: 'One-page site', plan: 'Basic' },
+];
+
+const faq = [
+  { q: 'Is Framer free?', a: 'Yes, to build and test. The Free plan publishes your site on a framer.website address with a Framer badge, and Framer describes it as ideal for non-commercial use. Your own domain needs a paid plan.' },
+  { q: 'How much does Framer cost per month?', a: 'Basic is $10 a month and Pro is $30 a month per site when billed yearly. Paying month by month costs more. Enterprise is priced on request.' },
+  { q: 'Can I use my own domain on the free plan?', a: 'No. A custom domain needs Basic or Pro. On yearly billing Framer includes a complimentary domain.' },
+  { q: 'Do I pay per site or per account?', a: 'Per site. Each published site has its own plan. Building and testing more sites on the Free plan costs nothing.' },
+  { q: 'Do free Framer templates cost anything?', a: 'The template itself is free to copy. You pay only for the plan of the site you publish, and for a domain if you do not use the complimentary one.' },
+];
+---
+
+<LegalPage accent="free"
+  kicker="Guide"
+  title={title}
+  seoTitle="Is Framer free? Framer pricing explained (2026)"
+  description={description}
+  updated="November 3, 2026"
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'Article', headline: title, description, url, mainEntityOfPage: url, dateModified: '2026-11-03', author: { '@type': 'Organization', name: 'Vonex Design', url: new URL('/', Astro.site).href } },
+      { '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+    ],
+  }}
+>
+  <p>
+    <strong>Short answer:</strong> Framer is free to build with and to publish on a framer.website address. Your own
+    domain costs $10 a month on Basic or $30 a month on Pro, per site, billed yearly. Most portfolios and small sites
+    fit on Basic.
+  </p>
+  <p>
+    We make Framer templates, so we pick plans for real sites all the time. Prices and limits below were checked on
+    <a href={pricing} target="_blank" rel="noopener noreferrer">framer.com/pricing</a> on November 3, 2026. Framer
+    changes them from time to time, so confirm before you pay.
+  </p>
+  <p>
+    Our "Try Framer" links are referral links: if you upgrade after following one, we may earn a commission. It
+    costs you nothing extra and does not change what we recommend.
+  </p>
+
+  <h2>The plans at a glance</h2>
+  <div class="overflow-x-auto">
+    <table class="doc-table">
+      <thead>
+        <tr><th>Plan</th><th>Price</th><th>Domain</th><th>Pages</th><th>CMS</th><th>Bandwidth</th><th>Good for</th></tr>
+      </thead>
+      <tbody>
+        {plans.map((p) => (
+          <tr><th scope="row">{p.name}</th><td>{p.price}</td><td>{p.domain}</td><td>{p.pages}</td><td>{p.cms}</td><td>{p.bandwidth}</td><td>{p.fit}</td></tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Prices are per site per month on yearly billing. Paying monthly costs more: when we checked, Basic was €15 and Pro
+    €45 a month on monthly billing in Europe, against €10 and €30 yearly. Enterprise has custom limits and pricing.
+  </p>
+
+  <h2>What the free plan really gives you</h2>
+  <ul>
+    <li>The full editor, templates, CMS and publishing.</li>
+    <li>A live site on a framer.website address, with a Framer badge.</li>
+    <li>1 GB of bandwidth and 500 AI credits to try Framer's AI features.</li>
+    <li>Up to three editors in a workspace without a subscription.</li>
+  </ul>
+  <p>
+    What it does not give you: your own domain. Framer also says the free plan is ideal for non-commercial use, so a
+    business site belongs on a paid plan.
+  </p>
+
+  <h2>Basic or Pro?</h2>
+  <p><strong>Choose Basic</strong> if your site has up to 30 pages and needs at most two CMS collections, for example projects and a blog. This covers most portfolios, landing pages and small business sites.</p>
+  <p><strong>Choose Pro</strong> if you need more pages or collections, more than 1,000 CMS items, redirects from an old site, a staging site to test changes, or more bandwidth.</p>
+  <p>Both include your own domain, built-in SEO settings and site analytics: 30 days of history on Basic, 90 on Pro.</p>
+
+  <h2>Costs people miss</h2>
+  <ul>
+    <li><strong>Extra editors:</strong> $20 a month each, or $10 for a content-only editor. The workspace owner and viewers are free.</li>
+    <li><strong>Translations:</strong> each extra language is a $20 a month add-on.</li>
+    <li><strong>Going over limits:</strong> for bandwidth Framer lets you exceed the limit for a month and emails you. Other limits ask you to upgrade.</li>
+    <li><strong>The domain:</strong> included on yearly billing. On monthly billing, budget for buying one yourself.</li>
+  </ul>
+
+  <h2>Which plan our templates need</h2>
+  <p>Count the CMS collections first: that is the limit people hit on Basic.</p>
+  <div class="overflow-x-auto">
+    <table class="doc-table">
+      <thead><tr><th>Template</th><th>CMS collections</th><th>Pages</th><th>Plan</th></tr></thead>
+      <tbody>
+        {templates.map((t) => (
+          <tr><th scope="row"><a href={`/templates/${t.slug}/`}>{t.name}</a></th><td>{t.cms}</td><td>{t.pages}</td><td>{t.plan}</td></tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Ethan Walker keeps its privacy policy in the CMS. If you are on Basic, turn that page into a normal page and you
+    are down to two collections.
+  </p>
+
+  <h2>How to spend the least</h2>
+  <ol>
+    <li>Build the whole site on the free plan first: <a href={site.framerReferral} target="_blank" rel="noopener noreferrer sponsored">start a free Framer account</a>. You only pay when you publish on your domain.</li>
+    <li>Start on Basic. You can upgrade to Pro later without rebuilding anything.</li>
+    <li>Pay yearly if you are sure: it is cheaper and includes a domain.</li>
+    <li>Start from a free template, so the only cost is the plan. See <a href="/guides/free-framer-portfolio-templates/">the best free Framer portfolio templates</a>.</li>
+  </ol>
+
+  <h2>Questions</h2>
+  {faq.map((f) => (
+    <Fragment>
+      <p><strong>{f.q}</strong></p>
+      <p>{f.a}</p>
+    </Fragment>
+  ))}
+
+  <div class="mt-xl flex flex-wrap gap-sm">
+    <Button href={site.framerReferral} arrow target="_blank" rel="noopener noreferrer sponsored">Try Framer free</Button>
+    <Button href="/templates/free/" variant="secondary" arrow>Free templates</Button>
+  </div>
+</LegalPage>
+
