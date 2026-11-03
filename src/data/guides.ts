@@ -77,12 +77,4 @@ export const guides: Guide[] = [
     kind: 'Roundup',
     updated: 'November 3, 2026',
   },
-  {
-    href: '/guides/framer-wedding-website/',
-    title: 'Wedding website templates for Framer',
-    description: 'What a wedding site needs, and Framer templates with RSVP, schedule and registry.',
-    group: 'article',
-    kind: 'Roundup',
-    updated: 'November 3, 2026',
-  },
 ];

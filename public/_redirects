@@ -1,0 +1,5 @@
+# Cloudflare static assets: permanent redirects for removed pages.
+/templates/sanctun/ /templates/ 301
+/templates/sanctun /templates/ 301
+/guides/framer-wedding-website/ /guides/ 301
+/guides/framer-wedding-website /guides/ 301

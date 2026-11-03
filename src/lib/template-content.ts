@@ -211,7 +211,7 @@ export function buildFaq(t: Template, c: TemplateContent, opts: { siteEmail: str
   if (t.codeUrl) {
     faq.push({
       q: `Can I get ${t.name} as code instead of Framer?`,
-      a: `Yes. ${t.name} also comes as a clean Astro and Tailwind CSS project with the same design${t.codePrice !== undefined ? `, for a one-time $${t.codePrice}` : ''}. You get the source files, host them anywhere and edit all the text in one file. It is sold through Contra with a single-project license. It is a digital product, so all sales are final: check the live preview before you buy.`,
+      a: `Yes. ${t.name} also comes as a clean Astro and Tailwind CSS project with the same design${t.codePrice !== undefined ? `, for a one-time $${t.codePrice}` : ''}. You get the source files, host them anywhere and edit all the text in one file. It is sold through Contra under the same template license. It is a digital product, so all sales are final: check the live preview before you buy.`,
     });
   }
   const bestFor = c.blocks.find((b) => b.kind === 'bestFor');
