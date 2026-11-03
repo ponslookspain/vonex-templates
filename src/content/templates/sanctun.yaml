@@ -3,6 +3,9 @@ tagline: Elegant Minimal Wedding Template
 description: Minimal wedding website with a schedule, gift registry and built-in RSVP form.
 url: https://www.framer.com/marketplace/templates/sanctun/
 affiliateUrl: https://framer.link/9tvSIS3
+# Sold directly on Contra: the main button goes here instead of the Framer link above.
+buyUrl: https://contra.com/products/fNvb9xwE-sanctun-elegant-minimal-wedding-template
+soldOn: Contra
 preview: https://sanctun.framer.website/
 pageKind: "Wedding Website"
 seoDescription: "Sanctun is a minimal Framer wedding website template with a schedule, venue details, gift registry and RSVP form. View the sections and live demo."

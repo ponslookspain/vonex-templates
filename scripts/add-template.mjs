@@ -22,7 +22,7 @@ const contentDir = path.join(root, 'src/content/templates');
 const assetsDir = path.join(root, 'src/assets/templates');
 
 // Fields you own: never overwritten when a template is updated from Framer.
-const MANUAL = ['description', 'affiliateUrl', 'featured', 'tags', 'category', 'added', 'preview', 'pageKind', 'seoDescription', 'overview', 'preparation', 'codeUrl', 'codePrice', 'codeVersion'];
+const MANUAL = ['description', 'affiliateUrl', 'featured', 'tags', 'category', 'added', 'preview', 'pageKind', 'seoDescription', 'overview', 'preparation', 'codeUrl', 'codePrice', 'codeVersion', 'buyUrl', 'soldOn'];
 
 const { values: opt, positionals } = parseArgs({
   allowPositionals: true,
@@ -162,7 +162,7 @@ async function importOne(slug, { flags }) {
     sections: d.sections ?? [],
     gallery,
   };
-  for (const k of ['pageKind', 'seoDescription', 'overview', 'preparation', 'codeUrl', 'codePrice', 'codeVersion']) if (old[k] !== undefined) data[k] = old[k];
+  for (const k of ['pageKind', 'seoDescription', 'overview', 'preparation', 'codeUrl', 'codePrice', 'codeVersion', 'buyUrl', 'soldOn']) if (old[k] !== undefined) data[k] = old[k];
   for (const k of MANUAL) if (old[k] !== undefined && opt[k] === undefined && k in data) data[k] = old[k] instanceof Date ? day(old[k].toISOString()) : old[k];
 
   const yaml = toYaml(data, { lineWidth: 0 });
