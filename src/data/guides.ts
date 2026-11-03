@@ -30,6 +30,14 @@ export const guides: Guide[] = [
     updated: 'November 3, 2026',
   },
   {
+    href: '/guides/framer-or-code/',
+    title: 'Framer template or code',
+    description: 'Use a Framer template or buy the same design as code? Cost, editing, hosting and who each one fits.',
+    group: 'guide',
+    kind: 'Comparison',
+    updated: 'November 3, 2026',
+  },
+  {
     href: '/guides/framer-cms/',
     title: 'Framer CMS: add projects and posts',
     description: 'Collections, fields, CMS pages and lists: how to add content to a template without touching the design.',

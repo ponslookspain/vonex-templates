@@ -1,0 +1,39 @@
+---
+import LegalPage from '../components/LegalPage.astro';
+import { site } from '../data/site';
+---
+
+<LegalPage accent="Refunds" title="Refund policy" description={`All sales of ${site.name} code versions are final: they are digital products. What that means and what to do if something does not work.`} updated="November 3, 2026">
+  <p>
+    <strong>All sales are final.</strong> The code versions of {site.name} templates are digital products. You get the
+    files as soon as you pay, so we do not offer refunds or returns.
+  </p>
+
+  <h2>Before you buy</h2>
+  <p>
+    Check the live preview, the list of what is included and the <a href="/license/">code license</a>. The code matches
+    the Framer template, so the preview shows what you will get. Questions before buying are welcome at
+    <a href={`mailto:${site.email}`}> {site.email}</a>.
+  </p>
+
+  <h2>If something does not work</h2>
+  <p>
+    If the template does not install or build as described in its README, write to
+    <a href={`mailto:${site.email}`}> {site.email}</a>. We will help you fix it.
+  </p>
+
+  <h2>Your legal rights</h2>
+  <p>
+    This policy does not limit rights you have under the law where you live. Where the law requires a refund, for
+    example for digital content that is faulty, we follow it.
+  </p>
+
+  <h2>How you pay</h2>
+  <p>
+    Payment is handled by Contra, which acts as the seller of record. It takes the payment and the taxes that apply in
+    your country.
+  </p>
+
+  <h2>Contact</h2>
+  <p>Write to <a href={`mailto:${site.email}`}>{site.email}</a> and include the email you used at checkout.</p>
+</LegalPage>

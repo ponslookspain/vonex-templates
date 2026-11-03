@@ -8,6 +8,10 @@ pageKind: "App Landing Page"
 seoDescription: "Alpine App is a free Framer app landing page template with a phone preview, pricing, support and legal pages. Explore the layout and live demo."
 overview: "Give your mobile app a focused launch page. Alpine App puts a phone preview, download links and pricing in one monochrome layout, with separate support and legal pages."
 preparation: "Prepare your app screenshots or screen recording, store links and pricing. Replace the sample support and legal content with information that applies to your app."
+# Code version sold on Contra.
+codeUrl: https://contra.com/products/8b1QjAwN-alpine-astro-mobile-app-landing-page-template
+codePrice: 19
+codeVersion: "1.0"
 category: Apps
 price: 0
 tags: []

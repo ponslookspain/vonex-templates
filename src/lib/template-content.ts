@@ -204,6 +204,12 @@ export function buildFaq(t: Template, c: TemplateContent, opts: { siteEmail: str
     q: `Do I need to know how to code to use ${t.name}?`,
     a: 'No. Everything is edited visually in Framer: text, images, colors, fonts and layout. No code is needed.',
   });
+  if (t.codeUrl) {
+    faq.push({
+      q: `Can I get ${t.name} as code instead of Framer?`,
+      a: `Yes. ${t.name} also comes as a clean Astro and Tailwind CSS project with the same design${t.codePrice !== undefined ? `, for a one-time $${t.codePrice}` : ''}. You get the source files, host them anywhere and edit all the text in one file. It is sold through Contra with a single-project license. It is a digital product, so all sales are final: check the live preview before you buy.`,
+    });
+  }
   const bestFor = c.blocks.find((b) => b.kind === 'bestFor');
   if (bestFor && 'items' in bestFor) {
     const list = bestFor.items.filter((x) => !/template$/i.test(x)).slice(0, 6);
