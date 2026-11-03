@@ -12,6 +12,8 @@ import FaqBlock from '../components/FaqBlock.astro';
 import Band from '../components/Band.astro';
 import ColumnLines from '../components/ColumnLines.astro';
 import HeroSlider from '../components/HeroSlider.astro';
+import CtaBand from '../components/CtaBand.astro';
+import StepVisual from '../components/StepVisual.astro';
 import { site } from '../data/site';
 
 const all = await getCollection('templates');
@@ -32,10 +34,10 @@ const specs = [
 ];
 
 const steps = [
-  { title: 'Choose', text: 'Open a template and see it live before you commit.' },
-  { title: 'Remix', text: 'One click on Framer copies it into your account.' },
-  { title: 'Publish', text: 'Swap the text and images. Go live on your domain.' },
-];
+  { title: 'Choose', text: 'Open a template and see it live before you commit.', meta: `${pad(all.length)} options`, visual: 'choose' },
+  { title: 'Remix', text: 'One click on Framer copies it into your account.', meta: '1 click', visual: 'remix' },
+  { title: 'Publish', text: 'Swap the text and images. Go live on your domain.', meta: '● Live', visual: 'publish' },
+] as const;
 
 const faq = [
   { q: 'What is a Framer template?', a: 'A Framer template is a ready-made website design that you copy into your own Framer account and edit visually. The layout, styles and animations are already done, you only add your content.' },
@@ -70,7 +72,7 @@ const faq = [
         <span class="col-span-2 text-right md:col-span-1"><span class="bg-bg py-xs pl-sm">{site.name}</span></span>
       </div>
 
-      <h1 id="hero-title" class="type-display mt-xl bg-bg text-center">Framer<br />templates.</h1>
+      <h1 id="hero-title" class="type-display mt-xl bg-bg text-center">Framer<br /><em class="type-accent">templates</em>.</h1>
 
       <div class="grid-4 mt-xl items-end gap-y-xl">
         <div class="order-2 col-span-4 bg-bg md:order-1 md:col-span-1">
@@ -79,7 +81,7 @@ const faq = [
         </div>
         <HeroSlider templates={slides} class="order-1 col-span-4 md:order-2 md:col-span-2" />
         <div class="order-3 col-span-4 flex flex-col gap-sm bg-bg md:col-span-1 md:items-end">
-          <Button href={site.framerProfile} variant="secondary" target="_blank" rel="noopener noreferrer" arrow>View on Framer</Button>
+          <Button href={slides[0].data.affiliateUrl ?? slides[0].data.url} variant="secondary" target="_blank" rel={slides[0].data.affiliateUrl ? 'noopener noreferrer sponsored' : 'noopener noreferrer'} arrow data-hero-cta>View on Framer</Button>
           <p class="type-label"><span class="bg-bg py-xs">Built in Framer · No code</span></p>
         </div>
       </div>
@@ -88,18 +90,18 @@ const faq = [
 
   <Band items={['Pick it.', 'Remix it.', 'Ship it.']} />
 
-  <Section id="templates" labelledby="featured-title">
-    <SectionHeader id="featured-title" index={1} kicker="Featured" title="Selected templates.">
+  <Section id="templates" labelledby="featured-title" flush="bottom" bar={{ left: '01 / Featured', right: `${pad(featured.length)} of ${pad(all.length)}` }}>
+    <SectionHeader id="featured-title" title="Selected templates." accent="templates">
       <Button href="/templates/" variant="secondary" arrow>View all</Button>
     </SectionHeader>
-    <ul class="grid-4 gap-y-xl">
-      {featured.map((t) => <TemplateCard template={t} class="col-span-4 md:col-span-2" />)}
+    <ul class="card-grid flush-rails">
+      {featured.map((t) => <TemplateCard template={t} />)}
     </ul>
   </Section>
 
-  <Section id="specs" labelledby="specs-title" rule>
-    <SectionHeader id="specs-title" index={2} kicker="Specs" title="Zero code. Full control." />
-    <ul class="cells cells-4">
+  <Section id="specs" labelledby="specs-title" flush="bottom" bar={{ left: '02 / Specs', right: 'Built in Framer' }}>
+    <SectionHeader id="specs-title" title="Zero code. Full control." accent="control" />
+    <ul class="cells cells-4 flush-rails">
       {
         specs.map((s, i) => (
           <li class="cell invert-hover flex min-h-80 flex-col justify-between gap-xl">
@@ -118,50 +120,64 @@ const faq = [
     </ul>
   </Section>
 
-  <Section id="how" labelledby="how-title" rule>
-    <SectionHeader id="how-title" index={3} kicker="Start" title="Three steps to a live site." />
-    <ol class="grid-4 gap-y-xl">
+  <Section id="how" labelledby="how-title" flush="bottom" bar={{ left: '03 / Start', right: 'Choose · Remix · Publish' }}>
+    <SectionHeader id="how-title" title="Three steps to a live site." accent="live" />
+    <ol class="cells cells-4 flush-rails">
       {
         steps.map((st, i) => (
-          <li class="col-span-4 border-t border-line pt-lg md:col-span-2 lg:col-span-1">
-            <p class="type-headline-lg">{i + 1}</p>
-            <h3 class="type-headline-xs mt-xl">{st.title}</h3>
-            <p class="type-body type-pillar mt-sm">{st.text}</p>
+          <li class="cell flex flex-col gap-xl">
+            <div class="type-label flex justify-between">
+              <span>Step {pad(i + 1)}</span>
+              <span>{st.meta}</span>
+            </div>
+            <StepVisual kind={st.visual} count={all.length} />
+            <div class="mt-auto">
+              <h3 class="type-headline-xs">{st.title}</h3>
+              <p class="type-body type-pillar mt-sm">{st.text}</p>
+            </div>
           </li>
         ))
       }
-      <li class="col-span-4 flex items-end border-t border-line pt-lg md:col-span-2 lg:col-span-1">
-        <Button href="/templates/" arrow>Explore</Button>
+      <li class="cell flex flex-col gap-xl">
+        <div class="type-label flex justify-between">
+          <span>Catalog</span>
+          <span>Today</span>
+        </div>
+        <div>
+          <p class="type-display" aria-hidden="true">{pad(all.length)}</p>
+          <p class="type-label mt-sm">Templates ready to remix</p>
+        </div>
+        <dl class="stat-grid mt-auto">
+          <div><dt class="type-label">Free</dt><dd class="type-headline-md">{pad(freeCount)}</dd></div>
+          <div><dt class="type-label">Code</dt><dd class="type-headline-md">0</dd></div>
+        </dl>
+        <Button href="/templates/" arrow class="w-full">Explore</Button>
       </li>
     </ol>
   </Section>
 
-  <FaqBlock title="Questions." index={4} rule>
+  <FaqBlock title="Questions." accent="Questions" bar={{ left: '04 / FAQ', right: `${pad(faq.length)} answers` }}>
     {faq.map((f) => <FaqItem question={f.q}>{f.a}</FaqItem>)}
   </FaqBlock>
 
-  <!-- Closing band: the one large black block of the page. -->
-  <section class="bg-primary text-on-primary" aria-labelledby="cta-title">
-    <Container class="grid-4 items-end gap-y-xl py-2xl">
-      <div class="col-span-4 lg:col-span-2">
-        <span class="kicker type-label">05 / Launch</span>
-        <h2 id="cta-title" class="type-headline-lg">Live today.<br />Not next month.</h2>
-        <p class="type-body type-pillar mt-lg">Choose a template, remix it in Framer and publish before the day is out.</p>
-        <Button href="/templates/" variant="secondary" arrow class="mt-xl">Explore</Button>
-      </div>
-      {
-        featured[1] && (
-          <a href={`/templates/${featured[1].id}/`} class="col-span-4 block border-(length:--border-frame) border-on-primary lg:col-span-2">
-            <Image
-              src={featured[1].data.image}
-              alt={`${featured[1].data.name} Framer template`}
-              widths={[640, 960, 1400]}
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              class="aspect-[4/3] w-full object-cover"
-            />
-          </a>
-        )
-      }
-    </Container>
-  </section>
+  <!-- Closing band: the one large black block of the page, on light rails. -->
+  <CtaBand labelledby="cta-title">
+    <span class="kicker type-label">05 / Launch</span>
+    <h2 id="cta-title" class="type-headline-lg">Live <em class="type-accent">today</em>.<br />Not next month.</h2>
+    <p class="type-body type-pillar mt-lg">Choose a template, remix it in Framer and publish before the day is out.</p>
+    <div><Button href="/templates/" variant="secondary" arrow class="mt-xl">Explore</Button></div>
+    {
+      featured[1] && (
+        <a slot="media" href={`/templates/${featured[1].id}/`} class="block border-(length:--border-frame) border-on-primary">
+          <Image
+            src={featured[1].data.image}
+            alt={`${featured[1].data.name} Framer template`}
+            widths={[640, 960, 1400]}
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            class="aspect-[4/3] w-full object-cover"
+          />
+        </a>
+      )
+    }
+  </CtaBand>
 </Base>

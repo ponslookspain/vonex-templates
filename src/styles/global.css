@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 @import '@fontsource-variable/inter';
+@import '@fontsource-variable/archivo/wdth.css';
+@import '@fontsource/instrument-serif/latin-400-italic.css';
+@import '@fontsource-variable/geist-mono';
 
 /*
   VONEX DESIGN SYSTEM (Alpine): single source of truth.
@@ -19,35 +22,45 @@
   --radius-*: initial;
   --shadow-*: initial;
 
-  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif; /* Inter 400 and 700, the only font */
+  /* Four type roles, each with one job. */
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif; /* Body text */
+  --font-display: 'Archivo Variable', 'Inter Variable', system-ui, sans-serif; /* Headlines, set wide (see --display-stretch) */
+  --font-serif: 'Instrument Serif', Georgia, serif; /* One accent word in a headline, always italic */
+  --font-mono: 'Geist Mono Variable', ui-monospace, SFMono-Regular, Menlo, monospace; /* Labels, buttons, nav, section bars */
 
-  /* Color: two values, no grays. DESIGN.md: neutral, surface, on-surface, on-surface-muted, primary, on-primary. */
-  --color-bg: #ffffff; /* Page ground (neutral) */
-  --color-surface: #ffffff; /* Cards, panels, inputs (surface) */
-  --color-fg: #000000; /* Headlines and body text (on-surface) */
-  --color-muted: #000000; /* Captions, labels, metadata (on-surface-muted): same black, set apart by size and case */
-  --color-primary: #000000; /* Main action, black bands (primary) */
-  --color-on-primary: #ffffff; /* Text and icons on the primary color (on-primary) */
-  --color-line: #000000; /* Hairlines and frames */
+  /* Color: warm paper and soft ink. One ink color; quieter text and lines are the same ink at
+     lower opacity, so nothing turns a different hue. DESIGN.md: neutral, surface, on-surface,
+     on-surface-muted, primary, on-primary. */
+  --color-bg: #f2f1ee; /* Page ground (neutral): warm off-white paper */
+  --color-surface: #f2f1ee; /* Cards, panels, inputs (surface): the same paper, set apart by lines */
+  --color-fg: #101014; /* Headlines and body text (on-surface): soft near-black ink */
+  --color-muted: rgb(16 16 20 / 0.62); /* Captions, labels, metadata (on-surface-muted) */
+  --color-primary: #101014; /* Main action, black bands (primary) */
+  --color-on-primary: #f2f1ee; /* Text and icons on the primary color (on-primary) */
+  --color-line: rgb(16 16 20 / 0.16); /* Hairlines: rails, section lines, cell borders */
+  --color-line-inverse: rgb(242 241 238 / 0.22); /* Hairlines on the black band */
+  --color-line-strong: rgb(16 16 20 / 0.4); /* Outlines of buttons and tags, heavy picture frames */
 
   /* Type scale. Headlines step by about 1.78. The big sizes shrink on small screens (see clamp). */
   --text-display: clamp(3.25rem, 12.5vw, 9.375rem); /* headline-display: 150px, one per page */
-  --text-headline-lg: clamp(2.5rem, 6.25vw, 4.6875rem); /* headline-lg: 75px, section titles */
-  --text-headline-md: clamp(1.875rem, 3.75vw, 2.8125rem); /* headline-md: 45px, big numbers, sub titles */
-  --text-headline-sm: clamp(1.375rem, 2.5vw, 1.875rem); /* headline-sm: 30px, block titles */
-  --text-headline-xs: 1.375rem; /* headline-xs: 22px, card titles */
+  --text-headline-lg: clamp(2.25rem, 4.4vw, 3.75rem); /* headline-lg: 60px, section titles */
+  --text-headline-md: clamp(1.75rem, 3vw, 2.5rem); /* headline-md: 40px, big numbers, sub titles */
+  --text-headline-sm: clamp(1.25rem, 2vw, 1.625rem); /* headline-sm: 26px, block titles */
+  --text-headline-xs: 1.25rem; /* headline-xs: 20px, card titles */
   --text-headline-xxs: 1rem; /* headline-xxs: 16px, small titles, template names */
   --text-body: 0.9375rem; /* body-md: 15px, running text */
-  --text-label: 0.9375rem; /* label-md: 15px, labels, tags, buttons, nav */
+  --text-label: 0.75rem; /* label-md: 12px mono, labels, tags, buttons, nav */
 
-  --leading-display: 0.77; /* headline-display line height */
-  --leading-headline: 0.9; /* Line height of every other headline */
+  --leading-display: 0.9; /* headline-display line height */
+  --leading-headline: 1.02; /* Line height of every other headline */
   --leading-body: 1; /* body-md line height, as set by DESIGN.md */
   --leading-label: 1.2; /* Labels and buttons */
 
-  --tracking-headline: -0.07em; /* Every headline */
+  --tracking-headline: -0.035em; /* Every headline */
   --tracking-body: -0.05em; /* Running text */
-  --tracking-label: 0.08em; /* Labels, tags, buttons */
+  --tracking-label: 0.14em; /* Labels, tags, buttons (mono) */
+  --weight-display: 620; /* Headline weight, between regular and bold */
+  --display-stretch: 118%; /* Headline width: Archivo set wide */
 
   /* Spacing: an 8px base and the steps of DESIGN.md. Utilities: p-md, gap-lg, mt-xl, py-2xl… */
   --spacing-base: 8px; /* Base unit */
@@ -72,7 +85,7 @@
   --space-page: 24px; /* Left and right page padding */
   --space-section: 113px; /* Vertical padding of a section, top and bottom each */
   --space-card: 20px; /* Padding inside a card */
-  --space-header: 64px; /* Height of the fixed header */
+  --space-header: 56px; /* Height of the fixed header */
 
   /* Motion: deliberate, ease-out. */
   --duration-fast: 150ms; /* Color and state changes */
@@ -82,6 +95,8 @@
   --duration-slide: 5000ms; /* How long one cover stays in the hero slider */
   --reveal-distance: 24px; /* How far a block rises as it appears */
   --reveal-stagger: 80ms; /* Delay between blocks of one row appearing */
+  --cross-size: 11px; /* Cross where a section line meets a page rail */
+  --rail-inset: 40px; /* Distance from a page rail to the content inside it */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* The only easing */
 }
 
@@ -91,6 +106,7 @@
     --space-page: 16px;
     --grid-gutter: 16px;
     --space-section: 57px;
+    --rail-inset: 16px;
     --reveal-distance: 16px;
   }
 }
@@ -167,7 +183,13 @@
     width: 100%;
     max-width: var(--container-page);
     margin-inline: auto;
-    padding-inline: var(--space-page);
+    /* Content keeps a small distance from the page rails, so nothing touches a line. */
+    padding-inline: calc(var(--space-page) + var(--rail-inset));
+  }
+  /* Framed blocks (cells, the template grid, the section bar) reach out to the rails,
+     so their outer hairlines are the rails themselves. */
+  .flush-rails {
+    margin-inline: calc(var(--rail-inset) * -1);
   }
 
   /*
@@ -194,9 +216,91 @@
   .section-flush-bottom {
     padding-bottom: 0;
   }
-  /* A full-width hairline above a section. */
+  /* A full-width hairline above a section. A small cross marks where it meets each page rail. */
   .section-rule {
+    position: relative;
     border-top: var(--border-hairline) solid var(--color-line);
+  }
+  .section-rule::before,
+  .section-rule::after {
+    content: '';
+    position: absolute;
+    top: calc(var(--cross-size) / -2 - var(--border-hairline) / 2);
+    width: var(--cross-size);
+    height: var(--cross-size);
+    background:
+      linear-gradient(var(--color-line), var(--color-line)) center / 100% var(--border-hairline) no-repeat,
+      linear-gradient(var(--color-line), var(--color-line)) center / var(--border-hairline) 100% no-repeat;
+    pointer-events: none;
+  }
+  .section-rule::before {
+    left: calc(50% - var(--rails-half) - var(--cross-size) / 2);
+  }
+  .section-rule::after {
+    right: calc(50% - var(--rails-half) - var(--cross-size) / 2);
+  }
+
+  /*
+    Page rails: two hairlines down the whole page on the outer edges of the 4-column grid,
+    so every block visibly sits between the same two lines. Black bands paint over them.
+  */
+  .page-rails {
+    position: relative;
+    isolation: isolate;
+    --rails-half: min(50% - var(--space-page), var(--container-page) / 2 - var(--space-page));
+  }
+  .page-rails::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    left: calc(50% - var(--rails-half));
+    right: calc(50% - var(--rails-half));
+    z-index: -1;
+    border-inline: var(--border-hairline) solid var(--color-line);
+    pointer-events: none;
+  }
+
+  /* Section bar: a thin strip at the top of a section, "02 / Specs" on the left and a short
+     note on the right, between two hairlines that run from rail to rail (see Section's `bar`).
+     Sections with a bar stack with no gap: each starts on the line where the one before ends,
+     overlapping it by one hairline so the line is never doubled. */
+  .section-bar {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--spacing-lg);
+    margin-inline: calc(var(--rail-inset) * -1);
+    padding: var(--spacing-sm) var(--rail-inset);
+    border-block: var(--border-hairline) solid var(--color-line);
+    margin-bottom: var(--space-section);
+    color: var(--color-muted);
+  }
+  /* Two halves on the rails, split by the center line (stacked, with a line between, on phones).
+     <div class="split flush-rails"><div class="split-cell">…</div><div>…</div></div> */
+  .split {
+    display: grid;
+  }
+  .split > * + * {
+    border-top: var(--border-hairline) solid var(--color-line);
+  }
+  .split-cell {
+    padding: var(--spacing-xl) var(--rail-inset);
+  }
+  @media (min-width: 64rem) {
+    .split {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .split > * + * {
+      border-top: 0;
+      border-left: var(--border-hairline) solid var(--color-line);
+    }
+  }
+  /* A split block starts right on the bar line, so its center line meets the bar. */
+  .section-bar:has(+ .split) {
+    margin-bottom: 0;
+  }
+  .section-with-bar {
+    padding-top: 0;
+    margin-top: calc(var(--border-hairline) * -1);
   }
 
   /* The four column lines of the grid, drawn behind a hero. Place inside a `relative isolate` parent. */
@@ -213,6 +317,13 @@
     height: 100%;
     border-inline: var(--border-hairline) solid var(--color-line);
   }
+  /* The page rails already draw the outer edges. */
+  .column-lines span:first-child {
+    border-left: 0;
+  }
+  .column-lines span:last-child {
+    border-right: 0;
+  }
 }
 
 /* ---------- Typography roles ---------- */
@@ -224,10 +335,20 @@
   .type-headline-sm,
   .type-headline-xs,
   .type-headline-xxs {
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-weight: var(--weight-display);
+    font-stretch: var(--display-stretch);
     line-height: var(--leading-headline);
     letter-spacing: var(--tracking-headline);
-    text-transform: uppercase;
+  }
+  /* One word of each section headline in italic serif: Selected <em class="type-accent">templates</em>.
+     Components take it as an `accent` prop (see src/lib/accent.ts). */
+  .type-accent {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-stretch: normal;
+    letter-spacing: -0.02em;
   }
   .type-display {
     font-size: var(--text-display);
@@ -256,9 +377,10 @@
     letter-spacing: var(--tracking-body);
   }
   .type-label {
+    font-family: var(--font-mono);
     font-size: var(--text-label);
     line-height: var(--leading-label);
-    font-weight: 400;
+    font-weight: 500;
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
   }
@@ -279,8 +401,10 @@
     gap: var(--spacing-sm);
     white-space: nowrap;
     padding: var(--spacing-sm) var(--spacing-lg);
-    border: var(--border-hairline) solid var(--color-line);
+    border: var(--border-hairline) solid var(--color-fg);
+    font-family: var(--font-mono);
     font-size: var(--text-label);
+    font-weight: 600;
     line-height: var(--leading-label);
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
@@ -358,11 +482,35 @@
     }
   }
 
-  /* Template cards run two to a row; an odd last card steps to the right column instead of
-     leaving a hole on the right. */
+  /* Two numbers side by side between hairlines, as on an instrument screen. */
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--spacing-lg);
+  }
+  .stat-grid > div {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--spacing-xs);
+    padding-top: var(--spacing-md);
+    border-top: var(--border-hairline) solid var(--color-line);
+  }
+
+  /* Template cards, two to a row, sharing one hairline between them. Each card draws its
+     right and bottom edge, the grid draws the top and left, so no line is ever doubled. */
+  .card-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    border-top: var(--border-hairline) solid var(--color-line);
+    border-left: var(--border-hairline) solid var(--color-line);
+  }
+  .card-grid > * {
+    border-right: var(--border-hairline) solid var(--color-line);
+    border-bottom: var(--border-hairline) solid var(--color-line);
+  }
   @media (min-width: 48rem) {
-    .grid-4 > .template-card:last-child:nth-child(odd) {
-      grid-column-start: 3;
+    .card-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
@@ -376,17 +524,23 @@
       background-color var(--duration-base) var(--ease-out),
       color var(--duration-base) var(--ease-out);
   }
-  .invert-hover:hover,
   .invert-hover:focus-visible,
-  :hover > .invert-hover,
-  :focus-visible > .invert-hover {
+  a:focus-visible > .invert-hover {
     background-color: var(--color-primary);
     color: var(--color-on-primary);
+  }
+  /* Only with a real pointer: on touch screens a tap would leave the card stuck black. */
+  @media (hover: hover) {
+    .invert-hover:hover,
+    a:hover > .invert-hover {
+      background-color: var(--color-primary);
+      color: var(--color-on-primary);
+    }
   }
 
   /* Heavy black frame around a showcased picture. */
   .frame {
-    border: var(--border-frame) solid var(--color-line);
+    border: var(--border-frame) solid var(--color-primary);
     background: var(--color-surface);
   }
   /* Hairline frame around a picture. */
@@ -399,9 +553,10 @@
   .tag {
     display: inline-block;
     padding: var(--spacing-xs) var(--spacing-sm);
-    border: var(--border-hairline) solid var(--color-line);
+    border: var(--border-hairline) solid var(--color-fg);
     background: var(--color-surface);
     color: var(--color-fg);
+    font-family: var(--font-mono);
     font-size: var(--text-label);
     line-height: var(--leading-label);
     letter-spacing: var(--tracking-label);
@@ -462,7 +617,7 @@
 
   /* FAQ: hairline rows, no panels. The answer slides open where the browser can animate it. */
   .faq-list {
-    border-top: var(--border-hairline) solid var(--color-line);
+    min-width: 0;
   }
   .faq-item {
     border-bottom: var(--border-hairline) solid var(--color-line);

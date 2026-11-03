@@ -107,14 +107,16 @@ Headlines in this voice:
 
 ## Colors
 
-The page is set on white with near-black text; the accent is spent, not spread.
+The page is set on warm off-white paper with soft near-black ink; the accent is spent, not spread. Quieter text and lines are the same ink at lower opacity, never a separate gray.
 
-- **neutral (#ffffff), white:** the page ground, about 89% of the page.
-- **surface (#ffffff), white:** panels, cards and inputs, about 89% of the page.
-- **on-surface (#000000), near-black:** headlines and body text, about 11% of the page.
-- **on-surface-muted (#000000), near-black:** secondary text: captions, labels, metadata, about 11% of the page.
-- **primary (#000000), near-black:** the main action and highlights, used sparingly, about 11% of the page.
-- **on-primary (#ffffff), white:** text and icons set on the primary colour.
+- **neutral (#f2f1ee), paper:** the page ground, about 89% of the page.
+- **surface (#f2f1ee), paper:** panels, cards and inputs, set apart by lines.
+- **on-surface (#101014), ink:** headlines and body text.
+- **on-surface-muted (ink at 62%):** secondary text: captions, labels, section bars.
+- **primary (#101014), ink:** the main action, black bands and filled cells, used sparingly.
+- **on-primary (#f2f1ee), paper:** text and icons set on the primary colour.
+- **line (ink at 16%):** hairlines: page rails, section lines, cell borders.
+- **line-strong (ink at 40%):** reserved; buttons, tags and the heavy picture frame use full ink.
 
 Contrast, as set:
 
@@ -125,8 +127,10 @@ Contrast, as set:
 
 ## Typography
 
-- **Display:** Inter (a sans-serif, free on Google Fonts), weights 700.
-- **Body:** Inter (a sans-serif, free on Google Fonts), weights 400.
+- **Display:** Archivo, set wide (width 118%), weight 620, sentence case.
+- **Accent:** Instrument Serif italic, one word in each section headline.
+- **Body:** Inter, weight 400.
+- **Labels, buttons, nav, section bars:** Geist Mono, 12px, weight 500–600, capitals, tracked wide.
 
 Headlines are set in capitals. The scale steps by a ratio of about 1.78.
 
@@ -139,8 +143,7 @@ Headlines are set in capitals. The scale steps by a ratio of about 1.78.
 - **body-md:** 15px / 1, running text.
 - **label-md:** 15px, labels, tags and buttons, in capitals.
 
-Load the fonts from Google Fonts: https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap
-(This site self-hosts the same Inter family through `@fontsource-variable/inter`, so nothing is loaded from Google.)
+All four are free (Google Fonts) and self-hosted through Fontsource: `@fontsource-variable/archivo` (width axis), `@fontsource/instrument-serif`, `@fontsource-variable/inter`, `@fontsource-variable/geist-mono`. Nothing is loaded from Google. The `fontFamily` lines in the front matter above predate this change; the tokens in `src/styles/global.css` are the source of truth.
 
 ## Layout
 
@@ -165,7 +168,7 @@ Corners: square corners.
 
 ## Do's and Don'ts
 
-- Maintain absolute monochrome black-on-white hierarchy with zero intermediate gray tones.
+- Keep one ink on paper: hierarchy comes from size, case, opacity of the same ink and inversion, never from a new hue.
 - Keep body copy strictly in narrow, vertical column pillars under thirty characters per line.
 - Anchor full-bleed visual frames with oversized, tightly tracked display type.
 - Use multi-screen whitespace gaps between technical product disclosures.

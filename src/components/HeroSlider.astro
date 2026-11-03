@@ -5,6 +5,9 @@ import type { CollectionEntry } from 'astro:content';
 // Framed template cover in the home hero that changes by itself every few seconds.
 // Square dots below switch it by hand. It pauses while hovered or focused, while off screen,
 // and with reduced motion (then only the dots change it). Without JavaScript the first slide shows.
+// It starts turning on the visitor's first scroll, touch, key or mouse move, and only then loads
+// the other covers: until then the first cover is the page's largest paint and nothing competes
+// with it for bandwidth.
 interface Props {
   templates: CollectionEntry<'templates'>[];
   class?: string;
@@ -26,11 +29,13 @@ const { templates, class: className } = Astro.props;
             aria-hidden={i === 0 ? undefined : 'true'}
             tabindex={i === 0 ? undefined : -1}
             data-active={i === 0 ? '' : undefined}
+            data-buy-url={t.data.affiliateUrl ?? t.data.url}
+            data-buy-sponsored={t.data.affiliateUrl ? '' : undefined}
           >
             <Image
               src={t.data.image}
               alt={`${t.data.name} Framer template: ${t.data.tagline}`}
-              widths={[640, 960, 1400]}
+              widths={[480, 640, 960, 1400]}
               sizes="(min-width: 768px) 50vw, 100vw"
               loading={i === 0 ? 'eager' : 'lazy'}
               fetchpriority={i === 0 ? 'high' : 'auto'}
@@ -67,11 +72,18 @@ const { templates, class: className } = Astro.props;
 <style>
   .hero-slide {
     opacity: 0;
-    transition: opacity var(--duration-reveal) var(--ease-out);
+    pointer-events: none;
+  }
+  /* Keep an opaque cover underneath the incoming slide, including on rapid dot clicks. */
+  .hero-slide[data-previous] {
+    opacity: 1;
+    z-index: 1;
   }
   .hero-slide[data-active] {
     opacity: 1;
-    z-index: 1;
+    z-index: 2;
+    pointer-events: auto;
+    transition: opacity var(--duration-base) var(--ease-out);
   }
   /* A slow push-in on the visible cover. */
   .hero-slide :global(img) {
@@ -107,29 +119,66 @@ const { templates, class: className } = Astro.props;
     const slides = [...root.querySelectorAll<HTMLElement>('[data-slide]')];
     const dots = [...root.querySelectorAll<HTMLElement>('[data-dot]')];
     if (slides.length < 2) return;
-    const interval = parseFloat(getComputedStyle(root).getPropertyValue('--duration-slide')) || 5000;
+    // The browser may report the token as "5000ms" or "5s": read the unit, never assume it.
+    const raw = getComputedStyle(root).getPropertyValue('--duration-slide').trim();
+    const interval = (parseFloat(raw) * (/ms$/.test(raw) ? 1 : /s$/.test(raw) ? 1000 : 1)) || 5000;
     const still = matchMedia('(prefers-reduced-motion: reduce)');
     let current = 0;
     let timer = 0;
     let paused = false;
     let onScreen = true;
+    let requested = 0;
+    // The "View on Framer" button next to the slider always follows the template on show.
+    const cta = document.querySelector<HTMLAnchorElement>('[data-hero-cta]');
 
-    const show = (i: number) => {
-      current = (i + slides.length) % slides.length;
+    const show = async (i: number, automatic = false) => {
+      const next = (i + slides.length) % slides.length;
+      const request = ++requested;
+      const image = slides[next].querySelector('img');
+      // A slow or failed image must never replace the visible cover with a blank frame, and
+      // must never stop the slider either: wait for it at most a moment, skip it if it broke.
+      if (image) {
+        image.loading = 'eager';
+        await Promise.race([image.decode().catch(() => {}), new Promise((r) => setTimeout(r, 1500))]);
+        if (!image.complete || image.naturalWidth === 0) {
+          if (request === requested && automatic) show(next + 1, true);
+          return;
+        }
+      }
+      if (request !== requested || next === current) return;
+      if (automatic && (paused || !onScreen || still.matches)) return;
+      const previous = current;
+      current = next;
       slides.forEach((s, n) => {
         const on = n === current;
+        s.toggleAttribute('data-previous', n === previous);
         s.toggleAttribute('data-active', on);
         on ? s.removeAttribute('aria-hidden') : s.setAttribute('aria-hidden', 'true');
         on ? s.removeAttribute('tabindex') : s.setAttribute('tabindex', '-1');
       });
+      const active = slides[current];
+      if (cta && active.dataset.buyUrl) {
+        cta.href = active.dataset.buyUrl;
+        cta.rel = active.hasAttribute('data-buy-sponsored') ? 'noopener noreferrer sponsored' : 'noopener noreferrer';
+      }
       dots.forEach((d, n) => (n === current ? d.setAttribute('aria-current', 'true') : d.removeAttribute('aria-current')));
     };
     const restart = () => {
       clearInterval(timer);
-      if (!paused && onScreen && !still.matches) timer = window.setInterval(() => show(current + 1), interval);
+      if (started && !paused && onScreen && !still.matches) timer = window.setInterval(() => show(current + 1, true), interval);
     };
 
-    dots.forEach((d, i) => d.addEventListener('click', () => (show(i), restart())));
+    let started = false;
+    const start = () => {
+      if (started) return;
+      started = true;
+      ['pointermove', 'pointerdown', 'scroll', 'keydown', 'touchstart'].forEach((e) => removeEventListener(e, start));
+      slides.forEach((s) => s.querySelector('img')?.setAttribute('loading', 'eager'));
+      restart();
+    };
+    ['pointermove', 'pointerdown', 'scroll', 'keydown', 'touchstart'].forEach((e) => addEventListener(e, start, { passive: true }));
+
+    dots.forEach((d, i) => d.addEventListener('click', () => (start(), show(i), restart())));
     const pause = (p: boolean) => () => ((paused = p), restart());
     root.addEventListener('mouseenter', pause(true));
     root.addEventListener('mouseleave', pause(false));

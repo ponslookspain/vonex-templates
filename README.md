@@ -69,14 +69,21 @@ You can also write the YAML yourself; copy an existing file from `src/content/te
 
 ## Design system
 
-The design direction is [DESIGN.md](DESIGN.md) (Alpine: black on white, Inter, square corners). Colors, type, spacing and the 4-column grid are defined once, as tokens in `src/styles/global.css`; components live in `src/components`. Run `npm run dev` and open http://localhost:4321/design-system/ for the live style guide (it exists only in dev and is removed from the production build) (press **G** on any page to see the grid). The rules and recipes are in [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md).
+The design direction is [DESIGN.md](DESIGN.md) (Alpine: ink on warm paper, Archivo + Instrument Serif + Inter + Geist Mono, square corners). Colors, type, spacing and the 4-column grid are defined once, as tokens in `src/styles/global.css`; components live in `src/components`. Run `npm run dev` and open http://localhost:4321/design-system/ for the live style guide (it exists only in dev and is removed from the production build) (press **G** on any page to see the grid). The rules and recipes are in [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md).
 
 ## SEO and analytics
 
 - `/sitemap.xml` and `/robots.txt` are generated at build time. Template pages are added to the sitemap automatically; a new static page must be added to the `pages` list in `src/pages/sitemap.xml.ts`.
 - Page titles, descriptions, Open Graph image and structured data (JSON-LD) are set in `src/layouts/Base.astro`; each page passes its own `title`, `description` and, for template pages, its own `image` (`public/og/<slug>.png`). The site-wide preview image is `public/og-image.png`.
-- Cloudflare Web Analytics is on: the token is `analyticsToken` in `src/data/site.ts` (empty string turns it off).
+- Cloudflare Web Analytics is enabled in production builds: the token is `analyticsToken` in `src/data/site.ts` (empty string turns it off). Development visits are excluded.
 - The canonical address is `site` in `astro.config.mjs` (`https://vonexdesign.com`); the sitemap, canonical links and Open Graph URLs follow it.
+
+### Search Console
+
+Copy `.env.example` to `.env` for local configuration. The value is a public build-time setting, not an API key. On Cloudflare, set the same variable in the build environment and rebuild.
+
+1. In [Google Search Console](https://search.google.com/search-console/), add the `https://vonexdesign.com/` URL-prefix property. Choose HTML tag verification and copy only the tag's `content` value into `PUBLIC_GOOGLE_SITE_VERIFICATION`. A domain property can instead be verified with Google's DNS TXT record; it needs no code setting.
+2. After the verified HTML is published, finish verification in Search Console, submit `https://vonexdesign.com/sitemap.xml`, then inspect the catalog and template URLs.
 
 ## Structure and extending the site
 

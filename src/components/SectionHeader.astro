@@ -2,8 +2,11 @@
 // Section heading, left-aligned: an index label ("01 / Templates"), a title in capitals
 // and an optional short text in a narrow pillar. Anything in the slot sits on the right
 // (a button or a count), bottom-aligned with the title.
+import { withAccent } from '../lib/accent';
 interface Props {
   title: string;
+  // One word of the title set in italic serif.
+  accent?: string;
   // Used for aria-labelledby on the parent Section.
   id?: string;
   // Index of the section on the page, shown as "01".
@@ -14,7 +17,7 @@ interface Props {
   level?: 1 | 2;
   class?: string;
 }
-const { title, id, index, kicker, lead, level = 2, class: className } = Astro.props;
+const { title, accent, id, index, kicker, lead, level = 2, class: className } = Astro.props;
 const Tag = `h${level}` as 'h1' | 'h2';
 const label = [index !== undefined && String(index).padStart(2, '0'), kicker].filter(Boolean).join(' / ');
 ---
@@ -22,7 +25,7 @@ const label = [index !== undefined && String(index).padStart(2, '0'), kicker].fi
 <header class:list={['mb-xl flex flex-wrap items-end justify-between gap-lg', className]}>
   <div>
     {label && <span class="kicker type-label">{label}</span>}
-    <Tag id={id} class="type-headline-lg">{title}</Tag>
+    <Tag id={id} class="type-headline-lg" set:html={withAccent(title, accent)} />
     {lead && <p class="type-body type-pillar mt-lg">{lead}</p>}
   </div>
   <slot />

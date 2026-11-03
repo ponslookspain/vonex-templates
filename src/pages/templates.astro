@@ -4,6 +4,7 @@ import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import TemplateCard from '../components/TemplateCard.astro';
+import Button from '../components/Button.astro';
 
 const templates = (await getCollection('templates')).sort(
   (a, b) => b.data.added.getTime() - a.data.added.getTime(),
@@ -12,8 +13,9 @@ const count = String(templates.length).padStart(2, '0');
 ---
 
 <Base
-  title="All Framer Templates"
-  description="Browse the full catalog of Framer templates by Vonex Design. Free and premium, responsive and ready to customize. Open any template on Framer Marketplace to preview and remix it."
+  title="Framer Templates — Free and Premium"
+  image="/og/pages/templates.png"
+  description="Find a Framer template for your portfolio, agency, app, SaaS product or wedding. Explore free and paid designs by Vonex, with screenshots and live demos."
   jsonLd={{
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -30,18 +32,18 @@ const count = String(templates.length).padStart(2, '0');
     },
   }}
 >
-  <Section labelledby="list-title">
+  <Section labelledby="list-title" flush="bottom" bar={{ left: 'Catalog', right: `${count} templates · Newest first` }}>
     <SectionHeader
       id="list-title"
       level={1}
-      kicker="Catalog"
-      title="All templates."
-      lead="Every Framer template by Vonex Design. Open one to see it live and remix it."
+      title="Framer templates."
+      accent="templates"
+      lead="Find a starting point for your portfolio, agency, app, software product or wedding. Open a template to compare its pages, CMS features and live demo."
     >
-      <p class="type-label">{count} templates · Newest first</p>
+      <Button href="/templates/free/" variant="secondary" arrow>Explore free templates</Button>
     </SectionHeader>
-    <ul class="grid-4 gap-y-xl">
-      {templates.map((t) => <TemplateCard template={t} class="col-span-4 md:col-span-2" />)}
+    <ul class="card-grid flush-rails">
+      {templates.map((t) => <TemplateCard template={t} level={2} />)}
     </ul>
   </Section>
 </Base>

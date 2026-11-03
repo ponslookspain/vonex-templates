@@ -13,7 +13,7 @@ const templates = (await getCollection('templates')).sort((a, b) => b.data.added
 <Base title="Page not found">
   <Section labelledby="nf-title" class="text-center">
     <p class="type-display" aria-hidden="true">404</p>
-    <h1 id="nf-title" class="type-headline-lg mt-xl">Off the grid.</h1>
+    <h1 id="nf-title" class="type-headline-lg mt-xl">Off the <em class="type-accent">grid</em>.</h1>
     <p class="type-body type-pillar mx-auto mt-lg">This page is not in the catalog. Every template still is.</p>
     <div class="mt-xl flex flex-wrap justify-center gap-sm">
       <Button href="/templates/" arrow>Explore</Button>
@@ -21,10 +21,10 @@ const templates = (await getCollection('templates')).sort((a, b) => b.data.added
     </div>
   </Section>
 
-  <Section labelledby="nf-list-title" rule>
-    <SectionHeader id="nf-list-title" kicker="Catalog" title="Templates." />
-    <ul class="grid-4 gap-y-xl">
-      {templates.map((t) => <TemplateCard template={t} class="col-span-4 md:col-span-2" />)}
+  <Section labelledby="nf-list-title" flush="bottom" bar={{ left: 'Catalog', right: `${String(templates.length).padStart(2, '0')} templates` }}>
+    <SectionHeader id="nf-list-title" title="Templates." accent="Templates" />
+    <ul class="card-grid flush-rails">
+      {templates.map((t) => <TemplateCard template={t} />)}
     </ul>
   </Section>
 </Base>

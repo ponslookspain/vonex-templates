@@ -7,17 +7,20 @@ import Icon from './Icon.astro';
 // On hover the text panel turns black and its content white (.invert-hover).
 interface Props {
   template: CollectionEntry<'templates'>;
-  // Grid placement, e.g. "col-span-4 md:col-span-2"
+  // Put cards in <ul class="card-grid">: the grid draws the hairlines between them.
   class?: string;
+  // h2 when the cards sit right under the page's h1 (catalog pages), h3 under a section title.
+  level?: 2 | 3;
 }
-const { template, class: className } = Astro.props;
+const { template, class: className, level = 3 } = Astro.props;
+const Heading = `h${level}` as 'h2' | 'h3';
 const t = template.data;
 const href = `/templates/${template.id}/`;
 const free = t.price === 0;
 ---
 
 <li class:list={['template-card', className]}>
-  <a href={href} class="group flex h-full flex-col border border-line">
+  <a href={href} class="group flex h-full flex-col">
     <div class="relative aspect-[4/3] overflow-hidden border-b border-line">
       <Image
         src={t.image}
@@ -30,7 +33,7 @@ const free = t.price === 0;
     </div>
     <div class="invert-hover flex flex-1 items-start justify-between gap-lg p-lg">
       <div>
-        <h3 class="type-headline-sm">{t.name}</h3>
+        <Heading class="type-headline-sm">{t.name}</Heading>
         <p class="type-body type-pillar mt-sm">{t.tagline}</p>
       </div>
       <Icon

@@ -11,7 +11,7 @@ A live version of everything below is at `/design-system/` (run `npm run dev`, o
 
 ## The look in one paragraph
 
-White page, black type, nothing in between: no grays, no tints, no shadows, no rounded corners. Inter only, 700 for headlines (always in capitals, tracked tight), 400 for text. Hairlines separate things; a heavy 8px frame marks the one picture that matters. Short copy sits in narrow pillars. The only colour on the page comes from the template covers.
+Warm paper (#f2f1ee), soft black ink (#101014). Quiet text and hairlines are the same ink at lower opacity; no other hues, no shadows, no rounded corners. Archivo set wide for headlines in sentence case, one Instrument Serif italic accent word in each section headline (`accent` prop, `.type-accent`), Inter for text, Geist Mono for labels and buttons. Hairlines separate things; a heavy 8px frame marks the one picture that matters. Short copy sits in narrow pillars. The only colour on the page comes from the template covers.
 
 ## Where things live
 
@@ -49,7 +49,7 @@ The big headline sizes use `clamp()`, so they shrink on phones by themselves. Sp
 2. Text size comes from a `.type-*` role, not from `text-4xl` and similar.
 3. Spacing uses the named steps (`p-lg`, `mt-xl`), not `p-5` or `mt-[23px]`.
 4. Need a value that does not exist? Add it to DESIGN.md and as a token first, then use it.
-5. Black and white only. If something needs to stand out, make it bigger, put it in capitals, frame it or invert it (white on black). Never make it gray.
+5. Paper and ink only. If something needs to stand out, make it bigger, put it in capitals, frame it or invert it (paper on ink). Lower opacity is only for secondary text and hairlines, through the tokens.
 
 ## Typography roles
 
@@ -164,7 +164,7 @@ With `prefers-reduced-motion` every transition and animation is off (rule in `gl
 
 ## Checklist before merging a change
 
-- [ ] Black and white only, no grays, tints, shadows or rounded corners.
+- [ ] Paper and ink tokens only (no raw colors, no other hues), no shadows or rounded corners.
 - [ ] Headlines in capitals through a `.type-headline-*` class; one `.type-display` per page at most.
 - [ ] Short copy in `.type-pillar`; long documents in `.type-prose`.
 - [ ] Layout uses `Section` and `.grid-4`; columns line up when you press G.

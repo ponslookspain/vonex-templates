@@ -1,26 +1,28 @@
 ---
-// FAQ section: the title on the left (it stays in view while you read), the questions on
-// the right as hairline rows. Put <FaqItem> children in the default slot.
+// FAQ section on the page rails: the title on the left (it stays in view while you read), the
+// questions on the right, split by the center line. Each question is a row whose lines run from
+// that line to the rail. Put <FaqItem> children in the default slot.
 import Section from './Section.astro';
+import { withAccent } from '../lib/accent';
 
 interface Props {
   title: string;
+  accent?: string;
   id?: string;
   sectionId?: string;
   index?: number;
-  flush?: 'top' | 'bottom';
-  rule?: boolean;
+  bar?: { left: string; right?: string };
 }
-const { title, id = 'faq-title', sectionId = 'faq', index, flush, rule } = Astro.props;
+const { title, accent, id = 'faq-title', sectionId = 'faq', index, bar } = Astro.props;
+const label = `${index !== undefined ? `${String(index).padStart(2, '0')} / ` : ''}FAQ`;
 ---
 
-<Section id={sectionId} labelledby={id} flush={flush} rule={rule}>
-  <div class="grid-4 gap-y-xl">
-    <div class="col-span-4 lg:sticky lg:top-[calc(var(--space-header)+var(--spacing-xl))] lg:col-span-2 lg:self-start">
-      <span class="kicker type-label">{index !== undefined ? `${String(index).padStart(2, '0')} / ` : ''}FAQ</span>
-      <h2 id={id} class="type-headline-lg">{title}</h2>
+<Section id={sectionId} labelledby={id} flush="bottom" bar={bar ?? { left: label }}>
+  <div class="split flush-rails">
+    <div class="split-cell">
+      <h2 id={id} class="type-headline-lg lg:sticky lg:top-[calc(var(--space-header)+var(--spacing-xl))]" set:html={withAccent(title, accent)} />
     </div>
-    <div class="faq-list col-span-4 lg:col-span-2">
+    <div class="faq-list">
       <slot />
     </div>
   </div>
