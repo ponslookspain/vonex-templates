@@ -1,9 +1,0 @@
----
-interface Props {
-  tone?: 'success';
-  class?: string;
-}
-const { tone = 'success', class: className } = Astro.props;
----
-
-<span class:list={['badge', `badge-${tone}`, className]}><slot /></span>

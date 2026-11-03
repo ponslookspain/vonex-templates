@@ -1,24 +1,29 @@
 ---
-// Centered section heading: optional eyebrow, title, optional lead. Sits on the middle
-// 8 columns of the grid from 1024px, full width below.
+// Section heading, left-aligned: an index label ("01 / Templates"), a title in capitals
+// and an optional short text in a narrow pillar. Anything in the slot sits on the right
+// (a button or a count), bottom-aligned with the title.
 interface Props {
   title: string;
   // Used for aria-labelledby on the parent Section.
   id?: string;
-  eyebrow?: string;
+  // Index of the section on the page, shown as "01".
+  index?: number;
+  kicker?: string;
   lead?: string;
   // h1 for the single main title of a page, h2 for sections.
   level?: 1 | 2;
   class?: string;
 }
-const { title, id, eyebrow, lead, level = 2, class: className } = Astro.props;
+const { title, id, index, kicker, lead, level = 2, class: className } = Astro.props;
 const Tag = `h${level}` as 'h1' | 'h2';
+const label = [index !== undefined && String(index).padStart(2, '0'), kicker].filter(Boolean).join(' / ');
 ---
 
-<header class:list={['grid-12', className]}>
-  <div class="col-span-12 flex flex-col items-center text-center lg:col-span-8 lg:col-start-3">
-    {eyebrow && <span class="eyebrow">{eyebrow}</span>}
-    <Tag id={id} class:list={['max-w-measure-title text-balance', level === 1 ? 'type-h1' : 'type-h2']}>{title}</Tag>
-    {lead && <p class="type-lead mt-4 max-w-measure-body">{lead}</p>}
+<header class:list={['mb-xl flex flex-wrap items-end justify-between gap-lg', className]}>
+  <div>
+    {label && <span class="kicker type-label">{label}</span>}
+    <Tag id={id} class="type-headline-lg">{title}</Tag>
+    {lead && <p class="type-body type-pillar mt-lg">{lead}</p>}
   </div>
+  <slot />
 </header>

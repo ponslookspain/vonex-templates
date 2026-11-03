@@ -11,23 +11,20 @@ const templates = (await getCollection('templates')).sort((a, b) => b.data.added
 ---
 
 <Base title="Page not found">
-  <Section flush="bottom" class="pt-10 sm:pt-12" labelledby="nf-title">
-    <SectionHeader
-      id="nf-title"
-      level={1}
-      title="Page not found"
-      lead="This page doesn't exist or has moved. The templates are all still here."
-    />
-    <div class="mt-8 flex flex-wrap justify-center gap-3">
-      <Button href="/templates/">Browse templates</Button>
-      <Button href="/" variant="ghost">Back to home</Button>
+  <Section labelledby="nf-title" class="text-center">
+    <p class="type-display" aria-hidden="true">404</p>
+    <h1 id="nf-title" class="type-headline-lg mt-xl">Off the grid.</h1>
+    <p class="type-body type-pillar mx-auto mt-lg">This page is not in the catalog. Every template still is.</p>
+    <div class="mt-xl flex flex-wrap justify-center gap-sm">
+      <Button href="/templates/" arrow>Explore</Button>
+      <Button href="/" variant="secondary">Home</Button>
     </div>
   </Section>
 
-  <Section labelledby="nf-list-title" flush="top" class="pt-12">
-    <h2 id="nf-list-title" class="sr-only">Templates</h2>
-    <ul class="grid-12 gap-y-10">
-      {templates.map((t) => <TemplateCard template={t} class="col-span-12 sm:col-span-6 lg:col-span-4" />)}
+  <Section labelledby="nf-list-title" rule>
+    <SectionHeader id="nf-list-title" kicker="Catalog" title="Templates." />
+    <ul class="grid-4 gap-y-xl">
+      {templates.map((t) => <TemplateCard template={t} class="col-span-4 md:col-span-2" />)}
     </ul>
   </Section>
 </Base>

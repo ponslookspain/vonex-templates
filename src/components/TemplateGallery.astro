@@ -16,7 +16,7 @@ const { items, name } = Astro.props;
 {
   items.length > 0 && (
     <div class="gallery" data-gallery role="group" aria-roledescription="carousel" aria-label={`${name} template gallery`} tabindex="0">
-      <div class="gallery-stage">
+      <div class="gallery-stage frame">
         <ul class="gallery-track" data-track>
           {items.map((item, i) => (
             <li class="gallery-slide" aria-roledescription="slide" aria-label={`${i + 1} of ${items.length}`}>
@@ -36,12 +36,12 @@ const { items, name } = Astro.props;
         {items.length > 1 && (
           <>
             <button type="button" class="gallery-arrow gallery-prev" data-prev aria-label="Previous picture">
-              <Icon name="arrow" class="size-5 rotate-180" />
+              <Icon name="arrow-right" class="size-5 rotate-180" />
             </button>
             <button type="button" class="gallery-arrow gallery-next" data-next aria-label="Next picture">
-              <Icon name="arrow" class="size-5" />
+              <Icon name="arrow-right" class="size-5" />
             </button>
-            <p class="gallery-count type-caption" data-count aria-live="polite">1 / {items.length}</p>
+            <p class="gallery-count tag" data-count aria-live="polite">1 / {items.length}</p>
           </>
         )}
       </div>
@@ -68,22 +68,17 @@ const { items, name } = Astro.props;
     outline: none;
   }
   .gallery:focus-visible .gallery-stage {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--color-fg);
     outline-offset: 4px;
   }
   .gallery-stage {
     position: relative;
-    border-radius: var(--radius-panel);
-    background: var(--color-surface);
-    box-shadow: inset 0 0 0 1px var(--color-outline);
-    padding: 0.5rem;
   }
   .gallery-track {
     display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
-    border-radius: var(--radius-surface);
     overscroll-behavior-x: contain;
   }
   .gallery-track::-webkit-scrollbar {
@@ -94,7 +89,6 @@ const { items, name } = Astro.props;
     flex: 0 0 100%;
     aspect-ratio: 4 / 3;
     scroll-snap-align: center;
-    background: var(--color-surface-2);
   }
   .gallery-image {
     position: absolute;
@@ -104,50 +98,40 @@ const { items, name } = Astro.props;
     object-fit: cover;
   }
 
+  /* Square black controls on the picture. */
   .gallery-arrow {
     position: absolute;
     top: 50%;
     display: grid;
     place-items: center;
-    width: 2.75rem;
-    height: 2.75rem;
-    margin-top: -1.375rem;
-    border-radius: 9999px;
-    background: color-mix(in srgb, var(--color-bg) 70%, transparent);
-    backdrop-filter: blur(8px);
-    box-shadow: inset 0 0 0 1px var(--color-outline-strong);
-    color: var(--color-fg);
-    transition: background-color var(--duration-fast) var(--ease-soft), opacity var(--duration-fast) var(--ease-soft);
-  }
-  .gallery-arrow:hover {
-    background: color-mix(in srgb, var(--color-bg) 90%, transparent);
+    width: 44px;
+    height: 44px;
+    margin-top: -22px;
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    transition: opacity var(--duration-fast) var(--ease-out);
   }
   .gallery-arrow[disabled] {
     opacity: 0;
     pointer-events: none;
   }
   .gallery-prev {
-    left: 1.25rem;
+    left: var(--spacing-md);
   }
   .gallery-next {
-    right: 1.25rem;
+    right: var(--spacing-md);
   }
   .gallery-count {
     position: absolute;
-    right: 1.25rem;
-    bottom: 1.25rem;
-    padding: 0.25rem 0.625rem;
-    border-radius: 9999px;
-    background: color-mix(in srgb, var(--color-bg) 70%, transparent);
-    backdrop-filter: blur(8px);
-    color: var(--color-fg-soft);
+    right: var(--spacing-md);
+    bottom: var(--spacing-md);
     font-variant-numeric: tabular-nums;
   }
 
   .gallery-thumbs {
     display: flex;
-    gap: 0.625rem;
-    margin-top: 0.75rem;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-sm);
     overflow-x: auto;
     padding: 2px;
     scrollbar-width: none;
@@ -158,21 +142,16 @@ const { items, name } = Astro.props;
   .gallery-thumb {
     position: relative;
     display: block;
-    width: 6rem;
+    width: 96px;
     aspect-ratio: 4 / 3;
     overflow: hidden;
-    border-radius: var(--radius-control);
-    background: var(--color-surface-2);
-    opacity: 0.65;
-    box-shadow: 0 0 0 1px var(--color-outline-strong);
-    transition: opacity var(--duration-fast) var(--ease-soft), box-shadow var(--duration-fast) var(--ease-soft);
-  }
-  .gallery-thumb:hover {
-    opacity: 0.9;
+    border: var(--border-hairline) solid var(--color-line);
+    transition: outline-color var(--duration-fast) var(--ease-out);
+    outline: 2px solid transparent;
   }
   .gallery-thumb[aria-current='true'] {
-    opacity: 1;
-    box-shadow: 0 0 0 2px var(--color-accent);
+    outline-color: var(--color-fg);
+    outline-offset: 2px;
   }
 </style>
 

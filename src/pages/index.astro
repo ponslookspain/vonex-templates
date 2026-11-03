@@ -1,37 +1,40 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import TemplateCard from '../components/TemplateCard.astro';
-import HeroStage from '../components/HeroStage.astro';
 import Container from '../components/Container.astro';
 import Section from '../components/Section.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import Button from '../components/Button.astro';
-import Card from '../components/Card.astro';
 import FaqItem from '../components/FaqItem.astro';
 import FaqBlock from '../components/FaqBlock.astro';
-import InlineIcon from '../components/InlineIcon.astro';
-import FeatureCard from '../components/FeatureCard.astro';
-import StepChoose from '../components/illustrations/StepChoose.astro';
-import StepRemix from '../components/illustrations/StepRemix.astro';
-import StepPublish from '../components/illustrations/StepPublish.astro';
-import FeatureResponsive from '../components/illustrations/FeatureResponsive.astro';
-import FeatureNoCode from '../components/illustrations/FeatureNoCode.astro';
-import FeaturePricing from '../components/illustrations/FeaturePricing.astro';
-import FeatureGrowing from '../components/illustrations/FeatureGrowing.astro';
-import { Image } from 'astro:assets';
-import ctaMonitor from '../assets/cta-monitor.webp';
+import Band from '../components/Band.astro';
+import ColumnLines from '../components/ColumnLines.astro';
+import HeroSlider from '../components/HeroSlider.astro';
 import { site } from '../data/site';
 
 const all = await getCollection('templates');
 const featured = all
   .sort((a, b) => Number(b.data.featured) - Number(a.data.featured) || b.data.added.getTime() - a.data.added.getTime())
-  .slice(0, 3);
+  .slice(0, 4);
+// The hero slider cycles through the four first templates (featured first).
+const slides = all.slice(0, 4);
+const freeCount = all.filter((t) => t.data.price === 0).length;
+const pad = (n: number) => String(n).padStart(2, '0');
+
+// Short, factual claims: a number and what it measures, like a spec sheet.
+const specs = [
+  { value: '0', unit: 'Lines', title: 'No code', text: 'Text, images and CMS are edited visually in Framer.' },
+  { value: '3', unit: 'Screens', title: 'Responsive', text: 'Each layout is set for phone, tablet and desktop.' },
+  { value: '1', unit: 'Click', title: 'Remix', text: 'The template is copied into your own Framer account.' },
+  { value: freeCount > 0 ? '$0' : '$', unit: 'To start', title: 'Free and premium', text: 'Start free, or pick a premium template with more pages.' },
+];
 
 const steps = [
-  { n: 1, title: 'Choose a Framer template', text: 'Browse the catalog and open the template that fits your project. Each one has a live preview.' },
-  { n: 2, title: 'Remix it in Framer', text: 'One click on Framer Marketplace copies the template into your own Framer account.' },
-  { n: 3, title: 'Customize and publish', text: 'Replace the text and images, adjust the style and publish your website on your own domain.' },
+  { title: 'Choose', text: 'Open a template and see it live before you commit.' },
+  { title: 'Remix', text: 'One click on Framer copies it into your account.' },
+  { title: 'Publish', text: 'Swap the text and images. Go live on your domain.' },
 ];
 
 const faq = [
@@ -42,17 +45,9 @@ const faq = [
   { q: 'Are the templates responsive?', a: 'Yes. Every template is built to look right on phone, tablet and desktop.' },
   { q: 'Can I use a template for my own project or client work?', a: 'Yes. After you remix a template it is your own Framer project, so you can edit it, publish it on your domain and adapt it to your needs. Check the license on the template page for the exact terms.' },
 ];
-
-const points = [
-  { icon: 'responsive', title: 'Responsive design', text: 'Every template is built to look right on phone, tablet and desktop.', span: 'lg:col-span-7' },
-  { icon: 'blocks', title: 'No code needed', text: 'Remix on Framer and edit text, images and CMS content visually.', span: 'lg:col-span-5' },
-  { icon: 'tag', title: 'Free and premium', text: 'Start with a free template or choose a premium one with more features.', span: 'lg:col-span-5' },
-  { icon: 'sparkles', title: 'Always growing', text: 'The catalog keeps expanding, so there is a new design to choose from every time you visit.', span: 'lg:col-span-7' },
-] as const;
 ---
 
 <Base
-  overlayHeader
   title="Framer Templates for Any Website"
   jsonLd={{
     '@context': 'https://schema.org',
@@ -64,110 +59,109 @@ const points = [
     })),
   }}
 >
-  <!-- Hero: fills the first screen, text on top, 3D logo and template strip below -->
-  <section class="flex h-svh min-h-[36rem] flex-col pt-36 text-center md:pt-32" aria-labelledby="hero-title">
-    <Container class="flex flex-1 flex-col items-center">
-      <p class="type-small mb-6 text-fg-soft">
-        Framer templates by {site.name}
-      </p>
-      <h1 id="hero-title" class="type-display max-w-measure-display">Framer templates for any kind of website.</h1>
-      <p class="type-lead mt-6 max-w-measure-lead">
-        Ready-made, responsive designs by {site.name}. Pick a template, remix it in Framer and publish your website without writing code.
-      </p>
-      <div class="mt-9 flex flex-wrap justify-center gap-3">
-        <Button href="/templates/">Browse templates</Button>
+  <!-- Hero: the display headline anchors one framed cover, on the four column lines. -->
+  <section class="relative isolate overflow-hidden pb-xl" aria-labelledby="hero-title">
+    <ColumnLines />
+    <Container>
+      <!-- Each label sits on a white backing so the column lines never run through the text. -->
+      <div class="type-label grid-4 py-lg">
+        <span class="col-span-2 md:col-span-1"><span class="bg-bg py-xs pr-sm">Framer templates</span></span>
+        <span class="hidden text-center md:col-span-2 md:block"><span class="bg-bg px-sm py-xs">{pad(all.length)} templates · {pad(freeCount)} free</span></span>
+        <span class="col-span-2 text-right md:col-span-1"><span class="bg-bg py-xs pl-sm">{site.name}</span></span>
       </div>
-      <div class="relative mb-[3vh] mt-6 min-h-72 w-full flex-1">
-        <HeroStage templates={all} />
+
+      <h1 id="hero-title" class="type-display mt-xl bg-bg text-center">Framer<br />templates.</h1>
+
+      <div class="grid-4 mt-xl items-end gap-y-xl">
+        <div class="order-2 col-span-4 bg-bg md:order-1 md:col-span-1">
+          <p class="type-body type-pillar">Ready-made websites, set in Framer. Pick one, remix it, publish it today.</p>
+          <Button href="/templates/" arrow class="mt-lg">Explore</Button>
+        </div>
+        <HeroSlider templates={slides} class="order-1 col-span-4 md:order-2 md:col-span-2" />
+        <div class="order-3 col-span-4 flex flex-col gap-sm bg-bg md:col-span-1 md:items-end">
+          <Button href={site.framerProfile} variant="secondary" target="_blank" rel="noopener noreferrer" arrow>View on Framer</Button>
+          <p class="type-label"><span class="bg-bg py-xs">Built in Framer · No code</span></p>
+        </div>
       </div>
     </Container>
   </section>
 
-  <Section id="templates" labelledby="featured-title" flush="bottom">
-    <SectionHeader
-      id="featured-title"
-      title="Featured Framer templates"
-      lead="Our top picks from the catalog. Open one to preview it live."
-    />
-    <ul class="grid-12 mt-12 gap-y-10">
-      {featured.map((t) => <TemplateCard template={t} class="col-span-12 sm:col-span-6 lg:col-span-4" />)}
+  <Band items={['Pick it.', 'Remix it.', 'Ship it.']} />
+
+  <Section id="templates" labelledby="featured-title">
+    <SectionHeader id="featured-title" index={1} kicker="Featured" title="Selected templates.">
+      <Button href="/templates/" variant="secondary" arrow>View all</Button>
+    </SectionHeader>
+    <ul class="grid-4 gap-y-xl">
+      {featured.map((t) => <TemplateCard template={t} class="col-span-4 md:col-span-2" />)}
     </ul>
-    <div class="mt-10 flex justify-center">
-      <Button href="/templates/">Browse templates</Button>
-    </div>
   </Section>
 
-  <Section label="Tagline" class="text-center">
-    <div class="grid-12">
-      <p class="type-statement col-span-12 mx-auto max-w-[64rem]">
-        <span class="mx-[0.12em] whitespace-nowrap">Pick it. <InlineIcon name="pick" /></span>
-        <span class="mx-[0.12em] whitespace-nowrap">Remix it. <InlineIcon name="remix" /></span><br class="hidden sm:block" />
-        <span class="mx-[0.12em] whitespace-nowrap">Make it yours. <InlineIcon name="make" /></span>
-        <span class="mx-[0.12em] whitespace-nowrap">Ship it. <InlineIcon name="ship" /></span>
-      </p>
-    </div>
+  <Section id="specs" labelledby="specs-title" rule>
+    <SectionHeader id="specs-title" index={2} kicker="Specs" title="Zero code. Full control." />
+    <ul class="cells cells-4">
+      {
+        specs.map((s, i) => (
+          <li class="cell invert-hover flex min-h-80 flex-col justify-between gap-xl">
+            <div class="type-label flex justify-between">
+              <span>{pad(i + 1)}</span>
+              <span>{s.unit}</span>
+            </div>
+            <div>
+              <p class="type-headline-lg" aria-hidden="true">{s.value}</p>
+              <h3 class="type-headline-xs mt-lg">{s.title}</h3>
+              <p class="type-body type-pillar mt-sm">{s.text}</p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
   </Section>
 
-  <Section id="how" labelledby="how-title" flush="bottom">
-    <SectionHeader
-      id="how-title"
-      title="From template to live website in three steps"
-      lead="Choose, remix and publish a Framer template in an afternoon."
-    />
-    <ol class="grid-12 mt-12">
-      {steps.map((st, i) => (
-        <FeatureCard as="li" step={st.n} title={st.title} text={st.text} connector={i < steps.length - 1} class="col-span-12 sm:col-span-4">
-          <Fragment slot="illustration">
-            {i === 0 && <StepChoose />}
-            {i === 1 && <StepRemix />}
-            {i === 2 && <StepPublish />}
-          </Fragment>
-        </FeatureCard>
-      ))}
+  <Section id="how" labelledby="how-title" rule>
+    <SectionHeader id="how-title" index={3} kicker="Start" title="Three steps to a live site." />
+    <ol class="grid-4 gap-y-xl">
+      {
+        steps.map((st, i) => (
+          <li class="col-span-4 border-t border-line pt-lg md:col-span-2 lg:col-span-1">
+            <p class="type-headline-lg">{i + 1}</p>
+            <h3 class="type-headline-xs mt-xl">{st.title}</h3>
+            <p class="type-body type-pillar mt-sm">{st.text}</p>
+          </li>
+        ))
+      }
+      <li class="col-span-4 flex items-end border-t border-line pt-lg md:col-span-2 lg:col-span-1">
+        <Button href="/templates/" arrow>Explore</Button>
+      </li>
     </ol>
   </Section>
 
-  <Section id="about" labelledby="about-title">
-    <SectionHeader
-      id="about-title"
-      title="Why choose Vonex Framer templates"
-      lead={`Framer templates by ${site.name} with clean typography, calm layouts and smooth details, ready to use from the first minute.`}
-    />
-    <ul class="grid-12 mt-12">
-      {points.map((p, i) => (
-        <FeatureCard as="li" title={p.title} text={p.text} class={`col-span-12 md:col-span-6 ${p.span}`}>
-          <Fragment slot="illustration">
-            {i === 0 && <FeatureResponsive />}
-            {i === 1 && <FeatureNoCode />}
-            {i === 2 && <FeaturePricing />}
-            {i === 3 && <FeatureGrowing />}
-          </Fragment>
-        </FeatureCard>
-      ))}
-    </ul>
-  </Section>
-
-  <FaqBlock title="Everything you need to know" flush="top">
+  <FaqBlock title="Questions." index={4} rule>
     {faq.map((f) => <FaqItem question={f.q}>{f.a}</FaqItem>)}
   </FaqBlock>
 
-  <Section labelledby="cta-title" flush="top" class="pb-24">
-    <Card variant="panel" padded={false} class="cta-card relative overflow-hidden px-8 pt-14 sm:px-14 sm:pt-20 lg:pb-20">
-      <div class="grid-12 relative z-10 text-center lg:text-left">
-        <div class="col-span-12 lg:col-span-6">
-          <h2 id="cta-title" class="type-h2 mx-auto max-w-measure-title text-balance lg:mx-0">Launch your website today</h2>
-          <p class="mx-auto mt-4 max-w-measure-body text-muted lg:mx-0 lg:max-w-sm xl:max-w-md">Choose a Framer template, remix it and have your website online today.</p>
-          <Button href="/templates/" class="mt-8">Browse templates</Button>
-        </div>
+  <!-- Closing band: the one large black block of the page. -->
+  <section class="bg-primary text-on-primary" aria-labelledby="cta-title">
+    <Container class="grid-4 items-end gap-y-xl py-2xl">
+      <div class="col-span-4 lg:col-span-2">
+        <span class="kicker type-label">05 / Launch</span>
+        <h2 id="cta-title" class="type-headline-lg">Live today.<br />Not next month.</h2>
+        <p class="type-body type-pillar mt-lg">Choose a template, remix it in Framer and publish before the day is out.</p>
+        <Button href="/templates/" variant="secondary" arrow class="mt-xl">Explore</Button>
       </div>
-      <Image
-        src={ctaMonitor}
-        alt="A Framer template shown on a monitor"
-        widths={[640, 1000, 1343]}
-        quality={70}
-        sizes="(min-width: 1024px) 700px, 100vw"
-        class="pointer-events-none relative -mb-px -ml-[15%] mt-10 w-[130%] max-w-none md:-ml-[7.5%] md:w-[115%] lg:absolute lg:left-1/2 lg:top-[-9%] lg:m-0 lg:w-[67%]"
-      />
-    </Card>
-  </Section>
+      {
+        featured[1] && (
+          <a href={`/templates/${featured[1].id}/`} class="col-span-4 block border-(length:--border-frame) border-on-primary lg:col-span-2">
+            <Image
+              src={featured[1].data.image}
+              alt={`${featured[1].data.name} Framer template`}
+              widths={[640, 960, 1400]}
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              class="aspect-[4/3] w-full object-cover"
+            />
+          </a>
+        )
+      }
+    </Container>
+  </section>
 </Base>

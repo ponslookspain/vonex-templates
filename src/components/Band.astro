@@ -1,0 +1,24 @@
+---
+// Full-bleed black band with big words running sideways ("PICK. REMIX. PUBLISH.").
+// The words repeat until one set is wider than a wide screen, then the set is rendered
+// twice for a seamless loop. It stops off screen and with reduced motion.
+interface Props {
+  items: string[];
+}
+const { items } = Astro.props;
+const set = Array.from({ length: Math.max(2, Math.ceil(8 / items.length)) }, () => items).flat();
+---
+
+<div class="band" aria-hidden="true" data-pause-offscreen>
+  <div class="band-track">
+    {
+      [0, 1].map(() => (
+        <div class="band-set">
+          {set.map((word) => (
+            <span class="band-item type-headline-lg">{word} —</span>
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</div>

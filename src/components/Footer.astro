@@ -1,60 +1,61 @@
 ---
 import { site } from '../data/site';
-import SocialIcon from './SocialIcon.astro';
-import Logo from './Logo.astro';
 import Container from './Container.astro';
 const year = new Date().getFullYear();
+
+type Link = { label: string; href: string; external?: boolean };
+const columns: { title: string; links: Link[] }[] = [
+  {
+    title: 'Catalog',
+    links: [
+      { label: 'All templates', href: '/templates/' },
+      { label: 'Framer profile', href: site.framerProfile, external: true },
+    ],
+  },
+  { title: 'Follow', links: site.socials.map((s) => ({ label: s.label, href: s.href, external: true })) },
+  {
+    title: 'More',
+    links: [
+      ...site.projects.map((p) => ({ label: p.label, href: p.href, external: true })),
+      { label: 'Privacy', href: '/privacy/' },
+      { label: 'Terms', href: '/terms/' },
+    ],
+  },
+];
 ---
 
-<footer class="relative isolate mt-10 overflow-hidden">
-  <div
-    aria-hidden="true"
-    class="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-56 bg-gradient-to-t from-accent/25 via-accent/5 to-transparent"
-  >
-  </div>
-  <Container class="type-small py-14">
-  <div class="grid-12 gap-y-10">
-    <div class="col-span-12 sm:col-span-6">
-      <p class="flex items-center gap-2.5 text-lg font-extrabold uppercase tracking-tight">
-        <Logo class="h-7 w-auto" />
-        {site.name}
-      </p>
-      <p class="mt-3 max-w-xs text-muted">{site.tagline}</p>
-      <a class="mt-5 inline-block text-fg underline decoration-line underline-offset-4 transition hover:decoration-fg" href={`mailto:${site.email}`}>{site.email}</a>
+<footer class="border-t border-line">
+  <Container class="grid-4 gap-y-xl py-2xl">
+    <div class="col-span-4 lg:col-span-1">
+      <p class="type-headline-lg">Vonex</p>
+      <p class="type-body type-pillar mt-lg">{site.tagline}</p>
     </div>
-
-    <div class="col-span-12 sm:col-span-3">
-      <p class="mb-4 text-muted">Follow</p>
-      <ul class="flex flex-col gap-3">
-        {
-          site.socials.map((s) => (
-            <li>
-              <a class="inline-flex items-center gap-2.5 text-fg-soft transition-colors hover:text-fg" href={s.href} target="_blank" rel="noopener noreferrer">
-                <SocialIcon name={s.icon} class="size-4" />
-                {s.label}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-
-    <div class="col-span-12 sm:col-span-3">
-      <p class="mb-4 text-muted">More</p>
-      <ul class="flex flex-col gap-3">
-        <li><a class="text-fg-soft transition-colors hover:text-fg" href="/templates/">All templates</a></li>
-        <li><a class="text-fg-soft transition-colors hover:text-fg" href={site.framerProfile} target="_blank" rel="noopener noreferrer">Framer profile ↗</a></li>
-        {site.projects.map((p) => <li><a class="text-fg-soft transition-colors hover:text-fg" href={p.href} target="_blank" rel="noopener noreferrer">{p.label} ↗</a></li>)}
-      </ul>
-    </div>
-  </div>
+    {
+      columns.map((col) => (
+        <div class="col-span-2 md:col-span-1">
+          <p class="type-headline-xxs mb-lg">{col.title}</p>
+          <ul class="type-label flex flex-col gap-md">
+            {col.links.map((l) => (
+              <li>
+                <a
+                  class="underline-offset-4 hover:underline"
+                  href={l.href}
+                  target={l.external ? '_blank' : undefined}
+                  rel={l.external ? 'noopener noreferrer' : undefined}
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
   </Container>
-  <Container class="type-caption flex flex-col gap-1 pb-8 text-fg-soft sm:flex-row sm:justify-between">
-    <span>Made by {site.name}</span>
-    <span class="flex flex-wrap gap-x-5 gap-y-1">
-      <a class="transition-colors hover:text-fg" href="/privacy/">Privacy</a>
-      <a class="transition-colors hover:text-fg" href="/terms/">Terms</a>
-      <span>© {year} {site.name}. All rights reserved.</span>
-    </span>
+  <Container class="type-label">
+    <div class="flex flex-col gap-xs border-t border-line py-lg sm:flex-row sm:justify-between">
+      <span>© {year} {site.name}</span>
+      <a class="underline-offset-4 hover:underline" href={`mailto:${site.email}`}>{site.email}</a>
+    </div>
   </Container>
 </footer>

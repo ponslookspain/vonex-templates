@@ -1,0 +1,12 @@
+---
+// The four column lines of the page grid drawn behind a block, as in the hero.
+// Place inside a parent with `relative isolate`.
+---
+
+<div aria-hidden="true" class="column-lines">
+  <div class="container-page h-full">
+    <div class="grid-4 h-full">
+      {Array.from({ length: 4 }, () => <span></span>)}
+    </div>
+  </div>
+</div>

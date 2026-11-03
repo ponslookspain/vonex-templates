@@ -18,7 +18,7 @@ const templates = defineCollection({
       description: z.string(),
       // Framer Marketplace page.
       url: z.url(),
-      // Optional Framer affiliate link (framer.link, redirects to the Marketplace page). If set, "Open on Framer" uses it instead of `url`.
+      // Optional Framer affiliate link (framer.link, redirects to the Marketplace page). If set, "View on Framer" uses it instead of `url`.
       affiliateUrl: z.url().optional(),
       preview: z.url().optional(),
       category: z.string(),

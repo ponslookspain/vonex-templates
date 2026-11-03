@@ -1,14 +1,19 @@
 ---
+import Icon from './Icon.astro';
+
 // The only way to make a button or button-like link. Renders <a> when `href` is set.
+// Labels are verbs in capitals (EXPLORE, VIEW, ORDER); the class sets the case.
 interface Props {
   href?: string;
-  variant?: 'primary' | 'ghost';
-  // compact is smaller on phones and regular from 640px (used in the header).
+  variant?: 'primary' | 'secondary';
+  // compact has smaller padding on phones, regular from 768px (used in the header).
   size?: 'md' | 'compact';
+  // Small arrow after the label, for links that lead somewhere.
+  arrow?: boolean;
   class?: string;
   [key: string]: unknown;
 }
-const { href, variant = 'primary', size = 'md', class: className, ...rest } = Astro.props;
+const { href, variant = 'primary', size = 'md', arrow = false, class: className, ...rest } = Astro.props;
 const classes = ['btn', `btn-${variant}`, size === 'compact' && 'btn-compact', className];
 ---
 
@@ -16,10 +21,12 @@ const classes = ['btn', `btn-${variant}`, size === 'compact' && 'btn-compact', c
   href ? (
     <a href={href} class:list={classes} {...rest}>
       <slot />
+      {arrow && <Icon name="arrow-up-right" class="btn-icon" />}
     </a>
   ) : (
     <button type="button" class:list={classes} {...rest}>
       <slot />
+      {arrow && <Icon name="arrow-up-right" class="btn-icon" />}
     </button>
   )
 }

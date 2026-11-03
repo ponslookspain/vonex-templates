@@ -1,0 +1,142 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+// Framed template cover in the home hero that changes by itself every few seconds.
+// Square dots below switch it by hand. It pauses while hovered or focused, while off screen,
+// and with reduced motion (then only the dots change it). Without JavaScript the first slide shows.
+interface Props {
+  templates: CollectionEntry<'templates'>[];
+  class?: string;
+}
+const { templates, class: className } = Astro.props;
+---
+
+<div class:list={['hero-slider', className]} data-hero-slider role="group" aria-roledescription="carousel" aria-label="Featured templates">
+  <div class="frame">
+    <div class="relative aspect-[4/3] overflow-hidden">
+      {
+        templates.map((t, i) => (
+          <a
+            href={`/templates/${t.id}/`}
+            class="hero-slide group absolute inset-0 block"
+            data-slide
+            aria-roledescription="slide"
+            aria-label={`${i + 1} of ${templates.length}: ${t.data.name}`}
+            aria-hidden={i === 0 ? undefined : 'true'}
+            tabindex={i === 0 ? undefined : -1}
+            data-active={i === 0 ? '' : undefined}
+          >
+            <Image
+              src={t.data.image}
+              alt={`${t.data.name} Framer template: ${t.data.tagline}`}
+              widths={[640, 960, 1400]}
+              sizes="(min-width: 768px) 50vw, 100vw"
+              loading={i === 0 ? 'eager' : 'lazy'}
+              fetchpriority={i === 0 ? 'high' : 'auto'}
+              class="h-full w-full object-cover"
+            />
+            <span class="type-label absolute inset-x-0 top-0 flex items-center justify-between bg-bg p-sm transition-colors duration-(--duration-fast) ease-out group-hover:bg-primary group-hover:text-on-primary">
+              <span>{t.data.name}</span>
+              <span>{t.data.price === 0 ? 'Free' : `$${t.data.price}`}</span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+  {
+    templates.length > 1 && (
+      <div class="mx-auto mt-md flex w-fit gap-sm bg-bg px-sm">
+        {templates.map((t, i) => (
+          <button
+            type="button"
+            class="hero-dot"
+            data-dot
+            aria-label={`Show ${t.data.name}`}
+            aria-current={i === 0 ? 'true' : undefined}
+          >
+            <span></span>
+          </button>
+        ))}
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .hero-slide {
+    opacity: 0;
+    transition: opacity var(--duration-reveal) var(--ease-out);
+  }
+  .hero-slide[data-active] {
+    opacity: 1;
+    z-index: 1;
+  }
+  /* A slow push-in on the visible cover. */
+  .hero-slide :global(img) {
+    transform: scale(1.04);
+    transition: transform calc(var(--duration-slide) + var(--duration-reveal)) linear;
+  }
+  .hero-slide[data-active] :global(img) {
+    transform: scale(1);
+  }
+  /* Square dots with a 44px hit area. The current one fills in black. */
+  .hero-dot {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    margin-inline: -12px;
+  }
+  .hero-dot span {
+    width: 10px;
+    height: 10px;
+    border: var(--border-hairline) solid var(--color-line);
+    background: var(--color-surface);
+    transition: background-color var(--duration-fast) var(--ease-out);
+  }
+  .hero-dot:hover span,
+  .hero-dot[aria-current='true'] span {
+    background: var(--color-primary);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-hero-slider]').forEach((root) => {
+    const slides = [...root.querySelectorAll<HTMLElement>('[data-slide]')];
+    const dots = [...root.querySelectorAll<HTMLElement>('[data-dot]')];
+    if (slides.length < 2) return;
+    const interval = parseFloat(getComputedStyle(root).getPropertyValue('--duration-slide')) || 5000;
+    const still = matchMedia('(prefers-reduced-motion: reduce)');
+    let current = 0;
+    let timer = 0;
+    let paused = false;
+    let onScreen = true;
+
+    const show = (i: number) => {
+      current = (i + slides.length) % slides.length;
+      slides.forEach((s, n) => {
+        const on = n === current;
+        s.toggleAttribute('data-active', on);
+        on ? s.removeAttribute('aria-hidden') : s.setAttribute('aria-hidden', 'true');
+        on ? s.removeAttribute('tabindex') : s.setAttribute('tabindex', '-1');
+      });
+      dots.forEach((d, n) => (n === current ? d.setAttribute('aria-current', 'true') : d.removeAttribute('aria-current')));
+    };
+    const restart = () => {
+      clearInterval(timer);
+      if (!paused && onScreen && !still.matches) timer = window.setInterval(() => show(current + 1), interval);
+    };
+
+    dots.forEach((d, i) => d.addEventListener('click', () => (show(i), restart())));
+    const pause = (p: boolean) => () => ((paused = p), restart());
+    root.addEventListener('mouseenter', pause(true));
+    root.addEventListener('mouseleave', pause(false));
+    root.addEventListener('focusin', pause(true));
+    root.addEventListener('focusout', pause(false));
+    new IntersectionObserver(([e]) => ((onScreen = e.isIntersecting), restart())).observe(root);
+    still.addEventListener('change', restart);
+    restart();
+  });
+</script>

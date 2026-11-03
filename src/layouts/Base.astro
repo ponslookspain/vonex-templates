@@ -10,18 +10,16 @@ import { site } from '../data/site';
 interface Props {
   title?: string;
   description?: string;
-  // Home page only: the hero fills the first screen and sits under the fixed header.
-  overlayHeader?: boolean;
   // Extra structured data (JSON-LD) for this page.
   jsonLd?: Record<string, unknown>;
   // Keep the page out of search results (internal pages such as the design system).
   noindex?: boolean;
   // Social preview image (path from the site root, 1200x630). Defaults to the site image.
   image?: string;
-  // Include the 12-column grid overlay (toggle with the G key). Always on in dev.
+  // Include the 4-column grid overlay (toggle with the G key). Always on in dev.
   gridOverlay?: boolean;
 }
-const { title, description = site.description, overlayHeader = false, jsonLd, noindex = false, gridOverlay = false, image = '/og-image.png' } = Astro.props;
+const { title, description = site.description, jsonLd, noindex = false, gridOverlay = false, image = '/og-image.png' } = Astro.props;
 const fullTitle = title ? `${title} | ${site.name}` : `${site.name}: ${site.tagline}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(image, Astro.site).href;
@@ -60,7 +58,7 @@ const schemas = jsonLd ? [...siteSchema, jsonLd] : siteSchema;
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap.xml" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#ffffff" />
     <script is:inline>document.documentElement.classList.add('js');</script>
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
@@ -89,11 +87,11 @@ const schemas = jsonLd ? [...siteSchema, jsonLd] : siteSchema;
   <body class="min-h-dvh flex flex-col">
     <a
       href="#main"
-      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-control focus:bg-fg focus:px-3 focus:py-2 focus:text-bg"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:bg-primary focus:px-sm focus:py-xs focus:text-on-primary"
       >Skip to content</a
     >
     <Header />
-    <main id="main" class:list={['flex-1', !overlayHeader && 'pt-28 md:pt-20']}>
+    <main id="main" class="flex-1 pt-(--space-header)">
       <slot />
     </main>
     <Footer />
@@ -107,13 +105,14 @@ const schemas = jsonLd ? [...siteSchema, jsonLd] : siteSchema;
         if (!('IntersectionObserver' in window)) { root.classList.remove('js'); return; }
         var targets = [];
         // Layout wrappers are transparent: their children are what appears.
-        var wrapper = '.grid-12, .doc, .faq-list';
+        var wrapper = '.grid-4, .doc, .faq-list';
         function collect(el) {
           var i = 0;
           for (var c = el.firstElementChild; c; c = c.nextElementSibling) {
             if (c.matches(wrapper)) { collect(c); continue; }
+            if (c.matches('.column-lines, [data-reveal-skip]')) continue;
             c.setAttribute('data-reveal', '');
-            c.style.setProperty('--reveal-delay', Math.min(i, 6) * 80 + 'ms');
+            c.style.setProperty('--reveal-delay', 'calc(var(--reveal-stagger) * ' + Math.min(i, 6) + ')');
             targets.push(c);
             i++;
           }

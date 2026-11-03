@@ -1,4 +1,6 @@
 ---
+import Icon from './Icon.astro';
+
 // One collapsible question. Native <details>, so it works without JavaScript.
 // The answer opens with a height and fade transition where the browser supports it.
 interface Props {
@@ -7,10 +9,10 @@ interface Props {
 const { question } = Astro.props;
 ---
 
-<details class="faq-item group">
-  <summary class="type-title flex cursor-pointer list-none items-center justify-between gap-6 py-5 font-medium transition-colors duration-fast hover:text-fg-soft">
+<details class="faq-item">
+  <summary class="type-headline-xxs flex cursor-pointer list-none items-center justify-between gap-lg py-lg">
     {question}
-    <span aria-hidden="true" class="faq-plus type-title shrink-0 text-fg">+</span>
+    <Icon name="plus" class="faq-plus size-5 shrink-0" />
   </summary>
-  <p class="type-prose max-w-measure-title pb-6 text-muted"><slot /></p>
+  <p class="type-prose pb-lg"><slot /></p>
 </details>

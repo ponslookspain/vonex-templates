@@ -2,7 +2,7 @@
 // Make the social preview image (1200x630) for each template: public/og/<slug>.png.
 // These are what X, Threads, Telegram and others show when a template page is shared.
 //
-//   npm run og                  all templates
+//   npm run og                  all templates and the site image public/og-image.png
 //   npm run og -- sanctun       only one
 //
 // The images are committed, not built on deploy, so the result does not depend on the fonts
@@ -42,59 +42,79 @@ function wrap(text, max, maxLines) {
   return lines;
 }
 
-const logo = `<g transform="translate(70 62) scale(0.052)" fill="#fff"><polygon points="114.725 87.033 0 613.187 233.407 846.593 348.132 320.44 114.725 87.033"/><polygon points="901.978 233.407 668.571 0 553.846 526.154 233.407 846.593 466.813 1080 700.219 846.593 680.957 653.265 787.253 759.56 901.978 233.407"/></g>`;
+// Alpine look (DESIGN.md): white ground, black type in capitals, hairlines, square corners,
+// the cover in a heavy black frame. Only black and white; the cover brings the colour.
+const logo = (x, y, scale) => `<g transform="translate(${x} ${y}) scale(${scale})" fill="#000"><polygon points="114.725 87.033 0 613.187 233.407 846.593 348.132 320.44 114.725 87.033"/><polygon points="901.978 233.407 668.571 0 553.846 526.154 233.407 846.593 466.813 1080 700.219 846.593 680.957 653.265 787.253 759.56 901.978 233.407"/></g>`;
+const W = 1200, H = 630;
+const label = (x, y, text, anchor = 'start') =>
+  `<text x="${x}" y="${y}" text-anchor="${anchor}" font-family="${FONT}" font-size="22" letter-spacing="3" fill="#000">${esc(text.toUpperCase())}</text>`;
+// Top meta row and bottom hairline shared by every image.
+const chrome = (left, right) => `<rect width="${W}" height="${H}" fill="#fff"/>
+${logo(60, 44, 0.026)}
+<text x="96" y="70" font-family="${FONT}" font-size="26" font-weight="700" letter-spacing="-1" fill="#000">VONEX DESIGN</text>
+${label(W - 60, 70, right, 'end')}
+<rect x="60" y="100" width="${W - 120}" height="1" fill="#000"/>
+<rect x="60" y="${H - 78}" width="${W - 120}" height="1" fill="#000"/>
+${label(60, H - 40, left)}
+${label(W - 60, H - 40, 'vonexdesign.com', 'end')}`;
+
+const headline = (lines, x, y, size) =>
+  lines.map((l, i) => `<text x="${x}" y="${y + i * size * 0.9}" font-family="${FONT}" font-size="${size}" font-weight="700" letter-spacing="${-size * 0.06}" fill="#000">${esc(l.toUpperCase())}</text>`).join('\n');
+
+async function render(svg, coverPath, out) {
+  const coverW = 480, coverH = 360, frame = 8, coverX = W - 60 - coverW - frame * 2, coverY = 150;
+  const layers = [];
+  if (coverPath) {
+    const cover = await sharp(coverPath).resize(coverW, coverH, { fit: 'cover' }).png().toBuffer();
+    layers.push({ input: cover, left: coverX + frame, top: coverY + frame });
+    svg = svg.replace('</svg>', `<rect x="${coverX}" y="${coverY}" width="${coverW + frame * 2}" height="${coverH + frame * 2}" fill="#000"/></svg>`);
+  }
+  await mkdir(path.dirname(out), { recursive: true });
+  await sharp(Buffer.from(svg))
+    .composite(layers)
+    // Palette PNG: about 3x smaller, looks the same.
+    .png({ palette: true, quality: 90, effort: 10, compressionLevel: 9 })
+    .toFile(out);
+  console.log(path.relative(root, out));
+}
 
 async function makeOne(slug) {
   const t = parseYaml(await readFile(path.join(dir, `${slug}.yaml`), 'utf8'));
   // The cover is the `image` field of the YAML, relative to the YAML file.
   if (!t.image) throw new Error(`no image in src/content/templates/${slug}.yaml`);
-  const coverPath = path.resolve(dir, t.image);
-
   const price = Number(t.price) === 0 ? 'Free' : `$${t.price}`;
-  const nameLines = wrap(t.name, 13, 2);
-  const taglineLines = wrap(t.tagline, 30, 2);
-  const nameY = 290;
-  const nameSize = 76;
-  const taglineY = nameY + (nameLines.length - 1) * (nameSize + 6) + 62;
-  const chipY = taglineY + (taglineLines.length - 1) * 42 + 52;
-
-  const W = 1200, H = 630;
-  const coverW = 520, coverH = 390, coverX = 640, coverY = 120;
-
+  const nameLines = wrap(t.name, 10, 2);
+  const size = nameLines.some((l) => l.length > 7) ? 76 : 96;
+  const taglineLines = wrap(t.tagline, 28, 2);
+  const nameY = 230;
+  const tagY = nameY + (nameLines.length - 1) * size * 0.9 + 60;
+  const chipY = tagY + (taglineLines.length - 1) * 34 + 40;
+  const chipW = price.length * 20 + 40;
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-<defs>
-  <radialGradient id="g1" cx="78%" cy="45%" r="55%"><stop offset="0" stop-color="#0099ff" stop-opacity="0.34"/><stop offset="0.6" stop-color="#6366f1" stop-opacity="0.1"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
-</defs>
-<rect width="${W}" height="${H}" fill="#000"/>
-<rect width="${W}" height="${H}" fill="url(#g1)"/>
-${logo}
-<text x="132" y="98" font-family="${FONT}" font-size="30" font-weight="800" letter-spacing="1" fill="#f4f4f5">VONEX DESIGN</text>
-<text x="70" y="214" font-family="${FONT}" font-size="26" font-weight="600" letter-spacing="3" fill="#0099ff">FRAMER TEMPLATE</text>
-${nameLines.map((l, i) => `<text x="70" y="${nameY + i * (nameSize + 6)}" font-family="${FONT}" font-size="${nameSize}" font-weight="700" letter-spacing="-2.5" fill="#f4f4f5">${esc(l)}</text>`).join('\n')}
-${taglineLines.map((l, i) => `<text x="70" y="${taglineY + i * 42}" font-family="${FONT}" font-size="32" fill="#9a9aa3">${esc(l)}</text>`).join('\n')}
-<rect x="70" y="${chipY}" width="${price.length * 22 + 44}" height="52" rx="12" fill="${price === 'Free' ? '#0099ff' : '#f4f4f5'}"/>
-<text x="${70 + (price.length * 22 + 44) / 2}" y="${chipY + 36}" text-anchor="middle" font-family="${FONT}" font-size="28" font-weight="700" fill="${price === 'Free' ? '#fff' : '#000'}">${esc(price)}</text>
-<text x="70" y="585" font-family="${FONT}" font-size="24" fill="#9a9aa3">vonexdesign.com</text>
-<rect x="${coverX - 2}" y="${coverY - 2}" width="${coverW + 4}" height="${coverH + 4}" rx="26" fill="none" stroke="#ffffff" stroke-opacity="0.18" stroke-width="2"/>
+${chrome(`${t.category ?? ''} Framer template`, 'Framer template')}
+${headline(nameLines, 60, nameY, size)}
+${taglineLines.map((l, i) => `<text x="60" y="${tagY + i * 34}" font-family="${FONT}" font-size="28" letter-spacing="-0.5" fill="#000">${esc(l)}</text>`).join('\n')}
+<rect x="60" y="${chipY}" width="${chipW}" height="46" fill="${price === 'Free' ? '#fff' : '#000'}" stroke="#000" stroke-width="2"/>
+<text x="${60 + chipW / 2}" y="${chipY + 31}" text-anchor="middle" font-family="${FONT}" font-size="22" letter-spacing="3" fill="${price === 'Free' ? '#000' : '#fff'}">${esc(price.toUpperCase())}</text>
 </svg>`;
+  await render(svg, path.resolve(dir, t.image), path.join(outDir, `${slug}.png`));
+}
 
-  const mask = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${coverW}" height="${coverH}"><rect width="${coverW}" height="${coverH}" rx="24" fill="#fff"/></svg>`);
-  const cover = await sharp(coverPath)
-    .resize(coverW, coverH, { fit: 'cover' })
-    .composite([{ input: mask, blend: 'dest-in' }])
-    .png()
-    .toBuffer();
-
-  await mkdir(outDir, { recursive: true });
-  await sharp(Buffer.from(svg))
-    .composite([{ input: cover, left: coverX, top: coverY }])
-    // Palette PNG: about 3x smaller, looks the same.
-    .png({ palette: true, quality: 90, effort: 10, compressionLevel: 9 })
-    .toFile(path.join(outDir, `${slug}.png`));
-  console.log(`public/og/${slug}.png`);
+// Site-wide preview (public/og-image.png): the hero headline over the newest featured cover.
+async function makeSite(slugs) {
+  const all = await Promise.all(slugs.map(async (s) => ({ s, t: parseYaml(await readFile(path.join(dir, `${s}.yaml`), 'utf8')) })));
+  all.sort((a, b) => Number(!!b.t.featured) - Number(!!a.t.featured) || String(b.t.added).localeCompare(String(a.t.added)));
+  const hero = all[0];
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+${chrome(`${String(all.length).padStart(2, '0')} templates`, 'Framer templates')}
+${headline(['Framer', 'templates.'], 60, 270, 104)}
+<text x="60" y="440" font-family="${FONT}" font-size="28" letter-spacing="-0.5" fill="#000">Pick one, remix it, publish it today.</text>
+</svg>`;
+  await render(svg, hero ? path.resolve(dir, hero.t.image) : null, path.join(root, 'public/og-image.png'));
 }
 
 const slugs = only.length
   ? only
   : (await readdir(dir)).filter((f) => f.endsWith('.yaml')).map((f) => f.replace(/\.yaml$/, ''));
 for (const slug of slugs) await makeOne(slug);
+if (!only.length) await makeSite(slugs);
