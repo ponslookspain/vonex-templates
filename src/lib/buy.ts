@@ -17,3 +17,10 @@ export function buyLabel(t: TemplateData) {
   if (t.buyUrl) return 'Buy template';
   return t.price === 0 ? 'Use free on Framer' : 'Get on Framer';
 }
+
+// Which of the four offers a template is. See "Template offers" in AGENTS.md.
+export type Offer = 'free' | 'free-code' | 'paid' | 'paid-code';
+export function offer(t: TemplateData): Offer {
+  if (t.price === 0) return t.codeUrl ? 'free-code' : 'free';
+  return t.codeUrl ? 'paid-code' : 'paid';
+}

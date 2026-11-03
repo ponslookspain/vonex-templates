@@ -10,6 +10,8 @@ Plan and rules for selling the **code version** of a template: the same design a
 
 ## How it works
 
+Pricing follows the four template offers in [AGENTS.md](AGENTS.md#template-offers): code for a free template is $19, code for a paid template costs the same as the Framer version.
+
 1. **Source of truth for design** is the Framer project. Claude reads it through the Framer MCP (pages, components, styles, texts, breakpoints) and compares against the published site.
 2. **Code** lives in a private repository `vonex-code`, one folder per template (`vonex-code/<slug>/`). A shared `vonex-code/_base/` holds the starting point (Astro and Tailwind config, fonts, `pack` script, README and LICENSE templates). A new template starts as a copy of `_base`.
 3. **Packing.** `npm run pack <slug>` builds the check, then writes `<slug>-v<version>.zip` with sources only (no `node_modules`, `dist`, `.git`), plus `README.md`, `LICENSE.md`, `CHANGELOG.md`.
