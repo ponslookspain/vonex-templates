@@ -515,6 +515,65 @@
   }
 
   /*
+    Compact catalog cards (CatalogGrid): 2 per row on phones, 3 on tablets, 4 on wide screens.
+    The tagline is dropped and the name gets smaller so a narrow card keeps one clean line.
+  */
+  .card-grid[data-density='compact'] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .card-grid[data-density='compact'] .template-card > a > div:last-child {
+    padding: var(--spacing-md);
+    gap: var(--spacing-sm);
+  }
+  .card-grid[data-density='compact'] .template-card :is(h2, h3) {
+    font-size: var(--text-body);
+  }
+  .card-grid[data-density='compact'] .template-card p {
+    display: none;
+  }
+  .card-grid[data-density='compact'] .template-card svg {
+    width: 1rem;
+    height: 1rem;
+  }
+  @media (min-width: 48rem) {
+    .card-grid[data-density='compact'] {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .card-grid[data-density='compact'] .template-card :is(h2, h3) {
+      font-size: var(--text-headline-sm);
+    }
+  }
+  @media (min-width: 80rem) {
+    .card-grid[data-density='compact'] {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* Card size switch above the catalog grid. Hidden until JavaScript runs, since it needs it. */
+  .density-switch {
+    display: none;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+  }
+  .js .density-switch {
+    display: flex;
+  }
+  .density-option {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: var(--border-hairline) solid var(--color-line-strong);
+    color: var(--color-fg);
+    cursor: pointer;
+    text-transform: inherit;
+  }
+  .density-option[aria-pressed='true'] {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  /*
     Invert on hover: a card turns black and everything inside turns white. Lines, tags and
     icons follow because they use currentColor or the tokens swapped here. Used by template
     cards and spec cells; add the class to any clickable block to get the same behaviour.
