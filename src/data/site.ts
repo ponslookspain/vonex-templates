@@ -17,8 +17,6 @@ export const site = {
     { label: 'Threads', href: 'https://www.threads.com/@ponslookdesign', icon: 'threads' },
     { label: 'TikTok', href: 'https://www.tiktok.com/@vonex_design', icon: 'tiktok' },
   ] as { label: string; href: string; icon: SocialIcon }[],
-  // Other projects by the same author, shown in the footer.
-  projects: [{ label: 'PostVia', href: 'https://postvia.online/' }],
 };
 
 export const nav = [
