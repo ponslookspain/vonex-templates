@@ -101,7 +101,7 @@ To add a new page or tool: create a file in `src/pages/`, add an entry to `nav` 
 
 ## Deploy (Cloudflare)
 
-`wrangler.jsonc` describes a separate static-assets Worker named `vonex-templates` (it has nothing to do with PostVia) with the custom domains `vonexdesign.com` and `www.vonexdesign.com`. Cloudflare builds the repository on every push to `main` (build command `npm run build`, deploy command `npx wrangler deploy`), so **merging into `main` publishes the site**.
+`wrangler.jsonc` describes a separate static-assets Worker named `vonex-templates` with the custom domains `vonexdesign.com` and `www.vonexdesign.com`. Cloudflare builds the repository on every push to `main` (build command `npm run build`, deploy command `npx wrangler deploy`), so **merging into `main` publishes the site**.
 
 Response headers (long cache for `/_astro/*`, basic security headers) are in `public/_headers`.
 

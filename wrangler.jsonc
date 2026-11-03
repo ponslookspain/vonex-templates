@@ -1,5 +1,5 @@
 {
-  // Separate Cloudflare Workers project (static assets only). Not related to PostVIA.
+  // Cloudflare Workers project (static assets only).
   "name": "vonex-templates",
   "compatibility_date": "2026-10-01",
   // Custom domain bought on Cloudflare. DNS and the certificate are created on deploy.
