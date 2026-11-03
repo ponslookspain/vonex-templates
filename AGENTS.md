@@ -49,6 +49,9 @@ Never push straight to `main`, never force-push. Delete branches once they are m
 | `src/data/site.ts` | Site name, texts, contacts, socials, nav, analytics token. |
 | `scripts/add-template.mjs` | Import / refresh templates from Framer Marketplace. |
 | `scripts/generate-og.mjs` | Social preview images `public/og/<slug>.png`. |
+| `scripts/pinterest/` | Pinterest pins for a template: capture, render, upload, CSV, one config per template. Its README is the procedure. |
+| `scripts/clean.mjs` | `npm run clean`: removes captures, scratch folders and build caches. |
+| `.work/` | Local work folder, ignored by git (see "Work folder"). |
 | `public/` | Served as is: favicons, `og-image.png`, `og/`, `_headers`. |
 
 ## Adding or changing a template
@@ -67,6 +70,22 @@ After changing a name, tagline, price or cover, run `npm run og` (or `npm run og
 Template cards show only the cover, the price/Free badge, the name and the tagline. Do not add descriptions or tags to cards.
 
 Category filtering is planned as static SEO pages (`/templates/category/<x>/`) once a category has 2+ templates; until then there is no filter.
+
+## Work folder
+
+Everything generated while working lives in one git-ignored folder, `.work/<area>/<slug>/`: never in `src/`, `public/` or the repo root, and never in an agent's own folder (`.omc/`, `.claude/`, `.codex/` belong to the agent tool). Whatever must be reused is committed as a script or a config, not as output.
+
+| Area | What goes in `.work/` | What is committed |
+| --- | --- | --- |
+| Template pages | Nothing: `npm run add-template` writes straight to `src/` and `public/og/` | YAML, pictures, og image |
+| Code versions (`.work/code/<slug>/`) | Screenshots, Framer snapshots and section-height comparisons while porting a template | The code itself, in the private `vonex-code` repo (see CODE_TEMPLATES.md), not here |
+| Pinterest (`.work/pinterest/<slug>/`) | Captures (`raw/`), pin images, JPGs, contact sheet, CSV files | `scripts/pinterest/` and `configs/<slug>.json` |
+
+Name scratch subfolders `raw`, `screens` or `tmp`: `npm run clean` removes exactly those, plus `dist`, `.astro` and `.wrangler`. `npm run clean -- --all` removes the whole `.work/` (look first with `--dry-run`). Clean up when a job is finished: the pins are live in Pinterest, or the code version is packed and uploaded.
+
+## Pinterest pins
+
+Vladimir says "делаем изображения для Пинтереста" (or similar) after a template is ready. Follow [scripts/pinterest/README.md](scripts/pinterest/README.md): capture the live demo, render 18 text-free pins in the approved style and, once he approves them, host the images in Cloudflare R2 and make the CSV he uploads to Pinterest. Pin images are never part of the site or its deploy. Pins link to the template page on this site with UTM tags, not to Framer.
 
 ## Template offers
 

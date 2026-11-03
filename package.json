@@ -10,7 +10,13 @@
     "check": "astro check",
     "add-template": "node scripts/add-template.mjs",
     "og": "node scripts/generate-og.mjs",
-    "sync-templates": "node scripts/add-template.mjs --all"
+    "sync-templates": "node scripts/add-template.mjs --all",
+    "pins:capture": "node scripts/pinterest/capture.mjs",
+    "pins:render": "node scripts/pinterest/pins.mjs",
+    "pins:sheet": "node scripts/pinterest/sheet.mjs",
+    "pins:upload": "node scripts/pinterest/upload.mjs",
+    "pins:csv": "node scripts/pinterest/csv.mjs",
+    "clean": "node scripts/clean.mjs"
   },
   "dependencies": {
     "@fontsource-variable/archivo": "^5.3.0",

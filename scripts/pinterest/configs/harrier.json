@@ -1,0 +1,158 @@
+{
+  "slug": "harrier",
+  "url": "https://joyous-rectangle-444295.framer.app/",
+  "backgrounds": {
+    "green": {
+      "type": "solid",
+      "color": "#0f4a38"
+    },
+    "paper": {
+      "type": "solid",
+      "color": "#efebe3"
+    },
+    "sand": {
+      "type": "solid",
+      "color": "#d9d1c1"
+    },
+    "fade": {
+      "type": "gradient",
+      "from": "#1e5d48",
+      "to": "#e9e3d6"
+    },
+    "glow": {
+      "type": "glow",
+      "base": "#0b3428",
+      "light": "#2f7a5e"
+    },
+    "soft": {
+      "type": "photo",
+      "left": 300,
+      "top": 0,
+      "width": 840,
+      "height": 1200,
+      "tint": "rgba(233,227,214,.25)"
+    }
+  },
+  "sections": [
+    [0, 1250],
+    [1250, 1650],
+    [2940, 1000],
+    [3880, 1250],
+    [5160, 1050],
+    [6250, 650],
+    [6900, 700],
+    [7610, 620]
+  ],
+  "pins": [
+    [
+      "long",
+      "fade",
+      0
+    ],
+    [
+      "long",
+      "green",
+      1250
+    ],
+    [
+      "long",
+      "sand",
+      3880
+    ],
+    [
+      "long",
+      "paper",
+      5100
+    ],
+    [
+      "columns",
+      "green",
+      [0, 3880]
+    ],
+    [
+      "columns",
+      "sand",
+      [1250, 5100]
+    ],
+    [
+      "monitor",
+      "green",
+      0
+    ],
+    [
+      "monitor",
+      "soft",
+      5150
+    ],
+    [
+      "combo",
+      "paper",
+      0,
+      0
+    ],
+    [
+      "combo",
+      "glow",
+      5150,
+      13100
+    ],
+    [
+      "trio",
+      "fade",
+      [0, 2700, 13100]
+    ],
+    [
+      "trio",
+      "green",
+      [8360, 11560, 17040]
+    ],
+    [
+      "phone",
+      "glow",
+      0
+    ],
+    [
+      "phone",
+      "sand",
+      18900
+    ],
+    [
+      "window",
+      "green",
+      1280,
+      3120
+    ],
+    [
+      "window",
+      "soft",
+      5150,
+      14450
+    ],
+    [
+      "tilted",
+      "paper"
+    ],
+    [
+      "tilted",
+      "green"
+    ]
+  ],
+  "pinterest": {
+    "name": "Harrier",
+    "kind": "SaaS and AI product website",
+    "pageTitle": "Free Framer AI and SaaS template",
+    "topicBoard": "SaaS & AI Website Design",
+    "pitch": "A calm, editorial website for an AI agent or SaaS product with features, pricing, a CMS blog and a changelog.",
+    "keywords": [
+      "framer template",
+      "free framer template",
+      "saas website design",
+      "ai landing page",
+      "saas landing page",
+      "minimal website design",
+      "website template",
+      "web design inspiration"
+    ],
+    "generalBoard": "Framer Templates"
+  }
+}

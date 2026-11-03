@@ -75,6 +75,8 @@ Things that cost time and are now solved:
 - The FAQ is native `<details>`. The pricing switch is a 10-line script.
 - Check with `scroll-behavior: smooth` in mind: scroll with `behavior: 'instant'` before taking screenshots.
 
+Scratch material while porting (screenshots, Framer snapshots, section-height comparisons) goes to `.work/code/<slug>/` in this repository, which is git-ignored, and is removed with `npm run clean` when the version is packed (see AGENTS.md, "Work folder"). The code itself lives only in `vonex-code`.
+
 ## Updating a code version
 
 1. Vladimir changes the design in Framer (alone or with Claude) and publishes.
