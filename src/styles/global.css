@@ -79,6 +79,9 @@
   --duration-base: 400ms; /* Blocks opening and moving */
   --duration-reveal: 800ms; /* A block rising into place as it enters the screen */
   --duration-marquee: 40s; /* One full loop of the running band */
+  --duration-slide: 5000ms; /* How long one cover stays in the hero slider */
+  --reveal-distance: 24px; /* How far a block rises as it appears */
+  --reveal-stagger: 80ms; /* Delay between blocks of one row appearing */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* The only easing */
 }
 
@@ -88,6 +91,7 @@
     --space-page: 16px;
     --grid-gutter: 16px;
     --space-section: 57px;
+    --reveal-distance: 16px;
   }
 }
 
@@ -124,10 +128,18 @@
   }
 }
 
-/* Scroll reveal (see the script at the end of Base.astro): blocks rise once when they enter the screen. */
+/*
+  BLOCK ANIMATION: one motion for the whole site, applied automatically.
+  The script at the end of Base.astro marks every direct child of every .container-page in
+  <main> and <footer> (looking through .grid-4, .faq-list and .doc wrappers) and each
+  one rises and fades in once as it enters the screen. Blocks of one row follow each other by
+  --reveal-stagger. A new page or section gets this without any extra markup.
+  Opt out for one block with data-reveal-skip. Distance, timing and easing are the tokens
+  --reveal-distance (smaller on phones), --duration-reveal and --ease-out. Reduced motion: off.
+*/
 .js [data-reveal] {
   opacity: 0;
-  transform: translateY(24px);
+  transform: translateY(var(--reveal-distance));
   transition:
     opacity var(--duration-reveal) var(--ease-out) var(--reveal-delay, 0ms),
     transform var(--duration-reveal) var(--ease-out) var(--reveal-delay, 0ms);
@@ -352,6 +364,24 @@
     .grid-4 > .template-card:last-child:nth-child(odd) {
       grid-column-start: 3;
     }
+  }
+
+  /*
+    Invert on hover: a card turns black and everything inside turns white. Lines, tags and
+    icons follow because they use currentColor or the tokens swapped here. Used by template
+    cards and spec cells; add the class to any clickable block to get the same behaviour.
+  */
+  .invert-hover {
+    transition:
+      background-color var(--duration-base) var(--ease-out),
+      color var(--duration-base) var(--ease-out);
+  }
+  .invert-hover:hover,
+  .invert-hover:focus-visible,
+  :hover > .invert-hover,
+  :focus-visible > .invert-hover {
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
   }
 
   /* Heavy black frame around a showcased picture. */

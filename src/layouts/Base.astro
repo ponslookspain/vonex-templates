@@ -110,9 +110,9 @@ const schemas = jsonLd ? [...siteSchema, jsonLd] : siteSchema;
           var i = 0;
           for (var c = el.firstElementChild; c; c = c.nextElementSibling) {
             if (c.matches(wrapper)) { collect(c); continue; }
-            if (c.matches('.column-lines')) continue;
+            if (c.matches('.column-lines, [data-reveal-skip]')) continue;
             c.setAttribute('data-reveal', '');
-            c.style.setProperty('--reveal-delay', Math.min(i, 6) * 80 + 'ms');
+            c.style.setProperty('--reveal-delay', 'calc(var(--reveal-stagger) * ' + Math.min(i, 6) + ')');
             targets.push(c);
             i++;
           }

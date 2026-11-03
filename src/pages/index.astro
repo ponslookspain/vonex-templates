@@ -11,13 +11,15 @@ import FaqItem from '../components/FaqItem.astro';
 import FaqBlock from '../components/FaqBlock.astro';
 import Band from '../components/Band.astro';
 import ColumnLines from '../components/ColumnLines.astro';
+import HeroSlider from '../components/HeroSlider.astro';
 import { site } from '../data/site';
 
 const all = await getCollection('templates');
 const featured = all
   .sort((a, b) => Number(b.data.featured) - Number(a.data.featured) || b.data.added.getTime() - a.data.added.getTime())
-  .slice(0, 3);
-const hero = featured[0];
+  .slice(0, 4);
+// The hero slider cycles through the four first templates (featured first).
+const slides = all.slice(0, 4);
 const freeCount = all.filter((t) => t.data.price === 0).length;
 const pad = (n: number) => String(n).padStart(2, '0');
 
@@ -61,10 +63,11 @@ const faq = [
   <section class="relative isolate overflow-hidden pb-xl" aria-labelledby="hero-title">
     <ColumnLines />
     <Container>
+      <!-- Each label sits on a white backing so the column lines never run through the text. -->
       <div class="type-label grid-4 py-lg">
-        <span class="col-span-2 md:col-span-1">Framer templates</span>
-        <span class="hidden text-center md:col-span-2 md:block">{pad(all.length)} templates · {pad(freeCount)} free</span>
-        <span class="col-span-2 text-right md:col-span-1">{site.name}</span>
+        <span class="col-span-2 md:col-span-1"><span class="bg-bg py-xs pr-sm">Framer templates</span></span>
+        <span class="hidden text-center md:col-span-2 md:block"><span class="bg-bg px-sm py-xs">{pad(all.length)} templates · {pad(freeCount)} free</span></span>
+        <span class="col-span-2 text-right md:col-span-1"><span class="bg-bg py-xs pl-sm">{site.name}</span></span>
       </div>
 
       <h1 id="hero-title" class="type-display mt-xl bg-bg text-center">Framer<br />templates.</h1>
@@ -74,30 +77,10 @@ const faq = [
           <p class="type-body type-pillar">Ready-made websites, set in Framer. Pick one, remix it, publish it today.</p>
           <Button href="/templates/" arrow class="mt-lg">Explore</Button>
         </div>
-        {
-          hero && (
-            <a href={`/templates/${hero.id}/`} class="frame group order-1 col-span-4 block md:order-2 md:col-span-2">
-              <span class="type-label flex items-center justify-between bg-bg p-sm">
-                <span>{hero.data.name}</span>
-                <span>{hero.data.price === 0 ? 'Free' : `$${hero.data.price}`}</span>
-              </span>
-              <span class="block aspect-[4/3] overflow-hidden">
-                <Image
-                  src={hero.data.image}
-                  alt={`${hero.data.name} Framer template: ${hero.data.tagline}`}
-                  widths={[640, 960, 1400]}
-                  sizes="(min-width: 768px) 50vw, 100vw"
-                  loading="eager"
-                  fetchpriority="high"
-                  class="h-full w-full object-cover transition-transform duration-(--duration-reveal) ease-out group-hover:scale-[1.02]"
-                />
-              </span>
-            </a>
-          )
-        }
+        <HeroSlider templates={slides} class="order-1 col-span-4 md:order-2 md:col-span-2" />
         <div class="order-3 col-span-4 flex flex-col gap-sm bg-bg md:col-span-1 md:items-end">
           <Button href={site.framerProfile} variant="secondary" target="_blank" rel="noopener noreferrer" arrow>View on Framer</Button>
-          <p class="type-label">Built in Framer · No code</p>
+          <p class="type-label"><span class="bg-bg py-xs">Built in Framer · No code</span></p>
         </div>
       </div>
     </Container>
@@ -119,7 +102,7 @@ const faq = [
     <ul class="cells cells-4">
       {
         specs.map((s, i) => (
-          <li class="cell flex min-h-80 flex-col justify-between gap-xl">
+          <li class="cell invert-hover flex min-h-80 flex-col justify-between gap-xl">
             <div class="type-label flex justify-between">
               <span>{pad(i + 1)}</span>
               <span>{s.unit}</span>

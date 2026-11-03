@@ -39,7 +39,7 @@ Tailwind's own palette, radii and shadows are switched off in `@theme` (`--color
 | Spacing | `--spacing-base` 8, `xs` 6, `sm` 11, `md` 15, `lg` 20, `xl` 57, `2xl` 113 (px) | `p-md`, `gap-lg`, `mt-xl`, `py-2xl` |
 | Lines | `--border-hairline` 1px, `--border-frame` 8px | `.frame`, `.frame-hairline`, `border-line` |
 | Layout | `--container-page` (90rem), `--container-pillar` (short copy), `--container-prose` (long documents), `--grid-columns` (4), `--grid-gutter`, `--space-page`, `--space-section`, `--space-card`, `--space-header` | `.container-page`, `.grid-4`, `.section`, `.type-pillar` |
-| Motion | `--duration-fast / base / reveal / marquee`, `--ease-out` | `duration-(--duration-base) ease-out` |
+| Motion | `--duration-fast / base / reveal / marquee / slide`, `--reveal-distance`, `--reveal-stagger`, `--ease-out` | `duration-(--duration-base) ease-out` |
 
 The big headline sizes use `clamp()`, so they shrink on phones by themselves. Spacing that changes on phones (gutter, page padding, section padding) is set in the phone `@media` block, never inside a component.
 
@@ -98,6 +98,21 @@ Press **G** on any page to overlay the 4 columns (always in `npm run dev`; in pr
 
 Vertical spacing: sections are `--space-section` apart (113px, 57px on phones). `flush="top"` / `flush="bottom"` on `Section` removes one side; `rule` adds a full-width hairline above it.
 
+## Motion
+
+Deliberate and the same everywhere. One easing (`--ease-out`), a few durations, nothing bounces.
+
+| Motion | Where | How |
+| --- | --- | --- |
+| **Block reveal** | Every block of every page | Automatic. The script at the end of `Base.astro` marks each direct child of each `.container-page` in `<main>` and `<footer>` (it looks through `.grid-4`, `.faq-list` and `.doc`). Each rises `--reveal-distance` (24px, 16px on phones) and fades in over `--duration-reveal`, once, as it enters the screen. Blocks in one row follow each other by `--reveal-stagger`. New pages and sections get it with no extra markup; `data-reveal-skip` opts one block out. |
+| **Invert on hover** | Template cards, spec cells | Add `.invert-hover` to the block (or to a direct child of the link): it turns black and its content white over `--duration-base`. |
+| **Cover zoom** | Pictures inside cards | `group-hover:scale-[1.03]` over `--duration-reveal`. |
+| **Hero slider** | `HeroSlider` | Cross-fade every `--duration-slide`, slow push-in on the visible cover. Pauses on hover, focus, off screen and with reduced motion. |
+| **Band** | `Band` | Endless sideways loop, `--duration-marquee`, paused off screen. |
+| **Arrows** | Buttons and cards | The arrow steps 2px up and right on hover. |
+
+With `prefers-reduced-motion` every transition and animation is off (rule in `global.css`).
+
 ## Components
 
 | Component | Props | Notes |
@@ -111,6 +126,8 @@ Vertical spacing: sections are `--space-section` apart (113px, 57px on phones). 
 | `.tag`, `.tag-solid` (classes) | | Outlined or black label: price, category, Framer features |
 | `.input` (class) | | Text field. No forms on the site yet; use it when one is added |
 | `.frame`, `.frame-hairline` (classes) | | Heavy 8px or 1px black frame around a picture |
+| `HeroSlider` | `templates`, `class` | Framed cover that changes by itself, square dots to switch |
+| `.invert-hover` (class) | | Block turns black with white content on hover |
 | `Band` | `items` | Full-bleed black strip with big words running sideways |
 | `ColumnLines` | | The four column lines behind a block (`relative isolate` parent) |
 | `FaqBlock`, `FaqItem` | `title`, `index`, `rule` / `question` + slot | Title left, hairline rows right. Native `<details>` |
@@ -122,7 +139,7 @@ Vertical spacing: sections are `--space-section` apart (113px, 57px on phones). 
 
 ## Pages
 
-- **Home** (`src/pages/index.astro`): hero (meta row, display headline, framed cover, EXPLORE), running band, featured templates, specs in cells, three steps, FAQ, black closing block.
+- **Home** (`src/pages/index.astro`): hero (meta row on white backings, display headline, cover slider, EXPLORE), running band, featured templates, specs in cells, three steps, FAQ, black closing block.
 - **Templates** (`/templates/`): every template, two to a row.
 - **Template page** (`/templates/<slug>/`): gallery pinned on the left; name, price, buttons, numbers and the imported description on the right; FAQ; black closing block; two more templates. `src/lib/template-content.ts` decides how each imported section is shown. Its social preview is `public/og/<slug>.png` (`npm run og`).
 - **Privacy, Terms** (`LegalPage`), **404**.

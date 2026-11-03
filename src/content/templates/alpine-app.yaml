@@ -1,0 +1,74 @@
+name: Alpine App
+tagline: Monochrome mobile app landing
+description: A black and white landing page for a mobile app, with specs, pricing, FAQ, legal and 404 pages.
+url: https://www.framer.com/marketplace/templates/alpine-app/
+preview: https://alpine-template.framer.website/
+category: Apps
+price: 0
+tags: []
+image: ../../assets/templates/alpine-app.webp
+featured: true
+added: 2026-11-03
+updated: 2026-11-03
+framerId: "78037"
+categories:
+  - Free
+styles:
+  - Monochromatic
+  - Modern
+  - Minimal
+framerFeatures: []
+intro: []
+sections:
+  - title: About Alpine
+    paragraphs:
+      - Alpine is a free Framer template for mobile app landing pages. Black-on-white type, square corners and hairline grids give it a precise, technical look that puts your app first.
+      - Your app sits on a phone below an oversized headline. Swap the screenshot or drop in an MP4 screen recording from the right panel. No code, no digging into layers.
+  - title: Why Alpine
+    paragraphs:
+      - "Built for app launches: Store buttons, a QR code, ratings and a Free/Pro pricing table with a monthly/yearly switch come ready to use."
+      - "Store-ready pages: App Store and Google Play ask for a support URL and a privacy policy. Alpine includes both: a Support page with a native form and a Legal page with Privacy Policy and Terms."
+      - "Edit everything from properties: Every text, link, image and alt text is a component property. Colours and fonts are global styles, so a rebrand takes minutes."
+      - "Fast and SEO ready: One H1 per page, clean heading order, meta titles, descriptions, Open Graph image and favicon are set."
+  - title: "Features:"
+    items:
+      - "Fully responsive: Desktop, Tablet, Phone"
+      - Phone mockup with image or video screen
+      - Scroll-pinned feature blocks
+      - Ticker, appear and hover animations
+      - Monthly/yearly pricing switch
+      - FAQ accordion
+      - Native Framer contact form
+      - Mobile menu
+      - 16 section components, all editable
+      - Global colour and text styles
+      - Royalty-free fonts, icons and photos
+  - title: "Pages Included:"
+    items:
+      - Home
+      - Support
+      - Legal (Privacy Policy, Terms of Use)
+      - "404"
+  - title: "Best For:"
+    items:
+      - Mobile app landing page
+      - App launch and waitlist
+      - Fitness, outdoor and sports apps
+      - Productivity and utility apps
+      - Indie developers and startups
+  - title: "Support:"
+    paragraphs:
+      - If you have any questions about using or customizing the template, feel free to reach out via [ponslookdesign@gmail.com](mailto:ponslookdesign@gmail.com) or [X](https://x.com/ponslookdesign).
+gallery:
+  - type: image
+    src: ../../assets/templates/alpine-app.webp
+    alt: Alpine App template, preview 1
+  - type: image
+    src: ../../assets/templates/alpine-app/framer-2.webp
+    alt: Alpine App template, preview 2
+  - type: image
+    src: ../../assets/templates/alpine-app/framer-3.webp
+    alt: Alpine App template, preview 3
+  - type: image
+    src: ../../assets/templates/alpine-app/framer-4.webp
+    alt: Alpine App template, preview 4
