@@ -28,7 +28,7 @@ export const site = {
 
 export const nav = [
   { label: 'Home', href: '/' },
-  { label: 'Templates', href: '/templates/' },
+  // No Templates item: the header button "Browse templates" is the way into the catalog.
   { label: 'Guides', href: '/guides/' },
   { label: 'About', href: '/about/' },
 ] as { label: string; href: string; external?: boolean }[];

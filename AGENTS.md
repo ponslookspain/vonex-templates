@@ -38,7 +38,7 @@ Never push straight to `main`, never force-push. Delete branches once they are m
 | `src/content/templates/<slug>.yaml` | One template. The file name is the slug and the URL `/templates/<slug>/`. |
 | `src/assets/templates/<slug>.webp`, `<slug>/` | Cover and gallery pictures of a template. |
 | `src/pages/index.astro` | Landing: hero, featured templates (first 3 with `featured: true`, then newest), steps, benefits, FAQ, closing banner. |
-| `src/pages/templates.astro`, `templates/free.astro` | All templates and free templates, newest first, in `CatalogGrid` (large / compact cards switch). |
+| `src/pages/templates.astro` | The one catalog: all templates, newest first, in `CatalogGrid` (large / compact cards switch). No separate free or paid lists. |
 | `src/pages/templates/[slug].astro` | Template page: gallery, description blocks, stats, FAQ, other templates. |
 | `src/lib/template-content.ts` | Turns the imported Marketplace description into page blocks and FAQ. |
 | `src/pages/design-system.astro` | Live style guide at `/design-system/`, only in `npm run dev`: `astro.config.mjs` removes it from the production build. |
@@ -103,6 +103,9 @@ Rules:
 - A free template's code costs $19.
 - A paid template costs the same in Framer and as code: the buyer chooses the format, not the price.
 - `codeUrl` and `codePrice` are set together or not at all. A free template never has `buyUrl`.
+- When to make a code version: a free Framer template can get one right away (it is how a free template earns). A paid Framer template is sold only in Framer at first; it gets code only once it sells steadily or buyers ask for it. Before the first paid one, check the Framer Marketplace creator terms on selling the same design elsewhere.
+- Copy about premium templates (catalog title, home FAQ and specs) depends on whether the catalog has a paid template; the pages check this themselves, so do not hard-code "premium". There is one catalog, `/templates/`; the price badge on each card says free or paid.
+- Money comes from the Framer referral and from code sales. The Framer button stays first; code is the second option, for people who will not use Framer. The template page links Framer plans through `site.framerReferral` in "Before you publish".
 - Every template, Framer or code, follows one license at `/license/` (free: any number of projects; paid: one project per license; never resale). Change the terms there, not per template, and keep LICENSE.md in `vonex-code` the same text.
 
 ## Style

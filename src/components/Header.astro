@@ -34,8 +34,8 @@ const current = (href: string) => path === href || (href === '/guides/' && path.
     </nav>
 
     <div class="ml-auto flex items-stretch">
-      <a href="/templates/free/" class="header-cell header-cta type-label gap-sm">
-        Free templates
+      <a href="/templates/" class="header-cell header-cta type-label gap-sm">
+        Browse templates
         <Icon name="arrow-up-right" class="size-4" />
       </a>
       <button
@@ -55,7 +55,7 @@ const current = (href: string) => path === href || (href === '/guides/' && path.
   <div id="mobile-menu" hidden class="border-t border-line bg-bg lg:hidden">
     <Container as="nav" class="flex flex-col py-md">
       {
-        [...nav, { label: 'Free templates', href: '/templates/free/' }].map((item) => (
+        [...nav, { label: 'Browse templates', href: '/templates/' }].map((item) => (
           <a
             href={item.href}
             aria-current={current(item.href) ? 'page' : undefined}

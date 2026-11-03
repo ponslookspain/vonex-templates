@@ -10,12 +10,14 @@ const templates = (await getCollection('templates')).sort(
   (a, b) => b.data.added.getTime() - a.data.added.getTime(),
 );
 const count = String(templates.length).padStart(2, '0');
+// Mention premium templates only while the catalog has one.
+const hasPaid = templates.some((t) => t.data.price > 0);
 ---
 
 <Base
-  title="Framer Templates — Free and Premium"
+  title={hasPaid ? 'Framer Templates — Free and Premium' : 'Free Framer Templates, Some Also as Code'}
   image="/og/pages/templates.png"
-  description="Find a Framer template for your portfolio, agency, app or SaaS product. Explore free and paid designs by Vonex, with screenshots and live demos."
+  description={`Find a Framer template for your portfolio, agency, app or SaaS product. ${hasPaid ? 'Explore free and paid designs by Vonex' : 'Every Vonex template is free, some also come as Astro code'}, with screenshots and live demos.`}
   jsonLd={{
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
@@ -39,9 +41,7 @@ const count = String(templates.length).padStart(2, '0');
       title="Framer templates."
       accent="templates"
       lead="Find a starting point for your portfolio, agency, app or software product. Open a template to compare its pages, CMS features and live demo."
-    >
-      <Button href="/templates/free/" variant="secondary" arrow>Explore free templates</Button>
-    </SectionHeader>
+    />
     <CatalogGrid templates={templates} />
   </Section>
 </Base>

@@ -184,7 +184,6 @@ Section (bar, flush, labelledby)            .section, --space-section above and 
 | --- | --- | --- |
 | Home | `src/pages/index.astro` | Hero (meta row, display headline, `HeroSlider`, Explore / View on Framer) · `Band` · 01 Featured (`.card-grid`, 4 templates) · 02 Specs (`.cells-4`) · 03 Start (three steps with `StepVisual`) · 04 FAQ · `CtaBand` |
 | All templates | `src/pages/templates.astro` | Catalog bar + header · `CatalogGrid` (large / compact switch) |
-| Free templates | `src/pages/templates/free.astro` | 01 Free (`CatalogGrid`) · 02 Compare · 03 Publishing |
 | Template page | `src/pages/templates/[slug].astro` | See below |
 | Guides index | `src/pages/guides/index.astro` | One section per guide group, with its articles |
 | Guide, About, License, Refunds, Terms, Privacy | `src/pages/guides/*.astro`, `about.astro`… | `LegalPage`: bar, title with accent, `.type-prose` text; guides add `GuideFigure`, `TemplateRoundup`, tables |
