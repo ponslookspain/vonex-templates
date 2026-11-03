@@ -61,6 +61,22 @@ const templates = defineCollection({
         .default([]),
       // Pictures shown in the gallery of the template page (no video).
       gallery: z.array(z.object({ type: z.literal('image'), src: image(), alt: z.string() })).default([]),
+    })
+    // A template is one of four offers (see "Template offers" in AGENTS.md): free, free + paid code,
+    // paid, or paid + code at the same price. These rules keep a YAML from mixing them up.
+    .superRefine((t, ctx) => {
+      if (Boolean(t.codeUrl) !== (t.codePrice !== undefined)) {
+        ctx.addIssue({ code: 'custom', path: ['codePrice'], message: 'Set codeUrl and codePrice together, or neither.' });
+      }
+      if (t.codePrice !== undefined && t.codePrice <= 0) {
+        ctx.addIssue({ code: 'custom', path: ['codePrice'], message: 'The code version is always paid.' });
+      }
+      if (t.price > 0 && t.codePrice !== undefined && t.codePrice !== t.price) {
+        ctx.addIssue({ code: 'custom', path: ['codePrice'], message: 'A paid template costs the same in Framer and as code.' });
+      }
+      if (t.price === 0 && t.buyUrl) {
+        ctx.addIssue({ code: 'custom', path: ['buyUrl'], message: 'A free template has nothing to buy; leave buyUrl out.' });
+      }
     }),
 });
 

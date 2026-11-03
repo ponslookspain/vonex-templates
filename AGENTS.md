@@ -68,8 +68,27 @@ Template cards show only the cover, the price/Free badge, the name and the tagli
 
 Category filtering is planned as static SEO pages (`/templates/category/<x>/`) once a category has 2+ templates; until then there is no filter.
 
+## Template offers
+
+Every template is exactly one of four offers. `offer()` in `src/lib/buy.ts` names it, and the schema in `src/content.config.ts` fails the build if a YAML mixes them up.
+
+| Offer | YAML | Buttons on the page | Example |
+| --- | --- | --- | --- |
+| `free` | `price: 0`, no `codeUrl` | Use free on Framer | Harrier, Ethan Walker, Softic Studio |
+| `free-code` | `price: 0`, `codeUrl`, `codePrice: 19` | Use free on Framer · Buy code $19 | Alpine App |
+| `paid` | `price: 49`, no `codeUrl` | Get on Framer (or Buy template with `buyUrl`) | Sanctun |
+| `paid-code` | `price: 49`, `codeUrl`, `codePrice: 49` | Get on Framer · Buy code $49 | none yet |
+
+Rules:
+- The Framer template is the main product. A code version is an extra, sold on Contra.
+- A free template's code costs $19.
+- A paid template costs the same in Framer and as code: the buyer chooses the format, not the price.
+- `codeUrl` and `codePrice` are set together or not at all. A free template never has `buyUrl`.
+- Sanctun has no code version: it is sold only as a Framer template.
+
 ## Style
 
+- Before changing layout, read DESIGN_SYSTEM.md: "Breakpoints and responsive rules", "Section anatomy", "Pages" and "Template page" describe how every page is put together and how it must behave from 340px up.
 - Alpine: ink on warm paper (quiet text and lines are the same ink at lower opacity, through tokens), square corners, hairlines, headlines in sentence case with one italic serif accent word (DESIGN.md). Read DESIGN.md before writing any UI. All visual values come from tokens in `src/styles/global.css`; text sizes from the `.type-*` classes; spacing from the named steps (`p-lg`, `mt-xl`); layout on the 4-column grid (`.grid-4`, `Section`, `Container`). Details and the checklist are in DESIGN_SYSTEM.md.
 - Pages are static HTML with small inline scripts only. Do not add a UI framework (React and similar) or client-side rendering.
 - Images go through `astro:assets` (`<Image>`), never straight from Framer at runtime.

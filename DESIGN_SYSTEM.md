@@ -53,7 +53,7 @@ The big headline sizes use `clamp()`, so they shrink on phones by themselves. Sp
 
 ## Typography roles
 
-Apply the role class; size, weight, line height, tracking and case are included. Headline classes set `text-transform: uppercase`, so write the source text in normal sentence case.
+Apply the role class; size, weight, line height and tracking are included. Headlines are in sentence case as written; only `.type-label` and `.tag` turn text into capitals, so write all source text in normal sentence case.
 
 | Class | DESIGN.md role | Use |
 | --- | --- | --- |
@@ -137,12 +137,93 @@ With `prefers-reduced-motion` every transition and animation is off (rule in `gl
 | `Header`, `Footer`, `Logo`, `SocialIcon`, `LegalPage` | | Site chrome |
 | `GridOverlay` | | Debug columns, toggled by G |
 
+## Breakpoints and responsive rules
+
+Tailwind's default breakpoints; `md` and `lg` do almost all the work. Write mobile first: the plain class is the phone, then `md:` and `lg:` change it.
+
+| Name | From | What changes |
+| --- | --- | --- |
+| phone | 0 | Everything in one column. Side padding, gutter and section gap shrink (phone `@media` block in `global.css`). |
+| `sm` | 640px (40rem) | Only to show a label hidden on phones (rule 6 below). |
+| `md` | 768px (48rem) | Template cards two to a row, cells two to a row, compact catalog three to a row. |
+| `lg` | 1024px (64rem) | Side-by-side layouts: hero three columns, `.split` halves, template page gallery + details, label + content rows, cells four to a row. |
+| `xl` | 1280px (80rem) | Compact catalog four to a row. Nothing else. |
+
+Rules, learned from bugs we fixed:
+
+1. **Side by side starts at `lg`, not `md`.** At 768px a quarter column is about 170px: too narrow for a button or a label next to a picture. Use `md:` only for equal tiles (cards, cells).
+2. **Every grid column is `minmax(0, 1fr)`, including a one-column grid.** A bare `grid` with `grid-template-areas` and no columns sizes its column by the widest content, and the page runs past a phone screen. `.grid-4`, `.card-grid`, `.split` and `.product` already do this; copy them.
+3. **Flex items that hold text get `min-width: 0`** so the text can wrap (see `.section-bar > *`).
+4. **Text on a white backing over column lines uses `inline-block`** (`bg-bg inline-block`). An inline backing with vertical padding covers the line above it when the text wraps.
+5. **Buttons may wrap.** `.btn` has `max-width: 100%`; keep labels short so they stay on one line at 390px.
+6. **Drop, do not squeeze.** If a secondary label repeats something nearby and has no room on phones, hide it below `sm` (`hidden sm:inline`), like the price label next to the breadcrumb.
+7. **Responsive values live in tokens.** A spacing that differs on phones is set in the phone `@media` block, never inside a component.
+
+Check every layout change at **340, 390, 768, 1024 and 1440px**: no horizontal scroll, no overlapping text. In the browser console, `document.documentElement.scrollWidth > innerWidth` must be `false`.
+
+## Section anatomy
+
+Every page is `main.page-rails` (two hairlines down the page on the outer grid edges) with sections stacked inside. A section is:
+
+```
+Section (bar, flush, labelledby)            .section, --space-section above and below
+  ├ section bar    "02 / Specs"  ·  "Built in Framer"   hairlines rail to rail, muted labels
+  ├ SectionHeader  kicker, title with one accent word, lead; button or count on the right
+  └ content        .grid-4 / .card-grid / .cells / .split / .faq-list, often .flush-rails
+```
+
+- **Bar.** `bar={{ left, right }}`. Left: `NN / Name` on pages with numbered sections (home, free templates), a plain name elsewhere (`Catalog`, `FAQ`). Right: a short fact (`04 answers`, `05 templates · Newest first`). Sections with a bar stack with no gap, sharing one hairline.
+- **Title.** Sentence case, ends with a full stop, exactly one accent word in Instrument Serif italic (`accent` prop): "Selected *templates*.".
+- **Framed content** (cards, cells, split, product) uses `.flush-rails`, so its outer lines are the page rails.
+- **`flush="bottom"`** when the content ends on a hairline and the next section starts with its own bar.
+- **One black block per page**: `CtaBand` near the end. `Band` (running words) only on the home page.
+
 ## Pages
 
-- **Home** (`src/pages/index.astro`): hero (meta row on white backings, display headline, cover slider, EXPLORE), running band, featured templates, specs in cells, three steps, FAQ, black closing block.
-- **Templates** (`/templates/`): every template, two to a row.
-- **Template page** (`/templates/<slug>/`): gallery pinned on the left; name, price, buttons, numbers and the imported description on the right; FAQ; black closing block; two more templates. `src/lib/template-content.ts` decides how each imported section is shown. Its social preview is `public/og/<slug>.png` (`npm run og`).
-- **Privacy, Terms** (`LegalPage`), **404**.
+| Page | File | Sections, top to bottom |
+| --- | --- | --- |
+| Home | `src/pages/index.astro` | Hero (meta row, display headline, `HeroSlider`, Explore / View on Framer) · `Band` · 01 Featured (`.card-grid`, 4 templates) · 02 Specs (`.cells-4`) · 03 Start (three steps with `StepVisual`) · 04 FAQ · `CtaBand` |
+| All templates | `src/pages/templates.astro` | Catalog bar + header · `CatalogGrid` (large / compact switch) |
+| Free templates | `src/pages/templates/free.astro` | 01 Free (`CatalogGrid`) · 02 Compare · 03 Publishing |
+| Template page | `src/pages/templates/[slug].astro` | See below |
+| Guides index | `src/pages/guides/index.astro` | One section per guide group, with its articles |
+| Guide, About, License, Refunds, Terms, Privacy | `src/pages/guides/*.astro`, `about.astro`… | `LegalPage`: bar, title with accent, `.type-prose` text; guides add `GuideFigure`, `TemplateRoundup`, tables |
+| 404 | `src/pages/404.astro` | Display headline, link home |
+
+### Template page
+
+One layout for every template; what shows depends on the YAML (offer, `pageKind`, imported sections).
+
+```
+Section.section-with-bar
+  bar: Home / Templates / Name   ·   "$49 · Wedding Website" (hidden on phones)
+  .product.flush-rails                        phone: head, gallery, doc in one column
+  ├ .p-head     label "Free Framer Portfolio template", h1 name, tagline
+  ├ .p-gallery  TemplateGallery (slider, arrows, counter, thumbnails) + View live preview
+  │             lg+: left half, sticky
+  └ .p-doc      lg+: right half
+      ├ .buy        Price, main button, + "Buy code · $19" when codeUrl is set
+      ├ .stats      Pages · CMS · Updated, in 2-column cells
+      ├ .lead       "<Kind> template for Framer" + overview
+      ├ Code version        only with codeUrl (offers free-code, paid-code)
+      ├ Before you publish  from `preparation`
+      └ imported blocks     About, Why <name>, Features, Pages, Best for, Built with Framer,
+                            Updates, Support, policy; chosen by src/lib/template-content.ts
+FaqBlock          questions built from the YAML (+ a code answer with codeUrl)
+CtaBand           closing black block
+Section Catalog   "More templates.", two other templates
+```
+
+Price and buttons by offer (rules in AGENTS.md, "Template offers"; `buyLink`, `buyLabel`, `offer` in `src/lib/buy.ts`):
+
+| Offer | Price | Main button | Second button |
+| --- | --- | --- | --- |
+| `free` | Free | Use free on Framer | none |
+| `free-code` | Free | Use free on Framer | Buy code · $19 |
+| `paid` | $49 | Get on Framer, or Buy template with `buyUrl` | none |
+| `paid-code` | $49 | Get on Framer, or Buy template with `buyUrl` | Buy code · $49 |
+
+To change the template page for every template, edit `[slug].astro` or `template-content.ts`. To change one template, edit its YAML only: never add per-template conditions to the page.
 
 ## Recipes
 
@@ -165,9 +246,10 @@ With `prefers-reduced-motion` every transition and animation is off (rule in `gl
 ## Checklist before merging a change
 
 - [ ] Paper and ink tokens only (no raw colors, no other hues), no shadows or rounded corners.
-- [ ] Headlines in capitals through a `.type-headline-*` class; one `.type-display` per page at most.
+- [ ] Headlines in sentence case through a `.type-headline-*` class, one accent word; one `.type-display` per page at most.
 - [ ] Short copy in `.type-pillar`; long documents in `.type-prose`.
 - [ ] Layout uses `Section` and `.grid-4`; columns line up when you press G.
-- [ ] Looks right at 390, 768, 1024 and 1440 px, with no horizontal scroll.
+- [ ] Looks right at 340, 390, 768, 1024 and 1440 px: no horizontal scroll, no overlapping text (see "Breakpoints and responsive rules").
+- [ ] A new section follows "Section anatomy"; a template page change works for all four offers.
 - [ ] `npm run check` and `npm run build` pass.
 - [ ] New component or token is visible on `/design-system/`.
