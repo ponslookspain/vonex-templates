@@ -4,3 +4,6 @@ dist/
 .wrangler/
 .DS_Store
 .env
+.claude/
+.omc/
+.codex/

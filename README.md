@@ -2,7 +2,7 @@
 
 A minimal black-and-white catalog of Framer templates for any kind of website, live at **https://vonexdesign.com**. A landing page with featured templates, `/templates/` with every template, and one page per template at `/templates/<slug>/`. The "View on Framer" buttons lead to the template on Framer Marketplace (through the Framer referral link when there is one). Static site built with [Astro](https://astro.build) and Tailwind CSS, deployed on Cloudflare (Workers static assets).
 
-Working on the project with Claude? The rules for that are in [CLAUDE.md](CLAUDE.md).
+Working on the project with Claude Code or Codex? The shared rules are in [AGENTS.md](AGENTS.md) (`CLAUDE.md` just imports it).
 
 ## Commands
 
