@@ -175,16 +175,20 @@ export interface Faq {
 
 export function buildFaq(t: Template, c: TemplateContent, opts: { siteEmail: string }): Faq[] {
   const free = t.price === 0;
+  // Sold directly (for example on Contra) or on Framer Marketplace.
+  const shop = t.buyUrl ? (t.soldOn ?? 'Contra') : 'Framer Marketplace';
   const faq: Faq[] = [
     {
       q: `Is ${t.name} free?`,
       a: free
         ? `Yes. ${t.name} is a free Framer template: you can remix it into your own Framer account at no cost.`
-        : `${t.name} is a premium Framer template and costs $${t.price} on Framer Marketplace. You can open the live preview before you buy.`,
+        : `${t.name} is a premium Framer template and costs $${t.price} on ${shop}. You can open the live preview before you buy.`,
     },
     {
       q: `How do I use ${t.name}?`,
-      a: `Open ${t.name} on Framer Marketplace and press the remix button. The template is copied into your own Framer project, where you replace the text and images, adjust the style and publish it on your domain.`,
+      a: t.buyUrl
+        ? `Buy ${t.name} on ${shop} and follow the steps you get after payment to copy it into your own Framer project. There you replace the text and images, adjust the style and publish it on your domain.`
+        : `Open ${t.name} on Framer Marketplace and press the remix button. The template is copied into your own Framer project, where you replace the text and images, adjust the style and publish it on your domain.`,
     },
   ];
   if (c.pages.length) {

@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
+import { buyLink } from '../lib/buy';
 
 // Framed template cover in the home hero that changes by itself every few seconds.
 // Square dots below switch it by hand. It pauses while hovered or focused, while off screen,
@@ -29,8 +30,9 @@ const { templates, class: className } = Astro.props;
             aria-hidden={i === 0 ? undefined : 'true'}
             tabindex={i === 0 ? undefined : -1}
             data-active={i === 0 ? '' : undefined}
-            data-buy-url={t.data.affiliateUrl ?? t.data.url}
-            data-buy-sponsored={t.data.affiliateUrl ? '' : undefined}
+            data-buy-url={buyLink(t.data).href}
+            data-buy-sponsored={buyLink(t.data).sponsored ? '' : undefined}
+            data-buy-label={buyLink(t.data).direct ? 'Buy template' : undefined}
           >
             <Image
               src={t.data.image}
@@ -160,6 +162,9 @@ const { templates, class: className } = Astro.props;
       if (cta && active.dataset.buyUrl) {
         cta.href = active.dataset.buyUrl;
         cta.rel = active.hasAttribute('data-buy-sponsored') ? 'noopener noreferrer sponsored' : 'noopener noreferrer';
+        // The label is the first text node of the button, in front of the arrow icon.
+        const label = active.dataset.buyLabel ?? 'View on Framer';
+        if (cta.firstChild && cta.firstChild.nodeType === Node.TEXT_NODE) cta.firstChild.nodeValue = label;
       }
       dots.forEach((d, n) => (n === current ? d.setAttribute('aria-current', 'true') : d.removeAttribute('aria-current')));
     };

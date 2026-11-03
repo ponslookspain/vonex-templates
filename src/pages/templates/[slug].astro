@@ -13,6 +13,7 @@ import TemplateCard from '../../components/TemplateCard.astro';
 import TemplateGallery from '../../components/TemplateGallery.astro';
 import { site } from '../../data/site';
 import { buildContent, buildFaq, richText, plainText } from '../../lib/template-content';
+import { buyLink, buyLabel } from '../../lib/buy';
 
 export async function getStaticPaths() {
   const templates = await getCollection('templates');
@@ -32,10 +33,10 @@ const others = all
 
 const free = t.price === 0;
 const priceLabel = free ? 'Free' : `$${t.price}`;
-const buyUrl = t.affiliateUrl ?? t.url;
+const buy = buyLink(t);
 // Optional code version, sold on Contra (see CODE_TEMPLATES.md).
 const codeUrl = t.codeUrl;
-const framerLabel = free ? 'Use free on Framer' : 'Get on Framer';
+const framerLabel = buyLabel(t);
 const codePriceLabel =t.codePrice === undefined ? '' : t.codePrice === 0 ? 'Free' : `$${t.codePrice}`;
 const pageUrl = new URL(`/templates/${template.id}/`, Astro.site).href;
 const ogPath = `/og/${template.id}.png`;
@@ -141,7 +142,7 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
           <p class="type-headline-md mt-sm">{priceLabel}</p>
           <!-- The two ways to get the template sit side by side. -->
           <div class="buy-actions">
-            <Button href={buyUrl} arrow target="_blank" rel={t.affiliateUrl ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}>
+            <Button href={buy.href} arrow target="_blank" rel={buy.sponsored ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}>
               {framerLabel}
             </Button>
             {codeUrl && (
@@ -328,10 +329,10 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
 
   <!-- Closing band: the one large black block of the page, on light rails. -->
   <CtaBand labelledby="get-title">
-    <span class="type-label mb-lg block">{priceLabel} on Framer Marketplace</span>
+    <span class="type-label mb-lg block">{priceLabel} on {buy.shop}</span>
     <h2 id="get-title" class="type-headline-lg"><em class="type-accent">Get</em> {t.name}.</h2>
     <div class="buy-actions">
-      <Button href={buyUrl} variant="secondary" arrow target="_blank" rel={t.affiliateUrl ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}>
+      <Button href={buy.href} variant="secondary" arrow target="_blank" rel={buy.sponsored ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}>
         {framerLabel}
       </Button>
       {codeUrl && (

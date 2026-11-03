@@ -12,6 +12,7 @@ import FaqBlock from '../components/FaqBlock.astro';
 import Band from '../components/Band.astro';
 import ColumnLines from '../components/ColumnLines.astro';
 import HeroSlider from '../components/HeroSlider.astro';
+import { buyLink } from '../lib/buy';
 import CtaBand from '../components/CtaBand.astro';
 import StepVisual from '../components/StepVisual.astro';
 import { site } from '../data/site';
@@ -82,7 +83,7 @@ const faq = [
         </div>
         <HeroSlider templates={slides} class="order-1 col-span-4 md:order-2 md:col-span-2" />
         <div class="order-3 col-span-4 flex flex-col gap-sm bg-bg md:col-span-1 md:items-end">
-          <Button href={slides[0].data.affiliateUrl ?? slides[0].data.url} variant="secondary" target="_blank" rel={slides[0].data.affiliateUrl ? 'noopener noreferrer sponsored' : 'noopener noreferrer'} arrow data-hero-cta>View on Framer</Button>
+          <Button href={buyLink(slides[0].data).href} variant="secondary" target="_blank" rel={buyLink(slides[0].data).sponsored ? 'noopener noreferrer sponsored' : 'noopener noreferrer'} arrow data-hero-cta>{buyLink(slides[0].data).direct ? 'Buy template' : 'View on Framer'}</Button>
           <p class="type-label"><span class="bg-bg py-xs">Built in Framer · No code</span></p>
         </div>
       </div>
