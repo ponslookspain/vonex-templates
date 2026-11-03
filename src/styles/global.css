@@ -2,131 +2,135 @@
 @import '@fontsource-variable/inter';
 
 /*
-  VONEX DESIGN SYSTEM: single source of truth.
-  Everything visual on the site is built from the tokens below. To change the look of the
-  whole site, change a token here. The /design-system/ page reads this file and lists every
-  token automatically, so a comment after a token becomes its description there.
+  VONEX DESIGN SYSTEM (Alpine): single source of truth.
+  The design direction is DESIGN.md at the project root; this file turns it into tokens and
+  classes. Everything visual on the site is built from what is defined here. The /design-system/
+  page reads this file and lists every token, so a comment after a token is its description there.
 
-  Naming: --color-*, --text-*, --radius-*, --container-*, --duration-*, --ease-*, --grid-*, --space-*.
-  Names say what a value is FOR (surface, muted, panel), never what it looks like (dark-gray).
-  See DESIGN_SYSTEM.md for the rules.
+  Naming: --color-*, --text-*, --leading-*, --tracking-*, --spacing-*, --border-*, --container-*,
+  --grid-*, --space-*, --duration-*, --ease-*. Names say what a value is FOR, never what it looks
+  like. See DESIGN_SYSTEM.md for the rules.
 */
 
 @theme static {
-  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif; /* Interface and headings */
+  /* Tailwind's own palette, radii and shadows are switched off: the system is black and white,
+     square and flat, so `bg-gray-500`, `rounded-lg` or `shadow-md` simply do not exist. */
+  --color-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
 
-  /* Color: neutrals */
-  --color-bg: #000000; /* Page background */
-  --color-surface: #111113; /* Cards, panels, form-like blocks */
-  --color-surface-2: #121214; /* Hover state of a surface */
-  --color-line: #222226; /* Borders and dividers */
-  --color-outline: rgb(255 255 255 / 0.06); /* Hairline around media on dark backgrounds */
-  --color-outline-strong: rgb(255 255 255 / 0.14); /* Hairline on hover and on selected items */
-  --color-fg: #f4f4f5; /* Primary text */
-  --color-fg-soft: rgb(244 244 245 / 0.8); /* Secondary text that must stay readable (nav, labels) */
-  --color-muted: #9a9aa3; /* Descriptions and captions */
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif; /* Inter 400 and 700, the only font */
 
-  /* Color: brand and effects */
-  --color-accent: #0099ff; /* Brand blue: links, eyebrows, focus, highlights */
-  --color-accent-tint: color-mix(in srgb, var(--color-accent) 14%, transparent); /* Soft blue behind icons and highlights */
-  --color-accent-indigo: #6366f1; /* Second glow color */
-  --color-accent-sky: #38bdf8; /* Third glow color */
-  --color-accent-violet: #a855f7; /* 3D logo light only */
-  --color-chrome: #f2f4fa; /* 3D logo base metal */
-  --color-success: #34d399; /* "New" and positive labels */
+  /* Color: two values, no grays. DESIGN.md: neutral, surface, on-surface, on-surface-muted, primary, on-primary. */
+  --color-bg: #ffffff; /* Page ground (neutral) */
+  --color-surface: #ffffff; /* Cards, panels, inputs (surface) */
+  --color-fg: #000000; /* Headlines and body text (on-surface) */
+  --color-muted: #000000; /* Captions, labels, metadata (on-surface-muted): same black, set apart by size and case */
+  --color-primary: #000000; /* Main action, black bands (primary) */
+  --color-on-primary: #ffffff; /* Text and icons on the primary color (on-primary) */
+  --color-line: #000000; /* Hairlines and frames */
 
-  /* Radius: by role */
-  --radius-control: 0.5rem; /* Buttons and small controls */
-  --radius-surface: 0.75rem; /* Cards inside a section: steps, points, FAQ */
-  --radius-panel: 1rem; /* Large panels: template card, call to action */
-  --radius-media: 1.5rem; /* Big preview images */
+  /* Type scale. Headlines step by about 1.78. The big sizes shrink on small screens (see clamp). */
+  --text-display: clamp(3.25rem, 12.5vw, 9.375rem); /* headline-display: 150px, one per page */
+  --text-headline-lg: clamp(2.5rem, 6.25vw, 4.6875rem); /* headline-lg: 75px, section titles */
+  --text-headline-md: clamp(1.875rem, 3.75vw, 2.8125rem); /* headline-md: 45px, big numbers, sub titles */
+  --text-headline-sm: clamp(1.375rem, 2.5vw, 1.875rem); /* headline-sm: 30px, block titles */
+  --text-headline-xs: 1.375rem; /* headline-xs: 22px, card titles */
+  --text-headline-xxs: 1rem; /* headline-xxs: 16px, small titles, template names */
+  --text-body: 0.9375rem; /* body-md: 15px, running text */
+  --text-label: 0.9375rem; /* label-md: 15px, labels, tags, buttons, nav */
 
-  /* Layout widths */
-  --container-page: 72rem; /* Page content width, 12-column grid lives inside */
-  --container-measure-display: 48rem; /* Longest line of a hero headline */
-  --container-measure-title: 40rem; /* Longest line of a section title */
-  --container-measure-lead: 36rem; /* Longest line of a lead paragraph */
-  --container-measure-body: 28rem; /* Longest line of a section intro */
+  --leading-display: 0.77; /* headline-display line height */
+  --leading-headline: 0.9; /* Line height of every other headline */
+  --leading-body: 1; /* body-md line height, as set by DESIGN.md */
+  --leading-label: 1.2; /* Labels and buttons */
 
-  /* Grid and spacing */
-  --grid-columns: 12; /* Number of columns */
-  --grid-gutter: 1.25rem; /* Gap between columns and between stacked cards */
-  --space-page: 1.25rem; /* Left and right page padding */
-  --space-section: 4.25rem; /* Vertical padding of a section (top and bottom each) */
-  --space-card: 1.5rem; /* Padding inside a card */
+  --tracking-headline: -0.07em; /* Every headline */
+  --tracking-body: -0.05em; /* Running text */
+  --tracking-label: 0.08em; /* Labels, tags, buttons */
 
-  /* Type scale: mobile values here, larger values from 640px below */
-  --text-display: 3rem; /* Hero headline */
-  --text-statement: 2.4rem; /* Big tagline */
-  --text-h1: 3rem; /* Page title */
-  --text-h2: 2.25rem; /* Section title */
-  --text-h3: 1.25rem; /* Card title */
-  --text-title: 1.125rem; /* Small title, template name */
-  --text-lead: 1.125rem; /* Intro paragraph */
-  --text-body: 1rem; /* Default text */
-  --text-small: 0.875rem; /* Secondary text, buttons, nav */
-  --text-caption: 0.75rem; /* Labels and badges */
-  --text-numeral: 3rem; /* Big step numbers */
-  --text-section: 1.5rem; /* Section heading inside a long text page */
-  --text-lead-lg: 1.375rem; /* Opening paragraph and tagline of a template page */
-  --text-stat: 1.75rem; /* Value in a small stat card */
-  --text-price: 2.75rem; /* Price on a template page */
+  /* Spacing: an 8px base and the steps of DESIGN.md. Utilities: p-md, gap-lg, mt-xl, py-2xl… */
+  --spacing-base: 8px; /* Base unit */
+  --spacing-xs: 6px; /* Inside tags, between a label and its value */
+  --spacing-sm: 11px; /* Button padding, tight stacks */
+  --spacing-md: 15px; /* Between lines of a list, inside small blocks */
+  --spacing-lg: 20px; /* Card padding, between a title and its text */
+  --spacing-xl: 57px; /* Between blocks inside a section */
+  --spacing-2xl: 113px; /* Between sections */
 
-  /* Motion */
+  /* Lines */
+  --border-hairline: 1px; /* Borders and dividers */
+  --border-frame: 8px; /* Heavy frame around a showcased picture */
+
+  /* Layout */
+  --container-page: 90rem; /* Max page width; the 4-column grid lives inside */
+  --container-pillar: 15rem; /* Narrow column of body copy, about 30 characters */
+  --container-prose: 34rem; /* Long documents only: legal pages, template descriptions */
+
+  --grid-columns: 4; /* Number of columns */
+  --grid-gutter: 24px; /* Gap between columns */
+  --space-page: 24px; /* Left and right page padding */
+  --space-section: 113px; /* Vertical padding of a section, top and bottom each */
+  --space-card: 20px; /* Padding inside a card */
+  --space-header: 64px; /* Height of the fixed header */
+
+  /* Motion: deliberate, ease-out. */
   --duration-fast: 150ms; /* Color and state changes */
-  --duration-base: 300ms; /* Transitions of blocks */
-  --duration-reveal: 700ms; /* A block fading up as it enters the screen */
-  --duration-slow: 500ms; /* Image zoom on hover */
-  --duration-ambient: 4s; /* Slow decorative loops: floating, blinking */
-  --duration-loop: 9s; /* One cycle of an illustration animation */
-  --duration-marquee: 60s; /* One full loop of the template strip */
-  --ease-soft: cubic-bezier(0.22, 1, 0.36, 1); /* Default easing */
+  --duration-base: 400ms; /* Blocks opening and moving */
+  --duration-reveal: 800ms; /* A block rising into place as it enters the screen */
+  --duration-marquee: 40s; /* One full loop of the running band */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* The only easing */
 }
 
 /* Responsive values of the tokens above. Add new breakpoints here, never inside components. */
-@media (min-width: 40rem) {
+@media (max-width: 47.99rem) {
   :root {
-    --text-display: 4.5rem;
-    --text-statement: 4.5rem;
-    --text-h1: 3.75rem;
-    --text-h2: 3rem;
-    --space-section: 6rem;
+    --space-page: 16px;
+    --grid-gutter: 16px;
+    --space-section: 57px;
   }
 }
 
 @layer base {
-  h1, h2, h3 {
-    letter-spacing: -0.04em;
+  html {
+    interpolate-size: allow-keywords;
+    color-scheme: light;
+    background: var(--color-bg);
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--space-header);
+  }
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    letter-spacing: var(--tracking-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
     text-wrap: balance;
   }
   p {
     text-wrap: pretty;
   }
-  html {
-    interpolate-size: allow-keywords;
-    color-scheme: dark;
-    background: var(--color-bg);
-    scroll-behavior: smooth;
-  }
-  body {
-    @apply bg-bg font-sans text-fg antialiased;
-  }
   ::selection {
-    background: color-mix(in srgb, var(--color-accent) 40%, transparent);
+    background: var(--color-primary);
+    color: var(--color-on-primary);
   }
   :focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--color-fg);
     outline-offset: 3px;
   }
 }
 
-/* Scroll reveal (see the script at the end of Base.astro): blocks fade up once when they enter the screen. */
+/* Scroll reveal (see the script at the end of Base.astro): blocks rise once when they enter the screen. */
 .js [data-reveal] {
   opacity: 0;
-  transform: translateY(1.5rem);
+  transform: translateY(24px);
   transition:
-    opacity var(--duration-reveal) var(--ease-soft) var(--reveal-delay, 0ms),
-    transform var(--duration-reveal) var(--ease-soft) var(--reveal-delay, 0ms);
+    opacity var(--duration-reveal) var(--ease-out) var(--reveal-delay, 0ms),
+    transform var(--duration-reveal) var(--ease-out) var(--reveal-delay, 0ms);
 }
 .js [data-reveal].is-visible {
   opacity: 1;
@@ -144,7 +148,7 @@
   * { transition: none !important; animation: none !important; }
 }
 
-/* ---------- Layout: container, 12-column grid, sections ---------- */
+/* ---------- Layout: container, 4-column grid, sections ---------- */
 @layer components {
   /* Page container. Always the outermost wrapper of content. */
   .container-page {
@@ -155,13 +159,13 @@
   }
 
   /*
-    12-column grid. Place children with Tailwind's col-span-* and col-start-* utilities.
-    Mobile first: every item is col-span-12, then narrows at sm / md / lg.
-      3 per row on desktop:  col-span-12 sm:col-span-6 lg:col-span-4
-      4 per row on desktop:  col-span-12 sm:col-span-6 lg:col-span-3
-      centered 8 columns:    col-span-12 lg:col-start-3 lg:col-span-8
+    4-column grid, at every width. Place children with col-span-* and col-start-*.
+    Mobile first: an item is col-span-4 (full width), then narrows at md / lg.
+      2 per row:            col-span-4 md:col-span-2
+      4 per row on desktop: col-span-4 md:col-span-2 lg:col-span-1
+      label + content:      col-span-4 lg:col-span-1  and  col-span-4 lg:col-span-3
   */
-  .grid-12 {
+  .grid-4 {
     display: grid;
     grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
     column-gap: var(--grid-gutter);
@@ -178,84 +182,266 @@
   .section-flush-bottom {
     padding-bottom: 0;
   }
+  /* A full-width hairline above a section. */
+  .section-rule {
+    border-top: var(--border-hairline) solid var(--color-line);
+  }
+
+  /* The four column lines of the grid, drawn behind a hero. Place inside a `relative isolate` parent. */
+  .column-lines {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .column-lines > div {
+    height: 100%;
+  }
+  .column-lines span {
+    height: 100%;
+    border-inline: var(--border-hairline) solid var(--color-line);
+  }
 }
 
 /* ---------- Typography roles ---------- */
 @layer components {
+  /* Every headline: Inter 700, capitals, tracked tight. */
+  .type-display,
+  .type-headline-lg,
+  .type-headline-md,
+  .type-headline-sm,
+  .type-headline-xs,
+  .type-headline-xxs {
+    font-weight: 700;
+    line-height: var(--leading-headline);
+    letter-spacing: var(--tracking-headline);
+    text-transform: uppercase;
+  }
   .type-display {
     font-size: var(--text-display);
-    line-height: 1.02;
-    font-weight: 700;
-    letter-spacing: -0.04em;
-    text-wrap: balance;
+    line-height: var(--leading-display);
   }
-  .type-statement {
-    font-size: var(--text-statement);
-    line-height: 1.2;
-    font-weight: 700;
-    letter-spacing: -0.04em;
-  }
-  .type-h1 {
-    font-size: var(--text-h1);
-    line-height: 1.05;
-    font-weight: 700;
-    letter-spacing: -0.04em;
-  }
-  .type-h2 {
-    font-size: var(--text-h2);
-    line-height: 1.1;
-    font-weight: 700;
-    letter-spacing: -0.04em;
-  }
-  .type-h3 {
-    font-size: var(--text-h3);
-    line-height: 1.4;
-    font-weight: 500;
-    letter-spacing: -0.04em;
-  }
-  .type-title {
-    font-size: var(--text-title);
-    line-height: 1.55;
-    font-weight: 600;
-    letter-spacing: -0.025em;
-  }
-  .type-lead {
-    font-size: var(--text-lead);
-    line-height: 1.55;
-    color: var(--color-muted);
-    text-wrap: pretty;
-  }
+  .type-headline-lg { font-size: var(--text-headline-lg); }
+  .type-headline-md { font-size: var(--text-headline-md); }
+  .type-headline-sm { font-size: var(--text-headline-sm); }
+  .type-headline-xs { font-size: var(--text-headline-xs); }
+  .type-headline-xxs { font-size: var(--text-headline-xxs); line-height: 1.1; }
+
   .type-body {
     font-size: var(--text-body);
-    line-height: 1.5;
+    line-height: var(--leading-body);
+    letter-spacing: var(--tracking-body);
   }
-  .type-small {
-    font-size: var(--text-small);
-    line-height: 1.45;
+  /* Body copy in a narrow pillar, as DESIGN.md asks for all short copy. */
+  .type-pillar {
+    max-width: var(--container-pillar);
   }
-  .type-caption {
-    font-size: var(--text-caption);
-    line-height: 1.35;
+  /* Long documents (legal pages, template descriptions): the same body style on a reading measure. */
+  .type-prose {
+    max-width: var(--container-prose);
+    font-size: var(--text-body);
+    line-height: 1.25;
+    letter-spacing: var(--tracking-body);
   }
-  .type-numeral {
-    font-size: var(--text-numeral);
-    line-height: 1;
-    font-weight: 300;
-    font-style: italic;
+  .type-label {
+    font-size: var(--text-label);
+    line-height: var(--leading-label);
+    font-weight: 400;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+  /* Section index above a title: "01 / Templates". */
+  .kicker {
+    display: block;
+    margin-bottom: var(--spacing-lg);
+  }
+}
+
+/* ---------- Components ---------- */
+@layer components {
+  /* Button: <Button variant="primary|secondary" size="md|compact" arrow> */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-sm);
+    white-space: nowrap;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: var(--border-hairline) solid var(--color-line);
+    font-size: var(--text-label);
+    line-height: var(--leading-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+  .btn-primary {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+  .btn-primary:hover {
+    background: var(--color-surface);
+    color: var(--color-fg);
+  }
+  .btn-secondary {
+    background: var(--color-surface);
+    color: var(--color-fg);
+  }
+  .btn-secondary:hover {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+  .btn-icon {
+    width: 1em;
+    height: 1em;
+    transition: transform var(--duration-base) var(--ease-out);
+  }
+  .btn:hover .btn-icon {
+    transform: translate(2px, -2px);
+  }
+  /* Smaller padding on phones, regular from 768px. Used in the header. */
+  .btn-compact {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+  @media (min-width: 48rem) {
+    .btn-compact {
+      padding: var(--spacing-sm) var(--spacing-lg);
+    }
+  }
+
+  /* Card: surface with a hairline border and generous padding. */
+  .card {
+    background: var(--color-surface);
+    border: var(--border-hairline) solid var(--color-line);
+  }
+  .card-padding {
+    padding: var(--space-card);
+  }
+
+  /*
+    Cells: a grid of blocks sharing one hairline between them (the spec sheet look).
+    <ul class="cells cells-4"><li class="cell">…</li></ul>
+  */
+  .cells {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--border-hairline);
+    background: var(--color-line);
+    border: var(--border-hairline) solid var(--color-line);
+  }
+  .cell {
+    background: var(--color-surface);
+    padding: var(--space-card);
+  }
+  @media (min-width: 48rem) {
+    .cells-2,
+    .cells-4 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (min-width: 64rem) {
+    .cells-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  /* Template cards run two to a row; an odd last card steps to the right column instead of
+     leaving a hole on the right. */
+  @media (min-width: 48rem) {
+    .grid-4 > .template-card:last-child:nth-child(odd) {
+      grid-column-start: 3;
+    }
+  }
+
+  /* Heavy black frame around a showcased picture. */
+  .frame {
+    border: var(--border-frame) solid var(--color-line);
+    background: var(--color-surface);
+  }
+  /* Hairline frame around a picture. */
+  .frame-hairline {
+    border: var(--border-hairline) solid var(--color-line);
+    background: var(--color-surface);
+  }
+
+  /* Outlined label for tags, categories and the price. <li class="tag">Portfolio</li> */
+  .tag {
+    display: inline-block;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: var(--border-hairline) solid var(--color-line);
+    background: var(--color-surface);
+    color: var(--color-fg);
+    font-size: var(--text-label);
+    line-height: var(--leading-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+  }
+  .tag-solid {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  /* Input: body style on the surface. Not used on the site yet; here so a form starts on-system. */
+  .input {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: var(--border-hairline) solid var(--color-line);
+    border-radius: 0;
+    background: var(--color-surface);
+    color: var(--color-fg);
+    font-size: var(--text-body);
+    line-height: var(--leading-label);
+    letter-spacing: var(--tracking-body);
+  }
+  .input::placeholder {
     color: var(--color-muted);
   }
+
+  /* Text link: underlined, the line thickens on hover. */
+  .link {
+    text-decoration: underline;
+    text-decoration-thickness: var(--border-hairline);
+    text-underline-offset: 4px;
+    transition: text-decoration-thickness var(--duration-fast) var(--ease-out);
+  }
+  .link:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  /* Running band: full-bleed black strip with big type moving sideways. <Band items={[…]} /> */
+  .band {
+    overflow: hidden;
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+    padding-block: var(--spacing-md);
+  }
+  .band-track {
+    display: flex;
+    width: max-content;
+    animation: band var(--duration-marquee) linear infinite;
+  }
+  .band-set {
+    display: flex;
+    flex-shrink: 0;
+  }
+  .band-item {
+    padding-inline: var(--spacing-lg);
+    white-space: nowrap;
+  }
+
   /* FAQ: hairline rows, no panels. The answer slides open where the browser can animate it. */
   .faq-list {
-    border-top: 1px solid var(--color-line);
+    border-top: var(--border-hairline) solid var(--color-line);
   }
   .faq-item {
-    border-bottom: 1px solid var(--color-line);
+    border-bottom: var(--border-hairline) solid var(--color-line);
   }
   .faq-item summary::-webkit-details-marker {
     display: none;
   }
   .faq-plus {
-    transition: transform var(--duration-base) var(--ease-soft);
+    transition: transform var(--duration-base) var(--ease-out);
   }
   .faq-item[open] .faq-plus {
     transform: rotate(45deg);
@@ -266,8 +452,8 @@
       overflow: clip;
       opacity: 0;
       transition:
-        block-size var(--duration-base) var(--ease-soft),
-        opacity var(--duration-base) var(--ease-soft),
+        block-size var(--duration-base) var(--ease-out),
+        opacity var(--duration-base) var(--ease-out),
         content-visibility var(--duration-base) allow-discrete;
     }
     .faq-item[open]::details-content {
@@ -275,309 +461,8 @@
       opacity: 1;
     }
   }
-
-  /* Running text on a dark ground: a little more leading than the default body. */
-  .type-prose {
-    font-size: var(--text-body);
-    line-height: 1.65;
-    color: var(--color-fg-soft);
-  }
-  .eyebrow {
-    display: block;
-    margin-bottom: 1rem;
-    font-size: var(--text-small);
-    line-height: 1.45;
-    font-weight: 500;
-    color: var(--color-accent);
-  }
 }
 
-/* ---------- Components ---------- */
-@layer components {
-  /* Button: <Button variant="primary|ghost" size="md|compact"> */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    white-space: nowrap;
-    border-radius: var(--radius-control);
-    padding: 0.625rem 1rem;
-    font-size: var(--text-small);
-    line-height: 1.45;
-    font-weight: 500;
-    transition: background-color var(--duration-fast) var(--ease-soft), border-color var(--duration-fast) var(--ease-soft);
-  }
-  .btn-primary {
-    background: var(--color-fg);
-    color: var(--color-bg);
-  }
-  .btn-primary:hover {
-    background: color-mix(in srgb, #fff 80%, transparent);
-  }
-  .btn-ghost {
-    border: 1px solid var(--color-line);
-    color: var(--color-fg);
-  }
-  .btn-ghost:hover {
-    border-color: rgb(255 255 255 / 0.3);
-    background: var(--color-surface-2);
-  }
-  /* Smaller on phones, regular from 640px. Used in the header. */
-  .btn-compact {
-    padding: 0.5rem 0.75rem;
-    font-size: 0.8125rem;
-  }
-  @media (min-width: 40rem) {
-    .btn-compact {
-      padding: 0.625rem 1rem;
-      font-size: var(--text-small);
-    }
-  }
-
-  /* Surfaces: flat blocks on the page background. */
-  .surface {
-    background: var(--color-surface);
-    border-radius: var(--radius-surface);
-  }
-  .panel {
-    background: var(--color-surface);
-    border-radius: var(--radius-panel);
-  }
-  .card-padding {
-    padding: var(--space-card);
-  }
-
-  /* Small status label: <Badge tone="success">New</Badge> */
-  .badge {
-    display: inline-block;
-    border-radius: 0.25rem;
-    padding: 0.125rem 0.375rem;
-    font-size: var(--text-caption);
-    line-height: 1.35;
-    font-weight: 500;
-  }
-  .badge-success {
-    background: color-mix(in srgb, var(--color-success) 20%, transparent);
-    color: var(--color-success);
-  }
-
-  /* Small outlined label for tags and categories. */
-  .tag {
-    display: inline-block;
-    border-radius: 9999px;
-    padding: 0.25rem 0.75rem;
-    font-size: var(--text-caption);
-    line-height: 1.35;
-    color: var(--color-fg-soft);
-    box-shadow: inset 0 0 0 1px var(--color-outline-strong);
-  }
-
-  /* Icon that sits inside a line of big text, aligned to the capital letters. */
-  .inline-icon {
-    display: inline-flex;
-    width: 0.95em;
-    height: 0.95em;
-    align-items: center;
-    justify-content: center;
-    vertical-align: -0.112em;
-    margin-inline-start: 0.1em;
-    color: var(--color-fg);
-  }
-  .inline-icon-accent {
-    color: var(--color-accent);
-  }
-  .inline-icon svg {
-    width: 100%;
-    height: 100%;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.7;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  /*
-    Feature card: an illustration stage on top, content below. <FeatureCard>
-    Used for the steps and the "why" blocks. Illustrations live in components/illustrations.
-  */
-  .feature-card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    padding: 0.5rem;
-    background: var(--color-surface);
-    border-radius: var(--radius-panel);
-    transition: background-color var(--duration-base) var(--ease-soft);
-  }
-  .feature-card:hover {
-    background: var(--color-surface-2);
-  }
-  .illustration {
-    position: relative;
-    height: 12rem;
-    overflow: hidden;
-    border-radius: var(--radius-surface);
-    background: var(--color-bg);
-  }
-  /*
-    Illustration parts: flat tonal shapes on the black stage, no outlines. One accent color
-    carries the motion. Loops are slow, start from a calm resting state and stop while the
-    card is off screen (data-pause-offscreen) or when reduced motion is on.
-  */
-  .ill-tile {
-    border-radius: var(--radius-control);
-    background: color-mix(in srgb, var(--color-fg) 6%, var(--color-bg));
-  }
-  .ill-tile-accent {
-    background: var(--color-accent-tint);
-  }
-  .ill-line {
-    height: 0.375rem;
-    border-radius: 9999px;
-    background: color-mix(in srgb, var(--color-fg) 16%, transparent);
-  }
-  .ill-line-accent {
-    background: color-mix(in srgb, var(--color-accent) 55%, transparent);
-  }
-  .ill-block {
-    border-radius: 0.3rem;
-    background: color-mix(in srgb, var(--color-fg) 9%, transparent);
-  }
-  .ill-block-accent {
-    background: color-mix(in srgb, var(--color-accent) 30%, transparent);
-  }
-
-  .ill-pick {
-    animation: ill-pick var(--duration-loop) var(--ease-soft) infinite;
-  }
-  .ill-dot {
-    animation: ill-dot var(--duration-loop) var(--ease-soft) infinite;
-  }
-  .ill-fill,
-  .ill-build {
-    transform-origin: left;
-    animation: ill-grow var(--duration-loop) var(--ease-soft) infinite;
-  }
-  .ill-pop {
-    animation: ill-pop var(--duration-loop) var(--ease-soft) infinite;
-  }
-  .ill-resize {
-    width: 78%;
-    min-width: 7rem;
-    animation: ill-resize var(--duration-loop) var(--ease-soft) infinite;
-  }
-  .ill-type {
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    width: 13ch;
-    animation: ill-type var(--duration-loop) steps(13) infinite;
-  }
-  .ill-swap {
-    animation: ill-swap calc(var(--duration-loop) * 2 / 3) var(--ease-soft) infinite;
-  }
-  .ill-new {
-    animation: ill-new var(--duration-loop) var(--ease-soft) infinite;
-  }
-  /* Arrow in the gap between two step cards. */
-  .step-link {
-    position: absolute;
-    z-index: 10;
-    top: 6.5rem;
-    right: calc(var(--grid-gutter) / -2 - 0.5rem);
-    width: 1rem;
-    height: 1rem;
-    place-items: center;
-    color: var(--color-muted);
-  }
-  .anim-caret {
-    animation: caret-blink 1.1s steps(1) infinite;
-  }
-  .anim-pulse {
-    animation: pulse-dot 2s ease-in-out infinite;
-  }
-
-  /* Drifting light behind a block: <Glow /> inside a relative, overflow-hidden parent. */
-  .glow-blob {
-    position: absolute;
-    border-radius: 9999px;
-    filter: blur(56px);
-    will-change: transform;
-  }
-  .glow-blob-a {
-    right: -6rem; top: -7rem; width: 26rem; height: 26rem;
-    background: color-mix(in srgb, var(--color-accent) 32%, transparent);
-    animation: glow-drift-a 16s ease-in-out infinite alternate;
-  }
-  .glow-blob-b {
-    right: 18%; bottom: -10rem; width: 22rem; height: 22rem;
-    background: color-mix(in srgb, var(--color-accent-indigo) 26%, transparent);
-    animation: glow-drift-b 21s ease-in-out infinite alternate;
-  }
-  .glow-blob-c {
-    left: 28%; top: -9rem; width: 18rem; height: 18rem;
-    background: color-mix(in srgb, var(--color-accent-sky) 20%, transparent);
-    animation: glow-drift-c 25s ease-in-out infinite alternate;
-  }
-}
-
-@keyframes float-y {
-  to { transform: translateY(-0.4rem); }
-}
-@keyframes caret-blink {
-  50% { opacity: 0; }
-}
-@keyframes pulse-dot {
-  50% { opacity: 0.35; }
-}
-@keyframes ill-pick {
-  0%, 8% { transform: scale(1); background-color: color-mix(in srgb, var(--color-fg) 6%, var(--color-bg)); }
-  14%, 28% { transform: scale(1.06); background-color: var(--color-accent-tint); }
-  36%, 100% { transform: scale(1); background-color: color-mix(in srgb, var(--color-fg) 6%, var(--color-bg)); }
-}
-@keyframes ill-dot {
-  0% { transform: translateX(-1.25rem); opacity: 0; }
-  10% { opacity: 1; }
-  45% { transform: translateX(0.25rem); opacity: 1; }
-  55%, 100% { transform: translateX(0.25rem); opacity: 0; }
-}
-@keyframes ill-grow {
-  0%, 40% { transform: scaleX(0); }
-  55%, 88% { transform: scaleX(1); }
-  100% { transform: scaleX(0); }
-}
-@keyframes ill-pop {
-  0%, 45% { opacity: 0; transform: scale(0.85); }
-  58%, 88% { opacity: 1; transform: scale(1); }
-  100% { opacity: 0; transform: scale(0.85); }
-}
-@keyframes ill-resize {
-  0%, 18% { width: 78%; }
-  34%, 52% { width: 46%; }
-  68%, 86% { width: 24%; }
-  100% { width: 78%; }
-}
-@keyframes ill-type {
-  0% { width: 0; }
-  35%, 85% { width: 13ch; }
-  100% { width: 0; }
-}
-@keyframes ill-swap {
-  0%, 12% { background-color: color-mix(in srgb, var(--color-fg) 6%, var(--color-bg)); }
-  20%, 42% { background-color: var(--color-accent-tint); }
-  52%, 100% { background-color: color-mix(in srgb, var(--color-fg) 6%, var(--color-bg)); }
-}
-@keyframes ill-new {
-  0%, 10% { opacity: 0; transform: scale(0.88); }
-  26%, 80% { opacity: 1; transform: scale(1); }
-  96%, 100% { opacity: 0; transform: scale(0.88); }
-}
-@keyframes glow-drift-a {
-  to { transform: translate(-14rem, 7rem) scale(1.25); }
-}
-@keyframes glow-drift-b {
-  to { transform: translate(-9rem, -5rem) scale(0.85); }
-}
-@keyframes glow-drift-c {
-  to { transform: translate(10rem, 6rem) scale(1.3); }
+@keyframes band {
+  to { transform: translateX(-50%); }
 }

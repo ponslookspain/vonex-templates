@@ -1,10 +1,10 @@
 # CLAUDE.md
 
-Guide for Claude (and anyone else) working on this repository. Read it before changing anything. Human-facing setup and commands are in [README.md](README.md); visual rules are in [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md).
+Guide for Claude (and anyone else) working on this repository. Read it before changing anything. Human-facing setup and commands are in [README.md](README.md); the design direction is [DESIGN.md](DESIGN.md) and how it is built in code is [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md).
 
 ## Project
 
-**Vonex Design** is a catalog of Framer templates made by Vladimir (GitHub `ponslookspain`). Live at https://vonexdesign.com. It is a showcase only: no checkout, no accounts, no editor. Every "Open on Framer" button goes to the template's Framer Marketplace page, through Vladimir's Framer referral link (`affiliateUrl`, `framer.link/...`) when there is one.
+**Vonex Design** is a catalog of Framer templates made by Vladimir (GitHub `ponslookspain`). Live at https://vonexdesign.com. It is a showcase only: no checkout, no accounts, no editor. Every "View on Framer" button goes to the template's Framer Marketplace page, through Vladimir's Framer referral link (`affiliateUrl`, `framer.link/...`) when there is one.
 
 ## Rules
 
@@ -19,7 +19,6 @@ Guide for Claude (and anyone else) working on this repository. Read it before ch
 - Astro 7 (static output, `output: 'static'`), Tailwind CSS 4 via `@tailwindcss/vite`, TypeScript (strict).
 - Content: Astro content collection of YAML files, schema in `src/content.config.ts` (zod). Images through `astro:assets` (resized to WebP at build time).
 - Font: Inter Variable from `@fontsource-variable/inter`, self-hosted.
-- three.js only for the 3D logo in the home hero (`src/scripts/hero-logo.ts`), loaded lazily after page load.
 - Node scripts in `scripts/` (`yaml`, `sharp`) for importing templates and making social preview images.
 - Hosting: Cloudflare Workers static assets (`wrangler.jsonc`), custom domains vonexdesign.com and www. Cloudflare Web Analytics token in `src/data/site.ts`.
 - Node 22 (`.nvmrc`). Vladimir works on Windows with PowerShell; keep commands cross-platform (no bash-only syntax in npm scripts).
@@ -37,7 +36,7 @@ Guide for Claude (and anyone else) working on this repository. Read it before ch
 | `src/pages/design-system.astro` | Live style guide at `/design-system/`, only in `npm run dev`: `astro.config.mjs` removes it from the production build. |
 | `src/pages/sitemap.xml.ts`, `robots.txt.ts` | Generated at build. Static pages are listed by hand in the sitemap; template pages are added automatically. |
 | `src/layouts/Base.astro` | `<head>` (SEO, Open Graph, JSON-LD, analytics), header, footer. |
-| `src/components/` | UI and layout components; `illustrations/` holds the small drawings of the landing blocks. |
+| `src/components/` | UI and layout components. |
 | `src/styles/global.css` | Design tokens (`@theme static`) and shared classes. |
 | `src/data/site.ts` | Site name, texts, contacts, socials, nav, analytics token. |
 | `scripts/add-template.mjs` | Import / refresh templates from Framer Marketplace. |
@@ -59,7 +58,7 @@ Template cards show only the cover, the price/Free badge, the name and the tagli
 
 ## Style
 
-- Dark, minimal, editorial. All visual values come from tokens in `src/styles/global.css`; text sizes from the `.type-*` classes; layout on the 12-column grid (`.grid-12`, `Section`, `Container`). Details and the checklist are in DESIGN_SYSTEM.md.
+- Alpine: black on white, no grays, square corners, hairlines, headlines in capitals (DESIGN.md). Read DESIGN.md before writing any UI. All visual values come from tokens in `src/styles/global.css`; text sizes from the `.type-*` classes; spacing from the named steps (`p-lg`, `mt-xl`); layout on the 4-column grid (`.grid-4`, `Section`, `Container`). Details and the checklist are in DESIGN_SYSTEM.md.
 - Pages are static HTML with small inline scripts only. Do not add a UI framework (React and similar) or client-side rendering.
 - Images go through `astro:assets` (`<Image>`), never straight from Framer at runtime.
 - Site copy in plain English, short sentences.

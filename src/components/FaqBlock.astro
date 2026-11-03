@@ -1,21 +1,26 @@
 ---
-// FAQ section: the title on the left (it stays in view while you read), the questions on the
-// right as hairline-separated rows. Put <FaqItem> children in the default slot.
+// FAQ section: the title on the left (it stays in view while you read), the questions on
+// the right as hairline rows. Put <FaqItem> children in the default slot.
 import Section from './Section.astro';
 
 interface Props {
   title: string;
   id?: string;
   sectionId?: string;
+  index?: number;
   flush?: 'top' | 'bottom';
+  rule?: boolean;
 }
-const { title, id = 'faq-title', sectionId = 'faq', flush } = Astro.props;
+const { title, id = 'faq-title', sectionId = 'faq', index, flush, rule } = Astro.props;
 ---
 
-<Section id={sectionId} labelledby={id} flush={flush}>
-  <div class="grid-12 gap-y-8">
-    <h2 id={id} class="type-h2 col-span-12 text-balance lg:sticky lg:top-28 lg:col-span-4 lg:self-start">{title}</h2>
-    <div class="faq-list col-span-12 lg:col-span-7 lg:col-start-6">
+<Section id={sectionId} labelledby={id} flush={flush} rule={rule}>
+  <div class="grid-4 gap-y-xl">
+    <div class="col-span-4 lg:sticky lg:top-[calc(var(--space-header)+var(--spacing-xl))] lg:col-span-2 lg:self-start">
+      <span class="kicker type-label">{index !== undefined ? `${String(index).padStart(2, '0')} / ` : ''}FAQ</span>
+      <h2 id={id} class="type-headline-lg">{title}</h2>
+    </div>
+    <div class="faq-list col-span-4 lg:col-span-2">
       <slot />
     </div>
   </div>

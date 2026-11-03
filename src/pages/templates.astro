@@ -8,6 +8,7 @@ import TemplateCard from '../components/TemplateCard.astro';
 const templates = (await getCollection('templates')).sort(
   (a, b) => b.data.added.getTime() - a.data.added.getTime(),
 );
+const count = String(templates.length).padStart(2, '0');
 ---
 
 <Base
@@ -29,18 +30,18 @@ const templates = (await getCollection('templates')).sort(
     },
   }}
 >
-  <Section flush="bottom" class="pt-10 sm:pt-12">
+  <Section labelledby="list-title">
     <SectionHeader
+      id="list-title"
       level={1}
-      title="All Framer templates"
-      lead="Every Framer template by Vonex Design in one place. Open any template to preview it live and remix it into your own Framer project."
-    />
-  </Section>
-
-  <Section labelledby="list-title" flush="top" class="pt-10">
-    <h2 id="list-title" class="sr-only">Templates</h2>
-    <ul class="grid-12 gap-y-10">
-      {templates.map((t) => <TemplateCard template={t} class="col-span-12 sm:col-span-6 lg:col-span-4" />)}
+      kicker="Catalog"
+      title="All templates."
+      lead="Every Framer template by Vonex Design. Open one to see it live and remix it."
+    >
+      <p class="type-label">{count} templates · Newest first</p>
+    </SectionHeader>
+    <ul class="grid-4 gap-y-xl">
+      {templates.map((t) => <TemplateCard template={t} class="col-span-4 md:col-span-2" />)}
     </ul>
   </Section>
 </Base>

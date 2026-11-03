@@ -1,143 +1,156 @@
-# Vonex Design system
+# Vonex Design system (Alpine)
 
-One rule: **every visual value comes from a token, every page is built from the same layout components on the same 12-column grid.** This file explains how, and how to change things safely.
+Two files, two jobs:
+
+- [DESIGN.md](DESIGN.md) is the **design direction**: colours, fonts, type scale, spacing, the Do's and Don'ts. It says what the site should look like.
+- This file says **how that direction is wired into the code**: where the tokens live, which class or component to use, and how to change things safely.
+
+One rule: **every visual value comes from a token, every page is built from the same components on the same 4-column grid.**
 
 A live version of everything below is at `/design-system/` (run `npm run dev`, open http://localhost:4321/design-system/). It reads `src/styles/global.css` at build time, so it always shows the real values. It exists only in dev: `astro.config.mjs` removes it from the production build.
+
+## The look in one paragraph
+
+White page, black type, nothing in between: no grays, no tints, no shadows, no rounded corners. Inter only, 700 for headlines (always in capitals, tracked tight), 400 for text. Hairlines separate things; a heavy 8px frame marks the one picture that matters. Short copy sits in narrow pillars. The only colour on the page comes from the template covers.
 
 ## Where things live
 
 | What | Where |
 | --- | --- |
-| Tokens (color, type, radius, widths, grid, motion) | `src/styles/global.css`, the `@theme static` block |
-| Responsive token values (from 640px) | `src/styles/global.css`, the `@media (min-width: 40rem)` block right below |
-| Type roles, layout classes, button, surface, badge, glow | `src/styles/global.css`, the `@layer components` blocks |
+| Design direction | `DESIGN.md` |
+| Tokens (colour, type, spacing, lines, layout, motion) | `src/styles/global.css`, the `@theme static` block |
+| Phone values of the tokens (below 768px) | `src/styles/global.css`, the `@media (max-width: 47.99rem)` block right below |
+| Type roles, layout classes, button, card, cells, tag, input, band, FAQ | `src/styles/global.css`, the `@layer components` blocks |
 | Components | `src/components/*.astro` |
-| Page layout (head, SEO, header, footer) | `src/layouts/Base.astro` |
+| Page shell (head, SEO, header, footer, scroll reveal) | `src/layouts/Base.astro` |
 | Content and site settings | `src/content/templates/*.yaml`, `src/data/site.ts` |
 
 ## Tokens
 
-Naming is `--<group>-<role>`. Names describe what a value is **for** (`surface`, `muted`, `panel`), never how it looks (`dark-gray`, `big-radius`), so the look can change without renaming anything.
+Names say what a value is **for**, never how it looks. Add a comment after a token and it shows up on the design-system page.
 
-Add a comment after a token (`--color-x: #fff; /* what it is for */`) and the description shows up on the design-system page automatically.
+Tailwind's own palette, radii and shadows are switched off in `@theme` (`--color-*: initial` and so on). `bg-gray-500`, `rounded-lg`, `shadow-md` do not exist, so they cannot creep back in.
 
-| Group | Tokens | Tailwind utility |
+| Group | Tokens | Utility |
 | --- | --- | --- |
-| Color | `--color-bg`, `surface`, `surface-2`, `line`, `outline`, `outline-strong`, `fg`, `fg-soft`, `muted`, `accent`, `accent-tint`, `accent-indigo`, `accent-sky`, `accent-violet`, `chrome`, `success` | `bg-surface`, `text-muted`, `border-line`, `from-bg`… |
-| Radius | `--radius-control` (buttons), `surface` (cards in sections), `panel` (large panels), `media` (big previews) | `rounded-control`, `rounded-surface`, `rounded-panel`, `rounded-media` |
-| Width | `--container-page` (72rem), `--container-measure-display / title / lead / body` (max line length of text) | `max-w-page`, `max-w-measure-title`… |
-| Grid and space | `--grid-columns` (12), `--grid-gutter` (1.25rem), `--space-page` (side padding), `--space-section` (section padding), `--space-card` | used by `.grid-12`, `.container-page`, `.section`, `.card-padding` |
-| Type | `--text-display`, `statement`, `h1`, `h2`, `h3`, `title`, `lead`, `body`, `small`, `caption`, `numeral` | used by the `.type-*` classes |
-| Motion | `--duration-fast / base / slow / ambient / marquee`, `--ease-soft` | `duration-fast`, `duration-base`, `duration-slow`, `ease-soft` |
+| Colour | `--color-bg`, `surface`, `fg`, `muted`, `primary`, `on-primary`, `line` (all `#fff` or `#000`) | `bg-primary`, `text-on-primary`, `border-line`… |
+| Type size | `--text-display`, `headline-lg / md / sm / xs / xxs`, `body`, `label` | used by the `.type-*` classes |
+| Type metrics | `--leading-display / headline / body / label`, `--tracking-headline / body / label` | used by the `.type-*` classes |
+| Spacing | `--spacing-base` 8, `xs` 6, `sm` 11, `md` 15, `lg` 20, `xl` 57, `2xl` 113 (px) | `p-md`, `gap-lg`, `mt-xl`, `py-2xl` |
+| Lines | `--border-hairline` 1px, `--border-frame` 8px | `.frame`, `.frame-hairline`, `border-line` |
+| Layout | `--container-page` (90rem), `--container-pillar` (short copy), `--container-prose` (long documents), `--grid-columns` (4), `--grid-gutter`, `--space-page`, `--space-section`, `--space-card`, `--space-header` | `.container-page`, `.grid-4`, `.section`, `.type-pillar` |
+| Motion | `--duration-fast / base / reveal / marquee`, `--ease-out` | `duration-(--duration-base) ease-out` |
 
-**Responsive values** are tokens too. `--text-display` is `3rem` on phones and `4.5rem` from 640px. To change that, edit the token in the `@media` block, never inside a component.
+The big headline sizes use `clamp()`, so they shrink on phones by themselves. Spacing that changes on phones (gutter, page padding, section padding) is set in the phone `@media` block, never inside a component.
 
 ### Rules
 
-1. No raw hex colors, pixel font sizes or radii in components. Use a token.
+1. No raw colours, font sizes, radii or shadows in components. Use a token.
 2. Text size comes from a `.type-*` role, not from `text-4xl` and similar.
-3. Need a value that does not exist? Add a token first, then use it.
-4. Tokens are never referenced by their appearance in a name.
+3. Spacing uses the named steps (`p-lg`, `mt-xl`), not `p-5` or `mt-[23px]`.
+4. Need a value that does not exist? Add it to DESIGN.md and as a token first, then use it.
+5. Black and white only. If something needs to stand out, make it bigger, put it in capitals, frame it or invert it (white on black). Never make it gray.
 
 ## Typography roles
 
-Font: Inter Variable. Apply the role class; weight, line height and letter spacing are included.
+Apply the role class; size, weight, line height, tracking and case are included. Headline classes set `text-transform: uppercase`, so write the source text in normal sentence case.
 
-| Class | Use |
-| --- | --- |
-| `.type-display` | Hero headline, once per page |
-| `.type-statement` | Big tagline |
-| `.type-h1` | Page title (one `h1` per page) |
-| `.type-h2` | Section title |
-| `.type-h3` | Card title |
-| `.type-title` | Small title, template name |
-| `.type-lead` | Intro paragraph (muted) |
-| `.type-body` | Default text |
-| `.type-small` | Secondary text, buttons, nav |
-| `.type-caption` | Labels, badges |
-| `.type-numeral` | Big step numbers |
-| `.eyebrow` | Small blue label above a section title |
+| Class | DESIGN.md role | Use |
+| --- | --- | --- |
+| `.type-display` | headline-display, 150px / 0.77 | The hero headline or the 404. Once per page. |
+| `.type-headline-lg` | headline-lg, 75px | Section titles, big numbers |
+| `.type-headline-md` | headline-md, 45px | Price, mobile menu items |
+| `.type-headline-sm` | headline-sm, 30px | Template names, block titles |
+| `.type-headline-xs` | headline-xs, 22px | Card titles, the wordmark |
+| `.type-headline-xxs` | headline-xxs, 16px | Small titles, FAQ questions, footer column titles |
+| `.type-body` | body-md, 15px / 1 | Text |
+| `.type-pillar` | | Add to `.type-body` for short copy: keeps it in a narrow column, about 30 characters |
+| `.type-prose` | | Long documents only (legal pages, template descriptions): body on a reading measure |
+| `.type-label` | label-md, 15px, +0.08em, capitals | Labels, nav, meta rows, tags, buttons |
+| `.kicker` | | Section index above a title, with `.type-label`: "01 / Featured" |
 
-Use the semantic heading level for the document outline (`h1`, `h2`, `h3`) and the role class for the look; they are independent.
+Pick the heading level (`h1`, `h2`, `h3`) for the document outline and the role class for the look; they are independent.
 
 ## Grid
 
-12 columns inside `.container-page` (max 72rem = 1152px, 20px side padding, 20px gutter).
+4 columns inside `.container-page` (max 90rem, 24px side padding and 24px gutters; 16px on phones). The 4 columns stay at every width; items change their span.
 
 ```html
-<Section>                       <!-- vertical rhythm + container -->
-  <ul class="grid-12">          <!-- 12 columns -->
-    <li class="col-span-12 sm:col-span-6 lg:col-span-4">…</li>
+<Section>                          <!-- vertical rhythm + container -->
+  <SectionHeader title="…" />
+  <ul class="grid-4">              <!-- 4 columns -->
+    <li class="col-span-4 md:col-span-2">…</li>
   </ul>
 </Section>
 ```
 
-Mobile first: every item is `col-span-12`, then narrows at `sm:` (640), `md:` (768), `lg:` (1024).
-
 | Layout | Classes |
 | --- | --- |
-| 3 per row on desktop | `col-span-12 sm:col-span-6 lg:col-span-4` |
-| 4 per row on desktop | `col-span-12 sm:col-span-6 lg:col-span-3` |
-| 3 per row from tablet | `col-span-12 sm:col-span-4` |
-| Centered 8 columns | `col-span-12 lg:col-span-8 lg:col-start-3` |
-| Text left, media right | `col-span-12 lg:col-span-6` and a second `lg:col-span-6` |
+| Full width | `col-span-4` |
+| 2 per row from 768px (template cards) | `col-span-4 md:col-span-2` |
+| 4 per row on desktop | `col-span-4 md:col-span-2 lg:col-span-1` |
+| Label left, content right | `col-span-4 lg:col-span-1` + `col-span-4 lg:col-span-3` |
+| Half and half | `col-span-4 lg:col-span-2` twice |
 
-Press **G** on any page to overlay the 12 columns (always available in `npm run dev`; on production pages only where `<Base gridOverlay>` is set, like the design-system page).
+An odd last template card steps to the right column by itself (rule in `global.css`). `ColumnLines` draws the four column lines behind a block, as in the home hero.
 
-Vertical spacing: sections use `--space-section` (4.25rem phone, 6rem from 640px) top and bottom. Use `flush="top"` or `flush="bottom"` on `Section` to remove one side when two sections should sit closer together.
+Press **G** on any page to overlay the 4 columns (always in `npm run dev`; in production only where `<Base gridOverlay>` is set).
+
+Vertical spacing: sections are `--space-section` apart (113px, 57px on phones). `flush="top"` / `flush="bottom"` on `Section` removes one side; `rule` adds a full-width hairline above it.
 
 ## Components
 
 | Component | Props | Notes |
 | --- | --- | --- |
 | `Container` | `as`, `class` | Page width and side padding |
-| `Section` | `id`, `labelledby`, `label`, `flush`, `class` | `Container` inside; gives the section its accessible name |
-| `SectionHeader` | `title`, `id`, `eyebrow`, `lead`, `level` (1 or 2) | Centered heading on the middle 8 columns |
-| `Button` | `href`, `variant` (primary / ghost), `size` (md / compact) | The only way to make a button; renders `<a>` when `href` is set |
-| `Badge` | `tone` | Small status label |
-| `.tag` (class) | none | Outlined pill for tags and categories, e.g. `<li class="tag">dark</li>` |
-| `Card` | `variant` (surface / panel), `padded`, `as`, `class` | Flat block; pass grid classes via `class` |
-| `FaqItem` | `question` (+ answer as the slot) | Native `<details>`, no JavaScript |
-| `TemplateCard` | `template`, `class` | One catalog entry |
-| `InlineIcon` | `name`, `tone` | Icon inside a line of big text; add icons to `paths` in the file |
-| `TemplateGallery` | `items`, `name` | Picture slider with arrows, swipe, counter and thumbnails (pictures only) |
-| `FeatureCard` | `title`, `text`, `icon` or `step`, `connector`, `as`, `class` + slot `illustration` | Card with an illustration stage on top; used for the steps and the "why" blocks |
-| `Icon` | `name`, `class`, `strokeWidth` | Line icon in `currentColor`; icons are defined in `components/icons.ts` |
-| `IconTile` | `name` | Icon on a tinted rounded square |
-| `illustrations/*` | `templates` (some) | Small pictures built from HTML/CSS for `FeatureCard`: `StepChoose`, `StepRemix`, `StepPublish`, `FeatureResponsive`, `FeatureNoCode`, `FeaturePricing`, `FeatureGrowing` |
-| `Glow` | none | Drifting light, inside a `relative overflow-hidden` parent |
-| `HeroStage` | `templates` | Template strip plus the 3D logo (reads colors from tokens) |
-| `Header`, `Footer`, `Logo`, `SocialIcon` | | Site chrome |
-| `GridOverlay` | none | Debug columns, toggled by G |
+| `Section` | `id`, `labelledby`, `label`, `flush`, `rule`, `class` | `Container` inside; gives the section its accessible name |
+| `SectionHeader` | `title`, `id`, `index`, `kicker`, `lead`, `level` (1 or 2) + slot | Left-aligned: "01 / Kicker", title, short text. The slot sits on the right (a button, a count) |
+| `Button` | `href`, `variant` (primary / secondary), `size` (md / compact), `arrow` | The only way to make a button; renders `<a>` when `href` is set. Labels are verbs: EXPLORE, VIEW, ORDER |
+| `Card` | `as`, `padded`, `class` | Surface with a hairline border |
+| `.cells` + `.cell` (classes) | `.cells-2`, `.cells-4` | Blocks sharing one hairline, the spec-sheet look |
+| `.tag`, `.tag-solid` (classes) | | Outlined or black label: price, category, Framer features |
+| `.input` (class) | | Text field. No forms on the site yet; use it when one is added |
+| `.frame`, `.frame-hairline` (classes) | | Heavy 8px or 1px black frame around a picture |
+| `Band` | `items` | Full-bleed black strip with big words running sideways |
+| `ColumnLines` | | The four column lines behind a block (`relative isolate` parent) |
+| `FaqBlock`, `FaqItem` | `title`, `index`, `rule` / `question` + slot | Title left, hairline rows right. Native `<details>` |
+| `TemplateCard` | `template`, `class` | Cover, price, name, tagline. Nothing else |
+| `TemplateGallery` | `items`, `name` | Picture slider with arrows, swipe, counter and thumbnails |
+| `Icon` | `name`, `class` | Lucide icon, 2px stroke, `currentColor`. Icons are in `components/icons.ts` |
+| `Header`, `Footer`, `Logo`, `SocialIcon`, `LegalPage` | | Site chrome |
+| `GridOverlay` | | Debug columns, toggled by G |
 
-## Template pages
+## Pages
 
-Each template in `src/content/templates/` gets a page at `/templates/<slug>/` from `src/pages/templates/[slug].astro`. Left: a picture gallery (`TemplateGallery`) that stays pinned while the page scrolls. Right (with an empty column between the two): name, price and buttons, numbers, then the description as numbered sections (About, the benefits, Features, Pages, Best for, Built with Framer, Updates, Support). Below: FAQ built from the template's data, and more templates. `src/lib/template-content.ts` decides how each imported section is shown from its title, so templates written in different styles all work; this page is intentionally more editorial than the rest of the site. Its social preview image is `public/og/<slug>.png`, made by `npm run og` from the template's name, tagline, price and cover. Template cards on the home page and on `/templates/` link to these pages; the page links on to Framer.
+- **Home** (`src/pages/index.astro`): hero (meta row, display headline, framed cover, EXPLORE), running band, featured templates, specs in cells, three steps, FAQ, black closing block.
+- **Templates** (`/templates/`): every template, two to a row.
+- **Template page** (`/templates/<slug>/`): gallery pinned on the left; name, price, buttons, numbers and the imported description on the right; FAQ; black closing block; two more templates. `src/lib/template-content.ts` decides how each imported section is shown. Its social preview is `public/og/<slug>.png` (`npm run og`).
+- **Privacy, Terms** (`LegalPage`), **404**.
 
 ## Recipes
 
 **Add a page**
 
 1. Create `src/pages/<name>.astro` with `<Base title="…" description="…">`.
-2. Build it from `Section` → `SectionHeader` → `.grid-12` and the components above.
+2. Build it from `Section` → `SectionHeader` → `.grid-4` and the components above.
 3. Add the path to `pages` in `src/pages/sitemap.xml.ts`, and a link in `nav` in `src/data/site.ts` if it belongs in the menu.
 
-**Add a section to the home page**: copy the closest existing section in `src/pages/index.astro` (same `Section` and `SectionHeader`), change the content, keep the grid classes.
+**Add a section to the home page**: copy the closest existing section in `src/pages/index.astro`, give it the next `index`, change the content, keep the grid classes.
 
-**Change the look of the whole site**: edit tokens in `src/styles/global.css`. Examples: the brand color is `--color-accent`; button and card roundness is `--radius-control` / `--radius-surface` / `--radius-panel`; the heading size is `--text-h2`.
+**Change the look of the whole site**: change DESIGN.md, then the tokens in `src/styles/global.css`. Example: the section gap is `--space-section`; headline tracking is `--tracking-headline`.
 
-**Add an icon**: add its path data (24x24 grid, drawn with a stroke) to `src/components/icons.ts`, then use `<Icon name="…" />`. It shows up on the design-system page automatically.
+**Add an icon**: copy the path data of a Lucide icon from https://lucide.dev into `src/components/icons.ts`, then use `<Icon name="…" />`. It shows up on the design-system page.
 
-**Add an illustration**: create a component in `src/components/illustrations/` that fills its parent (`absolute inset-0`), build it from `.mini-window`, `.skeleton`, tokens and `Icon`, and pass it to `FeatureCard` through `slot="illustration"`. Keep it readable on a dark stage: templates are dark, so give thumbnails a `ring-1 ring-outline-strong`.
-
-**Add a token**: add it to the `@theme static` block with a comment. If it needs a different value on larger screens, also set it in the `@media (min-width: 40rem)` block.
+**Add a token**: add it to the `@theme static` block with a comment. If it needs a different value on phones, also set it in the phone `@media` block.
 
 **Add a component**: create it in `src/components/` using only tokens and `.type-*` roles, give it typed `Props`, and add a sample to `src/pages/design-system.astro`.
 
 ## Checklist before merging a change
 
-- [ ] No raw colors, font sizes or radii added; tokens used.
-- [ ] Layout uses `Section` and `.grid-12`; columns line up when you press G.
-- [ ] Looks right at 375, 768, 1024 and 1440 px, with no horizontal scroll.
+- [ ] Black and white only, no grays, tints, shadows or rounded corners.
+- [ ] Headlines in capitals through a `.type-headline-*` class; one `.type-display` per page at most.
+- [ ] Short copy in `.type-pillar`; long documents in `.type-prose`.
+- [ ] Layout uses `Section` and `.grid-4`; columns line up when you press G.
+- [ ] Looks right at 390, 768, 1024 and 1440 px, with no horizontal scroll.
 - [ ] `npm run check` and `npm run build` pass.
 - [ ] New component or token is visible on `/design-system/`.

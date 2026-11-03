@@ -1,6 +1,6 @@
 # Vonex Design: Framer templates catalog
 
-A minimal dark catalog of Framer templates for any kind of website, live at **https://vonexdesign.com**. A landing page with featured templates, `/templates/` with every template, and one page per template at `/templates/<slug>/`. The "Open on Framer" buttons lead to the template on Framer Marketplace (through the Framer referral link when there is one). Static site built with [Astro](https://astro.build) and Tailwind CSS, deployed on Cloudflare (Workers static assets).
+A minimal black-and-white catalog of Framer templates for any kind of website, live at **https://vonexdesign.com**. A landing page with featured templates, `/templates/` with every template, and one page per template at `/templates/<slug>/`. The "View on Framer" buttons lead to the template on Framer Marketplace (through the Framer referral link when there is one). Static site built with [Astro](https://astro.build) and Tailwind CSS, deployed on Cloudflare (Workers static assets).
 
 Working on the project with Claude? The rules for that are in [CLAUDE.md](CLAUDE.md).
 
@@ -41,7 +41,7 @@ What it does:
 3. Makes the social preview image `public/og/<slug>.png`.
 4. The page `/templates/<slug>/` and its sitemap entry appear automatically.
 
-Options: `--affiliate` (your referral link for "Open on Framer"), `--category`, `--tags`, `--description` (short text for the card), `--featured` (first 3 featured are on the landing page), `--refresh-media` (download the pictures again), `--dry-run`. Run `npm run add-template -- --help` for the list.
+Options: `--affiliate` (your referral link for "View on Framer"), `--category`, `--tags`, `--description` (short text for the card), `--featured` (first 3 featured are on the landing page), `--refresh-media` (download the pictures again), `--dry-run`. Run `npm run add-template -- --help` for the list.
 
 Afterwards: open the generated YAML and write a proper `description`, then commit and push, including the new files in `src/assets/templates/` and `public/og/`.
 
@@ -69,7 +69,7 @@ You can also write the YAML yourself; copy an existing file from `src/content/te
 
 ## Design system
 
-Colors, type, radii, spacing and the 12-column grid are defined once, as tokens in `src/styles/global.css`; components live in `src/components`. Run `npm run dev` and open http://localhost:4321/design-system/ for the live style guide (it exists only in dev and is removed from the production build) (press **G** on any page to see the grid). The rules and recipes are in [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md).
+The design direction is [DESIGN.md](DESIGN.md) (Alpine: black on white, Inter, square corners). Colors, type, spacing and the 4-column grid are defined once, as tokens in `src/styles/global.css`; components live in `src/components`. Run `npm run dev` and open http://localhost:4321/design-system/ for the live style guide (it exists only in dev and is removed from the production build) (press **G** on any page to see the grid). The rules and recipes are in [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md).
 
 ## SEO and analytics
 
@@ -84,13 +84,10 @@ Colors, type, radii, spacing and the 12-column grid are defined once, as tokens 
 src/
   content/templates/*.yaml     one file per template (schema: src/content.config.ts)
   assets/templates/            covers (<slug>.webp) and gallery pictures (<slug>/)
-  assets/cta-monitor.webp      picture in the closing banner of the landing page
   components/                  layout and UI components (Header, Footer, Section, TemplateCard, ...)
-  components/illustrations/    small illustrations for the steps and benefits blocks
   layouts/Base.astro           shared page shell (SEO tags, header, footer, analytics)
   lib/template-content.ts      turns the imported Marketplace text into template page blocks and FAQ
   pages/                       index, templates, templates/[slug], 404, design-system, sitemap.xml, robots.txt
-  scripts/hero-logo.ts         3D logo in the hero (three.js, loaded after the page is idle)
   styles/global.css            design tokens and shared classes
   data/site.ts                 site name, contacts, socials, navigation, analytics token
 scripts/

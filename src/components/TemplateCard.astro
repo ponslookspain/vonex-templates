@@ -1,10 +1,12 @@
 ---
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
 
+// One catalog entry: the cover, the price (or Free), the name and the tagline. Nothing else.
 interface Props {
   template: CollectionEntry<'templates'>;
-  // Grid placement, e.g. "col-span-12 sm:col-span-6 lg:col-span-4"
+  // Grid placement, e.g. "col-span-4 md:col-span-2"
   class?: string;
 }
 const { template, class: className } = Astro.props;
@@ -14,25 +16,26 @@ const free = t.price === 0;
 ---
 
 <li class:list={['template-card', className]}>
-  <a
-    href={href}
-    class="group panel flex h-full flex-col gap-4 p-3 transition-colors duration-fast hover:bg-surface-2"
-  >
-    <div class="relative aspect-[4/3] overflow-hidden rounded-surface bg-surface-2">
+  <a href={href} class="group flex h-full flex-col">
+    <div class="frame-hairline relative aspect-[4/3] overflow-hidden">
       <Image
         src={t.image}
         alt={`${t.name} Framer template: ${t.tagline}`}
-        widths={[480, 720, 1000]}
-        sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
-        class="h-full w-full object-cover transition-transform duration-slow ease-soft group-hover:scale-[1.03]"
+        widths={[480, 720, 1000, 1400]}
+        sizes="(min-width: 768px) 50vw, 100vw"
+        class="h-full w-full object-cover transition-transform duration-(--duration-reveal) ease-out group-hover:scale-[1.02]"
       />
+      <span class:list={['tag absolute left-md top-md', !free && 'tag-solid']}>{free ? 'Free' : `$${t.price}`}</span>
     </div>
-    <div class="flex flex-col gap-1 px-2 pb-2">
-      <h3 class="type-title">{t.name}</h3>
-      <p class="type-small text-muted">{t.tagline}</p>
-      <p class="type-small mt-1 text-muted">
-        {t.category}<span aria-hidden="true" class="mx-1.5">·</span><span class="font-medium text-fg">{free ? 'Free' : `$${t.price}`}</span>
-      </p>
+    <div class="flex flex-1 items-start justify-between gap-lg border-b border-line py-lg">
+      <div>
+        <h3 class="type-headline-sm underline-offset-4 group-hover:underline">{t.name}</h3>
+        <p class="type-body type-pillar mt-sm">{t.tagline}</p>
+      </div>
+      <Icon
+        name="arrow-up-right"
+        class="size-6 shrink-0 transition-transform duration-(--duration-base) ease-out group-hover:translate-x-[2px] group-hover:-translate-y-[2px]"
+      />
     </div>
   </a>
 </li>

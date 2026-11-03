@@ -1,198 +1,196 @@
 ---
-name: Vonex Design
-description: A near-black catalog that lets the Framer templates lead, with one blue accent and almost no decoration.
+version: "alpha"
+name: "Alpine"
+description: "Extreme minimalism meets technical precision. High-contrast — a design direction from MUUDS, https://www.muuds.design/systems/monochrome-alpine-249e3d"
 colors:
-  void: "#000000"
-  graphite: "#111113"
-  graphite-raised: "#121214"
-  hairline: "#222226"
-  paper: "#f4f4f5"
-  paper-soft: "rgba(244, 244, 245, 0.8)"
-  ash: "#9a9aa3"
-  signal-blue: "#0099ff"
-  indigo-light: "#6366f1"
-  sky-light: "#38bdf8"
-  chrome: "#f2f4fa"
-  go-green: "#34d399"
+  neutral: "#ffffff"
+  surface: "#ffffff"
+  on-surface: "#000000"
+  on-surface-muted: "#000000"
+  primary: "#000000"
+  on-primary: "#ffffff"
 typography:
-  display:
-    fontFamily: "Inter Variable, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "clamp(3rem, 2rem + 4vw, 4.5rem)"
+  headline-display:
+    fontFamily: "Inter"
+    fontSize: "150px"
     fontWeight: 700
-    lineHeight: 1.02
-    letterSpacing: "-0.04em"
-  headline:
-    fontFamily: "Inter Variable, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "clamp(2.25rem, 1.8rem + 1.5vw, 3rem)"
+    lineHeight: 0.77
+    letterSpacing: "-0.07em"
+  headline-lg:
+    fontFamily: "Inter"
+    fontSize: "75px"
     fontWeight: 700
-    lineHeight: 1.1
-    letterSpacing: "-0.04em"
-  title:
-    fontFamily: "Inter Variable, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "1.125rem"
-    fontWeight: 600
-    lineHeight: 1.55
-    letterSpacing: "-0.025em"
-  body:
-    fontFamily: "Inter Variable, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "1rem"
+    letterSpacing: "-0.07em"
+  headline-md:
+    fontFamily: "Inter"
+    fontSize: "45px"
+    fontWeight: 700
+    letterSpacing: "-0.07em"
+  headline-sm:
+    fontFamily: "Inter"
+    fontSize: "30px"
+    fontWeight: 700
+    letterSpacing: "-0.07em"
+  headline-xs:
+    fontFamily: "Inter"
+    fontSize: "22px"
+    fontWeight: 700
+    letterSpacing: "-0.07em"
+  headline-xxs:
+    fontFamily: "Inter"
+    fontSize: "16px"
+    fontWeight: 700
+    letterSpacing: "-0.07em"
+  body-md:
+    fontFamily: "Inter"
+    fontSize: "15px"
     fontWeight: 400
-    lineHeight: 1.5
-  label:
-    fontFamily: "Inter Variable, ui-sans-serif, system-ui, sans-serif"
-    fontSize: "0.75rem"
-    fontWeight: 500
-    lineHeight: 1.35
+    lineHeight: 1
+    letterSpacing: "-0.05em"
+  label-md:
+    fontFamily: "Inter"
+    fontSize: "15px"
+    fontWeight: 400
+    letterSpacing: "0.08em"
 rounded:
-  control: "8px"
-  surface: "12px"
-  panel: "16px"
-  media: "24px"
+  none: "0px"
 spacing:
-  page: "20px"
-  gutter: "20px"
-  card: "24px"
-  section: "68px"
+  base: "8px"
+  xs: "6px"
+  sm: "11px"
+  md: "15px"
+  lg: "20px"
+  xl: "57px"
+  2xl: "113px"
+  gutter: "24px"
+  columns: 4
+  section: "113px"
 components:
   button-primary:
-    backgroundColor: "{colors.paper}"
-    textColor: "{colors.void}"
-    rounded: "{rounded.control}"
-    padding: "10px 16px"
-  button-ghost:
-    backgroundColor: "{colors.void}"
-    textColor: "{colors.paper}"
-    rounded: "{rounded.control}"
-    padding: "10px 16px"
-  template-card:
-    backgroundColor: "{colors.graphite}"
-    textColor: "{colors.paper}"
-    rounded: "{rounded.panel}"
-    padding: "12px"
-  tag:
-    backgroundColor: "{colors.void}"
-    textColor: "{colors.paper-soft}"
-    rounded: "9999px"
-    padding: "4px 12px"
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.on-primary}"
+    typography: "{typography.label-md}"
+    rounded: "{rounded.none}"
+    padding: "11px"
+  button-secondary:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.on-surface}"
+    typography: "{typography.label-md}"
+    rounded: "{rounded.none}"
+  card:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.on-surface}"
+    rounded: "{rounded.none}"
+    padding: "20px"
+  input:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.on-surface}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.none}"
 ---
 
-# Design System: Vonex Design
+# Alpine
+
+This file is the design direction. How its values are wired into the code (tokens, classes, components) is in [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md). Change this file first, then the tokens.
 
 ## Overview
 
-**Creative North Star: "The Quiet Gallery"**
+Extreme minimalism meets technical precision. High-contrast monochrome typography is framed against expansive high-key terrain and razor-sharp athletic silhouettes.
 
-The site is a dark room with the templates hung on the wall. The shell stays out of the way: black ground, one typeface, one blue accent, hairlines instead of boxes. Every template is a piece of work with its own typography and palette, so the storefront must never compete with it.
+A design direction for extreme minimalism meets technical precision, high-contrast, in a luxurious and clinical mood. The voice is confident, understated, precise.
 
-The system is flat and typographic. Weight and size carry hierarchy; color is rationed. Pages are short sequences of one idea each, centered headings over a 12-column grid, generous vertical air (68px on phones, 96px from 640px). The template detail page is the one deliberately editorial surface: large type, numbered sections, hairline rules.
+Headlines in this voice:
 
-Decoration was removed on purpose (drifting glows, dot grids, footer gradient, status dots). Anything added back must earn its place by showing real work.
-
-**Key Characteristics:**
-- Pure black ground with near-white text; the accent appears only on interaction and focus.
-- Inter Variable for everything, tight negative tracking on headings.
-- Flat surfaces, hairline outlines, no soft shadows.
-- Real template imagery is the only ornament.
-- One call to action wording: "Browse templates".
+- "ENGINEERED FOR PEAK."
+- "ZERO TOLERANCE. PURE PERFORMANCE."
+- "FORM. FUNCTION. FORCE."
 
 ## Colors
 
-A black-and-white palette with a single electric blue. Neutrals do almost all the work.
+The page is set on white with near-black text; the accent is spent, not spread.
 
-### Primary
-- **Signal Blue** (#0099ff): Focus ring, text selection tint, links and the accent tint behind icons. Never a button fill.
+- **neutral (#ffffff), white:** the page ground, about 89% of the page.
+- **surface (#ffffff), white:** panels, cards and inputs, about 89% of the page.
+- **on-surface (#000000), near-black:** headlines and body text, about 11% of the page.
+- **on-surface-muted (#000000), near-black:** secondary text: captions, labels, metadata, about 11% of the page.
+- **primary (#000000), near-black:** the main action and highlights, used sparingly, about 11% of the page.
+- **on-primary (#ffffff), white:** text and icons set on the primary colour.
 
-### Secondary
-- **Indigo Light** (#6366f1) and **Sky Light** (#38bdf8): used only inside small illustration gradients. Not for text or UI.
+Contrast, as set:
 
-### Tertiary
-- **Go Green** (#34d399): positive labels only (the `success` badge). Never decorative.
-
-### Neutral
-- **Void** (#000000): page background.
-- **Graphite** (#111113): cards and panels. **Graphite Raised** (#121214) is its hover state.
-- **Hairline** (#222226): borders and dividers.
-- **Paper** (#f4f4f5): primary text and the primary button fill. **Paper Soft** (80% Paper) for readable secondary text such as nav and labels.
-- **Ash** (#9a9aa3): descriptions and captions; about 6.5:1 on Graphite.
-- **Chrome** (#f2f4fa): base metal of the 3D logo only.
-
-### Named Rules
-**The One Voice Rule.** Signal Blue appears on interaction and focus, not as a fill. If a screen needs a color to feel alive, the templates' own images are the color.
-
-**The Grey-Free Rule.** Secondary text is Paper at reduced opacity or Ash, nothing between.
+- Text on the ground: 21.0:1
+- Secondary text on the ground: 21.0:1
+- Text on surfaces: 21.0:1
+- Labels on the primary colour: 21.0:1
 
 ## Typography
 
-**Display Font:** Inter Variable (with ui-sans-serif, system-ui)
-**Body Font:** Inter Variable (same)
-**Label/Mono Font:** none; the system has no monospace voice.
+- **Display:** Inter (a sans-serif, free on Google Fonts), weights 700.
+- **Body:** Inter (a sans-serif, free on Google Fonts), weights 400.
 
-**Character:** One neutral grotesque used at confident sizes. Personality comes from scale and tight tracking (-0.04em on headings), not from a second face.
+Headlines are set in capitals. The scale steps by a ratio of about 1.78.
 
-### Hierarchy
-- **Display** (700, 3rem to 4.5rem, 1.02): home hero headline only.
-- **Headline** (700, 2.25rem to 3rem, 1.1): section titles and page titles (H1 uses 3rem to 3.75rem).
-- **Title** (600, 1.125rem, 1.55): template names on cards.
-- **Body** (400, 1rem, 1.5): running text; measure capped at 28rem to 40rem depending on role.
-- **Label** (500, 0.75rem): tags and badges.
+- **headline-display:** 150px / 0.77, the largest headline, one per page, in capitals.
+- **headline-lg:** 75px, headlines and section titles, in capitals.
+- **headline-md:** 45px, headlines and section titles, in capitals.
+- **headline-sm:** 30px, headlines and section titles, in capitals.
+- **headline-xs:** 22px, headlines and section titles, in capitals.
+- **headline-xxs:** 16px, headlines and section titles, in capitals.
+- **body-md:** 15px / 1, running text.
+- **label-md:** 15px, labels, tags and buttons, in capitals.
 
-### Named Rules
-**The Role Rule.** Text size always comes from a `type-*` role, never from raw Tailwind sizes.
+Load the fonts from Google Fonts: https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap
+(This site self-hosts the same Inter family through `@fontsource-variable/inter`, so nothing is loaded from Google.)
 
 ## Layout
 
-A 72rem container with a 12-column grid and 20px gutters. Sections are stacked with consistent vertical padding from `--space-section`; two sections can touch with `flush`. Headings sit on the middle 8 columns; card grids are 3-up on desktop, 2-up from 640px, 1-up on phones.
+A 4-column grid with 24px gutters, fluid.
 
-The template detail page is a two-column layout from 1024px: a sticky gallery on the left (6 columns) and the editorial text on the right (5 columns, offset by one empty column). On phones the order is name, price and Framer buttons first, then the gallery, then the text, so the main action is on the first screen.
+Spacing is built on 8px: 6px, 11px, 15px, 20px, 57px, 113px. Sections are separated by about 113px.
 
 ## Elevation & Depth
 
-Flat by default. Depth comes from tonal layering (Void, Graphite, Graphite Raised) and 1px inset outlines (`rgb(255 255 255 / 0.06)` at rest, `0.14` on hover or selection). There are no drop shadows.
-
-### Named Rules
-**The Flat-By-Default Rule.** Surfaces never lift. State is shown with a tone or hairline change, not a shadow.
+Depth comes from lines and tone rather than shadow: borders are 1px hairline, and panels are set apart by the surface colour.
 
 ## Shapes
 
-Rounded, calm corners by role: 8px for controls, 12px for cards inside sections, 16px for large panels such as template cards and the closing call to action, 24px for big previews. Tags are full pills. Imagery is clipped to its container's radius with a small inner padding on cards, so the image looks framed, not pasted.
+Corners: square corners.
 
 ## Components
 
-### Buttons
-- **Shape:** gently rounded (8px); 10px by 16px padding; 14px medium text.
-- **Primary:** Paper fill with Void text. Hover softens the fill to 80% white.
-- **Ghost:** transparent, 1px Hairline border, Paper text. Hover brightens the border and raises the fill to Graphite Raised.
-- **Compact:** smaller on phones, regular from 640px; used in the header only.
-
-### Cards / Containers
-- **Template card:** Graphite panel, 16px radius, 12px inner padding, 4:3 image at 12px radius, then name (Title), tagline (Ash) and a line "Category · Price". Hover raises the panel tone and scales the image to 1.03.
-- **Feature card:** Graphite surface, no outline, with an illustration stage on Void. Illustrations are flat tonal tiles with at most one accent color and a slow 9s loop (typing, reflow, highlight passing, a tile arriving); no photos, gradients or icons.
-- **Border:** hairline via inset outline only.
-
-### Chips
-- **Tag:** pill with a 1px inset outline in Paper Soft text; the accent variant tints the outline with Signal Blue.
-
-### Inputs / Fields
-There are no form fields. The site has no search or filter by decision; the catalog is small and static.
-
-### Navigation
-- Fixed header over a fade from Void. Logo left; nav, social icons and one compact "Browse templates" button right (hidden on the catalog itself). Links are Paper Soft and brighten on hover; the active page is Paper. Below 768px the nav collapses to a menu button that closes on Escape.
-
-### Template detail (signature)
-Name at 3.25rem to 5.25rem, tagline, price and two buttons (Open on Framer, Live preview), four small stat cards, then numbered hairline sections, a FAQ and a closing "Get [name]" block with the same buttons.
+- **Buttons:** the primary button is the primary colour with white labels in the label style; the secondary sits on the surface with text-coloured labels. Button verbs: EXPLORE, ORDER, VIEW.
+- **Cards:** the surface colour with the body text colour and generous padding.
+- **Inputs:** the body style, on the surface, with the secondary text colour for placeholders.
+- **Icons:** Lucide (ISC, https://lucide.dev), regular. Even 2px strokes on a 24px grid, round caps and joins, geometric and neutral.
 
 ## Do's and Don'ts
 
-### Do:
-- **Do** let template imagery carry color and character; keep the shell black and white.
-- **Do** use `Browse templates` for every link to the catalog.
-- **Do** keep the main action ("Open on Framer") on the first phone screen of every template page.
-- **Do** build with tokens from `global.css`; add a token before adding a raw value.
-- **Do** keep a visible 2px Signal Blue focus ring with 3px offset on every interactive element.
+- Maintain absolute monochrome black-on-white hierarchy with zero intermediate gray tones.
+- Keep body copy strictly in narrow, vertical column pillars under thirty characters per line.
+- Anchor full-bleed visual frames with oversized, tightly tracked display type.
+- Use multi-screen whitespace gaps between technical product disclosures.
+- Do keep body text at 4.5:1 against what it sits on, and large text at 3:1.
+- Do use only the fonts and colours above; do not introduce new ones.
 
-### Don't:
-- **Don't** add glows, blurred blobs or dot grids. The one gradient is the accent rising from the bottom edge, used only on the footer and the closing call-to-action panel.
-- **Don't** put a blue label (eyebrow) above section headings.
-- **Don't** use shadows for elevation.
-- **Don't** use Signal Blue as a button fill or for body text.
-- **Don't** add a second typeface without a specific reason tied to the work shown.
+## Imagery
+
+High-key outdoor action photography shot under bright, cool daylight against textured white terrain. High-contrast colour palette featuring vibrant warm accents against cyan-tinted neutrals and snowy expanses, with a distinct vintage analog film grain.
+
+- **Medium:** photography
+- **Light:** bright direct daylight with cool reflective bounce and crisp, hard shadows
+- **Grading:** cool blue and cyan casts in shadows, high-key bright whites, punchy saturated orange and warm highlights with deep contrasty blacks
+- **Composition:** figures positioned centrally or dynamically within expansive white negative space
+- **Depth of field:** deep, maintaining texture across the entire foreground and surrounding field
+- **Texture:** visible vintage 35mm film grain, analog print quality with slight sharpness edge degradation
+- **Background:** vast, continuous textured white terrain filling the frame edge-to-edge
+- **Distance:** mid to wide framing surrounded by ample open space
+
+On this site the pictures are the template covers: they are the only colour on the page.
+
+## Motion
+
+Deliberate. Easing: ease-out. Stark fullscreen video reel overlay with dynamic type.
+
+---
+
+Made with MUUDS — https://www.muuds.design/systems/monochrome-alpine-249e3d
