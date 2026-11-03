@@ -11,6 +11,9 @@ export const site = {
   // Leave empty to disable. Nothing is sent until a token is set.
   analyticsToken: 'a8496556ef3645b5902ace2d122d7198',
   framerProfile: 'https://www.framer.com/@vonexdesign/',
+  // Framer referral link to framer.com, for sign-up and plan links in the guides (not for templates:
+  // each template has its own `affiliateUrl`). Links using it get rel="sponsored".
+  framerReferral: 'https://framer.link/vonex-studio',
   email: 'ponslookdesign@gmail.com',
   socials: [
     { label: 'X', href: 'https://x.com/ponslookdesign', icon: 'x' },
@@ -22,4 +25,6 @@ export const site = {
 export const nav = [
   { label: 'Home', href: '/' },
   { label: 'Templates', href: '/templates/' },
+  { label: 'Guides', href: '/guides/' },
+  { label: 'About', href: '/about/' },
 ] as { label: string; href: string; external?: boolean }[];

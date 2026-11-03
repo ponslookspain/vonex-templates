@@ -7,7 +7,8 @@ import { z } from 'astro/zod';
 //
 // Most of the file is written by `npm run add-template` from the Framer Marketplace page, and
 // refreshed by `npm run sync-templates`. The fields you edit by hand (and that the script
-// never overwrites) are: description, affiliateUrl, featured, tags, category, added, preview.
+// never overwrites) are: description, affiliateUrl, featured, tags, category, added, preview,
+// pageKind, seoDescription, overview, preparation.
 const templates = defineCollection({
   loader: glob({ pattern: '*.yaml', base: './src/content/templates' }),
   schema: ({ image }) =>
@@ -21,6 +22,12 @@ const templates = defineCollection({
       // Optional Framer affiliate link (framer.link, redirects to the Marketplace page). If set, "View on Framer" uses it instead of `url`.
       affiliateUrl: z.url().optional(),
       preview: z.url().optional(),
+      // Written for this catalog, not imported. Used on the template page: what kind of site it is
+      // ("Portfolio"), the search description, a short intro, and what to prepare before editing.
+      pageKind: z.string().optional(),
+      seoDescription: z.string().optional(),
+      overview: z.string().optional(),
+      preparation: z.string().optional(),
       category: z.string(),
       price: z.number().min(0), // 0 = Free
       tags: z.array(z.string()).default([]),

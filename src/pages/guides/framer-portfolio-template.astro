@@ -1,0 +1,102 @@
+---
+import { getEntry } from 'astro:content';
+import LegalPage from '../../components/LegalPage.astro';
+import Button from '../../components/Button.astro';
+import GuideFigure from '../../components/GuideFigure.astro';
+
+const template = await getEntry('templates', 'ethan-walker');
+if (!template) throw new Error('The portfolio guide needs the ethan-walker template.');
+const t = template.data;
+const title = 'How to build a portfolio with a Framer template';
+const description = 'Set up a designer portfolio in Framer with Ethan Walker: what to prepare, how to add projects in the CMS and what to check before you publish.';
+const url = new URL('/guides/framer-portfolio-template/', Astro.site).href;
+---
+
+<LegalPage accent="portfolio"
+  kicker="Guide"
+  title={title}
+  seoTitle="Framer portfolio template: how to build your portfolio"
+  description={description}
+  updated="November 3, 2026"
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description,
+    url,
+    mainEntityOfPage: url,
+    dateModified: '2026-11-03',
+    author: { '@type': 'Organization', name: 'Vonex Design', url: new URL('/', Astro.site).href },
+  }}
+>
+  <p>
+    A portfolio works best when it shows a few strong projects and is easy to update. This guide uses
+    <a href={`/templates/${template.id}/`}>{t.name}</a>, a free Framer portfolio template, as the example. The steps
+    also fit any other template with a CMS.
+  </p>
+
+  <GuideFigure template={template} caption="Ethan Walker, the template used in this guide" />
+
+  <h2>What the template includes</h2>
+  <ul>
+    <li>Pages: Home, About, Work, a Project page for each case study, Contact, Privacy Policy and a 404 page.</li>
+    <li>CMS collections: Projects, Services and the Privacy Policy.</li>
+    <li>A contact form, scroll and hover effects, and large typography.</li>
+  </ul>
+
+  <h2>1. Choose the work to show</h2>
+  <p>
+    Pick three to six projects. For each one, write what the problem was, what you did and what changed. Add two to four
+    images. Fewer, better projects beat a long list.
+  </p>
+
+  <h2>2. Copy the template</h2>
+  <p>
+    Open <a href={`/templates/${template.id}/`}>{t.name}</a>, press "View on Framer", then remix it into your account.
+    The general steps are in <a href="/guides/how-to-use-framer-templates/">how to use a Framer template</a>.
+    Still choosing? Compare <a href="/guides/free-framer-portfolio-templates/">the best free Framer portfolio templates</a>.
+  </p>
+
+  <h2>3. Add your projects in the CMS</h2>
+  <p>
+    The Work page and the project pages are driven by the Projects collection. Open the CMS in Framer, replace the sample
+    items with your own and fill every field: title, cover, text and images. Each item becomes its own project page.
+    You do not edit the design to add a project. More on how collections work in <a href="/guides/framer-cms/">the Framer CMS guide</a>.
+  </p>
+  <p>
+    Do the same for Services if you offer them. Delete sample items you do not need, so no placeholder reaches the
+    live site.
+  </p>
+
+  <h2>4. Rewrite the About and Home pages</h2>
+  <p>
+    Say who you are, what you do and who you work with, in a few plain sentences. Put your best project and a clear
+    contact link near the top.
+  </p>
+
+  <h2>5. Set up the contact form</h2>
+  <p>
+    Point the form to your own email, send a test message and check that it arrives. Keep your email address visible
+    as a fallback.
+  </p>
+
+  <h2>6. Check and publish</h2>
+  <ul>
+    <li>View every page on desktop, tablet and phone.</li>
+    <li>Write a title and description for each page. Add a social preview image.</li>
+    <li>Update the Privacy Policy item so it describes your own site.</li>
+    <li>Check your Framer plan for CMS and page limits, and whether you need a custom domain. See <a href="/guides/how-to-use-framer-templates/">what it costs</a>.</li>
+    <li>Publish, then open the live site and click through it once more.</li>
+  </ul>
+
+  <h2>Keep it current</h2>
+  <p>
+    Add a new project to the CMS when you finish one. A portfolio that was updated this month looks alive. Remove old
+    work that no longer represents you.
+  </p>
+
+  <div class="mt-xl flex flex-wrap gap-sm">
+    <Button href={`/templates/${template.id}/`} arrow>See {t.name}</Button>
+    <Button href="/templates/free/" variant="secondary" arrow>Free templates</Button>
+  </div>
+</LegalPage>

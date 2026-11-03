@@ -1,0 +1,32 @@
+---
+// Numbered entries of a roundup article, for templates by other creators: name, creator,
+// what the creator says it is, who it suits, and a link to its Framer Marketplace page.
+// Use inside a LegalPage, after any of our own templates (pass `start` to continue the count).
+interface Entry {
+  name: string;
+  by: string;
+  slug: string;
+  focus: string;
+  fit: string;
+}
+interface Props {
+  entries: Entry[];
+  start?: number;
+}
+const { entries, start = 1 } = Astro.props;
+---
+
+{
+  entries.map((t, i) => (
+    <Fragment>
+      <h2>{i + start}. {t.name}</h2>
+      <p>{t.focus} By {t.by}.</p>
+      <p><strong>Best for:</strong> {t.fit}</p>
+      <p>
+        <a href={`https://www.framer.com/marketplace/templates/${t.slug}/`} target="_blank" rel="noopener noreferrer">
+          {t.name} on Framer Marketplace
+        </a>
+      </p>
+    </Fragment>
+  ))
+}

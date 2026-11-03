@@ -1,0 +1,31 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+
+// A real picture of one of our templates inside a guide: its cover, or one of its gallery
+// pictures by index, in a hairline frame with a short caption that links to the template.
+interface Props {
+  template: CollectionEntry<'templates'>;
+  // Gallery picture index; leave out for the cover.
+  picture?: number;
+  caption: string;
+}
+const { template, picture, caption } = Astro.props;
+const t = template.data;
+const shot = picture !== undefined ? t.gallery[picture] : undefined;
+const src = shot?.src ?? t.image;
+const alt = shot?.alt ?? `${t.name} Framer template: ${t.tagline}`;
+---
+
+<figure class="guide-figure">
+  <a href={`/templates/${template.id}/`} class="block border border-line">
+    <Image src={src} alt={alt} widths={[640, 960, 1280]} sizes="(min-width: 1024px) 34rem, 100vw" class="aspect-[4/3] w-full object-cover" />
+  </a>
+  <figcaption class="type-label mt-sm">{caption}</figcaption>
+</figure>
+
+<style>
+  .guide-figure {
+    margin-block: var(--spacing-xl);
+  }
+</style>

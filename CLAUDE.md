@@ -17,7 +17,7 @@ Guide for Claude (and anyone else) working on this repository. Read it before ch
 
 - Astro 7 (static output, `output: 'static'`), Tailwind CSS 4 via `@tailwindcss/vite`, TypeScript (strict).
 - Content: Astro content collection of YAML files, schema in `src/content.config.ts` (zod). Images through `astro:assets` (resized to WebP at build time).
-- Font: Inter Variable from `@fontsource-variable/inter`, self-hosted.
+- Fonts, self-hosted from Fontsource: Archivo (headlines), Instrument Serif italic (accent word), Inter (text), Geist Mono (labels, buttons, nav).
 - Node scripts in `scripts/` (`yaml`, `sharp`) for importing templates and making social preview images.
 - Hosting: Cloudflare Workers static assets (`wrangler.jsonc`), custom domains vonexdesign.com and www. Cloudflare Web Analytics token in `src/data/site.ts`.
 - Node 22 (`.nvmrc`). Vladimir works on Windows with PowerShell; keep commands cross-platform (no bash-only syntax in npm scripts).
@@ -49,7 +49,9 @@ Guide for Claude (and anyone else) working on this repository. Read it before ch
 2. Check the YAML: write a short `description` for the card (one sentence), check `category`, `price` (0 = Free) and `affiliateUrl`.
 3. Commit the YAML, the pictures and the og image in one PR.
 
-Hand-edited fields that `npm run sync-templates` never overwrites: `description`, `affiliateUrl`, `featured`, `tags`, `category`, `added`, `preview`. Everything else in the YAML comes from Framer and can be refreshed.
+Hand-edited fields that `npm run sync-templates` never overwrites: `description`, `affiliateUrl`, `featured`, `tags`, `category`, `added`, `preview`, `pageKind`, `seoDescription`, `overview`, `preparation`. Write these four for every new template: they feed the title, search description, intro and "Before you publish" block of its page. Everything else in the YAML comes from Framer and can be refreshed.
+
+Guides are listed in `src/data/guides.ts`; a new guide also needs its accent word in `ACCENTS` in `scripts/generate-og.mjs`, then `npm run og` makes `public/og/guides/<slug>.png`.
 
 After changing a name, tagline, price or cover, run `npm run og` (or `npm run og -- <slug>`). The og images depend on the fonts installed on the machine (Segoe UI on Windows), so images made on Linux look different: regenerate them on Vladimir's machine, or leave the committed ones alone.
 
@@ -57,7 +59,7 @@ Template cards show only the cover, the price/Free badge, the name and the tagli
 
 ## Style
 
-- Alpine: black on white, no grays, square corners, hairlines, headlines in capitals (DESIGN.md). Read DESIGN.md before writing any UI. All visual values come from tokens in `src/styles/global.css`; text sizes from the `.type-*` classes; spacing from the named steps (`p-lg`, `mt-xl`); layout on the 4-column grid (`.grid-4`, `Section`, `Container`). Details and the checklist are in DESIGN_SYSTEM.md.
+- Alpine: ink on warm paper (quiet text and lines are the same ink at lower opacity, through tokens), square corners, hairlines, headlines in sentence case with one italic serif accent word (DESIGN.md). Read DESIGN.md before writing any UI. All visual values come from tokens in `src/styles/global.css`; text sizes from the `.type-*` classes; spacing from the named steps (`p-lg`, `mt-xl`); layout on the 4-column grid (`.grid-4`, `Section`, `Container`). Details and the checklist are in DESIGN_SYSTEM.md.
 - Pages are static HTML with small inline scripts only. Do not add a UI framework (React and similar) or client-side rendering.
 - Images go through `astro:assets` (`<Image>`), never straight from Framer at runtime.
 - Site copy in plain English, short sentences.

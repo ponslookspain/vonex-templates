@@ -10,9 +10,9 @@ const { question } = Astro.props;
 ---
 
 <details class="faq-item">
-  <summary class="type-headline-xxs flex cursor-pointer list-none items-center justify-between gap-lg py-lg">
+  <summary class="type-headline-xxs flex cursor-pointer list-none items-center justify-between gap-lg px-(--rail-inset) py-lg">
     {question}
     <Icon name="plus" class="faq-plus size-5 shrink-0" />
   </summary>
-  <p class="type-prose pb-lg"><slot /></p>
+  <p class="type-prose px-(--rail-inset) pb-lg"><slot /></p>
 </details>

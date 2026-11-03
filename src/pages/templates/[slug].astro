@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
-import Container from '../../components/Container.astro';
+import CtaBand from '../../components/CtaBand.astro';
 import Section from '../../components/Section.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
 import Button from '../../components/Button.astro';
@@ -21,6 +21,7 @@ export async function getStaticPaths() {
 
 const { template, all } = Astro.props;
 const t = template.data;
+const editorial = t.overview ? t : undefined;
 const c = buildContent(t);
 const faq = buildFaq(t, c, { siteEmail: site.email });
 // The two newest other templates, one row of the 2-up grid.
@@ -49,8 +50,10 @@ const stats = [
 
 // Search results show about 160 characters.
 const article = /^[aeiou]/i.test(t.category) ? 'an' : 'a';
-const fullDescription = `${t.name} is ${article} ${t.category.toLowerCase()} Framer template by ${site.name}. ${t.description}`;
+const fullDescription = t.seoDescription ?? `${t.name} is ${article} ${t.category.toLowerCase()} Framer template by ${site.name}. ${t.description}`;
 const description = fullDescription.length > 160 ? fullDescription.slice(0, 157).replace(/\s+\S*$/, '') + '…' : fullDescription;
+const templateKind = t.pageKind ?? t.category;
+const title = `${t.name} — ${free ? 'Free ' : ''}Framer ${templateKind} Template${free ? '' : ` ($${t.price})`}`;
 
 // The imported intro often starts with a one-line headline, followed by the real text.
 const leadHead = c.leadTitle ?? (c.lead.length > 1 && c.lead[0].length < 110 ? c.lead[0] : undefined);
@@ -58,7 +61,7 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
 ---
 
 <Base
-  title={`${t.name} Framer Template`}
+  title={title}
   description={description}
   image={ogPath}
   jsonLd={{
@@ -92,24 +95,38 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     ],
   }}
 >
-  <Section flush="bottom" class="pt-10 sm:pt-12" label={`${t.name} template`}>
-    <nav aria-label="Breadcrumb" class="type-label mb-xl">
-      <a href="/" class="underline-offset-4 hover:underline">Home</a>
-      <span aria-hidden="true" class="mx-2">/</span>
-      <a href="/templates/" class="underline-offset-4 hover:underline">Templates</a>
-      <span aria-hidden="true" class="mx-2">/</span>
-      <span>{t.name}</span>
-    </nav>
+  <Section class="section-with-bar" flush="bottom" label={`${t.name} template`}>
+    <!-- The bar carries the breadcrumb, so the page starts on a line like every other page. -->
+    <div class="section-bar type-label mb-0" data-reveal-skip>
+      <nav aria-label="Breadcrumb">
+        <a href="/" class="underline-offset-4 hover:underline">Home</a>
+        <span aria-hidden="true" class="mx-2">/</span>
+        <a href="/templates/" class="underline-offset-4 hover:underline">Templates</a>
+        <span aria-hidden="true" class="mx-2">/</span>
+        <span>{t.name}</span>
+      </nav>
+      <span class="text-right">{priceLabel} · {templateKind}</span>
+    </div>
 
-    <!-- On phones the name, price and Framer button come first, then the gallery, then the text.
-         From 1024px the gallery stays in view on the left while the right column scrolls. -->
-    <div class="grid-4 gap-y-xl lg:gap-y-0">
-      <header class="col-span-4 lg:col-span-2 lg:col-start-3 lg:row-start-1">
-        <p class="type-label">{t.category} Framer template</p>
+    <!-- A spec sheet on the page rails: the gallery on the left, everything about the template on
+         the right, split by one vertical hairline. Each block on the right sits between two
+         horizontal lines that run from that line to the rail. On phones: name, gallery, the rest. -->
+    <div class="product flush-rails">
+      <header class="p-head p-block">
+        <p class="type-label">{free ? 'Free ' : ''}Framer {templateKind} template</p>
         <h1 class="type-headline-lg mt-lg break-words">{t.name}</h1>
         <p class="type-body type-pillar mt-lg">{t.tagline}</p>
+      </header>
 
-        <div class="buy">
+      <div class="p-gallery">
+        <div class="p-gallery-inner">
+          <TemplateGallery items={gallery} name={t.name} />
+        </div>
+      </div>
+
+      <!-- Right: everything about the template. -->
+      <div class="doc p-doc">
+        <div class="buy p-block">
           <p class="type-label">Price</p>
           <p class="type-headline-md mt-sm">{priceLabel}</p>
           <div class="buy-actions">
@@ -123,14 +140,7 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
             )}
           </div>
         </div>
-      </header>
 
-      <div class="col-span-4 lg:sticky lg:top-[calc(var(--space-header)+var(--spacing-lg))] lg:col-span-2 lg:col-start-1 lg:row-span-2 lg:row-start-1 lg:self-start">
-        <TemplateGallery items={gallery} name={t.name} />
-      </div>
-
-      <!-- Right: everything about the template. -->
-      <div class="doc col-span-4 lg:col-span-2 lg:col-start-3 lg:row-start-2">
         <dl class="stats">
           {stats.map((s) => (
             <div class="stat">
@@ -140,15 +150,31 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
           ))}
         </dl>
 
-        {(leadHead || leadText.length > 0) && (
-          <div class="lead">
+        {editorial ? (
+          <div class="lead p-block">
+            <h2 class="lead-head">{templateKind} template for Framer</h2>
+            <p>{editorial.overview}</p>
+          </div>
+        ) : (leadHead || leadText.length > 0) && (
+          <div class="lead p-block">
             {leadHead && <h2 class="lead-head">{leadHead}</h2>}
             {leadText.map((p) => <p set:html={richText(p)} />)}
           </div>
         )}
 
+        <section class="doc-section p-block" aria-labelledby="before-you-publish">
+          <h2 class="kicker" id="before-you-publish">Before you publish</h2>
+          <div class="body-text">
+            {t.preparation && <p>{t.preparation}</p>}
+            <p>
+              Step by step, with costs: <a href="/guides/how-to-use-framer-templates/" class="link">how to use a Framer template</a>.
+              Questions about this template? <a href={`mailto:${site.email}`} class="link">Write to the author</a>.
+            </p>
+          </div>
+        </section>
+
         {c.about.length > 0 && (
-          <section class="doc-section" aria-labelledby="about">
+          <section class="doc-section p-block" aria-labelledby="about">
             <h2 class="kicker" id="about">About</h2>
             <div class="big-text">
               {c.about.map((p) => <p set:html={richText(p)} />)}
@@ -157,7 +183,7 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
         )}
 
         {c.benefits.length > 0 && (
-          <section class="doc-section" aria-labelledby="benefits">
+          <section class="doc-section p-block" aria-labelledby="benefits">
             <h2 class="kicker" id="benefits">{c.benefitsTitle}</h2>
             <ol class="benefits">
               {c.benefits.map((b, i) => (
@@ -174,7 +200,7 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
         )}
 
         {c.blocks.map((b) => (
-          <section class="doc-section" aria-labelledby={b.id}>
+          <section class="doc-section p-block" aria-labelledby={b.id}>
             <h2 class="kicker" id={b.id}>{b.title}</h2>
             {b.kind === 'text' && (
               <div class="body-text">
@@ -210,7 +236,7 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
         ))}
 
         {(t.framerFeatures.length > 0 || t.styles.length > 0) && (
-          <section class="doc-section" aria-labelledby="built-with">
+          <section class="doc-section p-block" aria-labelledby="built-with">
             <h2 class="kicker" id="built-with">Built with Framer</h2>
             {t.framerFeatures.length > 0 && (
               <ul class="flex flex-wrap gap-2">
@@ -229,7 +255,7 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
         )}
 
         {c.updates.length > 0 && (
-          <section class="doc-section" aria-labelledby="updates">
+          <section class="doc-section p-block" aria-labelledby="updates">
             <h2 class="kicker" id="updates">Updates</h2>
             <ol class="timeline">
               {c.updates.map((u) => (
@@ -245,14 +271,14 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
         )}
 
         {c.support && (
-          <section class="doc-section" aria-labelledby="support">
+          <section class="doc-section p-block" aria-labelledby="support">
             <h2 class="kicker" id="support">Support</h2>
             <p class="body-text support" set:html={richText(c.support)} />
           </section>
         )}
 
         {c.policy && (
-          <section class="doc-section" aria-labelledby="policy">
+          <section class="doc-section p-block" aria-labelledby="policy">
             <h2 class="kicker" id="policy">{c.policy.title}</h2>
             <p class="body-text support" set:html={richText(c.policy.text)} />
           </section>
@@ -261,35 +287,31 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     </div>
   </Section>
 
-  <FaqBlock title="Questions." rule>
+  <FaqBlock title="Questions." accent="Questions" bar={{ left: 'FAQ', right: `${String(faq.length).padStart(2, '0')} answers` }}>
     {faq.map((f) => <FaqItem question={f.q}><Fragment set:html={richText(f.a)} /></FaqItem>)}
   </FaqBlock>
 
-  <!-- Closing band: the one large black block of the page. -->
-  <section class="bg-primary text-on-primary" aria-labelledby="get-title">
-    <Container class="grid-4 items-end gap-y-xl py-2xl">
-      <div class="col-span-4 lg:col-span-2">
-        <span class="kicker type-label">{priceLabel} on Framer Marketplace</span>
-        <h2 id="get-title" class="type-headline-lg">Get {t.name}.</h2>
-        <div class="buy-actions">
-          <Button href={buyUrl} variant="secondary" arrow target="_blank" rel={t.affiliateUrl ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}>
-            View on Framer
-          </Button>
-        </div>
-      </div>
-      <div class="col-span-4 border-(length:--border-frame) border-on-primary lg:col-span-2">
-        <Image src={t.image} alt="" widths={[640, 960, 1400]} sizes="(min-width: 1024px) 50vw, 100vw" class="aspect-[4/3] w-full object-cover" />
-      </div>
-    </Container>
-  </section>
+  <!-- Closing band: the one large black block of the page, on light rails. -->
+  <CtaBand labelledby="get-title">
+    <span class="type-label mb-lg block">{priceLabel} on Framer Marketplace</span>
+    <h2 id="get-title" class="type-headline-lg"><em class="type-accent">Get</em> {t.name}.</h2>
+    <div class="buy-actions">
+      <Button href={buyUrl} variant="secondary" arrow target="_blank" rel={t.affiliateUrl ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}>
+        View on Framer
+      </Button>
+    </div>
+    <div slot="media" class="border-(length:--border-frame) border-on-primary">
+      <Image src={t.image} alt="" widths={[640, 960, 1400]} sizes="(min-width: 1024px) 50vw, 100vw" class="aspect-[4/3] w-full object-cover" />
+    </div>
+  </CtaBand>
 
   {others.length > 0 && (
-    <Section labelledby="more-title">
-      <SectionHeader id="more-title" kicker="Catalog" title="More templates.">
+    <Section labelledby="more-title" flush="bottom" bar={{ left: 'Catalog', right: `${String(others.length).padStart(2, '0')} more` }}>
+      <SectionHeader id="more-title" title="More templates." accent="More">
         <Button href="/templates/" variant="secondary" arrow>View all</Button>
       </SectionHeader>
-      <ul class="grid-4 gap-y-xl">
-        {others.map((o) => <TemplateCard template={o} class="col-span-4 md:col-span-2" />)}
+      <ul class="card-grid flush-rails">
+        {others.map((o) => <TemplateCard template={o} />)}
       </ul>
     </Section>
   )}
@@ -302,11 +324,45 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     min-width: 0;
   }
 
-  /* header */
-  .buy {
-    margin-top: var(--spacing-xl);
-    padding-top: var(--spacing-lg);
+  /* Product grid on the rails. Phones: one column. From 1024px: gallery | details, split by the
+     center hairline; the gallery stays in view while the details scroll. */
+  .product {
+    display: grid;
+    grid-template-areas: 'head' 'gallery' 'doc';
+    /* Same place as the page rails: keeps them visible past the opaque stat cells. */
+    border-inline: var(--border-hairline) solid var(--color-line);
+  }
+  .p-head { grid-area: head; }
+  .p-doc { grid-area: doc; }
+  .p-gallery {
+    grid-area: gallery;
+    padding: var(--spacing-xl) var(--rail-inset);
     border-top: var(--border-hairline) solid var(--color-line);
+  }
+  /* One block of the right column: generous padding, a line above it from edge to edge. */
+  .p-block {
+    padding: var(--spacing-xl) var(--rail-inset);
+    border-top: var(--border-hairline) solid var(--color-line);
+  }
+  .p-head {
+    border-top: 0;
+  }
+  @media (min-width: 64rem) {
+    .product {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-areas: 'gallery head' 'gallery doc';
+    }
+    .p-head,
+    .p-doc {
+      border-left: var(--border-hairline) solid var(--color-line);
+    }
+    .p-gallery {
+      border-top: 0;
+    }
+    .p-gallery-inner {
+      position: sticky;
+      top: calc(var(--space-header) + var(--spacing-xl));
+    }
   }
   .buy-actions {
     display: flex;
@@ -320,19 +376,19 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--border-hairline);
-    margin-top: var(--spacing-xl);
     background: var(--color-line);
-    border: var(--border-hairline) solid var(--color-line);
+    border-top: var(--border-hairline) solid var(--color-line);
   }
   .stat {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     gap: var(--spacing-xl);
-    padding: var(--space-card);
+    padding: var(--spacing-lg) var(--rail-inset);
     background: var(--color-surface);
   }
   .stat-label {
+    font-family: var(--font-mono);
     font-size: var(--text-label);
     line-height: var(--leading-label);
     letter-spacing: var(--tracking-label);
@@ -341,23 +397,23 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
   .stat-value {
     font-size: var(--text-headline-sm);
     line-height: var(--leading-headline);
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-weight: var(--weight-display);
+    font-stretch: var(--display-stretch);
     letter-spacing: var(--tracking-headline);
-    text-transform: uppercase;
     white-space: nowrap;
   }
 
   /* text blocks */
-  .lead {
-    margin-top: var(--spacing-xl);
-  }
+
   .lead-head,
   .kicker {
     font-size: var(--text-headline-sm);
     line-height: var(--leading-headline);
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-weight: var(--weight-display);
+    font-stretch: var(--display-stretch);
     letter-spacing: var(--tracking-headline);
-    text-transform: uppercase;
   }
   .kicker {
     margin-bottom: var(--spacing-lg);
@@ -369,11 +425,7 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     margin-top: var(--spacing-md);
     line-height: 1.25;
   }
-  .doc-section {
-    margin-top: var(--spacing-xl);
-    padding-top: var(--spacing-lg);
-    border-top: var(--border-hairline) solid var(--color-line);
-  }
+
   .big-text p:first-child {
     margin-top: 0;
     font-size: var(--text-headline-xs);
@@ -402,6 +454,7 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     padding-top: 0;
   }
   .benefit-num {
+    font-family: var(--font-mono);
     font-size: var(--text-label);
     letter-spacing: var(--tracking-label);
     font-variant-numeric: tabular-nums;
@@ -410,9 +463,10 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
   .timeline h3 {
     font-size: var(--text-headline-xxs);
     line-height: 1.1;
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-weight: var(--weight-display);
+    font-stretch: var(--display-stretch);
     letter-spacing: var(--tracking-headline);
-    text-transform: uppercase;
   }
   .benefits p {
     margin-top: var(--spacing-xs);
@@ -450,6 +504,7 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     border-top: var(--border-hairline) solid var(--color-line);
   }
   .pages li {
+    font-family: var(--font-mono);
     display: flex;
     gap: var(--spacing-md);
     padding: var(--spacing-sm) 0;
@@ -464,6 +519,7 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
   }
 
   .mini-label {
+    font-family: var(--font-mono);
     margin: var(--spacing-lg) 0 var(--spacing-sm);
     font-size: var(--text-label);
     letter-spacing: var(--tracking-label);

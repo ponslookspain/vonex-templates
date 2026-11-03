@@ -1,0 +1,59 @@
+---
+import Base from '../../layouts/Base.astro';
+import Section from '../../components/Section.astro';
+import SectionHeader from '../../components/SectionHeader.astro';
+import Icon from '../../components/Icon.astro';
+import { guides } from '../../data/guides';
+
+const pad = (n: number) => String(n).padStart(2, '0');
+// Practical guides first; comparisons and roundups below, so the useful ones are not buried.
+const groups = [
+  { id: 'guides', label: '01 / Guides', title: 'Set up and publish.', accent: 'publish', lead: 'Step-by-step help for using a Framer template, its CMS and plans.', items: guides.filter((g) => g.group === 'guide') },
+  { id: 'articles', label: '02 / Compare', title: 'Compare and choose.', accent: 'choose', lead: 'Roundups and comparisons for when you are still picking a tool or a template.', items: guides.filter((g) => g.group === 'article') },
+];
+---
+
+<Base
+  title="Framer Guides: Templates, Pricing and CMS"
+  image="/og/pages/guides.png"
+  description="Practical guides to Framer templates: how to use one, what Framer costs, how the CMS works, plus template roundups and Framer vs Webflow."
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'Framer guides',
+    url: new URL('/guides/', Astro.site).href,
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: guides.map((g, i) => ({ '@type': 'ListItem', position: i + 1, name: g.title, url: new URL(g.href, Astro.site).href })),
+    },
+  }}
+>
+  {
+    groups.map((group, gi) => (
+      <Section labelledby={`${group.id}-title`} flush="bottom" bar={{ left: group.label, right: `${pad(group.items.length)} articles` }}>
+        <SectionHeader id={`${group.id}-title`} level={gi === 0 ? 1 : 2} title={gi === 0 ? 'Framer guides.' : group.title} accent={gi === 0 ? 'guides' : group.accent} lead={gi === 0 ? 'Short, practical articles on choosing a Framer template, setting it up and publishing your site.' : group.lead} />
+        <ul class="card-grid flush-rails">
+          {group.items.map((g) => (
+            <li>
+              <a href={g.href} class="group flex h-full flex-col">
+                <div class="invert-hover flex flex-1 flex-col justify-between gap-xl p-lg">
+                  <div class="type-label flex justify-between gap-lg">
+                    <span>{g.kind}</span>
+                    <span>{g.updated}</span>
+                  </div>
+                  <div class="flex items-end justify-between gap-lg">
+                    <div>
+                      {gi === 0 ? <h2 class="type-headline-sm">{g.title}</h2> : <h3 class="type-headline-sm">{g.title}</h3>}
+                      <p class="type-body type-pillar mt-sm">{g.description}</p>
+                    </div>
+                    <Icon name="arrow-up-right" class="size-6 shrink-0" />
+                  </div>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </Section>
+    ))
+  }
+</Base>

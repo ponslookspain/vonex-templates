@@ -2,27 +2,30 @@
 import { site, nav } from '../data/site';
 import Logo from './Logo.astro';
 import Container from './Container.astro';
-import Button from './Button.astro';
 import Icon from './Icon.astro';
 const path = Astro.url.pathname;
+// Guides is one item for every page under /guides/.
+const current = (href: string) => path === href || (href === '/guides/' && path.startsWith('/guides/'));
 ---
 
+<!-- The header is a row of cells on one hairline: the logo cell, the menu, and the main action
+     as a solid black cell flush with the right edge. The current page is a filled cell. -->
 <header class="fixed inset-x-0 top-0 z-40 border-b border-line bg-bg">
-  <Container class="flex h-(--space-header) items-center justify-between gap-md">
-    <a href="/" class="type-headline-xs flex shrink-0 items-center gap-sm whitespace-nowrap">
+  <div class="flex h-(--space-header) items-stretch">
+    <a href="/" class="header-cell type-headline-xs shrink-0 gap-sm border-r border-line whitespace-nowrap">
       <Logo class="h-6 w-auto" />
       <span>{site.name}</span>
     </a>
 
-    <nav aria-label="Main" class="type-label hidden items-center gap-xl md:flex">
+    <nav aria-label="Main" class="type-label hidden items-stretch lg:flex">
       {
         nav.map((item) => (
           <a
             href={item.href}
             target={item.external ? '_blank' : undefined}
             rel={item.external ? 'noopener noreferrer' : undefined}
-            aria-current={path === item.href ? 'page' : undefined}
-            class="py-xs underline-offset-[6px] hover:underline aria-[current=page]:underline"
+            aria-current={current(item.href) ? 'page' : undefined}
+            class="header-cell header-link"
           >
             {item.label}
           </a>
@@ -30,12 +33,15 @@ const path = Astro.url.pathname;
       }
     </nav>
 
-    <div class="flex items-center gap-xs">
-      <Button href="/templates/" size="compact" arrow class="hidden sm:inline-flex">Explore</Button>
+    <div class="ml-auto flex items-stretch">
+      <a href="/templates/free/" class="header-cell header-cta type-label gap-sm">
+        Free templates
+        <Icon name="arrow-up-right" class="size-4" />
+      </a>
       <button
         type="button"
         id="menu-toggle"
-        class="grid size-10 shrink-0 place-items-center md:hidden"
+        class="grid w-(--space-header) shrink-0 place-items-center border-l border-line lg:hidden"
         aria-label="Open menu"
         aria-expanded="false"
         aria-controls="mobile-menu"
@@ -44,15 +50,15 @@ const path = Astro.url.pathname;
         <Icon name="x" class="menu-close size-6" />
       </button>
     </div>
-  </Container>
+  </div>
 
-  <div id="mobile-menu" hidden class="border-t border-line bg-bg md:hidden">
+  <div id="mobile-menu" hidden class="border-t border-line bg-bg lg:hidden">
     <Container as="nav" class="flex flex-col py-md">
       {
-        [...nav, { label: 'Explore templates', href: '/templates/' }].map((item) => (
+        [...nav, { label: 'Free templates', href: '/templates/free/' }].map((item) => (
           <a
             href={item.href}
-            aria-current={path === item.href ? 'page' : undefined}
+            aria-current={current(item.href) ? 'page' : undefined}
             class="type-headline-md border-b border-line py-md last:border-b-0"
           >
             {item.label}
@@ -64,6 +70,41 @@ const path = Astro.url.pathname;
 </header>
 
 <style>
+  .header-cell {
+    display: flex;
+    align-items: center;
+    padding-inline: var(--rail-inset);
+  }
+  /* Menu links sit closer together than the outer cells. */
+  .header-link {
+    padding-inline: var(--spacing-lg);
+  }
+  .header-link,
+  .header-cta {
+    transition:
+      background-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+  .header-link:hover,
+  .header-link[aria-current='page'],
+  .header-cta {
+    background: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+  /* From 640px; on phones the same link is the last item of the menu. */
+  .header-cta {
+    display: none;
+  }
+  @media (min-width: 40rem) {
+    .header-cta {
+      display: flex;
+    }
+  }
+  .header-cta:hover {
+    background: var(--color-surface);
+    color: var(--color-fg);
+    box-shadow: inset var(--border-hairline) 0 0 var(--color-line);
+  }
   #menu-toggle :global(.menu-close) { display: none; }
   #menu-toggle[aria-expanded='true'] :global(.menu-open) { display: none; }
   #menu-toggle[aria-expanded='true'] :global(.menu-close) { display: inline; }
@@ -81,6 +122,6 @@ const path = Astro.url.pathname;
     toggle.addEventListener('click', () => set(Boolean(menu.hidden)));
     menu.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) set(false); });
     addEventListener('keydown', (e) => { if (e.key === 'Escape') set(false); });
-    matchMedia('(min-width: 768px)').addEventListener('change', (e) => { if (e.matches) set(false); });
+    matchMedia('(min-width: 1024px)').addEventListener('change', (e) => { if (e.matches) set(false); });
   }
 </script>

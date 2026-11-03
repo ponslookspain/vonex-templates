@@ -1,0 +1,53 @@
+---
+import LegalPage from '../components/LegalPage.astro';
+import { site } from '../data/site';
+---
+
+<LegalPage accent="Design" image="/og/pages/about.png"
+  kicker="About"
+  title={`About ${site.name}`}
+  seoTitle="About: Framer templates by Vladimir"
+  description={`${site.name} is a small catalog of Framer templates made by Vladimir. Find out who makes them, where to find them on Framer and how to get in touch.`}
+  updated="November 3, 2026"
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    url: new URL('/about/', Astro.site).href,
+    mainEntity: { '@type': 'Organization', name: site.name, url: new URL('/', Astro.site).href, sameAs: [site.framerProfile, ...site.socials.map((s) => s.href)] },
+  }}
+>
+  <h2>Who makes the templates</h2>
+  <p>
+    {site.name} is run by Vladimir. Each template is designed and built in Framer and published on Framer Marketplace.
+    This site is the catalog: it shows the templates, their pages and live demos, and sends you to Framer to get them.
+    Nothing is sold here.
+  </p>
+
+  <h2>How the templates are made</h2>
+  <p>
+    The design is black on white with square corners and thin lines. Templates are responsive, edited visually and need
+    no code. Each template page lists the pages it includes and whether it has a CMS, so you can judge it before you
+    open Framer.
+  </p>
+
+  <h2>Find the work</h2>
+  <ul>
+    <li><a href={site.framerProfile} target="_blank" rel="noopener noreferrer">Vonex Design on Framer</a></li>
+    {site.socials.map((s) => <li><a href={s.href} target="_blank" rel="noopener noreferrer">{s.label}</a></li>)}
+  </ul>
+
+  <h2>Contact and support</h2>
+  <p>
+    Write to <a href={`mailto:${site.email}`}>{site.email}</a>. Questions about using or customizing a Vonex template
+    are welcome. Please name the template and describe what you see.
+  </p>
+  <p>
+    Account, billing and publishing problems belong to Framer: use <a href="https://www.framer.com/help/" target="_blank" rel="noopener noreferrer">Framer's help center</a>.
+    To get started, read <a href="/guides/how-to-use-framer-templates/">how to use a Framer template</a>.
+  </p>
+
+  <h2>Referral links</h2>
+  <p>
+    Some links to Framer are referral links. They cost you nothing extra. Details are in the <a href="/terms/">terms</a>.
+  </p>
+</LegalPage>

@@ -1,0 +1,117 @@
+---
+import { getEntry } from 'astro:content';
+import LegalPage from '../../components/LegalPage.astro';
+import Button from '../../components/Button.astro';
+import GuideFigure from '../../components/GuideFigure.astro';
+
+const ethan = await getEntry('templates', 'ethan-walker');
+const softic = await getEntry('templates', 'softic-studio');
+if (!ethan || !softic) throw new Error('The portfolio roundup needs ethan-walker and softic-studio.');
+
+const title = 'Best free Framer portfolio templates';
+const description = 'Ten free Framer portfolio templates for designers, photographers and studios, with who each one suits and how to pick the right one.';
+const url = new URL('/guides/free-framer-portfolio-templates/', Astro.site).href;
+
+// Templates by other creators, all free on Framer Marketplace when this was written. The focus
+// line is what the creator states on the listing; check the live demo before you choose.
+const others = [
+  { name: 'Jett', by: 'Mickael Zimmer', slug: 'jett', focus: 'A full portfolio site with a premium feel.', fit: 'Designers who want a polished, multi-page portfolio.' },
+  { name: 'Tabfolio', by: 'Sebastian', slug: 'tabfolio', focus: 'A portfolio for UX and product designers.', fit: 'UX designers who show case studies more than images.' },
+  { name: 'Margot', by: 'FTC Studio', slug: 'margot', focus: 'A minimal portfolio.', fit: 'Anyone who wants the work to do the talking.' },
+  { name: 'Maelle', by: 'Thaer Swailem', slug: 'maelle', focus: 'A minimal portfolio listed under photography.', fit: 'Photographers and visual artists.' },
+  { name: 'Kai Marlow', by: 'Lazar Filipović', slug: 'kai-marlow', focus: 'A free portfolio listed under photography.', fit: 'Photographers who want large images first.' },
+  { name: 'Leo Marlowe', by: 'EV Studio', slug: 'leo-marlowe', focus: 'A portfolio for design engineers.', fit: 'Designers who also build, and want to show both.' },
+  { name: 'Nuria', by: 'Nostromo Studio', slug: 'nuria', focus: 'A playful portfolio for creatives.', fit: 'Illustrators and creatives with a lighter tone.' },
+  { name: 'Taylor', by: 'Akin & Ed', slug: 'taylor', focus: 'An agency and portfolio template.', fit: 'Freelancers who present themselves like a small studio.' },
+];
+const total = 2 + others.length;
+---
+
+<LegalPage accent="free"
+  kicker="Guide"
+  title={title}
+  seoTitle={`${total} best free Framer portfolio templates (2026)`}
+  description={description}
+  updated="November 3, 2026"
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description,
+    url,
+    mainEntityOfPage: url,
+    dateModified: '2026-11-03',
+    author: { '@type': 'Organization', name: 'Vonex Design', url: new URL('/', Astro.site).href },
+  }}
+>
+  <p>
+    A free Framer template is the fastest way to a good portfolio: the layout, type and animation are done, and you
+    only add your work. Here are {total} free portfolio templates on Framer Marketplace, who each one suits, and what
+    to check before you choose.
+  </p>
+  <p>
+    Two of them are ours, so we say so. The rest are by other Framer creators. Everything listed was free on Framer
+    Marketplace on November 3, 2026.
+  </p>
+
+  <h2>How we picked</h2>
+  <ul>
+    <li>Free to copy from Framer Marketplace.</li>
+    <li>Built for a personal or studio portfolio, not a general business site.</li>
+    <li>A mix of styles: minimal, bold, photo-led and case-study-led.</li>
+  </ul>
+
+  <h2>1. {ethan.data.name} (ours)</h2>
+  <GuideFigure template={ethan} caption={`${ethan.data.name}: ${ethan.data.tagline}`} />
+  <p>
+    Large type and plenty of space for a designer's portfolio. Projects and services live in the Framer CMS, so
+    adding a case study does not mean editing the layout. Pages: Home, About, Work, a page per project, Contact and
+    Privacy Policy.
+  </p>
+  <p><strong>Best for:</strong> UI, UX and graphic designers who add projects often.</p>
+  <p><a href={`/templates/${ethan.id}/`}>See {ethan.data.name}</a> · <a href="/guides/framer-portfolio-template/">Set it up step by step</a></p>
+
+  <h2>2. {softic.data.name} (ours)</h2>
+  <GuideFigure template={softic} caption={`${softic.data.name}: ${softic.data.tagline}`} />
+  <p>
+    A dark, bold portfolio for a design studio, with case studies in the CMS and a team section. It presents a small
+    team or a freelancer as a studio.
+  </p>
+  <p><strong>Best for:</strong> small agencies and freelancers who sell services, not only show work.</p>
+  <p><a href={`/templates/${softic.id}/`}>See {softic.data.name}</a></p>
+
+  {
+    others.map((t, i) => (
+      <Fragment>
+        <h2>{i + 3}. {t.name}</h2>
+        <p>{t.focus} By {t.by}.</p>
+        <p><strong>Best for:</strong> {t.fit}</p>
+        <p>
+          <a href={`https://www.framer.com/marketplace/templates/${t.slug}/`} target="_blank" rel="noopener noreferrer">
+            {t.name} on Framer Marketplace
+          </a>
+        </p>
+      </Fragment>
+    ))
+  }
+
+  <h2>How to choose</h2>
+  <ul>
+    <li><strong>Start from your work.</strong> Image-heavy work suits photo-led layouts. Case studies need long project pages.</li>
+    <li><strong>Check the CMS.</strong> If you add projects often, pick a template with a projects collection.</li>
+    <li><strong>Open the live demo on your phone.</strong> Most visits to a portfolio come from a phone.</li>
+    <li><strong>Count the pages you need.</strong> A one-page site is fine to start; you can add pages later.</li>
+    <li><strong>Read the license.</strong> It is on each template's Framer page, and it decides client use.</li>
+  </ul>
+
+  <h2>Is a free template really free?</h2>
+  <p>
+    Copying the template costs nothing, and you can build and test on a free Framer account. Your own domain needs a
+    paid Framer site plan. The details are in <a href="/guides/framer-pricing/">Framer pricing explained</a>.
+  </p>
+
+  <div class="mt-xl flex flex-wrap gap-sm">
+    <Button href="/templates/free/" arrow>All our free templates</Button>
+    <Button href="/guides/" variant="secondary" arrow>More guides</Button>
+  </div>
+</LegalPage>

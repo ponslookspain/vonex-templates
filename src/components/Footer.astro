@@ -9,52 +9,103 @@ const columns: { title: string; links: Link[] }[] = [
     title: 'Catalog',
     links: [
       { label: 'All templates', href: '/templates/' },
+      { label: 'Free templates', href: '/templates/free/' },
       { label: 'Framer profile', href: site.framerProfile, external: true },
     ],
   },
-  { title: 'Follow', links: site.socials.map((s) => ({ label: s.label, href: s.href, external: true })) },
   {
-    title: 'More',
+    title: 'Learn',
     links: [
-      { label: 'Privacy', href: '/privacy/' },
-      { label: 'Terms', href: '/terms/' },
+      { label: 'All guides', href: '/guides/' },
+      { label: 'How to use a template', href: '/guides/how-to-use-framer-templates/' },
+      { label: 'Framer pricing', href: '/guides/framer-pricing/' },
+      { label: 'About', href: '/about/' },
     ],
   },
+  { title: 'Follow', links: site.socials.map((s) => ({ label: s.label, href: s.href, external: true })) },
 ];
 ---
 
-<footer class="border-t border-line">
-  <Container class="grid-4 gap-y-xl py-2xl">
-    <div class="col-span-4 lg:col-span-1">
-      <p class="type-headline-lg">Vonex</p>
-      <p class="type-body type-pillar mt-lg">{site.tagline}</p>
+<!-- Footer on the page rails, like a spec sheet: the brand and each link column are cells
+     split by vertical hairlines, closed by one line with the copyright and legal links. -->
+<footer class="page-rails -mt-px border-t border-line">
+  <Container>
+    <div class="footer-grid flush-rails">
+      <div class="footer-cell footer-brand">
+        <p class="type-headline-lg">Vonex</p>
+        <p class="type-body type-pillar mt-lg">{site.tagline}</p>
+        <a class="type-label mt-xl block underline-offset-4 hover:underline" href={`mailto:${site.email}`}>{site.email}</a>
+      </div>
+      {
+        columns.map((col) => (
+          <div class="footer-cell">
+            <p class="type-label mb-lg">{col.title}</p>
+            <ul class="type-body flex flex-col gap-md">
+              {col.links.map((l) => (
+                <li>
+                  <a
+                    class="underline-offset-4 hover:underline"
+                    href={l.href}
+                    target={l.external ? '_blank' : undefined}
+                    rel={l.external ? 'noopener noreferrer' : undefined}
+                  >
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
     </div>
-    {
-      columns.map((col) => (
-        <div class="col-span-2 md:col-span-1">
-          <p class="type-headline-xxs mb-lg">{col.title}</p>
-          <ul class="type-label flex flex-col gap-md">
-            {col.links.map((l) => (
-              <li>
-                <a
-                  class="underline-offset-4 hover:underline"
-                  href={l.href}
-                  target={l.external ? '_blank' : undefined}
-                  rel={l.external ? 'noopener noreferrer' : undefined}
-                >
-                  {l.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))
-    }
-  </Container>
-  <Container class="type-label">
-    <div class="flex flex-col gap-xs border-t border-line py-lg sm:flex-row sm:justify-between">
+    <div class="footer-bar type-label flush-rails">
       <span>© {year} {site.name}</span>
-      <a class="underline-offset-4 hover:underline" href={`mailto:${site.email}`}>{site.email}</a>
+      <span class="flex gap-lg">
+        <a class="underline-offset-4 hover:underline" href="/privacy/">Privacy</a>
+        <a class="underline-offset-4 hover:underline" href="/terms/">Terms</a>
+      </span>
     </div>
   </Container>
 </footer>
+
+<style>
+  /* Phones: brand on top, link columns two by two. From 1024px: brand takes two of five
+     columns, each link column one, every column split by a hairline. */
+  .footer-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .footer-cell {
+    padding: var(--spacing-xl) var(--rail-inset);
+    border-top: var(--border-hairline) solid var(--color-line);
+  }
+  .footer-cell + .footer-cell:nth-child(odd) {
+    border-left: var(--border-hairline) solid var(--color-line);
+  }
+  .footer-brand {
+    grid-column: 1 / -1;
+    border-top: 0;
+  }
+  @media (min-width: 64rem) {
+    .footer-grid {
+      grid-template-columns: 2fr repeat(3, minmax(0, 1fr));
+    }
+    .footer-cell {
+      border-top: 0;
+    }
+    .footer-brand {
+      grid-column: auto;
+    }
+    .footer-cell + .footer-cell {
+      border-left: var(--border-hairline) solid var(--color-line);
+    }
+  }
+  .footer-bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) var(--rail-inset);
+    border-top: var(--border-hairline) solid var(--color-line);
+  }
+</style>

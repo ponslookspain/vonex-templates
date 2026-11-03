@@ -1,0 +1,57 @@
+---
+// Small monochrome diagram for one of the home page steps, drawn like an instrument screen:
+// hairlines, solid black fills, a dashed target line. Purely decorative (aria-hidden).
+//   choose  — a row of squares, one per template, the picked one filled
+//   remix   — the original on Framer (dashed) copied into your account (solid)
+//   publish — a profile climbing to a dashed "live" line
+interface Props {
+  kind: 'choose' | 'remix' | 'publish';
+  count: number;
+}
+const { kind, count } = Astro.props;
+---
+
+<div class="step-visual" aria-hidden="true">
+  {
+    kind === 'choose' && (
+      <div class="flex h-full items-end gap-xs">
+        {Array.from({ length: count }, (_, i) => (
+          <span class:list={['step-tile', i === 1 && 'step-tile-on']} />
+        ))}
+      </div>
+    )
+  }
+  {
+    kind === 'remix' && (
+      <svg viewBox="0 0 200 80" preserveAspectRatio="none" class="h-full w-full">
+        <rect x="0.5" y="10.5" width="70" height="60" fill="none" stroke="currentColor" stroke-dasharray="3 3" vector-effect="non-scaling-stroke" />
+        <line x1="78" y1="40.5" x2="118" y2="40.5" stroke="currentColor" vector-effect="non-scaling-stroke" />
+        <polyline points="111,34 118,40.5 111,47" fill="none" stroke="currentColor" vector-effect="non-scaling-stroke" />
+        <rect x="126" y="10" width="74" height="61" fill="currentColor" />
+      </svg>
+    )
+  }
+  {
+    kind === 'publish' && (
+      <svg viewBox="0 0 200 80" preserveAspectRatio="none" class="h-full w-full">
+        <line x1="0" y1="6.5" x2="200" y2="6.5" stroke="currentColor" stroke-dasharray="3 3" vector-effect="non-scaling-stroke" />
+        <path d="M0 80 L0 70 L14 66 L24 69 L38 60 L52 63 L66 53 L80 56 L94 45 L108 48 L122 36 L136 40 L150 26 L164 30 L178 14 L190 18 L198 6 L200 6 L200 80 Z" fill="currentColor" />
+      </svg>
+    )
+  }
+</div>
+
+<style>
+  .step-visual {
+    height: 7.5rem;
+  }
+  .step-tile {
+    flex: 1;
+    height: 60%;
+    border: var(--border-hairline) solid var(--color-line);
+  }
+  .step-tile-on {
+    height: 100%;
+    background: var(--color-primary);
+  }
+</style>

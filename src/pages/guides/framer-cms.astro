@@ -1,0 +1,89 @@
+---
+import LegalPage from '../../components/LegalPage.astro';
+import Button from '../../components/Button.astro';
+import { getEntry } from 'astro:content';
+import GuideFigure from '../../components/GuideFigure.astro';
+
+const title = 'Framer CMS: add projects and posts';
+const description = 'How the Framer CMS works in a template: collections, fields, CMS pages and lists, plan limits, and how to add a project or a blog post without touching the design.';
+const url = new URL('/guides/framer-cms/', Astro.site).href;
+const harrier = await getEntry('templates', 'harrier');
+
+const steps = [
+  ['Open the CMS', 'In your Framer project, open the CMS panel. Each collection the template uses is listed there, for example Projects or Blog.'],
+  ['Open a collection', 'A collection is a table: each row is an item (one project, one post), each column a field (title, cover, text, date).'],
+  ['Replace a sample item', 'Click a sample item and change its fields. Start by editing one item and check how it looks on the site before you do the rest.'],
+  ['Add your own items', 'Add a new item and fill every field. Its page is created from the CMS page design, so it matches the others.'],
+  ['Delete the samples', 'Remove the sample items you do not use, so no placeholder reaches the live site.'],
+  ['Publish', 'Publish the site. New and changed items go live with it.'],
+];
+---
+
+<LegalPage accent="posts"
+  kicker="Guide"
+  title={title}
+  seoTitle="Framer CMS explained: how to add projects and blog posts"
+  description={description}
+  updated="November 3, 2026"
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: 'How to add content with the Framer CMS',
+    description,
+    url,
+    step: steps.map(([name, text], i) => ({ '@type': 'HowToStep', position: i + 1, name, text })),
+  }}
+>
+  <p>
+    The Framer CMS keeps repeating content, like projects, blog posts or team members, in tables instead of on the
+    page. You add a row, and the site shows it in the right place with the right design. It is how a template stays
+    tidy when your portfolio grows from three projects to thirty.
+  </p>
+
+  <h2>Four words to know</h2>
+  <ul>
+    <li><strong>Collection:</strong> one kind of content, such as Projects. A template can have several.</li>
+    <li><strong>Item:</strong> one entry in a collection, such as one project.</li>
+    <li><strong>Field:</strong> one piece of an item: title, image, text, date, link and so on.</li>
+    <li><strong>CMS page:</strong> the one design used for every item's own page, such as /work/my-project.</li>
+  </ul>
+  <p>
+    Lists of items on normal pages, such as the grid of projects on Work, are filled from a collection too. You set
+    how many to show, in which order and with which filter.
+  </p>
+
+  {harrier && <GuideFigure template={harrier} picture={1} caption="Harrier: blog posts and changelog entries come from two CMS collections" />}
+
+  <h2>Add a project or a post</h2>
+  <ol>
+    {steps.map(([name, text]) => <li><strong>{name}.</strong> {text}</li>)}
+  </ol>
+
+  <h2>Tips that save time</h2>
+  <ul>
+    <li><strong>Keep images the same shape.</strong> Covers with the same aspect ratio keep grids even.</li>
+    <li><strong>Write the slug yourself.</strong> The slug is the item's address. Short and readable is better for people and search.</li>
+    <li><strong>Fill the SEO fields</strong> if the template has them, so each item gets its own title and description in search.</li>
+    <li><strong>Import from a spreadsheet.</strong> Moving many items from another tool? Collections can be filled from a CSV file.</li>
+  </ul>
+
+  <h2>Plan limits</h2>
+  <p>
+    CMS limits depend on the Framer plan of the published site. On November 3, 2026: Basic allows 2 collections and
+    1,000 items, Pro 10 collections and 2,500 items. You can build with more on the free plan, and only hit the limit
+    when you publish on a paid plan. Details are in <a href="/guides/framer-pricing/">Framer pricing explained</a>.
+  </p>
+
+  <h2>The CMS in our templates</h2>
+  <ul>
+    <li><a href="/templates/ethan-walker/">Ethan Walker</a>: Projects, Services and Privacy Policy. Step-by-step in <a href="/guides/framer-portfolio-template/">the portfolio walkthrough</a>.</li>
+    <li><a href="/templates/softic-studio/">Softic Studio</a>: Projects and Team.</li>
+    <li><a href="/templates/harrier/">Harrier</a>: Blog and Changelog.</li>
+    <li><a href="/templates/alpine-app/">Alpine App</a> and <a href="/templates/sanctun/">Sanctun</a> have no CMS: everything is edited on the page.</li>
+  </ul>
+
+  <div class="mt-xl flex flex-wrap gap-sm">
+    <Button href="/templates/free/" arrow>Free templates</Button>
+    <Button href="/guides/" variant="secondary" arrow>More guides</Button>
+  </div>
+</LegalPage>

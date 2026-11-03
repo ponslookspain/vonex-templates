@@ -1,0 +1,123 @@
+---
+import LegalPage from '../../components/LegalPage.astro';
+import Button from '../../components/Button.astro';
+import { site } from '../../data/site';
+
+const title = 'Framer vs Webflow';
+const description = 'Framer or Webflow for a portfolio or landing page? Price, CMS, editing and learning curve compared, with prices checked in November 2026.';
+const url = new URL('/guides/framer-vs-webflow/', Astro.site).href;
+
+// From framer.com/pricing and webflow.com/pricing on November 3, 2026, per site per month, billed yearly.
+const rows = [
+  ['Free plan', 'Yes, framer.website address', 'Yes, webflow.io address, 2 static pages'],
+  ['Cheapest plan with your domain', '$10 (Basic)', '$15 (Basic)'],
+  ['Cheapest plan with a CMS and your domain', '$10 (Basic, 2 collections)', '$25 (Premium)'],
+  ['Pages on the cheapest paid plan', '30', '300'],
+  ['Bandwidth on the cheapest paid plan', '50 GB', '10 GB'],
+  ['Editing', 'Free-form canvas, like a design tool', 'Box model, closer to HTML and CSS'],
+  ['Learning curve', 'Short if you know Figma', 'Longer, rewards knowing CSS'],
+  ['Best at', 'Portfolios, landing pages, motion', 'Large CMS sites, complex structure'],
+];
+
+const faq = [
+  { q: 'Is Framer easier than Webflow?', a: 'For most designers, yes. Framer works like a design tool: you place and style things on a canvas. Webflow asks you to think in boxes, classes and layout rules, which is powerful but takes longer to learn.' },
+  { q: 'Is Framer cheaper than Webflow?', a: 'For small sites, yes. A Framer site with your own domain and a CMS starts at $10 a month; on Webflow the CMS starts with the $25 Premium plan. Both billed yearly, per site.' },
+  { q: 'Can I move a site from Webflow to Framer?', a: 'Not automatically as a whole. Most people rebuild the layout in Framer, often from a template, and import CMS content from a CSV export.' },
+  { q: 'Which is better for SEO?', a: 'Both handle the basics well: clean pages, titles, descriptions, sitemaps and fast hosting. Rankings depend far more on your content than on the builder.' },
+];
+---
+
+<LegalPage accent="vs"
+  kicker="Compare"
+  title={title}
+  seoTitle="Framer vs Webflow (2026): price, CMS and ease compared"
+  description={description}
+  updated="November 3, 2026"
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'Article', headline: title, description, url, mainEntityOfPage: url, dateModified: '2026-11-03', author: { '@type': 'Organization', name: 'Vonex Design', url: new URL('/', Astro.site).href } },
+      { '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+    ],
+  }}
+>
+  <p>
+    <strong>Short answer:</strong> pick Framer for a portfolio, a landing page or a small business site you want to
+    design freely and launch fast. Pick Webflow for a large, content-heavy site where structure and a big CMS matter
+    more than speed of design.
+  </p>
+  <p>
+    We build templates in Framer, so we are not neutral, and we say where Webflow wins. Prices were checked on both
+    pricing pages on November 3, 2026.
+  </p>
+
+  <h2>Side by side</h2>
+  <div class="overflow-x-auto">
+    <table class="doc-table">
+      <thead><tr><th></th><th>Framer</th><th>Webflow</th></tr></thead>
+      <tbody>
+        {rows.map(([k, f, w]) => <tr><th scope="row">{k}</th><td>{f}</td><td>{w}</td></tr>)}
+      </tbody>
+    </table>
+  </div>
+  <p>Prices are per site per month on yearly billing. Monthly billing costs more on both.</p>
+
+  <h2>Price</h2>
+  <p>
+    For a portfolio with a projects collection, Framer Basic at $10 covers it. On Webflow, Basic ($15) has no CMS, so
+    you need Premium at $25. For a site with no CMS at all, the gap is smaller: $10 against $15. Webflow's Basic does
+    allow far more static pages (300 against 30).
+  </p>
+
+  <h2>Designing and editing</h2>
+  <p>
+    Framer feels like Figma: you drag, stack and style on a canvas, and responsive layouts come from stacks and
+    breakpoints. Webflow mirrors how the web is built, with boxes, classes and CSS rules. Webflow gives more precise
+    control; Framer gets a good-looking page live sooner.
+  </p>
+
+  <h2>CMS</h2>
+  <p>
+    Both have a real CMS with collections, fields and a page per item. Framer's is simpler and enough for projects, a
+    blog or a changelog. Webflow's suits large sites with many linked collections. See <a href="/guides/framer-cms/">how
+    the Framer CMS works</a>.
+  </p>
+
+  <h2>Templates</h2>
+  <p>
+    Both have large marketplaces with free and paid templates. A Framer template is copied into your account with one
+    click and edited on the canvas. If you go with Framer, start with <a href="/templates/free/">our free templates</a>
+    or <a href="/guides/free-framer-portfolio-templates/">the best free portfolio templates</a>.
+  </p>
+
+  <h2>When Webflow is the better choice</h2>
+  <ul>
+    <li>Hundreds of pages or a large, structured CMS.</li>
+    <li>A team that knows HTML and CSS and wants that level of control.</li>
+    <li>You already run a site on Webflow and it works.</li>
+  </ul>
+
+  <h2>When Framer is the better choice</h2>
+  <ul>
+    <li>A portfolio, landing page or small business site.</li>
+    <li>You design in Figma and want the site to feel the same.</li>
+    <li>You want motion and polish without code, and a low monthly price.</li>
+  </ul>
+
+  <h2>Questions</h2>
+  {faq.map((f) => (
+    <Fragment>
+      <p><strong>{f.q}</strong></p>
+      <p>{f.a}</p>
+    </Fragment>
+  ))}
+
+  <p>
+    Our "Try Framer" link is a referral link: if you upgrade after following it, we may earn a commission, at no cost
+    to you.
+  </p>
+  <div class="mt-xl flex flex-wrap gap-sm">
+    <Button href={site.framerReferral} arrow target="_blank" rel="noopener noreferrer sponsored">Try Framer free</Button>
+    <Button href="/guides/framer-pricing/" variant="secondary" arrow>Framer pricing explained</Button>
+  </div>
+</LegalPage>

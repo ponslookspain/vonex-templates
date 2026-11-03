@@ -1,0 +1,60 @@
+---
+// The black closing band, drawn on the same rails as the rest of the page but in light lines:
+// the outer rails and a center line run the full height of the band, and two lines close the
+// content row from rail to rail. Text goes in the default slot, the picture in slot="media".
+interface Props {
+  labelledby: string;
+}
+const { labelledby } = Astro.props;
+---
+
+<section class="bg-primary text-on-primary" aria-labelledby={labelledby}>
+  <div class="container-page">
+    <div class="cta-frame flush-rails">
+      <div class="cta-row">
+        <div class="cta-cell cta-text"><slot /></div>
+        <div class="cta-cell cta-media"><slot name="media" /></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-frame {
+    position: relative;
+    padding-block: var(--spacing-xl);
+    border-inline: var(--border-hairline) solid var(--color-line-inverse);
+  }
+  .cta-row {
+    display: grid;
+    border-block: var(--border-hairline) solid var(--color-line-inverse);
+  }
+  .cta-cell {
+    padding: var(--spacing-xl) var(--rail-inset);
+  }
+  .cta-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .cta-media {
+    border-top: var(--border-hairline) solid var(--color-line-inverse);
+  }
+  @media (min-width: 64rem) {
+    .cta-row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .cta-media {
+      border-top: 0;
+    }
+    /* The center line runs through the padding above and below the row too. */
+    .cta-frame::before {
+      content: '';
+      position: absolute;
+      inset-block: 0;
+      left: 50%;
+      border-left: var(--border-hairline) solid var(--color-line-inverse);
+      pointer-events: none;
+    }
+  }
+</style>

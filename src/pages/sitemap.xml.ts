@@ -1,8 +1,9 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
+import { guides } from '../data/guides';
 
 // Static pages are listed here; every template page is added automatically from the collection.
-const pages = ['/', '/templates/', '/privacy/', '/terms/'];
+const pages = ['/', '/templates/', '/templates/free/', ...guides.map((g) => g.href), '/guides/', '/about/', '/privacy/', '/terms/'];
 
 export const GET: APIRoute = async ({ site }) => {
   const templates = await getCollection('templates');

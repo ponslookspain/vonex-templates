@@ -1,24 +1,36 @@
 ---
 import Base from '../layouts/Base.astro';
 import Section from './Section.astro';
+import { withAccent } from '../lib/accent';
 
-// Shared shell for the short legal pages (privacy, terms): a centered title block, then
-// the title on the left and the running text on the right, on the 4-column grid.
+// Shared shell for the short text pages (privacy, terms, guides, about): a centered title block,
+// then the title on the left and the running text on the right, on the 4-column grid.
 interface Props {
   title: string;
   description: string;
   updated: string;
+  // Small label above the title: "Documents" for legal pages, "Guide" for guides.
+  kicker?: string;
+  // Page title in the head when it should differ from the heading (for search results).
+  seoTitle?: string;
+  jsonLd?: Record<string, unknown>;
+  // One word of the title set in italic serif.
+  accent?: string;
+  // Social preview image. Guides get their own (public/og/guides/<slug>.png) automatically.
+  image?: string;
 }
-const { title, description, updated } = Astro.props;
+const { title, description, updated, kicker = 'Documents', seoTitle, jsonLd, accent } = Astro.props;
+const guideSlug = Astro.url.pathname.match(/^\/guides\/([^/]+)\/?$/)?.[1];
+const image = Astro.props.image ?? (guideSlug ? `/og/guides/${guideSlug}.png` : undefined);
 ---
 
-<Base title={title} description={description}>
+<Base title={seoTitle ?? title} description={description} jsonLd={jsonLd} image={image}>
   <Section class="text-center" labelledby="legal-title">
-    <span class="kicker type-label">Documents</span>
-    <h1 id="legal-title" class="type-headline-lg">{title}.</h1>
+    <span class="kicker type-label">{kicker}</span>
+    <h1 id="legal-title" class="type-headline-lg" set:html={withAccent(title, accent) + (/[.?!]$/.test(title) ? '' : '.')} />
     <p class="type-label mt-lg">Last updated {updated}</p>
   </Section>
-  <Section rule label={title}>
+  <Section label={title} bar={{ left: kicker, right: `Updated ${updated}` }}>
     <div class="grid-4 gap-y-xl">
       <p class="type-headline-sm col-span-4 lg:col-span-1">{title}</p>
       <article class="legal type-prose col-span-4 lg:col-span-2 lg:col-start-2">
@@ -33,10 +45,11 @@ const { title, description, updated } = Astro.props;
     margin-top: var(--spacing-xl);
     margin-bottom: var(--spacing-md);
     font-size: var(--text-headline-xs);
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-weight: var(--weight-display);
+    font-stretch: var(--display-stretch);
     line-height: var(--leading-headline);
     letter-spacing: var(--tracking-headline);
-    text-transform: uppercase;
   }
   .legal :global(h2:first-child) {
     margin-top: 0;
@@ -50,8 +63,33 @@ const { title, description, updated } = Astro.props;
     list-style: square;
     padding-left: var(--spacing-lg);
   }
+  .legal :global(ol) {
+    list-style: decimal;
+    padding-left: var(--spacing-lg);
+  }
+  .legal :global(p + ol),
+  .legal :global(ol + p) {
+    margin-top: var(--spacing-md);
+  }
   .legal :global(li + li) {
     margin-top: var(--spacing-xs);
+  }
+  .legal :global(.doc-table) {
+    width: 100%;
+    min-width: 36rem;
+    margin-top: var(--spacing-md);
+    border-collapse: collapse;
+    text-align: left;
+  }
+  .legal :global(.doc-table th),
+  .legal :global(.doc-table td) {
+    padding: var(--spacing-sm) var(--spacing-sm) var(--spacing-sm) 0;
+    border-top: var(--border-hairline) solid var(--color-line);
+    vertical-align: top;
+  }
+  .legal :global(.doc-table thead th) {
+    font-weight: 400;
+    color: var(--color-muted);
   }
   .legal :global(a) {
     text-decoration: underline;

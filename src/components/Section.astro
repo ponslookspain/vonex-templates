@@ -12,18 +12,26 @@ interface Props {
   flush?: 'top' | 'bottom';
   // Full-width hairline above the section.
   rule?: boolean;
+  // Thin strip at the top of the section: index and name on the left, a short note on the right.
+  bar?: { left: string; right?: string };
   class?: string;
 }
-const { id, labelledby, label, flush, rule = false, class: className } = Astro.props;
+const { id, labelledby, label, flush, rule = false, bar, class: className } = Astro.props;
 ---
 
 <section
   id={id}
   aria-labelledby={labelledby}
   aria-label={labelledby ? undefined : label}
-  class:list={['section', flush === 'top' && 'section-flush-top', flush === 'bottom' && 'section-flush-bottom', rule && 'section-rule', className]}
+  class:list={['section', flush === 'top' && 'section-flush-top', flush === 'bottom' && 'section-flush-bottom', rule && 'section-rule', bar && 'section-with-bar', className]}
 >
   <Container>
+    {bar && (
+      <div class="section-bar type-label" data-reveal-skip>
+        <span>{bar.left}</span>
+        {bar.right && <span class="text-right">{bar.right}</span>}
+      </div>
+    )}
     <slot />
   </Container>
 </section>

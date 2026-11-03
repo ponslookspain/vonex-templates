@@ -1,0 +1,83 @@
+---
+import { getEntry } from 'astro:content';
+import LegalPage from '../../components/LegalPage.astro';
+import Button from '../../components/Button.astro';
+import TemplateRoundup from '../../components/TemplateRoundup.astro';
+import GuideFigure from '../../components/GuideFigure.astro';
+
+const sanctun = await getEntry('templates', 'sanctun');
+if (!sanctun) throw new Error('The wedding article needs sanctun.');
+
+const title = 'Wedding website templates for Framer';
+const description = 'What a wedding website needs, what it costs to run in Framer, and wedding templates with RSVP, schedule and gift registry, free and paid.';
+const url = new URL('/guides/framer-wedding-website/', Astro.site).href;
+
+// By other creators, free on Framer Marketplace on November 3, 2026. The focus line is what the
+// creator states on the listing.
+const free = [
+  { name: 'Violette', by: 'Catalystco', slug: 'violette', focus: 'A wedding invitation with RSVP.', fit: 'Couples who want RSVP on a free template.' },
+  { name: 'Wedfully', by: 'Shoaib Ahmed', slug: 'wedfully', focus: 'An editorial wedding invitation with RSVP.', fit: 'A magazine-like look.' },
+  { name: 'Everly', by: 'David Muñoz Guzmán', slug: 'everly', focus: 'An editorial wedding invitation.', fit: 'A clean, typographic invitation.' },
+  { name: 'Amorette', by: 'Nikita Shabunko', slug: 'amorette', focus: 'An editorial wedding invitation.', fit: 'A soft, romantic style.' },
+  { name: 'Wedded', by: 'Irem Geldry', slug: 'wedded', focus: 'A wedding invitation website.', fit: 'A simple one-page invitation.' },
+  { name: 'The Diamond', by: 'Will Maruiti', slug: 'the-diamond', focus: 'An animated wedding page.', fit: 'Couples who like motion.' },
+  { name: 'Janeman', by: 'Geniusflow', slug: 'janeman', focus: 'An Indian wedding template.', fit: 'Multi-day Indian weddings.' },
+];
+---
+
+<LegalPage accent="Wedding"
+  kicker="Roundup"
+  title={title}
+  seoTitle="Wedding website templates for Framer: RSVP, schedule, registry"
+  description={description}
+  updated="November 3, 2026"
+  jsonLd={{ '@context': 'https://schema.org', '@type': 'Article', headline: title, description, url, mainEntityOfPage: url, dateModified: '2026-11-03', author: { '@type': 'Organization', name: 'Vonex Design', url: new URL('/', Astro.site).href } }}
+>
+  <p>
+    A wedding website saves you answering the same questions a hundred times: when, where, what to wear, where to
+    stay and how to reply. Framer lets you make one that looks like your invitation rather than a form. Here is what
+    to put on it, what it costs, and templates to start from.
+  </p>
+
+  <h2>What guests look for</h2>
+  <ul>
+    <li>Date, time and the venue with a map link.</li>
+    <li>The schedule of the day, or of each day.</li>
+    <li>An RSVP form with meal choice and plus-ones.</li>
+    <li>Where to stay and how to get there.</li>
+    <li>Dress code, gift registry and a contact for questions.</li>
+  </ul>
+
+  <h2>What it costs</h2>
+  <p>
+    You can build and share a wedding site on Framer's free plan, on a framer.website address. For your own domain,
+    such as annaandjames.com, you need a paid site plan; the Basic plan is enough for a wedding site. Many couples
+    keep the site for a year and cancel after. See <a href="/guides/framer-pricing/">Framer pricing explained</a>.
+  </p>
+
+  <h2>1. {sanctun.data.name} (ours, ${sanctun.data.price})</h2>
+  <GuideFigure template={sanctun} caption={`${sanctun.data.name}: ${sanctun.data.tagline}`} />
+  <p>
+    A minimal wedding site with your story, the venue, accommodation, a schedule, a gift registry and a built-in RSVP
+    form. Everything is edited on the page, no CMS needed.
+  </p>
+  <p><strong>Best for:</strong> couples who want a calm, elegant site with RSVP ready to use.</p>
+  <p><a href={`/templates/${sanctun.id}/`}>See {sanctun.data.name}</a></p>
+
+  <h2>Free alternatives</h2>
+  <p>Free on Framer Marketplace on November 3, 2026, by other creators. Check each live demo for the sections you need.</p>
+  <TemplateRoundup entries={free} start={2} />
+
+  <h2>Before you send the link</h2>
+  <ul>
+    <li>Send a test RSVP and check that it reaches you.</li>
+    <li>Open the site on a phone: most guests will.</li>
+    <li>Add the link and a QR code to your invitations.</li>
+    <li>Turn on password protection if you want to keep it private (paid plans).</li>
+  </ul>
+
+  <div class="mt-xl flex flex-wrap gap-sm">
+    <Button href={`/templates/${sanctun.id}/`} arrow>See {sanctun.data.name}</Button>
+    <Button href="/guides/" variant="secondary" arrow>More guides</Button>
+  </div>
+</LegalPage>
