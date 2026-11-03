@@ -54,7 +54,7 @@ Archive layout:
 ## Rules
 
 - **Pixel-identical to Framer.** Same layout, spacing, type and behavior on Desktop, Tablet and Phone with the same breakpoints. Verify side by side in the browser at three widths before calling it done.
-- **Redistribution rights.** Everything inside the zip must be allowed to ship: own or self-generated images, Unsplash or Pexels, OFL fonts, MIT or ISC libraries. No paid stock, no paid fonts, no Framer assets. If a Framer image cannot ship, replace it in Framer and in code, or use a placeholder and say so in the product description.
+- **Redistribution rights.** Everything inside the zip must be allowed to ship: own or self-generated images, Unsplash or Pexels, OFL fonts, libraries under permissive licenses (MIT, ISC, Apache-2.0, BSD). Dependencies are installed by the buyer from npm, not shipped in the zip; ask before adding GPL or paid ones. No paid stock, no paid fonts, no Framer assets. If a Framer image cannot ship, replace it in Framer and in code, or use a placeholder and say so in the product description.
 - **No Framer runtime** and no generated Framer code in the archive.
 - **Editable first.** Content in `site.ts`, tokens in `theme.css`, no magic values in components, short comments that explain why.
 - **Fast by default.** No client JS unless needed, images optimized, Lighthouse near 100 on the built output.

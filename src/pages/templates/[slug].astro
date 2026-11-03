@@ -55,10 +55,14 @@ const stats = [
 
 // Search results show about 160 characters.
 const article = /^[aeiou]/i.test(t.category) ? 'an' : 'a';
-const fullDescription = t.seoDescription ?? `${t.name} is ${article} ${t.category.toLowerCase()} Framer template by ${site.name}. ${t.description}`;
-const description = fullDescription.length > 160 ? fullDescription.slice(0, 157).replace(/\s+\S*$/, '') + '…' : fullDescription;
+const baseDescription = t.seoDescription ?? `${t.name} is ${article} ${t.category.toLowerCase()} Framer template by ${site.name}. ${t.description}`;
+// The code note goes last but must survive the cut, so the base text is shortened to make room for it.
+const codeNote = codeUrl ? ' Also as Astro code.' : '';
+const room = 160 - codeNote.length;
+const description = (baseDescription.length > room ? baseDescription.slice(0, room - 3).replace(/\s+\S*$/, '') + '…' : baseDescription) + codeNote;
 const templateKind = t.pageKind ?? t.category;
-const title = `${t.name} — ${free ? 'Free ' : ''}Framer ${templateKind} Template${free ? '' : ` ($${t.price})`}`;
+// A code version is named in the title too: it is the only page that answers "Astro template" searches.
+const title = `${t.name} — ${free ? 'Free ' : ''}Framer ${templateKind} Template${free ? '' : ` ($${t.price})`}${codeUrl ? ' + Astro Code' : ''}`;
 
 // The imported intro often starts with a one-line headline, followed by the real text.
 const leadHead = c.leadTitle ?? (c.lead.length > 1 && c.lead[0].length < 110 ? c.lead[0] : undefined);
@@ -203,6 +207,11 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
           <h2 class="kicker" id="before-you-publish">Before you publish</h2>
           <div class="body-text">
             {t.preparation && <p>{t.preparation}</p>}
+            <p>
+              The free Framer plan publishes on a framer.website address. Your own domain needs a paid site plan, from
+              Basic: <a href={site.framerReferral} class="link" target="_blank" rel="noopener noreferrer sponsored">see Framer plans</a>,
+              or compare them in <a href="/guides/framer-pricing/" class="link">Framer pricing explained</a>.
+            </p>
             <p>
               Step by step, with costs: <a href="/guides/how-to-use-framer-templates/" class="link">how to use a Framer template</a>.
               Questions about this template? <a href={`mailto:${site.email}`} class="link">Write to the author</a>.
