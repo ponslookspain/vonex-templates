@@ -16,7 +16,6 @@ const columns: { title: string; links: Link[] }[] = [
   {
     title: 'More',
     links: [
-      ...site.projects.map((p) => ({ label: p.label, href: p.href, external: true })),
       { label: 'Privacy', href: '/privacy/' },
       { label: 'Terms', href: '/terms/' },
     ],

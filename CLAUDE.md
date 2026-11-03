@@ -9,7 +9,6 @@ Guide for Claude (and anyone else) working on this repository. Read it before ch
 ## Rules
 
 - **Talk to Vladimir in Russian.** The site itself, code, comments, commit messages and PR descriptions are in English.
-- **Never touch PostVIA** (`ponslookspain/postvia`, postvia.online). It is a separate project. The only link to it is the footer entry in `src/data/site.ts`.
 - **One pull request per change.** Branch from `main`, open a PR, Vladimir reviews and merges it himself. Never push to `main`, never merge, never force-push someone else's branch. Merging into `main` deploys the site.
 - Before opening or updating a PR: `npm run check` and `npm run build` must pass with no errors.
 - Keep the PR focused. Riskier ideas go in the PR description or the thread as recommendations, not into the diff.
