@@ -5,7 +5,7 @@ Plan and rules for selling the **code version** of a template: the same design a
 ## What this is
 
 - Framer remains the main product. The free or paid Framer template, and the `affiliateUrl`, stay as they are.
-- A code version is a second product for people who do not want Framer: the identical design as a plain Astro + Tailwind project they host anywhere.
+- A code version is a second product for people who do not want Framer: the same design as a plain Astro + Tailwind project they host anywhere.
 - It is **written by hand from the Framer project**. We never export or scrape a Framer site. An export carries Framer's runtime and generated code, which we cannot sell (see [Why not export](#why-not-export)).
 
 ## How it works
@@ -53,7 +53,7 @@ Archive layout:
 
 ## Rules
 
-- **Pixel-identical to Framer.** Same layout, spacing, type and behavior on Desktop, Tablet and Phone with the same breakpoints. Verify side by side in the browser at three widths before calling it done.
+- **Match Framer as closely as it can be measured.** Same layout, spacing, type and behavior on Desktop, Tablet and Phone with the same breakpoints. Verify side by side in the browser at three widths before calling it done (see "Fidelity" below for what to check and what we may promise).
 - **Redistribution rights.** Everything inside the zip must be allowed to ship: own or self-generated images, Unsplash or Pexels, OFL fonts, libraries under permissive licenses (MIT, ISC, Apache-2.0, BSD). Dependencies are installed by the buyer from npm, not shipped in the zip; ask before adding GPL or paid ones. No paid stock, no paid fonts, no Framer assets. If a Framer image cannot ship, replace it in Framer and in code, or use a placeholder and say so in the product description.
 - **No Framer runtime** and no generated Framer code in the archive.
 - **Editable first.** Content in `site.ts`, tokens in `theme.css`, no magic values in components, short comments that explain why.
@@ -76,6 +76,19 @@ Things that cost time and are now solved:
 - Check with `scroll-behavior: smooth` in mind: scroll with `behavior: 'instant'` before taking screenshots.
 
 Scratch material while porting (screenshots, Framer snapshots, section-height comparisons) goes to `.work/code/<slug>/` in this repository, which is git-ignored, and is removed with `npm run clean` when the version is packed (see AGENTS.md, "Work folder"). The code itself lives only in `vonex-code`.
+
+## Fidelity: what we check and what we may promise
+
+Harrier was checked against the live Framer site with the scripts in `vonex-code/scripts/fidelity/` (see its README):
+
+- Page height at 1440, 1000 and 390 px (Framer's own widths are 15px less because of the scrollbar), every page, within 2 px.
+- Line breaks of every text, word by word.
+- Motion timings (load entrance, scroll reveal, floating cards, rings, marquee, accordion, testimonial autoplay), sampled in the browser.
+- Phone behavior in emulated iPhone and Android profiles and in WebKit (the Safari engine): no horizontal overflow, nothing covered by something else, menu, FAQ and tabs work by touch, form fields 16px on touch screens.
+
+What we may say in public text: the code **closely matches** the Framer template (same design, layout and behavior at phone, tablet and desktop). What we must not say: "identical", "pixel-perfect", "100%". Pixels differ by about 1 to 5 percent between browsers anyway because text is drawn differently.
+
+Every code version's README has a "Fidelity and known differences" section that says what was checked and lists the differences (fonts, effects rebuilt instead of copied, the contact form, no visual editor, supported browsers). If a buyer complains about something listed there, point to it; if it is a real mismatch, fix it in the next version (x.y.1) and note it in the changelog.
 
 ## Updating a code version
 

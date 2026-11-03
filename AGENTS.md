@@ -10,7 +10,7 @@ The one guide for every coding agent working on this repository (Claude Code, Co
 
 - **Talk to Vladimir in Russian.** The site itself, code, comments, commit messages and PR descriptions are in English.
 - Keep each change focused. Riskier ideas go to Vladimir as recommendations, not into the diff.
-- **Code versions** (see CODE_TEMPLATES.md): always written by hand from the Framer project, never exported or scraped from a Framer site. Same stack for every template, the design identical to Framer at all three breakpoints, and only assets and fonts we are allowed to redistribute. The code lives in the private `vonex-code` repository, not here.
+- **Code versions** (see CODE_TEMPLATES.md): always written by hand from the Framer project, never exported or scraped from a Framer site. Same stack for every template, the design matching Framer at all three breakpoints (say "closely matches" in public text, never "identical" or "pixel-perfect"; see CODE_TEMPLATES.md, "Fidelity"), and only assets and fonts we are allowed to redistribute. The code lives in the private `vonex-code` repository, not here.
 
 ## Workflow
 
