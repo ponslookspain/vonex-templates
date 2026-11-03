@@ -8,7 +8,7 @@ import { z } from 'astro/zod';
 // Most of the file is written by `npm run add-template` from the Framer Marketplace page, and
 // refreshed by `npm run sync-templates`. The fields you edit by hand (and that the script
 // never overwrites) are: description, affiliateUrl, featured, tags, category, added, preview,
-// pageKind, seoDescription, overview, preparation.
+// pageKind, seoDescription, overview, preparation, codeUrl, codePrice, codeVersion.
 const templates = defineCollection({
   loader: glob({ pattern: '*.yaml', base: './src/content/templates' }),
   schema: ({ image }) =>
@@ -28,6 +28,12 @@ const templates = defineCollection({
       seoDescription: z.string().optional(),
       overview: z.string().optional(),
       preparation: z.string().optional(),
+      // Optional code version of the template (clean Astro project), sold on Contra. Set `codeUrl`
+      // to show the "Buy code" button and the "Code version" block; `codePrice` is in USD and
+      // `codeVersion` the version of the zip. See CODE_TEMPLATES.md.
+      codeUrl: z.url().optional(),
+      codePrice: z.number().min(0).optional(),
+      codeVersion: z.string().optional(),
       category: z.string(),
       price: z.number().min(0), // 0 = Free
       tags: z.array(z.string()).default([]),

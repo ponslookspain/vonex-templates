@@ -33,6 +33,10 @@ const others = all
 const free = t.price === 0;
 const priceLabel = free ? 'Free' : `$${t.price}`;
 const buyUrl = t.affiliateUrl ?? t.url;
+// Optional code version, sold on Contra (see CODE_TEMPLATES.md).
+const codeUrl = t.codeUrl;
+const framerLabel = free ? 'Use free on Framer' : 'Get on Framer';
+const codePriceLabel =t.codePrice === undefined ? '' : t.codePrice === 0 ? 'Free' : `$${t.codePrice}`;
 const pageUrl = new URL(`/templates/${template.id}/`, Astro.site).href;
 const ogPath = `/og/${template.id}.png`;
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -121,6 +125,12 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
       <div class="p-gallery">
         <div class="p-gallery-inner">
           <TemplateGallery items={gallery} name={t.name} />
+          <!-- The live preview belongs to the pictures: it sits right under them, not among the buy buttons. -->
+          {t.preview && (
+            <Button href={t.preview} variant="secondary" arrow target="_blank" rel="noopener noreferrer" class="mt-lg">
+              View live preview
+            </Button>
+          )}
         </div>
       </div>
 
@@ -129,13 +139,14 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
         <div class="buy p-block">
           <p class="type-label">Price</p>
           <p class="type-headline-md mt-sm">{priceLabel}</p>
+          <!-- The two ways to get the template sit side by side. -->
           <div class="buy-actions">
             <Button href={buyUrl} arrow target="_blank" rel={t.affiliateUrl ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}>
-              View on Framer
+              {framerLabel}
             </Button>
-            {t.preview && (
-              <Button href={t.preview} variant="secondary" target="_blank" rel="noopener noreferrer">
-                View live
+            {codeUrl && (
+              <Button href={codeUrl} variant="secondary" arrow target="_blank" rel="noopener noreferrer">
+                Buy code · {codePriceLabel}
               </Button>
             )}
           </div>
@@ -160,6 +171,30 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
             {leadHead && <h2 class="lead-head">{leadHead}</h2>}
             {leadText.map((p) => <p set:html={richText(p)} />)}
           </div>
+        )}
+
+        {codeUrl && (
+          <section class="doc-section p-block" aria-labelledby="code-version">
+            <h2 class="kicker" id="code-version">Code version</h2>
+            <div class="body-text">
+              <p>
+                Prefer not to use Framer? {t.name} also comes as a clean Astro and Tailwind CSS project: the same design,
+                on phone, tablet and desktop, as code you own and host anywhere.
+              </p>
+            </div>
+            <ul class="checks mt-lg">
+              <li><Icon name="check" class="check" /><span>Every text, link and price in one file, so you edit content without touching the layout</span></li>
+              <li><Icon name="check" class="check" /><span>Static build: no framework runtime, deploys to Cloudflare, Netlify, Vercel or your own server</span></li>
+              <li><Icon name="check" class="check" /><span>README with setup and deploy steps, license and changelog included</span></li>
+              <li><Icon name="check" class="check" /><span>One-time payment{t.codeVersion ? `, version ${t.codeVersion}` : ''}, sold through Contra. A digital product: all sales are final</span></li>
+            </ul>
+            <div class="buy-actions">
+              <Button href={codeUrl} arrow target="_blank" rel="noopener noreferrer">
+                Buy code · {codePriceLabel}
+              </Button>
+              <Button href="/license/" variant="secondary">Read the license</Button>
+            </div>
+          </section>
         )}
 
         <section class="doc-section p-block" aria-labelledby="before-you-publish">
@@ -297,8 +332,13 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     <h2 id="get-title" class="type-headline-lg"><em class="type-accent">Get</em> {t.name}.</h2>
     <div class="buy-actions">
       <Button href={buyUrl} variant="secondary" arrow target="_blank" rel={t.affiliateUrl ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}>
-        View on Framer
+        {framerLabel}
       </Button>
+      {codeUrl && (
+        <Button href={codeUrl} variant="secondary" arrow target="_blank" rel="noopener noreferrer">
+          Buy code · {codePriceLabel}
+        </Button>
+      )}
     </div>
     <div slot="media" class="border-(length:--border-frame) border-on-primary">
       <Image src={t.image} alt="" widths={[640, 960, 1400]} sizes="(min-width: 1024px) 50vw, 100vw" class="aspect-[4/3] w-full object-cover" />

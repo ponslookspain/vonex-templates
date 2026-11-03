@@ -1,15 +1,16 @@
 # AGENTS.md
 
-The one guide for every coding agent working on this repository (Claude Code, Codex and others). `CLAUDE.md` only imports this file, so edit the rules here. Read it before changing anything. Human-facing setup and commands are in [README.md](README.md); the design direction is [DESIGN.md](DESIGN.md) and how it is built in code is [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md).
+The one guide for every coding agent working on this repository (Claude Code, Codex and others). `CLAUDE.md` only imports this file, so edit the rules here. Read it before changing anything. Human-facing setup and commands are in [README.md](README.md); the design direction is [DESIGN.md](DESIGN.md) and how it is built in code is [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md). Selling code versions of templates (stack, flow, rules) is in [CODE_TEMPLATES.md](CODE_TEMPLATES.md).
 
 ## Project
 
-**Vonex Design** is a catalog of Framer templates made by Vladimir (GitHub `ponslookspain`). Live at https://vonexdesign.com. It is a showcase only: no checkout, no accounts, no editor. Every "View on Framer" button goes to the template's Framer Marketplace page, through Vladimir's Framer referral link (`affiliateUrl`, `framer.link/...`) when there is one.
+**Vonex Design** is a catalog of Framer templates made by Vladimir (GitHub `ponslookspain`). Live at https://vonexdesign.com. It is a showcase only: no checkout, no accounts, no editor. Every "View on Framer" button goes to the template's Framer Marketplace page, through Vladimir's Framer referral link (`affiliateUrl`, `framer.link/...`) when there is one. Framer stays the main product. Some templates also have a hand-written **code version** (Astro + Tailwind zip) sold on Contra; the site only links to it with a "Buy code" button (`codeUrl`, `codePrice` in the YAML). Details in [CODE_TEMPLATES.md](CODE_TEMPLATES.md).
 
 ## Rules
 
 - **Talk to Vladimir in Russian.** The site itself, code, comments, commit messages and PR descriptions are in English.
 - Keep each change focused. Riskier ideas go to Vladimir as recommendations, not into the diff.
+- **Code versions** (see CODE_TEMPLATES.md): always written by hand from the Framer project, never exported or scraped from a Framer site. Same stack for every template, the design identical to Framer at all three breakpoints, and only assets and fonts we are allowed to redistribute. The code lives in the private `vonex-code` repository, not here.
 
 ## Workflow
 
@@ -57,7 +58,7 @@ Never push straight to `main`, never force-push. Delete branches once they are m
 2. Check the YAML: write a short `description` for the card (one sentence), check `category`, `price` (0 = Free) and `affiliateUrl`.
 3. Commit the YAML, the pictures and the og image together.
 
-Hand-edited fields that `npm run sync-templates` never overwrites: `description`, `affiliateUrl`, `featured`, `tags`, `category`, `added`, `preview`, `pageKind`, `seoDescription`, `overview`, `preparation`. Write these four for every new template: they feed the title, search description, intro and "Before you publish" block of its page. Everything else in the YAML comes from Framer and can be refreshed.
+Hand-edited fields that `npm run sync-templates` never overwrites: `description`, `affiliateUrl`, `featured`, `tags`, `category`, `added`, `preview`, `pageKind`, `seoDescription`, `overview`, `preparation`, `codeUrl`, `codePrice`, `codeVersion`. The last three belong to the code version (Contra product link, price in USD, zip version); when `codeUrl` is set, the template page shows "Buy code", a "Code version" block and one more FAQ answer. Leave them out for templates without a code version. Write these four for every new template: they feed the title, search description, intro and "Before you publish" block of its page. Everything else in the YAML comes from Framer and can be refreshed.
 
 Guides are listed in `src/data/guides.ts`; a new guide also needs its accent word in `ACCENTS` in `scripts/generate-og.mjs`, then `npm run og` makes `public/og/guides/<slug>.png`.
 

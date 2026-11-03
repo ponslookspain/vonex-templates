@@ -152,7 +152,7 @@ ${wrap(sub, 62, 2).map((l, i) => `<text x="60" y="${subY + i * 36}" font-family=
 const ACCENTS = {
   'how-to-use-framer-templates': 'template', 'framer-pricing': 'free', 'framer-cms': 'posts',
   'framer-portfolio-template': 'portfolio', 'framer-vs-webflow': 'vs', 'free-framer-portfolio-templates': 'free',
-  'framer-saas-app-templates': 'app', 'framer-wedding-website': 'Wedding',
+  'framer-saas-app-templates': 'app', 'framer-wedding-website': 'Wedding', 'framer-or-code': 'code',
 };
 async function guidePages() {
   const src = await readFile(path.join(root, 'src/data/guides.ts'), 'utf8');

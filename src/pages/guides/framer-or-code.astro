@@ -1,0 +1,88 @@
+---
+import LegalPage from '../../components/LegalPage.astro';
+import Button from '../../components/Button.astro';
+
+const title = 'Framer template or code';
+const description = 'Should you use a Framer template or buy the same design as code? Cost, editing, hosting and who each one fits, compared.';
+const url = new URL('/guides/framer-or-code/', Astro.site).href;
+
+const rows = [
+  ['What you get', 'A site in your own Framer project', 'A project folder: Astro and Tailwind CSS'],
+  ['How you edit', 'Visually, on the Framer canvas', 'Text in one file, layout in code'],
+  ['Hosting', 'Framer hosts it, on a framer.website address or your domain', 'Any static host: Cloudflare, Netlify, Vercel or your own server'],
+  ['Running cost', 'Free plan, or a Framer plan for a custom domain', 'Often free hosting; you pay for the domain'],
+  ['Skills needed', 'None', 'Basic: install Node, run two commands, edit a text file'],
+  ['Updates and CMS', 'Built into Framer', 'You change the files; no visual CMS'],
+  ['License', 'Set by the template page on Framer', 'One project, see the code license'],
+];
+
+const faq = [
+  { q: 'Is the code version the same design?', a: 'Yes. We rebuild each Framer template by hand as a clean project and check it against the original on desktop, tablet and phone.' },
+  { q: 'Is it an export of the Framer site?', a: 'No. Exported sites carry the Framer runtime and generated code. A code version is written from scratch, so it is clean, small and yours to change.' },
+  { q: 'Do I need to know how to code?', a: 'A little. You install Node.js, run two commands and edit a text file. The README explains each step. If you do not want to touch files at all, use the Framer version.' },
+  { q: 'Can I get a refund?', a: 'No. Code versions are digital products and all sales are final, so check the live preview and the README first. If something does not install or build as described, we help you fix it. Your legal rights stay as they are.' },
+  { q: 'Can I use the code for client work?', a: 'Yes, for one project or one client per license. You cannot resell or share the files. See the code license.' },
+];
+---
+
+<LegalPage accent="code"
+  kicker="Compare"
+  title={title}
+  seoTitle="Framer template or code: which one to choose"
+  description={description}
+  updated="November 3, 2026"
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'Article', headline: title, description, url, mainEntityOfPage: url, dateModified: '2026-11-03', author: { '@type': 'Organization', name: 'Vonex Design', url: new URL('/', Astro.site).href } },
+      { '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+    ],
+  }}
+>
+  <p>
+    <strong>Short answer:</strong> use the Framer version if you want to edit the site visually and have it live today.
+    Use the code version if you want a small static site you host yourself, or you already work in code.
+  </p>
+  <p>
+    Most of our templates are made in Framer. Some also come as code, with the same design. The template page shows a
+    "Buy code" button when a code version exists.
+  </p>
+
+  <h2>Side by side</h2>
+  <div class="overflow-x-auto">
+    <table class="doc-table">
+      <thead><tr><th></th><th>Framer</th><th>Code</th></tr></thead>
+      <tbody>
+        {rows.map(([k, f, c]) => <tr><th scope="row">{k}</th><td>{f}</td><td>{c}</td></tr>)}
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Pick Framer if</h2>
+  <ul>
+    <li>You want to change text, images and layout without opening a file.</li>
+    <li>You need a CMS for projects or posts that you edit in a browser.</li>
+    <li>You are new to websites and want the shortest path to a live page.</li>
+  </ul>
+
+  <h2>Pick code if</h2>
+  <ul>
+    <li>You want a fast static site with no monthly platform fee.</li>
+    <li>You want to host it yourself or put it in your own repository.</li>
+    <li>You or your developer will add features that Framer does not offer.</li>
+  </ul>
+
+  <h2>Questions</h2>
+  {faq.map((f) => (
+    <Fragment>
+      <p><strong>{f.q}</strong></p>
+      <p>{f.a}</p>
+    </Fragment>
+  ))}
+
+  <div class="mt-xl flex flex-wrap gap-sm">
+    <Button href="/templates/" arrow>Browse templates</Button>
+    <Button href="/license/" variant="secondary">Code license</Button>
+    <Button href="/guides/how-to-use-framer-templates/" variant="secondary" arrow>How to use a Framer template</Button>
+  </div>
+</LegalPage>
