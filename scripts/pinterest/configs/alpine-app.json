@@ -1,0 +1,158 @@
+{
+  "slug": "alpine-app",
+  "url": "https://alpine-template.framer.website/",
+  "backgrounds": {
+    "dark": {
+      "type": "solid",
+      "color": "#0e0e10"
+    },
+    "paper": {
+      "type": "solid",
+      "color": "#efeeea"
+    },
+    "steel": {
+      "type": "solid",
+      "color": "#c8cdd4"
+    },
+    "sky": {
+      "type": "gradient",
+      "from": "#5b8bd0",
+      "to": "#e3e9f0"
+    },
+    "glow": {
+      "type": "glow",
+      "base": "#0b0b0d",
+      "light": "#3a3f48"
+    },
+    "peak": {
+      "type": "photo",
+      "top": 5500,
+      "height": 800,
+      "tint": "rgba(10,20,40,.15)"
+    }
+  },
+  "sections": [
+    [1300, 900],
+    [2350, 1000],
+    [3350, 1000],
+    [4300, 950],
+    [5450, 900],
+    [6450, 850],
+    [7350, 560],
+    [7950, 800],
+    [8880, 600],
+    [9420, 750]
+  ],
+  "pins": [
+    [
+      "long",
+      "sky",
+      0
+    ],
+    [
+      "long",
+      "dark",
+      2350
+    ],
+    [
+      "long",
+      "peak",
+      5400
+    ],
+    [
+      "long",
+      "paper",
+      7900
+    ],
+    [
+      "columns",
+      "steel",
+      [0, 6400]
+    ],
+    [
+      "columns",
+      "dark",
+      [2350, 7900]
+    ],
+    [
+      "monitor",
+      "sky",
+      0
+    ],
+    [
+      "monitor",
+      "peak",
+      7950
+    ],
+    [
+      "combo",
+      "paper",
+      0,
+      0
+    ],
+    [
+      "combo",
+      "glow",
+      7950,
+      9600
+    ],
+    [
+      "trio",
+      "sky",
+      [0, 14650, 20500]
+    ],
+    [
+      "trio",
+      "dark",
+      [3300, 9600, 18250]
+    ],
+    [
+      "phone",
+      "peak",
+      0
+    ],
+    [
+      "phone",
+      "steel",
+      14650
+    ],
+    [
+      "window",
+      "dark",
+      2350,
+      9600
+    ],
+    [
+      "window",
+      "sky",
+      5450,
+      16150
+    ],
+    [
+      "tilted",
+      "paper"
+    ],
+    [
+      "tilted",
+      "dark"
+    ]
+  ],
+  "pinterest": {
+    "name": "Alpine App",
+    "kind": "mobile app landing page",
+    "pageTitle": "Free Framer app landing page template",
+    "topicBoard": "App Landing Page Design",
+    "pitch": "A black and white landing page for a mobile app with a phone preview, specs, pricing, FAQ, legal and 404 pages.",
+    "keywords": [
+      "framer template",
+      "free framer template",
+      "app landing page",
+      "mobile app website",
+      "minimalist web design",
+      "black and white website",
+      "landing page design",
+      "website template"
+    ],
+    "generalBoard": "Framer Templates"
+  }
+}

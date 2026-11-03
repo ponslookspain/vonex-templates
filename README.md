@@ -15,6 +15,8 @@ Working on the project with Claude Code or Codex? The shared rules are in [AGENT
 | `npm run add-template -- <url>` | Add a template from its Framer Marketplace URL (data, pictures, preview image) |
 | `npm run sync-templates` | Refresh every template from its Marketplace page |
 | `npm run og` | Regenerate the social preview images in `public/og/` |
+| `npm run pins:capture`, `pins:render`, `pins:sheet`, `pins:upload`, `pins:csv` | Pinterest pins for a template, see [scripts/pinterest/README.md](scripts/pinterest/README.md) |
+| `npm run clean` | Remove captures, scratch folders and build caches (`-- --all` also empties the `.work/` folder) |
 
 ## Check the site locally before deploy
 
