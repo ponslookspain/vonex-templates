@@ -56,6 +56,7 @@ const googleVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION?.trim
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     {googleVerification && <meta name="google-site-verification" content={googleVerification} />}
+    {site.bingSiteVerification && <meta name="msvalidate.01" content={site.bingSiteVerification} />}
     <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={monoLatin} as="font" type="font/woff2" crossorigin />

@@ -11,6 +11,8 @@ export const site = {
   // Leave empty to disable. Nothing is sent until a token is set.
   analyticsToken: 'a8496556ef3645b5902ace2d122d7198',
   framerProfile: 'https://www.framer.com/@vonexdesign/',
+  // Bing Webmaster Tools ownership check (msvalidate.01). Public, keep it: removing it unverifies the site.
+  bingSiteVerification: 'F41F52232C55B72905DD1670886C1709',
   // Framer referral link to framer.com, for sign-up and plan links in the guides (not for templates:
   // each template has its own `affiliateUrl`). Links using it get rel="sponsored".
   framerReferral: 'https://framer.link/vonex-studio',
