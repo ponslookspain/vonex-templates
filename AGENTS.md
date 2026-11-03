@@ -95,7 +95,7 @@ Every template is exactly one of four offers. `offer()` in `src/lib/buy.ts` name
 | --- | --- | --- | --- |
 | `free` | `price: 0`, no `codeUrl` | Use free on Framer | Harrier, Ethan Walker, Softic Studio |
 | `free-code` | `price: 0`, `codeUrl`, `codePrice: 19` | Use free on Framer · Buy code $19 | Alpine App |
-| `paid` | `price: 49`, no `codeUrl` | Get on Framer (or Buy template with `buyUrl`) | Sanctun |
+| `paid` | `price: 49`, no `codeUrl` | Get on Framer (or Buy template with `buyUrl`) | none now |
 | `paid-code` | `price: 49`, `codeUrl`, `codePrice: 49` | Get on Framer · Buy code $49 | none yet |
 
 Rules:
@@ -103,7 +103,7 @@ Rules:
 - A free template's code costs $19.
 - A paid template costs the same in Framer and as code: the buyer chooses the format, not the price.
 - `codeUrl` and `codePrice` are set together or not at all. A free template never has `buyUrl`.
-- Sanctun has no code version: it is sold only as a Framer template.
+- Every template, Framer or code, follows one license at `/license/` (free: any number of projects; paid: one project per license; never resale). Change the terms there, not per template, and keep LICENSE.md in `vonex-code` the same text.
 
 ## Style
 

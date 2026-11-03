@@ -5,7 +5,7 @@
 // when a page is shared.
 //
 //   npm run og                  everything
-//   npm run og -- sanctun       only one template
+//   npm run og -- harrier       only one template
 //
 // The images are committed, not built on deploy, so the result does not depend on the fonts
 // installed on the build server. Run it again after changing a template's name, tagline,
@@ -152,7 +152,7 @@ ${wrap(sub, 62, 2).map((l, i) => `<text x="60" y="${subY + i * 36}" font-family=
 const ACCENTS = {
   'how-to-use-framer-templates': 'template', 'framer-pricing': 'free', 'framer-cms': 'posts',
   'framer-portfolio-template': 'portfolio', 'framer-vs-webflow': 'vs', 'free-framer-portfolio-templates': 'free',
-  'framer-saas-app-templates': 'app', 'framer-wedding-website': 'Wedding', 'framer-or-code': 'code',
+  'framer-saas-app-templates': 'app', 'framer-or-code': 'code',
 };
 async function guidePages() {
   const src = await readFile(path.join(root, 'src/data/guides.ts'), 'utf8');
@@ -160,7 +160,7 @@ async function guidePages() {
   return items.map(([, slug, title, sub, , kind]) => ({ out: `og/guides/${slug}.png`, label: `Guide · ${kind}`, title, accent: ACCENTS[slug], sub }));
 }
 const PAGES = [
-  { out: 'og/pages/templates.png', label: 'Catalog', title: 'Framer templates.', accent: 'templates', sub: 'Portfolio, agency, app, SaaS and wedding websites, free and premium.' },
+  { out: 'og/pages/templates.png', label: 'Catalog', title: 'Framer templates.', accent: 'templates', sub: 'Portfolio, agency, app and SaaS websites, free and premium.' },
   { out: 'og/pages/free.png', label: 'Catalog', title: 'Free Framer templates.', accent: 'Free', sub: 'Complete websites that cost nothing to copy from Framer Marketplace.' },
   { out: 'og/pages/guides.png', label: 'Guides', title: 'Framer guides.', accent: 'guides', sub: 'How to use a template, what Framer costs, the CMS, and template roundups.' },
   { out: 'og/pages/about.png', label: 'About', title: 'About Vonex Design.', accent: 'Design', sub: 'A small catalog of Framer templates made by Vladimir.' },
