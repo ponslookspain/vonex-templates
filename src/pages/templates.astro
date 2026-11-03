@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
 import SectionHeader from '../components/SectionHeader.astro';
-import TemplateCard from '../components/TemplateCard.astro';
+import CatalogGrid from '../components/CatalogGrid.astro';
 import Button from '../components/Button.astro';
 
 const templates = (await getCollection('templates')).sort(
@@ -42,8 +42,6 @@ const count = String(templates.length).padStart(2, '0');
     >
       <Button href="/templates/free/" variant="secondary" arrow>Explore free templates</Button>
     </SectionHeader>
-    <ul class="card-grid flush-rails">
-      {templates.map((t) => <TemplateCard template={t} level={2} />)}
-    </ul>
+    <CatalogGrid templates={templates} />
   </Section>
 </Base>

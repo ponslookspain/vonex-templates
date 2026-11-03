@@ -1,0 +1,49 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import TemplateCard from './TemplateCard.astro';
+
+// The template grid of the catalog pages, with a switch between large cards (2 per row)
+// and compact ones (3 or 4 per row). The choice is remembered per visitor in localStorage.
+// Without JavaScript the switch stays hidden and the grid keeps the large cards.
+interface Props {
+  templates: CollectionEntry<'templates'>[];
+}
+const { templates } = Astro.props;
+---
+
+<div class="catalog-grid">
+  <div class="density-switch type-label" role="group" aria-label="Card size">
+    <span class="type-pillar">View</span>
+    <button type="button" class="density-option" data-density-option="large" aria-pressed="true">Large</button>
+    <button type="button" class="density-option" data-density-option="compact" aria-pressed="false">Compact</button>
+  </div>
+  <ul class="card-grid flush-rails" data-density="large">
+    {templates.map((t) => <TemplateCard template={t} level={2} />)}
+  </ul>
+</div>
+
+<!-- Inline and right after the grid, so a remembered choice applies before the first paint. -->
+<script is:inline>
+  (() => {
+    const KEY = 'vonex:grid-density';
+    const root = document.currentScript.previousElementSibling;
+    const grid = root.querySelector('[data-density]');
+    const options = root.querySelectorAll('[data-density-option]');
+    const apply = (value) => {
+      grid.dataset.density = value;
+      options.forEach((o) => o.setAttribute('aria-pressed', String(o.dataset.densityOption === value)));
+    };
+    try {
+      const saved = localStorage.getItem(KEY);
+      if (saved === 'compact' || saved === 'large') apply(saved);
+    } catch {}
+    options.forEach((o) =>
+      o.addEventListener('click', () => {
+        apply(o.dataset.densityOption);
+        try {
+          localStorage.setItem(KEY, o.dataset.densityOption);
+        } catch {}
+      }),
+    );
+  })();
+</script>

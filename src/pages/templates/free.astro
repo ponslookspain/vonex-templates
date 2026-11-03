@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Section from '../../components/Section.astro';
 import SectionHeader from '../../components/SectionHeader.astro';
-import TemplateCard from '../../components/TemplateCard.astro';
+import CatalogGrid from '../../components/CatalogGrid.astro';
 import Button from '../../components/Button.astro';
 import { buildContent } from '../../lib/template-content';
 
@@ -41,9 +41,7 @@ const count = String(templates.length).padStart(2, '0');
       accent="Free"
       lead="Start with a complete website, then make it yours. These templates cost nothing to get from Framer Marketplace."
     />
-    <ul class="card-grid flush-rails">
-      {templates.map((template) => <TemplateCard template={template} level={2} />)}
-    </ul>
+    <CatalogGrid templates={templates} />
   </Section>
 
   <Section labelledby="choose-title" bar={{ left: '02 / Compare', right: 'Type · Pages · CMS' }}>
