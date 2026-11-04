@@ -5,13 +5,15 @@ url: https://www.framer.com/marketplace/templates/fallow/
 affiliateUrl: https://framer.link/OlEIlHE
 preview: https://fallow.framer.website/
 pageKind: "Therapist Website"
-seoDescription: "Fallow is a free Framer therapist website template with fees, booking openings, a CMS journal and a contact form. Explore the pages and live demo."
+seoDescription: "Fallow is a free Framer therapist website template with fees, booking openings, a CMS journal and a contact form. See the live demo."
 overview: "Give a private practice a calm, clear home online. Fallow puts format, session length and fees up front, then walks visitors through how therapy starts, what you work on and how to book a free call."
 preparation: "Prepare your own photos, credentials, fees and openings. Replace the sample practice details and the crisis number with ones that apply to you, and check any rules on client testimonials and advertising in your area."
 # Code version sold on Contra.
 codeUrl: https://contra.com/products/yTRt1k1W-fallow-astro-code-therapist-website-template
 codePrice: 19
 codeVersion: "1.0"
+types:
+  - therapy
 category: Therapy
 price: 0
 tags: []

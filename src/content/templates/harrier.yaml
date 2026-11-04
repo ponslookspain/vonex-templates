@@ -11,6 +11,9 @@ preparation: "Prepare your product screenshots, feature explanations and plan de
 codeUrl: https://contra.com/products/Ivd5hn4Q-harrier-astro-code
 codePrice: 19
 codeVersion: "1.0"
+types:
+  - saas-apps
+  - ai
 category: AI
 price: 0
 tags: []

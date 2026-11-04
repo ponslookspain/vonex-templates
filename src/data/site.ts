@@ -4,9 +4,9 @@ export type SocialIcon = 'x' | 'threads' | 'tiktok';
 
 export const site = {
   name: 'Vonex Design',
-  tagline: 'Ready-made Framer templates for any website.',
+  tagline: 'Ready-made website templates for Framer and code.',
   description:
-    'Ready-made, responsive Framer templates by Vonex Design. Pick a template, remix it in Framer, make it yours and publish your website without writing code.',
+    'Ready-made, responsive website templates by Vonex Design. Remix a template in Framer without writing code, or get selected designs as Astro code.',
   // Cloudflare Web Analytics token (Cloudflare dashboard > Analytics & Logs > Web Analytics).
   // Leave empty to disable. Nothing is sent until a token is set.
   analyticsToken: 'a8496556ef3645b5902ace2d122d7198',

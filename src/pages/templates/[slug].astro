@@ -14,6 +14,7 @@ import TemplateGallery from '../../components/TemplateGallery.astro';
 import { site } from '../../data/site';
 import { buildContent, buildFaq, richText, plainText } from '../../lib/template-content';
 import { buyLink, buyLabel } from '../../lib/buy';
+import { categoryHref, categoryPages } from '../../lib/categories';
 
 export async function getStaticPaths() {
   const templates = await getCollection('templates');
@@ -25,10 +26,12 @@ const t = template.data;
 const editorial = t.overview ? t : undefined;
 const c = buildContent(t);
 const faq = buildFaq(t, c, { siteEmail: site.email });
-// The two newest other templates, one row of the 2-up grid.
+// Two other templates, one row of the 2-up grid: the same category first, then the newest.
+const shared = (x: typeof template) => x.data.types.filter((type) => t.types.includes(type)).length;
+const ownCategory = categoryPages(all).find((c) => t.types.includes(c.slug));
 const others = all
   .filter((x) => x.id !== template.id)
-  .sort((a, b) => b.data.added.getTime() - a.data.added.getTime())
+  .sort((a, b) => shared(b) - shared(a) || b.data.added.getTime() - a.data.added.getTime())
   .slice(0, 2);
 
 const free = t.price === 0;
@@ -359,7 +362,7 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
   {others.length > 0 && (
     <Section labelledby="more-title" flush="bottom" bar={{ left: 'Catalog', right: `${String(others.length).padStart(2, '0')} more` }}>
       <SectionHeader id="more-title" title="More templates." accent="More">
-        <Button href="/templates/" variant="secondary" arrow>View all</Button>
+        <Button href={ownCategory ? categoryHref(ownCategory.slug) : '/templates/'} variant="secondary" arrow>{ownCategory ? `${ownCategory.label} templates` : 'View all'}</Button>
       </SectionHeader>
       <ul class="card-grid flush-rails">
         {others.map((o) => <TemplateCard template={o} />)}

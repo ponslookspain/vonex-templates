@@ -8,6 +8,8 @@ pageKind: "Portfolio"
 seoDescription: "Ethan Walker is a free Framer portfolio template for designers and freelancers, with CMS projects and services. See included pages and the live demo."
 overview: "Build a portfolio around your own projects rather than a long introduction. Ethan Walker pairs large typography with CMS project pages, so you can add work as your portfolio grows."
 preparation: "Prepare project images, case-study text and service descriptions. Review the included CMS collections against your Framer plan before publishing."
+types:
+  - portfolio
 category: Portfolio
 price: 0
 tags:

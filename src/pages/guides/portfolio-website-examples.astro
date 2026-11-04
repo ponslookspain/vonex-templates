@@ -1,0 +1,66 @@
+---
+import LegalPage from '../../components/LegalPage.astro';
+import Button from '../../components/Button.astro';
+
+const title = 'Portfolio website examples';
+const description = 'Portfolio website examples from two live template demos: a personal portfolio and a dark studio site, and what you can take from each.';
+const url = new URL('/guides/portfolio-website-examples/', Astro.site).href;
+---
+
+<LegalPage accent="examples"
+  kicker="Examples"
+  title={title}
+  seoTitle="Portfolio website examples and what to learn from them"
+  description={description}
+  updated="November 4, 2026"
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description,
+    url,
+    mainEntityOfPage: url,
+    dateModified: '2026-11-04',
+    author: { '@type': 'Organization', name: 'Vonex Design', url: new URL('/', Astro.site).href },
+  }}
+>
+  <p>
+    <strong>Short answer:</strong> a good portfolio makes three things clear fast: what you do, what you have done and
+    how to contact you. The two examples below are our own templates, so you can open each demo and reuse the layout.
+  </p>
+
+  <h2>Personal portfolio: Ethan Walker</h2>
+  <p>
+    <a href="/templates/ethan-walker/">Ethan Walker</a> is built for designers and freelancers. Projects live in a CMS
+    and services have their own place on the site.
+  </p>
+  <p><strong>What to take from it:</strong> make the person and the work the focus, and let large type carry the design.</p>
+
+  <h2>Studio portfolio: Softic Studio</h2>
+  <p>
+    <a href="/templates/softic-studio/">Softic Studio</a> is a dark agency site with CMS projects and a team section.
+  </p>
+  <p><strong>What to take from it:</strong> when several people do the work, show the team next to the projects.</p>
+
+  <h2>What good portfolios have in common</h2>
+  <ul>
+    <li>A headline that says what you do, not only your name.</li>
+    <li>A small set of selected projects.</li>
+    <li>Project pages that explain the work, not just show images.</li>
+    <li>Contact details that are easy to find.</li>
+    <li>A layout that works on a phone.</li>
+  </ul>
+
+  <h2>Common mistakes</h2>
+  <ul>
+    <li>Showing every project, so the best work gets lost.</li>
+    <li>Using images with no context.</li>
+    <li>Leaving placeholder text or broken links.</li>
+    <li>Making visitors search for a way to contact you.</li>
+  </ul>
+
+  <div class="mt-xl flex flex-wrap gap-sm">
+    <Button href="/templates/category/portfolio/" arrow>Portfolio templates</Button>
+    <Button href="/guides/how-to-make-a-portfolio-website/" variant="secondary" arrow>How to make a portfolio</Button>
+  </div>
+</LegalPage>

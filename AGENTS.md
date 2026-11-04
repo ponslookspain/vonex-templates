@@ -61,7 +61,7 @@ Never push straight to `main`, never force-push. Delete branches once they are m
 2. Check the YAML: write a short `description` for the card (one sentence), check `category`, `price` (0 = Free) and `affiliateUrl`.
 3. Commit the YAML, the pictures and the og image together.
 
-Hand-edited fields that `npm run sync-templates` never overwrites: `description`, `affiliateUrl`, `featured`, `tags`, `category`, `added`, `preview`, `pageKind`, `seoDescription`, `overview`, `preparation`, `codeUrl`, `codePrice`, `codeVersion`, `buyUrl`, `soldOn`. `codeUrl`, `codePrice` and `codeVersion` belong to the code version (Contra product link, price in USD, zip version); when `codeUrl` is set, the template page shows "Buy code", a "Code version" block and one more FAQ answer. Leave them out for templates without a code version. Write these four for every new template: they feed the title, search description, intro and "Before you publish" block of its page. Everything else in the YAML comes from Framer and can be refreshed.
+Hand-edited fields that `npm run sync-templates` never overwrites: `description`, `affiliateUrl`, `featured`, `tags`, `types`, `category`, `added`, `preview`, `pageKind`, `seoDescription`, `overview`, `preparation`, `codeUrl`, `codePrice`, `codeVersion`, `buyUrl`, `soldOn`. `codeUrl`, `codePrice` and `codeVersion` belong to the code version (Contra product link, price in USD, zip version); when `codeUrl` is set, the template page shows "Buy code", a "Code version" block and one more FAQ answer. Leave them out for templates without a code version. Write these four for every new template: they feed the title, search description, intro and "Before you publish" block of its page. Everything else in the YAML comes from Framer and can be refreshed.
 
 Guides are listed in `src/data/guides.ts`; a new guide also needs its accent word in `ACCENTS` in `scripts/generate-og.mjs`, then `npm run og` makes `public/og/guides/<slug>.png`.
 
@@ -69,7 +69,7 @@ After changing a name, tagline, price or cover, run `npm run og` (or `npm run og
 
 Template cards show only the cover, the price/Free badge, the name and the tagline. Do not add descriptions or tags to cards.
 
-Category filtering is planned as static SEO pages (`/templates/category/<x>/`) once a category has 2+ templates; until then there is no filter.
+Categories live in `src/data/categories.json`. `types` in a template YAML must use its slugs; `add-template` suggests them from the Framer data and texts, and `--types` sets them by hand. Framer categories alone are not enough: they are often just `Free`. `/templates/` filters by type, format and price; a category gets a static SEO page (`/templates/category/<slug>/`) once it has 2+ templates. Filtered URLs keep the `/templates/` canonical.
 
 ## Work folder
 

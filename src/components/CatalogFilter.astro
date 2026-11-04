@@ -1,0 +1,62 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { categoryHref, categoryPages, inCategory, usedCategories } from '../lib/categories';
+
+// Filters of the catalog bar. Every option is a real link, so search engines can follow the category
+// pages and the filter still leads somewhere without JavaScript. With JavaScript, a click filters
+// the grid in place, so filters can be combined (the script is in CatalogGrid). Filtered URLs such
+// as ?format=code keep the canonical of /templates/, so they do not become separate search pages.
+interface Props {
+  templates: CollectionEntry<'templates'>[];
+}
+const { templates } = Astro.props;
+const pages = new Set(categoryPages(templates).map((c) => c.slug));
+const hasPaid = templates.some((t) => t.data.price > 0);
+const pad = (n: number) => String(n).padStart(2, '0');
+
+const types = usedCategories(templates).map((c) => ({
+  value: c.slug,
+  label: c.label,
+  count: inCategory(templates, c.slug).length,
+  href: pages.has(c.slug) ? categoryHref(c.slug) : `/templates/?type=${c.slug}`,
+}));
+
+// These groups have no "All": a second click on the active option clears it.
+const toggles = [
+  {
+    key: 'format',
+    label: 'Format',
+    options: [
+      { value: 'framer', label: 'Framer' },
+      { value: 'code', label: 'Code' },
+    ],
+  },
+  ...(hasPaid
+    ? [{ key: 'price', label: 'Price', options: [{ value: 'free', label: 'Free' }, { value: 'paid', label: 'Paid' }] }]
+    : []),
+];
+---
+
+<nav class="catalog-filter type-label" aria-label="Filter templates" data-catalog-filter>
+  <div class="filter-types">
+    <a class="filter-tab" href="/templates/" data-filter="type" data-value="" aria-current="true">
+      All <span class="filter-count">{pad(templates.length)}</span>
+    </a>
+    {
+      types.map((o) => (
+        <a class="filter-tab" href={o.href} data-filter="type" data-value={o.value}>
+          {o.label} <span class="filter-count">{pad(o.count)}</span>
+        </a>
+      ))
+    }
+  </div>
+  {
+    toggles.map((g) => (
+      <div class="filter-cell" role="group" aria-label={g.label}>
+        {g.options.map((o) => (
+          <a class="filter-tab" href={`/templates/?${g.key}=${o.value}`} data-filter={g.key} data-value={o.value}>{o.label}</a>
+        ))}
+      </div>
+    ))
+  }
+</nav>

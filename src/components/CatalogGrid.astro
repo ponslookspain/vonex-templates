@@ -1,22 +1,33 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import TemplateCard from './TemplateCard.astro';
+import CatalogFilter from './CatalogFilter.astro';
+import Icon from './Icon.astro';
 
 // The template grid of the catalog pages, with a switch between large cards (2 per row)
 // and compact ones (3 or 4 per row). The choice is remembered per visitor in localStorage.
 // Without JavaScript the switch stays hidden and the grid keeps the large cards.
 interface Props {
   templates: CollectionEntry<'templates'>[];
+  // Show the filters above the grid. Only the main catalog has them.
+  filters?: boolean;
 }
-const { templates } = Astro.props;
+const { templates, filters = false } = Astro.props;
 ---
 
 <div class="catalog-grid">
-  <div class="density-switch type-label" role="group" aria-label="Card size">
-    <span class="type-pillar">View</span>
-    <button type="button" class="density-option" data-density-option="large" aria-pressed="true">Large</button>
-    <button type="button" class="density-option" data-density-option="compact" aria-pressed="false">Compact</button>
+  <div class="catalog-bar flush-rails">
+    {filters && <CatalogFilter templates={templates} />}
+    <div class="density-switch" role="group" aria-label="Card size">
+      <button type="button" class="density-option" data-density-option="large" aria-pressed="true" aria-label="Large cards" title="Large cards">
+        <Icon name="layout-grid" class="size-5" />
+      </button>
+      <button type="button" class="density-option" data-density-option="compact" aria-pressed="false" aria-label="Compact cards" title="Compact cards">
+        <Icon name="grid-3x3" class="size-5" />
+      </button>
+    </div>
   </div>
+  {filters && <p class="filter-empty type-body" role="status" data-filter-status></p>}
   <ul class="card-grid flush-rails" data-density="large">
     {templates.map((t) => <TemplateCard template={t} level={2} />)}
   </ul>
@@ -47,3 +58,41 @@ const { templates } = Astro.props;
     );
   })();
 </script>
+
+{filters && (
+  <script is:inline>
+    (() => {
+      const nav = document.querySelector('[data-catalog-filter]');
+      const cards = [...document.querySelectorAll('.card-grid .template-card')];
+      const options = [...nav.querySelectorAll('[data-filter]')];
+      const status = document.querySelector('[data-filter-status]');
+      const keys = [...new Set(options.map((o) => o.dataset.filter))];
+      const params = new URLSearchParams(location.search);
+      const state = Object.fromEntries(keys.map((k) => [k, params.get(k) ?? '']));
+      const apply = () => {
+        let shown = 0;
+        cards.forEach((card) => {
+          const match = keys.every((k) => !state[k] || card.dataset[k].split(' ').includes(state[k]));
+          card.hidden = !match;
+          if (match) shown++;
+        });
+        options.forEach((o) => {
+          if (state[o.dataset.filter] === o.dataset.value) o.setAttribute('aria-current', 'true');
+          else o.removeAttribute('aria-current');
+        });
+        status.textContent = shown ? '' : 'No templates match. Try another filter.';
+      };
+      options.forEach((o) =>
+        o.addEventListener('click', (e) => {
+          e.preventDefault();
+          const key = o.dataset.filter;
+          state[key] = state[key] === o.dataset.value ? '' : o.dataset.value;
+          const query = new URLSearchParams(Object.entries(state).filter(([, v]) => v)).toString();
+          history.replaceState(null, '', query ? '?' + query : location.pathname);
+          apply();
+        }),
+      );
+      apply();
+    })();
+  </script>
+)}

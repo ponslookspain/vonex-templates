@@ -8,6 +8,9 @@ pageKind: "Agency"
 seoDescription: "Softic Studio is a free Framer agency template with a dark portfolio, CMS projects and a team section. Browse included pages and the live preview."
 overview: "Present your studio through its work and people. Softic Studio uses a dark layout for project case studies, services and team content, with CMS projects that can grow with your agency."
 preparation: "Prepare case studies, service descriptions and team profiles. Replace the sample CMS content and test the contact form before you publish."
+types:
+  - agency
+  - portfolio
 category: Agency
 price: 0
 tags:

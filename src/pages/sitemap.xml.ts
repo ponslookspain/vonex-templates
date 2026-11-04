@@ -1,15 +1,18 @@
 import type { APIRoute } from 'astro';
 import { getCollection } from 'astro:content';
 import { guides } from '../data/guides';
+import { categoryHref, categoryPages } from '../lib/categories';
 
 // Static pages are listed here; every template page is added automatically from the collection.
-const pages = ['/', '/templates/', ...guides.map((g) => g.href), '/guides/', '/about/', '/privacy/', '/terms/', '/license/', '/refunds/'];
+const pages = ['/', '/templates/', '/astro-templates/', '/guides/', '/about/', '/privacy/', '/terms/', '/license/', '/refunds/'];
 
 export const GET: APIRoute = async ({ site }) => {
   const templates = await getCollection('templates');
   // Template pages carry their last update date, so search engines know when to recrawl them.
   const all = [
     ...pages.map((path) => ({ path, lastmod: undefined })),
+    ...categoryPages(templates).map((c) => ({ path: categoryHref(c.slug), lastmod: undefined })),
+    ...guides.map((g) => ({ path: g.href, lastmod: new Date(g.updated + ' UTC').toISOString().slice(0, 10) })),
     ...templates.map((t) => ({ path: `/templates/${t.id}/`, lastmod: (t.data.updated ?? t.data.added).toISOString().slice(0, 10) })),
   ];
   const urls = all

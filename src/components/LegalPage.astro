@@ -25,6 +25,20 @@ const image = Astro.props.image ?? (guideSlug ? `/og/guides/${guideSlug}.png` : 
 ---
 
 <Base title={seoTitle ?? title} description={description} jsonLd={jsonLd} image={image}>
+  {guideSlug && (
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).href },
+          { '@type': 'ListItem', position: 2, name: 'Guides', item: new URL('/guides/', Astro.site).href },
+          { '@type': 'ListItem', position: 3, name: title, item: new URL(Astro.url.pathname, Astro.site).href },
+        ],
+      })}
+    />
+  )}
   <Section class="text-center" labelledby="legal-title">
     <span class="kicker type-label">{kicker}</span>
     <h1 id="legal-title" class="type-headline-lg" set:html={withAccent(title, accent) + (/[.?!]$/.test(title) ? '' : '.')} />

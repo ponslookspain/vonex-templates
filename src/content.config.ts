@@ -1,13 +1,16 @@
 import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import categories from './data/categories.json';
+
+const categorySlugs = categories.map((c) => c.slug) as [string, ...string[]];
 
 // One YAML file per template in src/content/templates/. The build fails with a clear
 // message if a field is missing or has the wrong type.
 //
 // Most of the file is written by `npm run add-template` from the Framer Marketplace page, and
 // refreshed by `npm run sync-templates`. The fields you edit by hand (and that the script
-// never overwrites) are: description, affiliateUrl, featured, tags, category, added, preview,
+// never overwrites) are: description, affiliateUrl, featured, tags, types, category, added, preview,
 // pageKind, seoDescription, overview, preparation, codeUrl, codePrice, codeVersion, buyUrl, soldOn.
 const templates = defineCollection({
   loader: glob({ pattern: '*.yaml', base: './src/content/templates' }),
@@ -39,6 +42,8 @@ const templates = defineCollection({
       codePrice: z.number().min(0).optional(),
       codeVersion: z.string().optional(),
       category: z.string(),
+      // Catalog categories, from src/data/categories.json. They drive the filter and category pages.
+      types: z.array(z.enum(categorySlugs)).min(1),
       price: z.number().min(0), // 0 = Free
       tags: z.array(z.string()).default([]),
       // Cover used on cards, in the gallery and for the social preview.
