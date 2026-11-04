@@ -6,5 +6,6 @@ dist/
 .env
 .claude/
 .omc/
+.impeccable/
 .codex/
 .work/
