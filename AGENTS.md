@@ -1,6 +1,6 @@
 # AGENTS.md
 
-The one guide for every coding agent working on this repository (Claude Code, Codex and others). `CLAUDE.md` only imports this file, so edit the rules here. Read it before changing anything. Human-facing setup and commands are in [README.md](README.md); the design direction is [DESIGN.md](DESIGN.md) and how it is built in code is [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md). Selling code versions of templates (stack, flow, rules) is in [CODE_TEMPLATES.md](CODE_TEMPLATES.md).
+The one guide for every coding agent working on this repository (Claude Code, Codex and others). `CLAUDE.md` only imports this file, so edit the rules here. Read it before changing anything. Human-facing setup and commands are in [README.md](README.md); the design direction is [DESIGN.md](DESIGN.md) and how it is built in code is [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md). Selling code versions of templates (stack, flow, rules) is in [CODE_TEMPLATES.md](CODE_TEMPLATES.md). The full path of a new template, from niche to social posts, is [TEMPLATE_PIPELINE.md](TEMPLATE_PIPELINE.md).
 
 ## Project
 
@@ -80,6 +80,7 @@ Everything generated while working lives in one git-ignored folder, `.work/<area
 | Template pages | Nothing: `npm run add-template` writes straight to `src/` and `public/og/` | YAML, pictures, og image |
 | Code versions (`.work/code/<slug>/`) | Screenshots, Framer snapshots and section-height comparisons while porting a template | The code itself, in the private `vonex-code` repo (see CODE_TEMPLATES.md), not here |
 | Pinterest (`.work/pinterest/<slug>/`) | Captures (`raw/`), pin images, JPGs, contact sheet, CSV files | `scripts/pinterest/` and `configs/<slug>.json` |
+| Generated visuals (`.work/visuals/<slug>/`) | ComfyUI output, workflows and seeds | Final images, in the template itself |
 
 Name scratch subfolders `raw`, `screens` or `tmp`: `npm run clean` removes exactly those, plus `dist`, `.astro` and `.wrangler`. `npm run clean -- --all` removes the whole `.work/` (look first with `--dry-run`). Clean up when a job is finished: the pins are live in Pinterest, or the code version is packed and uploaded.
 
