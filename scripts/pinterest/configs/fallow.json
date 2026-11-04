@@ -1,0 +1,62 @@
+{
+  "slug": "fallow",
+  "url": "https://fallow.framer.website/",
+  "backgrounds": {
+    "ink": { "type": "solid", "color": "#2a2420" },
+    "paper": { "type": "solid", "color": "#faf5ea" },
+    "sand": { "type": "solid", "color": "#e4cdb0" },
+    "fade": { "type": "gradient", "from": "#a9553a", "to": "#faf5ea" },
+    "glow": { "type": "glow", "base": "#2a1a14", "light": "#a9553a" },
+    "soft": { "type": "photo", "left": 500, "top": 0, "width": 600, "height": 900, "tint": "rgba(250,245,234,.2)" }
+  },
+  "deskKeep": [[0, 6310], [7198, 4137]],
+  "sections": [
+    [0, 900],
+    [900, 760],
+    [1650, 750],
+    [3600, 900],
+    [4500, 900],
+    [5400, 900],
+    [6310, 860],
+    [7202, 830],
+    [8132, 720],
+    [9392, 1055]
+  ],
+  "pins": [
+    ["long", "fade", 0],
+    ["long", "ink", 3600],
+    ["long", "sand", 6310],
+    ["long", "paper", 8412],
+    ["columns", "ink", [0, 3600]],
+    ["monitor", "ink", 0],
+    ["monitor", "soft", 4500],
+    ["combo", "paper", 0, 0],
+    ["combo", "glow", 9392, 22390],
+    ["trio", "fade", [0, 4690, 18840]],
+    ["trio", "ink", [1690, 14480, 22390]],
+    ["phone", "glow", 0],
+    ["phone", "sand", 14480],
+    ["window", "ink", 900, 1690],
+    ["window", "soft", 5400, 18840],
+    ["tilted", "paper"],
+    ["tilted", "ink"]
+  ],
+  "pinterest": {
+    "name": "Fallow",
+    "kind": "therapist and counseling website",
+    "pageTitle": "Free Framer template for therapists",
+    "topicBoard": "Therapist Website Design",
+    "pitch": "A calm, editorial website for therapists and small private practices with fees, booking openings, a CMS journal and a contact form.",
+    "keywords": [
+      "framer template",
+      "free framer template",
+      "therapist website",
+      "therapy website design",
+      "counselor website",
+      "wellness website design",
+      "website template",
+      "web design inspiration"
+    ],
+    "generalBoard": "Framer Templates"
+  }
+}

@@ -54,7 +54,7 @@ const isVersion = (t: string) => /^v?\d+(\.\d+)*\b/.test(t);
 function describesCms(text: string): boolean {
   // Marketplace feature arrays can be empty even when named CMS pages are included.
   if (/\b(?:no|without|not|doesn't)\b[^.!?;]*\bcms\b/i.test(text)) return false;
-  return /\bcms[- ]powered\b|\bcms\s+(?:blog|changelog|projects?|services?|team|collections?)\b|\(\s*cms\s*\)/i.test(text);
+  return /\bcms[- ]powered\b|\bcms\s+(?:blog|journal|list|changelog|projects?|services?|team|collections?)\b|\(\s*cms\s*\)/i.test(text);
 }
 
 function listKind(t: string): ListBlock['kind'] | null {
@@ -143,7 +143,8 @@ export function buildContent(t: Template): TemplateContent {
       inBenefits = false;
       const block: ListBlock = { id, kind: kind ?? 'list', title: s.title.replace(/:$/, ''), items };
       out.blocks.push(block);
-      if (block.kind === 'pages') out.pages = items;
+      // "Contact and 404" is two pages in one Marketplace line.
+      if (block.kind === 'pages') out.pages = items.flatMap((x) => x.split(/ and (?=404)/i));
       if (block.kind === 'sections') out.sectionNames = items;
       if (block.kind === 'features') out.cmsParts = items.filter((x) => /\bcms\b/i.test(x));
       continue;
