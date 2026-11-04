@@ -440,6 +440,10 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     padding: var(--spacing-lg) var(--rail-inset);
     background: var(--color-surface);
   }
+  /* An odd last cell fills the row, so the grid never shows an empty grey cell. */
+  .stat:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
   .stat-label {
     font-family: var(--font-mono);
     font-size: var(--text-label);
