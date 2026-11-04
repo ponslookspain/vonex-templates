@@ -45,6 +45,13 @@ Local ComfyUI may be used to generate images when a template needs them (photos,
 
 Publish the demo, submit the template, and write the demo URL into the template's status notes.
 
+Every template gets exactly 4 Marketplace preview images:
+
+1. Images 1 to 3: a polished view of one part of the site each, showing a strong section or screen.
+2. Image 4: all pages of the site together, set at an angle.
+
+Do not use plain screenshots.
+
 ## 4. Code version
 
 Follow [CODE_TEMPLATES.md](CODE_TEMPLATES.md). The Framer site is the reference. Build first, then check the built site with `npm run preview`, not the dev server.
