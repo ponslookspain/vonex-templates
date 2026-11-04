@@ -1,0 +1,69 @@
+[
+  {
+    "slug": "portfolio",
+    "label": "Portfolio",
+    "accent": "Portfolio",
+    "keywords": ["portfolio", "personal", "freelancer", "freelancers", "designer", "designers", "photographer"],
+    "seoTitle": "Portfolio Website Templates for Framer",
+    "description": "Portfolio website templates for designers, freelancers and studios. Compare project pages, CMS features and live demos, then publish in Framer.",
+    "lead": "Show your work, explain what you do and make contact easy. Open a template to compare its project pages and live demo.",
+    "include": ["A short line that says what you do and who you work with", "Three to six case studies, not every project you ever made", "An about section with your experience and services", "One clear way to get in touch"],
+    "faq": [
+      { "q": "What should a portfolio website include?", "a": "Your best projects, a short introduction, your services and a clear contact option. Three to six strong projects usually work better than a long list." },
+      { "q": "Can I add new projects later?", "a": "Yes, in templates with a CMS. You add a project as a new item, and its page and list entry follow the template design." }
+    ]
+  },
+  {
+    "slug": "agency",
+    "label": "Agency",
+    "accent": "Agency",
+    "keywords": ["agency", "studio"],
+    "seoTitle": "Agency Website Templates for Framer",
+    "description": "Agency website templates with projects, services and team sections. Compare the pages and live demos, then publish in Framer.",
+    "lead": "Present your studio, your services and the work behind them. Open a template to compare its pages and live demo.",
+    "include": ["A clear statement of what the agency does", "Selected projects with results", "Services and how you work", "The team and a contact form"],
+    "faq": [
+      { "q": "What pages does an agency website need?", "a": "Most agencies need a home page, projects, services, an about page and contact. Add a blog only if you will keep it updated." }
+    ]
+  },
+  {
+    "slug": "saas-apps",
+    "label": "SaaS and app",
+    "accent": "app",
+    "keywords": ["saas", "software", "startup", "app", "apps", "mobile app"],
+    "seoTitle": "SaaS and App Website Templates for Framer and Astro",
+    "description": "Website templates for SaaS products and mobile apps, with pricing, features and support pages. Use them in Framer or buy the code.",
+    "lead": "Launch a product site with the pages people look for first: features, pricing and support. Every template here is also available as Astro code.",
+    "include": ["One sentence that explains the product", "Screens of the real product", "Features written as benefits", "Pricing, support and legal pages"],
+    "faq": [
+      { "q": "What should a SaaS landing page include?", "a": "A clear headline, product screens, key features, pricing and one main call to action. Add answers to the questions people ask before they sign up." },
+      { "q": "Can I use these templates without Framer?", "a": "Yes. Templates in this category also come as Astro and Tailwind CSS code, which you can host on any static host." }
+    ]
+  },
+  {
+    "slug": "ai",
+    "label": "AI",
+    "accent": "AI",
+    "keywords": ["ai", "artificial intelligence"],
+    "seoTitle": "AI Website Templates for Framer",
+    "description": "Website templates for AI tools and products. Compare the pages and live demos, then publish in Framer.",
+    "lead": "Explain what your AI product does and show it working. Open a template to compare its pages and live demo.",
+    "include": ["What the tool does, in plain words", "A real example of its output", "Pricing and a changelog", "How you handle customer data"],
+    "faq": [
+      { "q": "What should an AI product website show?", "a": "Show what goes in and what comes out, who the tool is for and what it costs. A real example explains more than a list of features." }
+    ]
+  },
+  {
+    "slug": "therapy",
+    "label": "Therapy",
+    "accent": "Therapy",
+    "keywords": ["therapy", "therapist", "therapists", "counselor", "psychologist"],
+    "seoTitle": "Therapist Website Templates for Framer and Astro",
+    "description": "Calm website templates for therapists and small practices, with fees, openings and contact pages. Use them in Framer or buy the code.",
+    "lead": "Help people understand how you work, what it costs and how to reach you.",
+    "include": ["Who you work with and how", "Fees and session length", "Current openings", "A simple contact form"],
+    "faq": [
+      { "q": "What should a therapist website include?", "a": "Your approach, who you work with, fees, availability and a simple way to get in touch." }
+    ]
+  }
+]

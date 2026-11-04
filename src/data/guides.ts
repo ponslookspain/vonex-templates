@@ -14,6 +14,30 @@ export interface Guide {
 
 export const guides: Guide[] = [
   {
+    href: '/guides/how-to-make-a-portfolio-website/',
+    title: 'How to make a portfolio website',
+    description: 'Seven steps from choosing your work to publishing the site.',
+    group: 'guide',
+    kind: 'How-to',
+    updated: 'November 4, 2026',
+  },
+  {
+    href: '/guides/therapist-website/',
+    title: 'What to put on a therapist website',
+    description: 'Your approach, fees, openings and a simple contact page.',
+    group: 'guide',
+    kind: 'How-to',
+    updated: 'November 4, 2026',
+  },
+  {
+    href: '/guides/portfolio-website-examples/',
+    title: 'Portfolio website examples',
+    description: 'Two live portfolio demos and what you can take from each.',
+    group: 'article',
+    kind: 'Roundup',
+    updated: 'November 4, 2026',
+  },
+  {
     href: '/guides/how-to-use-framer-templates/',
     title: 'How to use a Framer template',
     description: 'Copy a template, replace the content, check every screen size and publish.',

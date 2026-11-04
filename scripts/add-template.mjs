@@ -22,7 +22,7 @@ const contentDir = path.join(root, 'src/content/templates');
 const assetsDir = path.join(root, 'src/assets/templates');
 
 // Fields you own: never overwritten when a template is updated from Framer.
-const MANUAL = ['description', 'affiliateUrl', 'featured', 'tags', 'category', 'added', 'preview', 'pageKind', 'seoDescription', 'overview', 'preparation', 'codeUrl', 'codePrice', 'codeVersion', 'buyUrl', 'soldOn'];
+const MANUAL = ['description', 'affiliateUrl', 'featured', 'tags', 'types', 'category', 'added', 'preview', 'pageKind', 'seoDescription', 'overview', 'preparation', 'codeUrl', 'codePrice', 'codeVersion', 'buyUrl', 'soldOn'];
 
 const { values: opt, positionals } = parseArgs({
   allowPositionals: true,
@@ -30,6 +30,7 @@ const { values: opt, positionals } = parseArgs({
     all: { type: 'boolean', default: false }, // refresh every template
     category: { type: 'string' },
     tags: { type: 'string' }, // comma separated
+    types: { type: 'string' }, // comma separated slugs from src/data/categories.json
     description: { type: 'string' },
     affiliate: { type: 'string' }, // framer.link/... referral link
     featured: { type: 'boolean' },
@@ -47,6 +48,7 @@ Options:
   --affiliate <url>      Your Framer referral link (framer.link/...), used for "Open on Framer"
   --category <name>      Category shown on the card (default: detected)
   --tags a,b,c           Tags shown on the template page
+  --types a,b            Catalog categories (default: detected from the Framer data and texts)
   --description <text>   Short card description (default: the tagline)
   --featured             Show on the landing page (the first 3 featured are shown)
   --refresh-media        Download the images again
@@ -64,6 +66,21 @@ const fail = (msg) => {
 };
 const exists = (p) => access(p).then(() => true, () => false);
 const rel = (p) => path.relative(root, p).replace(/\\/g, '/');
+const categoryList = JSON.parse(await readFile(path.join(root, 'src/data/categories.json'), 'utf8'));
+
+// Framer categories are often just "Free", so the name and texts are searched too. Whole words
+// only: "ai" must not match inside "email". The result is a suggestion, printed for a check.
+function detectTypes(texts) {
+  const text = texts.filter(Boolean).join(' ').toLowerCase();
+  return categoryList.filter((c) => c.keywords.some((k) => new RegExp('\\b' + k + '\\b').test(text))).map((c) => c.slug);
+}
+function parseTypes(value) {
+  const types = value.split(',').map((t) => t.trim()).filter(Boolean);
+  const unknown = types.filter((t) => !categoryList.some((c) => c.slug === t));
+  if (unknown.length) fail('unknown type: ' + unknown.join(', ') + '. Add it to src/data/categories.json first.');
+  return types;
+}
+
 const day = (iso) => (iso ? String(iso).slice(0, 10) : undefined);
 
 // ---- fallback when Framer changes its page: read the meta tags --------------------------
@@ -150,6 +167,7 @@ async function importOne(slug, { flags }) {
     category: opt.category ?? old.category ?? guessCategory,
     price: d.price,
     tags: opt.tags ? opt.tags.split(',').map((t) => t.trim()).filter(Boolean) : (old.tags ?? []),
+    types: opt.types ? parseTypes(opt.types) : (old.types ?? detectTypes([...categories, d.name, d.tagline, opt.description, ...(d.intro ?? [])])),
     image: `../../assets/templates/${slug}.webp`,
     featured: opt.featured ?? old.featured ?? false,
     added: old.added ? day(old.added instanceof Date ? old.added.toISOString() : old.added) : (day(d.publishedAt) ?? day(new Date().toISOString())),
@@ -183,6 +201,8 @@ async function importOne(slug, { flags }) {
 
   if (!(opt.affiliate ?? old.affiliateUrl)) notes.push('no --affiliate link: "Open on Framer" goes to the Marketplace page without your referral');
   if (!had && !opt.description) notes.push('description is a draft (the tagline): write one or two sentences for the card');
+  if (!data.types.length) notes.push('no category detected: run again with --types, or the build will fail');
+  else if (!had && !opt.types) notes.push('detected types: ' + data.types.join(', ') + '. Check them');
   if (!had && !opt.tags) notes.push('no --tags given');
   if (d.price === 0 && /premium/i.test(`${d.intro?.join(' ')} ${d.sections?.[0]?.paragraphs?.join(' ') ?? ''}`)) notes.push('this template is free on Framer, but its description says "premium"');
   if (notes.length) console.log(`  Check:\n${notes.map((n) => `    - ${n}`).join('\n')}`);

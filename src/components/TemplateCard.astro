@@ -19,7 +19,12 @@ const href = `/templates/${template.id}/`;
 const free = t.price === 0;
 ---
 
-<li class:list={['template-card', className]}>
+<li
+  class:list={['template-card', className]}
+  data-type={t.types.join(' ')}
+  data-format={t.codeUrl ? 'framer code' : 'framer'}
+  data-price={free ? 'free' : 'paid'}
+>
   <a href={href} class="group flex h-full flex-col">
     <div class="relative aspect-[4/3] overflow-hidden border-b border-line">
       <Image

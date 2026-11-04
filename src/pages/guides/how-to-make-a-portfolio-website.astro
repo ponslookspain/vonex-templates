@@ -1,0 +1,71 @@
+---
+import LegalPage from '../../components/LegalPage.astro';
+import Button from '../../components/Button.astro';
+
+const title = 'How to make a portfolio website';
+const description = 'Make a portfolio website in seven steps: choose your work, write case studies, pick a template, add contact details and publish.';
+const url = new URL('/guides/how-to-make-a-portfolio-website/', Astro.site).href;
+---
+
+<LegalPage accent="portfolio"
+  kicker="Guide"
+  title={title}
+  seoTitle="How to make a portfolio website in 7 steps"
+  description={description}
+  updated="November 4, 2026"
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description,
+    url,
+    mainEntityOfPage: url,
+    dateModified: '2026-11-04',
+    author: { '@type': 'Organization', name: 'Vonex Design', url: new URL('/', Astro.site).href },
+  }}
+>
+  <p>
+    <strong>Short answer:</strong> pick your best three to six projects, write a short story for each, put them in a
+    template and publish. Most of the work is choosing and writing, not design.
+  </p>
+
+  <h2>1. Decide who it is for</h2>
+  <p>Write one sentence: what you do and who hires you. Use it as your headline. It also helps you decide which projects belong on the site.</p>
+
+  <h2>2. Choose three to six projects</h2>
+  <p>Pick the work you want more of. A short list of strong projects is easier to read than everything you have made. Check that you are allowed to show client work.</p>
+
+  <h2>3. Write a short case study for each</h2>
+  <ul>
+    <li>The client or goal, in one line.</li>
+    <li>What you did, and what your role was.</li>
+    <li>What changed after the work. Use a real result if you have one.</li>
+  </ul>
+
+  <h2>4. Prepare your images</h2>
+  <p>Collect images before you open an editor. Use one size and style for project covers, so the list looks consistent.</p>
+
+  <h2>5. Pick a template</h2>
+  <p>
+    A template gives you the layout, responsive screens and project pages. Compare our
+    <a href="/templates/category/portfolio/">portfolio website templates</a>. If you are not sure about the format, read
+    <a href="/guides/framer-or-code/">Framer template or code</a>.
+  </p>
+
+  <h2>6. Add an about section and contact details</h2>
+  <p>Say what you offer, where you work and how to reach you. Keep one main contact option and show it on every page.</p>
+
+  <h2>7. Check and publish</h2>
+  <ul>
+    <li>Open every page on a phone.</li>
+    <li>Test the contact form and every link.</li>
+    <li>Write a page title and description for search.</li>
+    <li>Connect your domain and publish.</li>
+  </ul>
+  <p>For a Framer walkthrough, see <a href="/guides/framer-portfolio-template/">how to build a portfolio with a Framer template</a>.</p>
+
+  <div class="mt-xl flex flex-wrap gap-sm">
+    <Button href="/templates/category/portfolio/" arrow>Portfolio templates</Button>
+    <Button href="/guides/portfolio-website-examples/" variant="secondary" arrow>Portfolio examples</Button>
+  </div>
+</LegalPage>

@@ -1,0 +1,74 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Section from '../../../components/Section.astro';
+import SectionHeader from '../../../components/SectionHeader.astro';
+import CatalogGrid from '../../../components/CatalogGrid.astro';
+import FaqBlock from '../../../components/FaqBlock.astro';
+import FaqItem from '../../../components/FaqItem.astro';
+import Button from '../../../components/Button.astro';
+import { categoryHref, categoryPages, inCategory } from '../../../lib/categories';
+
+export async function getStaticPaths() {
+  const all = await getCollection('templates');
+  return categoryPages(all).map((category) => ({ params: { category: category.slug }, props: { category, all } }));
+}
+
+const { category, all } = Astro.props;
+const templates = inCategory(all, category.slug).sort((a, b) => b.data.added.getTime() - a.data.added.getTime());
+const url = new URL(categoryHref(category.slug), Astro.site).href;
+---
+
+<Base
+  title={category.seoTitle}
+  description={category.description}
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        name: category.seoTitle,
+        url,
+        mainEntity: {
+          '@type': 'ItemList',
+          itemListElement: templates.map((t, i) => ({
+            '@type': 'ListItem',
+            position: i + 1,
+            name: `${t.data.name}: ${t.data.tagline}`,
+            url: new URL(`/templates/${t.id}/`, Astro.site).href,
+          })),
+        },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: new URL('/', Astro.site).href },
+          { '@type': 'ListItem', position: 2, name: 'Templates', item: new URL('/templates/', Astro.site).href },
+          { '@type': 'ListItem', position: 3, name: category.label, item: url },
+        ],
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: category.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+      },
+    ],
+  }}
+>
+  <Section labelledby="list-title" flush="bottom" bar={{ left: 'Category', right: `${String(templates.length).padStart(2, '0')} templates` }}>
+    <SectionHeader id="list-title" level={1} title={`${category.label} website templates.`} accent={category.accent} lead={category.lead}>
+      <Button href="/templates/" variant="secondary">All templates</Button>
+    </SectionHeader>
+    <CatalogGrid templates={templates} />
+  </Section>
+
+  <Section labelledby="include-title" flush="bottom" bar={{ left: 'Checklist' }}>
+    <SectionHeader id="include-title" title="What to include." accent="include" />
+    <ul class="type-body grid-4 gap-y-lg pb-xl">
+      {category.include.map((item) => <li class="col-span-4 md:col-span-2 lg:col-span-1">{item}</li>)}
+    </ul>
+  </Section>
+
+  <FaqBlock title="Questions." accent="Questions">
+    {category.faq.map((f) => <FaqItem question={f.q}><p>{f.a}</p></FaqItem>)}
+  </FaqBlock>
+</Base>

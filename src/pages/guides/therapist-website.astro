@@ -1,0 +1,66 @@
+---
+import LegalPage from '../../components/LegalPage.astro';
+import Button from '../../components/Button.astro';
+
+const title = 'What to put on a therapist website';
+const description = 'What a therapist website needs: your approach, fees, openings and a simple contact page, with a checklist before you publish.';
+const url = new URL('/guides/therapist-website/', Astro.site).href;
+---
+
+<LegalPage accent="therapist"
+  kicker="Guide"
+  title={title}
+  seoTitle="Therapist website: what to include and how to start"
+  description={description}
+  updated="November 4, 2026"
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description,
+    url,
+    mainEntityOfPage: url,
+    dateModified: '2026-11-04',
+    author: { '@type': 'Organization', name: 'Vonex Design', url: new URL('/', Astro.site).href },
+  }}
+>
+  <p>
+    <strong>Short answer:</strong> people visiting a therapist website want to know if you can help, what it costs and
+    how to reach you. Answer those three questions in plain, calm language.
+  </p>
+
+  <h2>Who you work with</h2>
+  <p>Say which people and issues you work with, and how you work. Write as you would speak to someone in a first conversation.</p>
+
+  <h2>Your background</h2>
+  <p>List your training and any registration or license that applies where you practice. A real photo helps people feel they know who they will meet.</p>
+
+  <h2>Fees and session details</h2>
+  <p>Show your fee, session length, and whether you work online, in person or both. Clear details save time for you and for the person reading.</p>
+
+  <h2>Current openings</h2>
+  <p>Tell people if you have space now. If you have a waiting list, say so. Keep this part up to date.</p>
+
+  <h2>A simple contact page</h2>
+  <p>Ask only for what you need to reply. Do not invite people to share health details in a form, and check which privacy rules apply to your practice.</p>
+  <p>Explain that the form is not for emergencies, and say where people can get urgent help in your area.</p>
+
+  <h2>Before you publish</h2>
+  <ul>
+    <li>Read every page on a phone.</li>
+    <li>Test the contact form.</li>
+    <li>Add a privacy page.</li>
+    <li>Check your fees and openings.</li>
+  </ul>
+
+  <h2>Start from a template</h2>
+  <p>
+    <a href="/templates/fallow/">Fallow</a> is a calm template for therapists and small practices, with fees, booking
+    openings, a journal and a contact page. Use it free in Framer, or get it as Astro code.
+  </p>
+
+  <div class="mt-xl flex flex-wrap gap-sm">
+    <Button href="/templates/fallow/" arrow>View Fallow</Button>
+    <Button href="/guides/framer-or-code/" variant="secondary" arrow>Framer or code</Button>
+  </div>
+</LegalPage>

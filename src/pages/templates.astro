@@ -4,24 +4,22 @@ import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
 import SectionHeader from '../components/SectionHeader.astro';
 import CatalogGrid from '../components/CatalogGrid.astro';
-import Button from '../components/Button.astro';
 
 const templates = (await getCollection('templates')).sort(
   (a, b) => b.data.added.getTime() - a.data.added.getTime(),
 );
-const count = String(templates.length).padStart(2, '0');
 // Mention premium templates only while the catalog has one.
 const hasPaid = templates.some((t) => t.data.price > 0);
 ---
 
 <Base
-  title={hasPaid ? 'Framer Templates — Free and Premium' : 'Free Framer Templates, Some Also as Code'}
+  title={hasPaid ? 'Website Templates for Framer and Code' : 'Free Website Templates for Framer and Astro'}
   image="/og/pages/templates.png"
-  description={`Find a Framer template for your portfolio, agency, app or SaaS product. ${hasPaid ? 'Explore free and paid designs by Vonex' : 'Every Vonex template is free, some also come as Astro code'}, with screenshots and live demos.`}
+  description={`Find a website template for your portfolio, agency, app, SaaS product or therapy practice. ${hasPaid ? 'Explore free and paid designs by Vonex' : 'Every Vonex template is free, some also come as Astro code'}, with screenshots and live demos.`}
   jsonLd={{
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: 'All Framer Templates',
+    name: 'All website templates',
     url: new URL('/templates/', Astro.site).href,
     mainEntity: {
       '@type': 'ItemList',
@@ -34,14 +32,15 @@ const hasPaid = templates.some((t) => t.data.price > 0);
     },
   }}
 >
-  <Section labelledby="list-title" flush="bottom" bar={{ left: 'Catalog', right: `${count} templates · Newest first` }}>
+  <Section labelledby="list-title" flush="bottom" bar={{ left: 'Catalog', right: 'Newest first' }}>
     <SectionHeader
       id="list-title"
       level={1}
-      title="Framer templates."
+      title="Website templates."
       accent="templates"
-      lead="Find a starting point for your portfolio, agency, app or software product. Open a template to compare its pages, CMS features and live demo."
-    />
-    <CatalogGrid templates={templates} />
+    >
+      <p class="type-body type-pillar">Find a starting point for your site, in Framer or as code. Open a template to compare its pages, features and live demo.</p>
+    </SectionHeader>
+    <CatalogGrid templates={templates} filters />
   </Section>
 </Base>

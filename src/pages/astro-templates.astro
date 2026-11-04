@@ -1,0 +1,64 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Section from '../components/Section.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import CatalogGrid from '../components/CatalogGrid.astro';
+import FaqBlock from '../components/FaqBlock.astro';
+import FaqItem from '../components/FaqItem.astro';
+import Button from '../components/Button.astro';
+
+const templates = (await getCollection('templates'))
+  .filter((t) => t.data.codeUrl)
+  .sort((a, b) => b.data.added.getTime() - a.data.added.getTime());
+const url = new URL('/astro-templates/', Astro.site).href;
+
+const faq = [
+  { q: 'What do I get with an Astro template?', a: 'A project folder built with Astro and Tailwind CSS, with a README that explains how to install and edit it.' },
+  { q: 'Where can I host it?', a: 'On any static host, such as Cloudflare, Netlify or Vercel, or on your own server.' },
+  { q: 'Is it an export from Framer?', a: 'No. Each code version is written by hand and closely matches the Framer design on desktop, tablet and phone.' },
+  { q: 'Do I need to know how to code?', a: 'A little. You install Node.js, run two commands and edit text files. If you prefer a visual editor, use the Framer version.' },
+];
+---
+
+<Base
+  title="Astro Website Templates with Tailwind CSS"
+  description="Hand-written Astro and Tailwind CSS website templates for SaaS, apps and therapists. See the live demos and host the code anywhere."
+  jsonLd={{
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        name: 'Astro website templates',
+        url,
+        mainEntity: {
+          '@type': 'ItemList',
+          itemListElement: templates.map((t, i) => ({
+            '@type': 'ListItem',
+            position: i + 1,
+            name: `${t.data.name}: ${t.data.tagline}`,
+            url: new URL(`/templates/${t.id}/`, Astro.site).href,
+          })),
+        },
+      },
+      { '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+    ],
+  }}
+>
+  <Section labelledby="list-title" flush="bottom" bar={{ left: 'Code', right: `${String(templates.length).padStart(2, '0')} templates` }}>
+    <SectionHeader
+      id="list-title"
+      level={1}
+      title="Astro website templates."
+      accent="Astro"
+      lead="Clean Astro and Tailwind CSS projects, written by hand. Open a template to see the live demo and the code version."
+    >
+      <Button href="/guides/framer-or-code/" variant="secondary" arrow>Framer or code</Button>
+    </SectionHeader>
+    <CatalogGrid templates={templates} />
+  </Section>
+
+  <FaqBlock title="Questions." accent="Questions">
+    {faq.map((f) => <FaqItem question={f.q}><p>{f.a}</p></FaqItem>)}
+  </FaqBlock>
+</Base>
