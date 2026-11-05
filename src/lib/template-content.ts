@@ -50,6 +50,8 @@ const isSupport = (t: string) => /^support\b/.test(t);
 const isPolicy = (t: string) => /\b(refunds?|returns?)\b.*\bpolicy\b/.test(t);
 const isUpdates = (t: string) => /^(updates?|changelog|what.?s new)$/.test(t);
 const isVersion = (t: string) => /^v?\d+(\.\d+)*\b/.test(t);
+// Limits and setup notes stay a block of their own, so they never read like a benefit.
+const isNote = (t: string) => /^good to know\b/.test(t);
 
 function describesCms(text: string): boolean {
   // Marketplace feature arrays can be empty even when named CMS pages are included.
@@ -154,7 +156,7 @@ export function buildContent(t: Template): TemplateContent {
     // a benefit also when it is short, otherwise a plain text block.
     const text = paragraphs.join(' ');
     const longText = paragraphs.length > 1 || text.length > 260;
-    if (paragraphs.length && (inBenefits || (!longText && !isWhyHeader(title) && !/^who\b/.test(title)))) {
+    if (paragraphs.length && !isNote(title) && (inBenefits || (!longText && !isWhyHeader(title) && !/^who\b/.test(title)))) {
       out.benefits.push({ title: s.title, text });
       continue;
     }

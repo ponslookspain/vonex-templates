@@ -1,15 +1,9 @@
 name: Ethan Walker
-tagline: Digital Designer Portfolio
+tagline: Designer portfolio with CMS
 description: Bold typography and spacious layouts for designers, with a CMS-powered portfolio.
 url: https://www.framer.com/marketplace/templates/ethan-walker/
 affiliateUrl: https://framer.link/OOMlcTk
 preview: https://ethan-walker.framer.website/
-pageKind: "Portfolio"
-seoDescription: "Ethan Walker is a free Framer portfolio template for designers and freelancers, with CMS projects and services. See included pages and the live demo."
-overview: "Build a portfolio around your own projects rather than a long introduction. Ethan Walker pairs large typography with CMS project pages, so you can add work as your portfolio grows."
-preparation: "Prepare project images, case-study text and service descriptions. Review the included CMS collections against your Framer plan before publishing."
-types:
-  - portfolio
 category: Portfolio
 price: 0
 tags:
@@ -17,10 +11,12 @@ tags:
   - minimal
   - designer
   - cms
+types:
+  - portfolio
 image: ../../assets/templates/ethan-walker.webp
 featured: true
 added: 2026-07-03
-updated: 2026-09-18
+updated: 2026-11-05
 framerId: "68816"
 categories:
   - Personal
@@ -31,7 +27,6 @@ categories:
 styles:
   - Large Type
   - Typographic
-  - Modern
   - Minimal
 framerFeatures:
   - Appear Effects
@@ -43,39 +38,33 @@ framerFeatures:
   - Code Components
 intro: []
 sections:
-  - title: Walker — Framer Portfolio Template for Creative Professionals
+  - title: About Ethan Walker
     paragraphs:
-      - Walker is a premium Framer portfolio template for designers, freelancers, creative professionals, and digital creators who want to showcase their work with a clean, modern, and timeless website.
-  - title: About
+      - Ethan Walker is a free portfolio template for Framer, made for designers, freelancers and creative developers. Large type and open layouts keep the focus on your projects, not on a long introduction.
+      - Add a new case study in the CMS and the design takes care of the rest, so your portfolio can grow without layout work.
+  - title: Why Ethan Walker
+  - title: Your work comes first
     paragraphs:
-      - Walker combines bold typography, spacious layouts, smooth interactions, and a refined minimalist aesthetic to create a portfolio that keeps the focus on your work. Whether you're building a personal brand or presenting client projects, Walker helps you launch a professional website in Framer without writing code.
-  - title: Why Walker
-  - title: Designed for Creative Professionals
+      - Bold typography, generous spacing and a clear hierarchy guide visitors straight to your projects.
+  - title: Projects in the CMS
     paragraphs:
-      - Perfect for UI/UX designers, graphic designers, freelancers, creative developers, photographers, and digital creatives looking for a polished online portfolio.
-  - title: CMS-Powered Portfolio
+      - Manage projects and services in Framer CMS and update your portfolio without editing the design.
+  - title: Ready for enquiries
     paragraphs:
-      - Manage projects effortlessly with Framer CMS and update your portfolio without editing the design.
-  - title: Minimal Design with Strong Visual Hierarchy
+      - Work, About and Contact pages come ready, with a contact form for new clients.
+  - title: Subtle motion
     paragraphs:
-      - Clean layouts, large typography, generous spacing, and subtle animations create a premium browsing experience.
-  - title: Fast & SEO Ready
-    paragraphs:
-      - Built with responsive layouts, optimized performance, semantic structure, and SEO best practices.
+      - Smooth animations and hover interactions add polish without getting in the way of your work.
   - title: Features
     items:
-      - Premium Framer portfolio template
-      - Fully responsive design
-      - Modern minimalist aesthetic
+      - Responsive on desktop, tablet and phone
       - CMS Projects
       - CMS Services
       - CMS Privacy Policy
-      - Smooth animations
-      - Elegant hover interactions
+      - Large typographic layouts
+      - Appear, scroll and text effects
+      - Hover interactions
       - Contact form
-      - Fast loading performance
-      - SEO optimized
-      - No-code customization
   - title: Pages Included
     items:
       - Home
@@ -87,19 +76,23 @@ sections:
       - "404"
   - title: Best For
     items:
-      - Designer Portfolio
-      - Creative Portfolio
-      - Freelancer Website
-      - UI/UX Designer
-      - Graphic Designer
-      - Creative Developer
-      - Personal Brand
-      - Digital Creator
-      - Framer Portfolio Template
-  - title: "Support:"
+      - UI/UX designers
+      - Graphic designers
+      - Freelancers
+      - Creative developers
+      - Personal brand websites
+      - Design portfolios
+  - title: Good to Know
     paragraphs:
-      - If you have any questions about using or customizing the template, feel free to reach out via [ponslookdesign@gmail.com](mailto:ponslookdesign@gmail.com) or [X](https://x.com/ponslookdesign).
+      - Replace the sample projects, services and privacy text with your own. Check that your Framer plan covers the CMS collections before you publish.
+  - title: Support
+    paragraphs:
+      - If you have questions about using or customizing the template, write to [ponslookdesign@gmail.com](mailto:ponslookdesign@gmail.com) or [X](https://x.com/ponslookdesign).
 gallery:
   - type: image
     src: ../../assets/templates/ethan-walker.webp
     alt: Ethan Walker template, preview 1
+pageKind: Portfolio
+seoDescription: Ethan Walker is a free Framer portfolio template for designers and freelancers, with CMS projects and services. See included pages and the live demo.
+overview: Build a portfolio around your own projects rather than a long introduction. Ethan Walker pairs large typography with CMS project pages, so you can add work as your portfolio grows.
+preparation: Prepare project images, case-study text and service descriptions. Review the included CMS collections against your Framer plan before publishing.

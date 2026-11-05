@@ -1,26 +1,18 @@
 name: Alpine App
-tagline: Monochrome mobile app landing
+tagline: Mobile app landing page template
 description: A black and white landing page for a mobile app, with specs, pricing, FAQ, legal and 404 pages.
 url: https://www.framer.com/marketplace/templates/alpine-app/
 affiliateUrl: https://framer.link/yns3JDg
 preview: https://alpine-template.framer.website/
-pageKind: "App Landing Page"
-seoDescription: "Alpine App is a free Framer app landing page template with a phone preview, pricing, support and legal pages. See the live demo."
-overview: "Give your mobile app a focused launch page. Alpine App puts a phone preview, download links and pricing in one monochrome layout, with separate support and legal pages."
-preparation: "Prepare your app screenshots or screen recording, store links and pricing. Replace the sample support and legal content with information that applies to your app."
-# Code version sold on Contra.
-codeUrl: https://contra.com/products/8b1QjAwN-alpine-astro-mobile-app-landing-page-template
-codePrice: 19
-codeVersion: "1.0"
-types:
-  - saas-apps
 category: Apps
 price: 0
 tags: []
+types:
+  - saas-apps
 image: ../../assets/templates/alpine-app.webp
 featured: true
 added: 2026-11-03
-updated: 2026-11-03
+updated: 2026-11-05
 framerId: "78037"
 categories:
   - Free
@@ -31,19 +23,26 @@ styles:
 framerFeatures: []
 intro: []
 sections:
-  - title: About Alpine
+  - title: About Alpine App
     paragraphs:
-      - Alpine is a free Framer template for mobile app landing pages. Black-on-white type, square corners and hairline grids give it a precise, technical look that puts your app first.
-      - Your app sits on a phone below an oversized headline. Swap the screenshot or drop in an MP4 screen recording from the right panel. No code, no digging into layers.
-  - title: Why Alpine
+      - Alpine App is a free mobile app landing page template for Framer. Black-on-white type, square corners and hairline grids give your app a precise, technical launch page.
+      - Your app sits on a phone below an oversized headline. Swap the screenshot or drop in an MP4 screen recording from the right panel, with no digging through layers.
+  - title: Why Alpine App
+  - title: Built for app launches
     paragraphs:
-      - "Built for app launches: Store buttons, a QR code, ratings and a Free/Pro pricing table with a monthly/yearly switch come ready to use."
-      - "Store-ready pages: App Store and Google Play ask for a support URL and a privacy policy. Alpine includes both: a Support page with a native form and a Legal page with Privacy Policy and Terms."
-      - "Edit everything from properties: Every text, link, image and alt text is a component property. Colours and fonts are global styles, so a rebrand takes minutes."
-      - "Fast and SEO ready: One H1 per page, clean heading order, meta titles, descriptions, Open Graph image and favicon are set."
-  - title: "Features:"
+      - Store buttons, a QR code, ratings and a Free/Pro pricing table with a monthly/yearly switch are ready to use.
+  - title: Store-ready pages
+    paragraphs:
+      - App Store and Google Play ask for a support URL and a privacy policy. Alpine App includes a Support page with a native form and a Legal page with Privacy Policy and Terms.
+  - title: Edit everything from properties
+    paragraphs:
+      - Every text, link, image and alt text is a component property. Colors and fonts are global styles, so a rebrand takes minutes.
+  - title: Ready for search
+    paragraphs:
+      - One H1 per page, clean heading order, meta titles and descriptions, an Open Graph image and a favicon are set.
+  - title: Features
     items:
-      - "Fully responsive: Desktop, Tablet, Phone"
+      - Responsive on desktop, tablet and phone
       - Phone mockup with image or video screen
       - Scroll-pinned feature blocks
       - Ticker, appear and hover animations
@@ -51,25 +50,28 @@ sections:
       - FAQ accordion
       - Native Framer contact form
       - Mobile menu
-      - 16 section components, all editable
-      - Global colour and text styles
+      - 16 editable section components
+      - Global color and text styles
       - Royalty-free fonts, icons and photos
-  - title: "Pages Included:"
+  - title: Pages Included
     items:
       - Home
       - Support
       - Legal (Privacy Policy, Terms of Use)
       - "404"
-  - title: "Best For:"
+  - title: Best For
     items:
-      - Mobile app landing page
-      - App launch and waitlist
+      - Mobile app landing pages
+      - App launches and waitlists
       - Fitness, outdoor and sports apps
       - Productivity and utility apps
       - Indie developers and startups
-  - title: "Support:"
+  - title: Good to Know
     paragraphs:
-      - If you have any questions about using or customizing the template, feel free to reach out via [ponslookdesign@gmail.com](mailto:ponslookdesign@gmail.com) or [X](https://x.com/ponslookdesign).
+      - Replace the sample app details, store links and pricing with your own. The Privacy Policy and Terms are examples, so check them against your app before you publish.
+  - title: Support
+    paragraphs:
+      - If you have questions about using or customizing the template, write to [ponslookdesign@gmail.com](mailto:ponslookdesign@gmail.com) or [X](https://x.com/ponslookdesign).
 gallery:
   - type: image
     src: ../../assets/templates/alpine-app.webp
@@ -83,3 +85,10 @@ gallery:
   - type: image
     src: ../../assets/templates/alpine-app/framer-4.webp
     alt: Alpine App template, preview 4
+pageKind: App Landing Page
+seoDescription: Alpine App is a free Framer app landing page template with a phone preview, pricing, support and legal pages. See the live demo.
+overview: Give your mobile app a focused launch page. Alpine App puts a phone preview, download links and pricing in one monochrome layout, with separate support and legal pages.
+preparation: Prepare your app screenshots or screen recording, store links and pricing. Replace the sample support and legal content with information that applies to your app.
+codeUrl: https://contra.com/products/8b1QjAwN-alpine-astro-mobile-app-landing-page-template
+codePrice: 19
+codeVersion: "1.0"

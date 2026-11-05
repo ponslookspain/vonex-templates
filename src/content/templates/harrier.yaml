@@ -1,26 +1,19 @@
 name: Harrier
-tagline: Calm AI agent & SaaS template
+tagline: Calm AI and SaaS website template
 description: A calm, clean landing page for an AI agent or SaaS product.
 url: https://www.framer.com/marketplace/templates/harrier/
 affiliateUrl: https://framer.link/ZzB6Qo5
 preview: https://joyous-rectangle-444295.framer.app/
-pageKind: "AI & SaaS"
-seoDescription: "Harrier is a free Framer AI and SaaS template with pricing, a CMS blog and changelog. Explore the product pages, features and live preview."
-overview: "Explain what your software does, how it works and what changes over time. Harrier brings product features, plan comparisons, a CMS blog and a changelog into a calm editorial website."
-preparation: "Prepare your product screenshots, feature explanations and plan details. Replace the sample blog posts and release notes, then check your CMS needs against your Framer plan."
-codeUrl: https://contra.com/products/Ivd5hn4Q-harrier-astro-code
-codePrice: 19
-codeVersion: "1.0"
-types:
-  - saas-apps
-  - ai
 category: AI
 price: 0
 tags: []
+types:
+  - saas-apps
+  - ai
 image: ../../assets/templates/harrier.webp
 featured: false
 added: 2026-10-31
-updated: 2026-10-31
+updated: 2026-11-05
 framerId: "77647"
 categories:
   - Free
@@ -31,64 +24,63 @@ styles:
 framerFeatures: []
 intro: []
 sections:
-  - title: Harrier — Framer Template for AI & SaaS Products
+  - title: About Harrier
     paragraphs:
-      - Harrier is a premium Framer template for AI startups, SaaS products, automation tools, and agent platforms that want to earn trust with a calm, editorial website instead of loud gradients.
-  - title: About
-    paragraphs:
-      - Harrier combines serif-led typography, a warm paper palette, native interface illustrations, and smooth animations to present your product clearly and confidently. An animated agent window in the hero, an interactive testimonial switcher, and a built-in blog and changelog help you launch a complete product website in Framer without writing code.
+      - Harrier is a free AI and SaaS website template for Framer, made for startups, automation tools and agent platforms. It earns trust with a calm, editorial look instead of loud gradients.
+      - Serif headlines, a warm paper palette and native interface illustrations present your product clearly. An animated agent window opens the page, and a blog and changelog keep your site current after launch.
   - title: Why Harrier
+  - title: A full product website
     paragraphs:
-      - Designed for AI & SaaS Products
-      - Perfect for AI agents, automation tools, B2B SaaS, developer tools, and startups that need a credible launch site.
-      - CMS-Powered Blog & Changelog
-      - Publish articles and release notes with Framer CMS. Detail pages and SEO fill in automatically.
-      - Editorial Design with Strong Visual Hierarchy
-      - Serif headings, generous spacing, one accent color, and illustrations built from native layers keep the focus on your product.
-      - Easy to Customize & SEO Ready
+      - Features, Pricing, About, Blog, Changelog and Contact pages are included, so you can launch more than a single landing page.
+  - title: Blog and changelog in the CMS
+    paragraphs:
+      - Publish articles and release notes with Framer CMS. Detail pages and their SEO fields fill in automatically.
+  - title: Clear pricing
+    paragraphs:
+      - A plan comparison table helps visitors see what each plan includes.
+  - title: Easy setup
+    paragraphs:
+      - Global color and text styles make rebranding simple, and a Start Here guide walks you through the template.
   - title: Features
-    paragraphs:
-      - "- Premium Framer template for AI & SaaS"
-      - "- Fully responsive design (Desktop, Tablet, Phone)"
-      - "- Animated hero with agent window and floating cards"
-      - "- Interactive auto-advancing testimonials"
-      - "- CMS Blog"
-      - "- CMS Changelog"
-      - "- Bento features with native UI illustrations"
-      - "- Pricing with plan comparison table"
-      - "- FAQ accordion"
-      - "- Smooth scroll and text reveal animations"
-      - "- Elegant hover interactions"
-      - "- Contact form"
-      - "- Global Color and Text Styles"
-      - "- SEO optimized"
-      - "- No-code customization"
-      - "- Start Here setup guide"
+    items:
+      - Responsive on desktop, tablet and phone
+      - Animated hero with agent window and floating cards
+      - Auto-advancing testimonial switcher
+      - Bento features with native UI illustrations
+      - CMS Blog
+      - CMS Changelog
+      - Pricing with plan comparison table
+      - FAQ accordion
+      - Scroll and text reveal animations
+      - Contact form
+      - Global color and text styles
+      - Start Here setup guide
   - title: Pages Included
-    paragraphs:
-      - "- Home"
-      - "- Features"
-      - "- Pricing"
-      - "- About"
-      - "- Blog"
-      - "- Blog Post (CMS)"
-      - "- Changelog"
-      - "- Changelog Entry (CMS)"
-      - "- Contact"
-      - "- 404"
+    items:
+      - Home
+      - Features
+      - Pricing
+      - About
+      - Blog
+      - Blog Post (CMS)
+      - Changelog
+      - Changelog Entry (CMS)
+      - Contact
+      - "404"
   - title: Best For
+    items:
+      - AI startups
+      - SaaS websites
+      - AI agent platforms
+      - Automation tools
+      - B2B software
+      - Product launches
+  - title: Good to Know
     paragraphs:
-      - "- AI Startup"
-      - "- SaaS Website"
-      - "- AI Agent Platform"
-      - "- Automation Tool"
-      - "- B2B Software"
-      - "- Product Launch"
-      - "- Startup Landing Page"
-      - "- Framer SaaS Template"
+      - Replace the sample blog posts, release notes and plan details with your own. Check that your Framer plan covers the CMS collections before you publish.
   - title: Support
     paragraphs:
-      - If you have any questions about using or customizing the template, feel free to reach out via [ponslookdesign@gmail.com](mailto:ponslookdesign@gmail.com) or X.
+      - If you have questions about using or customizing the template, write to [ponslookdesign@gmail.com](mailto:ponslookdesign@gmail.com) or [X](https://x.com/ponslookdesign).
 gallery:
   - type: image
     src: ../../assets/templates/harrier.webp
@@ -102,3 +94,10 @@ gallery:
   - type: image
     src: ../../assets/templates/harrier/framer-4.webp
     alt: Harrier template, preview 4
+pageKind: AI & SaaS
+seoDescription: Harrier is a free Framer AI and SaaS template with pricing, a CMS blog and changelog. Explore the product pages, features and live preview.
+overview: Explain what your software does, how it works and what changes over time. Harrier brings product features, plan comparisons, a CMS blog and a changelog into a calm editorial website.
+preparation: Prepare your product screenshots, feature explanations and plan details. Replace the sample blog posts and release notes, then check your CMS needs against your Framer plan.
+codeUrl: https://contra.com/products/Ivd5hn4Q-harrier-astro-code
+codePrice: 19
+codeVersion: "1.0"
