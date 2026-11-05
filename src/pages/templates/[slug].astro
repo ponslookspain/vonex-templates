@@ -150,11 +150,11 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
           <p class="type-headline-md mt-sm">{priceLabel}</p>
           <!-- The two ways to get the template sit side by side. -->
           <div class="buy-actions">
-            <Button href={buy.href} arrow target="_blank" rel={buy.sponsored ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}>
+            <Button href={buy.href} arrow target="_blank" rel={buy.sponsored ? 'noopener noreferrer sponsored' : 'noopener noreferrer'} data-umami-event="framer_click" data-umami-event-template={template.id} data-umami-event-placement="top">
               {framerLabel}
             </Button>
             {codeUrl && (
-              <Button href={codeUrl} variant="secondary" arrow target="_blank" rel="noopener noreferrer">
+              <Button href={codeUrl} variant="secondary" arrow target="_blank" rel="noopener noreferrer" data-umami-event="buy_code_click" data-umami-event-template={template.id} data-umami-event-placement="top">
                 Buy code · {codePriceLabel}
               </Button>
             )}
@@ -198,7 +198,7 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
               <li><Icon name="check" class="check" /><span>README with setup and deploy steps, license and changelog included</span></li>
             </ul>
             <div class="buy-actions">
-              <Button href={codeUrl} arrow target="_blank" rel="noopener noreferrer">
+              <Button href={codeUrl} arrow target="_blank" rel="noopener noreferrer" data-umami-event="buy_code_click" data-umami-event-template={template.id} data-umami-event-placement="code-section">
                 Buy code · {codePriceLabel}
               </Button>
               <Button href="/license/" variant="secondary">Read the license</Button>
@@ -345,11 +345,11 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     <span class="type-label mb-lg block">{priceLabel} on {buy.shop}</span>
     <h2 id="get-title" class="type-headline-lg"><em class="type-accent">Get</em> {t.name}.</h2>
     <div class="buy-actions">
-      <Button href={buy.href} variant="secondary" arrow target="_blank" rel={buy.sponsored ? 'noopener noreferrer sponsored' : 'noopener noreferrer'}>
+      <Button href={buy.href} variant="secondary" arrow target="_blank" rel={buy.sponsored ? 'noopener noreferrer sponsored' : 'noopener noreferrer'} data-umami-event="framer_click" data-umami-event-template={template.id} data-umami-event-placement="closing">
         {framerLabel}
       </Button>
       {codeUrl && (
-        <Button href={codeUrl} variant="secondary" arrow target="_blank" rel="noopener noreferrer">
+        <Button href={codeUrl} variant="secondary" arrow target="_blank" rel="noopener noreferrer" data-umami-event="buy_code_click" data-umami-event-template={template.id} data-umami-event-placement="closing">
           Buy code · {codePriceLabel}
         </Button>
       )}
