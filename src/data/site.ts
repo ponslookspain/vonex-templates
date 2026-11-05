@@ -10,6 +10,9 @@ export const site = {
   // Cloudflare Web Analytics token (Cloudflare dashboard > Analytics & Logs > Web Analytics).
   // Leave empty to disable. Nothing is sent until a token is set.
   analyticsToken: 'a8496556ef3645b5902ace2d122d7198',
+  // Umami website ID, for clicks on the buy buttons, which Cloudflare Web Analytics cannot count.
+  // Public, it is visible in the page. Leave empty to disable.
+  umamiWebsiteId: '0ed44263-f1a7-4fb0-abb6-c6da002528f0',
   framerProfile: 'https://www.framer.com/@vonexdesign/',
   // Bing Webmaster Tools ownership check (msvalidate.01). Public, keep it: removing it unverifies the site.
   bingSiteVerification: 'F41F52232C55B72905DD1670886C1709',

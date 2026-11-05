@@ -3,7 +3,7 @@ import LegalPage from '../components/LegalPage.astro';
 import { site } from '../data/site';
 ---
 
-<LegalPage accent="Privacy" title="Privacy Policy" description={`How ${site.name} handles data: no accounts, no cookies, privacy-friendly analytics.`} updated="October 3, 2026">
+<LegalPage accent="Privacy" title="Privacy Policy" description={`How ${site.name} handles data: no accounts, no cookies, privacy-friendly analytics.`} updated="November 5, 2026">
   <p>
     {site.name} is a catalog of Framer templates. You can browse it without an account, and it has no forms, no
     newsletter and no checkout. This page explains the little data that is involved.
@@ -13,6 +13,9 @@ import { site } from '../data/site';
   <p>
     We use <a href="https://www.cloudflare.com/web-analytics/" target="_blank" rel="noopener noreferrer">Cloudflare Web Analytics</a> to count visits. It does not use cookies or local storage and does not track you across websites. It records
     aggregated data such as page views, the referring site, country, browser and device type, and page load speed.
+  </p>
+  <p>
+    We also use <a href="https://umami.is/" target="_blank" rel="noopener noreferrer">Umami</a> to count page views and clicks on the buttons that lead to Framer and Contra. It does not use cookies and does not collect personal data.
   </p>
   <p>
     The site is hosted on Cloudflare. Like any web server, Cloudflare processes your IP address and request details to
