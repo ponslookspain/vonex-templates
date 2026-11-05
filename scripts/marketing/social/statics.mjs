@@ -7,13 +7,13 @@ import { existsSync, mkdtempSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { pathToFileURL } from 'node:url';
-import { loadSite } from './site.mjs';
+import { loadSite, loadSet } from './site.mjs';
 
-const slug = process.argv[2];
+const slug = process.argv[2], { packs, carousels } = await loadSet(slug);
 const site = await loadSite(slug);
 const S = 1080, H = 1350, N = 5, PORT = 9334;
 const out = path.resolve('.work/marketing/social', slug || 'empty', 'static');
-const posts = ['flat', 'stacked', 'phone', 'tablet', 'wall', 'row'], carousels = ['c1', 'c2', 'c3'];
+const posts = ['flat', 'stacked', 'phone', 'tablet', 'wall', 'row'];
 const browser = [process.env.BROWSER_PATH, 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Google/Chrome/Application/chrome.exe'].find((p) => p && existsSync(p));
 const proc = spawn(browser, ['--headless=new', `--remote-debugging-port=${PORT}`, '--remote-allow-origins=*', '--hide-scrollbars', `--user-data-dir=${mkdtempSync(path.join(tmpdir(), 'statics-'))}`, 'about:blank'], { stdio: 'ignore' });
 let target;
@@ -52,6 +52,6 @@ const sheet = async (files, cols, name) => {
   await sharp({ create: { width: cols * tw + (cols - 1) * gap, height: rows * th + (rows - 1) * gap, channels: 3, background: '#fff' } }).composite(tiles).png().toFile(path.join(out, name));
 };
 const P = (n) => path.join(out, 'posts', `${n}.jpg`), C = (c, i) => path.join(out, c, `slide-${i}.jpg`), V = (p) => path.resolve('.work/marketing/social', slug || 'empty', `motion/pack-${p}/slide-1.jpg`);
-await sheet([1, 2, 3, 4, 5].flatMap((i) => ['c1', 'c2', 'c3'].map((c) => C(c, i))), 3, 'carousels.png');
-await sheet([P('flat'), V(2), C('c2', 1), P('phone'), C('c3', 1), V(1), V(3), P('stacked'), P('tablet')], 3, 'feed-preview.png');
+await sheet([1, 2, 3, 4, 5].flatMap((i) => carousels.map((c) => C(c, i))), 3, 'carousels.png');
+await sheet([P('flat'), V(packs[1]), C(carousels[1], 1), P('phone'), C(carousels[2], 1), V(packs[0]), V(packs[2]), P('stacked'), P('tablet')], 3, 'feed-preview.png');
 console.log('done', out);

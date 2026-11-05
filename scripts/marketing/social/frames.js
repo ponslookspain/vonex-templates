@@ -10,13 +10,37 @@ const layouts = [
 const query = new URLSearchParams(location.search);
 const site = query.get('site') ? JSON.parse(query.get('site')) : null;
 const groundName = site ? site.ground : null;
-const palette = groundName === 'paper' ? { bg: '#f2f1ee', fg: '#101014' } : groundName === 'ink' ? { bg: '#101014', fg: '#f2f1ee' } : null;
+const palette = { paper: { bg: '#f2f1ee', fg: '#101014' }, ink: { bg: '#101014', fg: '#f2f1ee' }, stone: { bg: '#8e8d88', fg: '#101014' } }[groundName] || null;
+// Sections differ a lot in height, so a slide or a card shows a stack of whole sections, not one.
+// pageGroups splits the sections, in page order, into n stacks as equal in height as possible.
+const blockRatio = (i) => (site ? site.screens[i % site.screens.length].h / 1440 : 1.2);
+const pageGroups = (n) => {
+  const count = site ? site.screens.length : 0;
+  if (count < n) return Array.from({ length: n }, (_, i) => [i]);
+  const height = (a, b) => { let t = 0; for (let i = a; i < b; i++) t += blockRatio(i); return t; };
+  const split = (from, k) => {
+    if (k === 1) return { worst: height(from, count), cuts: [[from, count]] };
+    let best = null;
+    for (let to = from + 1; to <= count - k + 1; to++) {
+      const rest = split(to, k - 1), worst = Math.max(height(from, to), rest.worst);
+      if (!best || worst < best.worst) best = { worst, cuts: [[from, to], ...rest.cuts] };
+    }
+    return best;
+  };
+  return split(0, n).cuts.map(([a, b]) => Array.from({ length: b - a }, (_, i) => a + i));
+};
+// The largest size a stack can take inside maxW x maxH, and the height of each section in it.
+const stackSize = (group, maxW, maxH) => {
+  const ratio = group.reduce((t, i) => t + blockRatio(i), 0), w = Math.min(maxW, maxH / ratio);
+  return { w, h: w * ratio, heights: group.map((i) => w * blockRatio(i)) };
+};
+
 // A frame shows exactly one section: never the next block, never a stretched crop.
 // A short section sits centred on its own ground colour; a tall one starts at its top.
 const fillFrames = () => {
   if (!site) return;
   document.querySelectorAll('.f').forEach((f) => {
-    const w = f.offsetWidth, h = f.offsetHeight, phone = h > w * 1.4, i = +f.dataset.i || 0;
+    const w = f.offsetWidth, h = f.offsetHeight, phone = f.dataset.kind ? f.dataset.kind === 'phone' : h > w * 1.4, i = +f.dataset.i || 0;
     const list = phone ? site.phones : site.screens, sec = list[i % list.length], scale = w / (phone ? 780 : 1440);
     // Photo and gradient sections are marked `cover`: they fill the frame from the left edge, where the headline sits, because a flat fill would read as a band.
     const fit = sec.cover ? Math.max(scale, h / sec.h) : scale, pageW = (phone ? 780 : 1440) * fit;

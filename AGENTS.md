@@ -81,7 +81,7 @@ Vladimir says "делаем изображения для Пинтереста" 
 
 ## Social visuals
 
-Vladimir says "делаем визуал для соцсетей" (or similar) and names a template. Follow [docs/marketing/social.md](docs/marketing/social.md): it holds the approved base look for Instagram, Threads, X and TikTok, three looping video packs, six posts, three carousels and captions. Keep that look for every template and do not redesign it without asking. A light site goes on ink, a dark site on paper. Posts link to our site with UTM tags, not to Framer. Nothing is published without Vladimir.
+Vladimir says "делаем визуал для соцсетей" (or similar) and names a template. Follow [docs/marketing/social.md](docs/marketing/social.md): it holds the approved base look for Instagram, Threads, X and TikTok, three looping videos and three carousels picked from a pool, six posts and captions. Keep that look for every template and do not redesign it without asking. The ground is measured so it never melts into the site. Posts link to our site with UTM tags, not to Framer. Nothing is published without Vladimir.
 
 ## Template offers
 

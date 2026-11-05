@@ -8,9 +8,9 @@ import { existsSync, mkdtempSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { pathToFileURL } from 'node:url';
-import { loadSite } from './site.mjs';
+import { loadSite, loadSet } from './site.mjs';
 
-const slug = process.argv[2], packs = ['1', '2', '3'];
+const slug = process.argv[2], { packs } = await loadSet(slug);
 const site = await loadSite(slug);
 const FPS = 30, T = 8, W = 1080, H = 1920, PORT = 9333;
 const out = path.resolve('.work/marketing/social', slug || 'empty', 'motion');
@@ -55,6 +55,6 @@ for (const p of packs) {
 ws.close(); proc.kill();
 
 // Feed preview: the three packs alternate, so neighbours never share a look.
-const order = ['1', '2', '3', '2', '3', '1', '3', '1', '2'], tw = 300, th = 375, gap = 4, seen = {};
+const order = [0, 1, 2, 1, 2, 0, 2, 0, 1].map((i) => packs[i]), tw = 300, th = 375, gap = 4, seen = {};
 const tiles = await Promise.all(order.map(async (p, i) => { seen[p] = (seen[p] || 0) + 1; return { input: await sharp(path.join(out, `pack-${p}`, `slide-${seen[p]}.jpg`)).resize(tw, th).png().toBuffer(), left: (i % 3) * (tw + gap), top: Math.floor(i / 3) * (th + gap) }; }));
 await sharp({ create: { width: tw * 3 + gap * 2, height: th * 3 + gap * 2, channels: 3, background: '#fff' } }).composite(tiles).png().toFile(path.join(out, 'grid-preview.png'));

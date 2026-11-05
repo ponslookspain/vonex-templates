@@ -73,7 +73,7 @@ if (pack === '1') {
     tablet.strip.style.transform = `translateY(${-(steps(t, 4, .6) % 4) * tablet.fh}px)`;
     phone.strip.style.transform = `translateY(${-(steps((t + 1) % T, 4, .6) % 4) * phone.fh}px)`;
   };
-} else {
+} else if (pack === '3') {
   // Wall: a tilted field of screens bleeding off every edge; rows slide against each other, the camera breathes.
   document.body.style.background = palette ? palette.bg : '#101014';
   // Eight screens, index 2r+c: no neighbour matches at any rest pose, and a row repeats every 8 frames, so it can wrap unseen.
@@ -94,7 +94,12 @@ if (pack === '1') {
     });
   };
 }
+</script>
+<script src="packs.js"></script>
+<script>
 fillFrames();
 window.seek = (t) => draw(((t % T) + T) % T);
 window.seek(0);
+// ?play=1 runs the loop live, for looking at a pack in a browser.
+if (new URLSearchParams(location.search).get('play')) { const go = (ms) => { window.seek(ms / 1000); requestAnimationFrame(go); }; requestAnimationFrame(go); }
 </script>
