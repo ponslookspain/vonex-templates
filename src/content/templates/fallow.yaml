@@ -1,26 +1,18 @@
 name: Fallow
-tagline: A calm template for therapists
+tagline: Calm template for therapists
 description: A calm, editorial website for therapists and small practices, with fees, booking openings, a journal and a contact page.
 url: https://www.framer.com/marketplace/templates/fallow/
 affiliateUrl: https://framer.link/OlEIlHE
 preview: https://fallow.framer.website/
-pageKind: "Therapist Website"
-seoDescription: "Fallow is a free Framer therapist website template with fees, booking openings, a CMS journal and a contact form. See the live demo."
-overview: "Give a private practice a calm, clear home online. Fallow puts format, session length and fees up front, then walks visitors through how therapy starts, what you work on and how to book a free call."
-preparation: "Prepare your own photos, credentials, fees and openings. Replace the sample practice details and the crisis number with ones that apply to you, and check any rules on client testimonials and advertising in your area."
-# Code version sold on Contra.
-codeUrl: https://contra.com/products/yTRt1k1W-fallow-astro-code-therapist-website-template
-codePrice: 19
-codeVersion: "1.0"
-types:
-  - therapy
 category: Therapy
 price: 0
 tags: []
+types:
+  - therapy
 image: ../../assets/templates/fallow.webp
 featured: false
 added: 2026-11-04
-updated: 2026-11-04
+updated: 2026-11-05
 framerId: "78348"
 categories:
   - Free
@@ -33,23 +25,33 @@ intro: []
 sections:
   - title: About Fallow
     paragraphs:
-      - "Fallow is a free Framer website template for therapists, counselors and small private practices. It has a warm, editorial look: a full-screen photo hero, a large serif headline with one italic word, and clear facts up front (format, session length, fees). It is calm on purpose, so a visitor who is anxious or in a hurry finds what they need fast."
+      - Fallow is a free therapist website template for Framer, made for counselors, psychologists and small private practices. Its warm, editorial look is calm on purpose, so an anxious visitor finds what they need fast.
+      - Format, session length and fees sit up front. A full-screen photo hero and a large serif headline set the tone, then the site walks people through how to start.
   - title: Why Fallow
+  - title: Made for private practice
     paragraphs:
-      - Features
+      - A Fees page with a sliding scale and superbill example, a free first call, booking openings from the CMS and a crisis note in the footer.
+  - title: Built to be edited
+    paragraphs:
+      - Every section is a component. Colors and fonts are global styles, and a Start Here page explains each step.
+  - title: Not the usual therapy site
+    paragraphs:
+      - A scroll-driven seasons section, a topic picker that rotates on its own, and a hero photo of a person, not a stock smile.
+  - title: Ready for search
+    paragraphs:
+      - One H1 per page, clean heading order, meta titles and descriptions, a social preview image and favicons on every page.
+  - title: Features
     items:
-      - "Made for practices: Fees page with a sliding scale and superbill example, a free first call, booking openings from the CMS, and a crisis note in the footer."
-      - "Built to be edited: Every section is a component. Colors and fonts are global styles, so rebranding takes minutes. A “Start here” page explains each step."
-      - "Not the usual look: A scroll-driven seasons section, an interactive topic picker that rotates on its own, and a hero photo of a person, not a stock smile."
-      - "SEO ready: One H1 per page, clean heading order, meta titles and descriptions, a social preview image and favicons for every page."
       - Responsive on desktop, tablet and phone
-      - Seasons section that pins and changes color and text as you scroll
-      - Topic picker with a progress bar, services list with hover photos
-      - CMS Journal with post pages, and a CMS list of next openings
-      - Contact form, booking link, FAQ accordion and mobile menu
-      - Native animations plus a small code file (Motion.tsx), with the layers fully editable
-      - Global color and text styles, components in folders
-  - title: "Pages included:"
+      - Seasons section that pins and changes as you scroll
+      - Topic picker with a progress bar
+      - Services list with hover photos
+      - CMS Journal with post pages
+      - CMS list of next openings
+      - Contact form and booking link
+      - FAQ accordion and mobile menu
+      - Global color and text styles
+  - title: Pages Included
     items:
       - Home
       - About
@@ -57,18 +59,19 @@ sections:
       - Fees
       - Journal (with post pages)
       - Contact and 404
-  - title: "Best for:"
-    paragraphs:
-      - "Good to know: The sample photos are generated for the demo. Replace them with your own before you publish."
+  - title: Best For
     items:
       - Therapists
-      - psychologists
-      - counselors
-      - coaches
-      - small wellness practices and anyone building a site for them.
-  - title: "Support:"
+      - Psychologists
+      - Counselors
+      - Coaches
+      - Small wellness practices
+  - title: Good to Know
     paragraphs:
-      - If you have any questions about using or customizing the template, feel free to reach out via [ponslookdesign@gmail.com](mailto:ponslookdesign@gmail.com) or [X](https://x.com/ponslookdesign).
+      - The sample photos are generated for the demo, so replace them with your own. Replace the practice details and crisis number too, and check local rules on testimonials and advertising. Some animation uses a small code file (Motion.tsx); the layers stay editable.
+  - title: Support
+    paragraphs:
+      - If you have questions about using or customizing the template, write to [ponslookdesign@gmail.com](mailto:ponslookdesign@gmail.com) or [X](https://x.com/ponslookdesign).
 gallery:
   - type: image
     src: ../../assets/templates/fallow.webp
@@ -82,3 +85,10 @@ gallery:
   - type: image
     src: ../../assets/templates/fallow/framer-4.webp
     alt: Fallow template, preview 4
+pageKind: Therapist Website
+seoDescription: Fallow is a free Framer therapist website template with fees, booking openings, a CMS journal and a contact form. See the live demo.
+overview: Give a private practice a calm, clear home online. Fallow puts format, session length and fees up front, then walks visitors through how therapy starts, what you work on and how to book a free call.
+preparation: Prepare your own photos, credentials, fees and openings. Replace the sample practice details and the crisis number with ones that apply to you, and check any rules on client testimonials and advertising in your area.
+codeUrl: https://contra.com/products/yTRt1k1W-fallow-astro-code-therapist-website-template
+codePrice: 19
+codeVersion: "1.0"
