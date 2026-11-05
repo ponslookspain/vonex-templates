@@ -1,4 +1,4 @@
-# TEMPLATE_PIPELINE.md
+# Template pipeline
 
 The full path of a new template, from choosing a niche to posting it on social media. Every stage ends with a check: do not start the next stage until the current one passes. Details stay in the documents linked from each stage.
 
@@ -12,7 +12,7 @@ The full path of a new template, from choosing a niche to posting it on social m
 | 6 | Site | Template page is live with all its buttons | Vladimir says "в продакшн" |
 | 7 | Promotion | Pins are scheduled, X and Threads posts are out | Vladimir approves |
 
-Stage 4 runs while the Marketplace reviews the template. Stages 5, 6 and 7 stay in this order: the site launches once with the code button, and pins link to a page that already exists. If the review asks for changes, make them in Framer and in code, and repeat the checks of stage 4 before uploading the zip. A paid template skips stages 4 and 5 at first (see "Template offers" in [AGENTS.md](AGENTS.md)).
+Stage 4 runs while the Marketplace reviews the template. Stages 5, 6 and 7 stay in this order: the site launches once with the code button, and pins link to a page that already exists. If the review asks for changes, make them in Framer and in code, and repeat the checks of stage 4 before uploading the zip. A paid template skips stages 4 and 5 at first (see "Template offers" in [AGENTS.md](../../AGENTS.md)).
 
 ## 1. Niche
 
@@ -30,7 +30,7 @@ Framer comes first, because design is found faster visually and code then has on
 - [ ] Desktop, Tablet and Phone are all designed.
 - [ ] Customers get instructions for changing content, colors and fonts.
 - [ ] Effects can be rebuilt with CSS and IntersectionObserver.
-- [ ] Every font and image may be redistributed in the code zip (see "Redistribution rights" in [CODE_TEMPLATES.md](CODE_TEMPLATES.md)).
+- [ ] Every font and image may be redistributed in the code zip (see "Redistribution rights" in [docs/production/code-versions.md](code-versions.md)).
 
 ### Generated visuals
 
@@ -39,7 +39,7 @@ Local ComfyUI may be used to generate images when a template needs them (photos,
 - Check the license of the model and of any LoRA: it must allow commercial use of the output.
 - Do not imitate real brands, real people or another author's work.
 - Keep the final files and use the same files in Framer and in code.
-- Scratch output goes to `.work/visuals/<slug>/tmp/`. Save the workflow, model name and seed of every final image in `.work/visuals/<slug>/sources/`, which `npm run clean` keeps, so an image can be remade and its source shown.
+- Scratch output goes to `.work/production/visuals/<slug>/tmp/`. Save the workflow, model name and seed of every final image in `.work/production/visuals/<slug>/sources/`, which `npm run clean` keeps, so an image can be remade and its source shown.
 
 ## 3. Marketplace
 
@@ -54,7 +54,7 @@ Do not use plain screenshots.
 
 ## 4. Code version
 
-Follow [CODE_TEMPLATES.md](CODE_TEMPLATES.md). The Framer site is the reference. Build first, then check the built site with `npm run preview`, not the dev server.
+Follow [docs/production/code-versions.md](code-versions.md). The Framer site is the reference. Build first, then check the built site with `npm run preview`, not the dev server.
 
 ### Design match with Framer
 
@@ -81,14 +81,15 @@ These are emulators, so say so in the report. They do not replace a real phone.
 
 ## 5. Contra
 
-Follow "Contra setup" in [CODE_TEMPLATES.md](CODE_TEMPLATES.md). Upload the zip only after the Marketplace has approved the template, or re-pack it if the review changed anything. The Contra price must equal `codePrice`.
+Follow "Contra setup" in [docs/production/code-versions.md](code-versions.md). Upload the zip only after the Marketplace has approved the template, or re-pack it if the review changed anything. The Contra price must equal `codePrice`.
 
 ## 6. Site
 
-Follow "Adding or changing a template" and "Workflow" in [AGENTS.md](AGENTS.md). After the merge, open the page on vonexdesign.com and click every button.
+Follow "Adding or changing a template" and "Workflow" in [AGENTS.md](../../AGENTS.md). After the merge, open the page on vonexdesign.com and click every button.
 
 ## 7. Promotion
 
-- Pinterest: [scripts/pinterest/README.md](scripts/pinterest/README.md).
-- X and Threads: PostVIA creates text drafts only, so Vladimir adds the images in its dashboard. Publish only after he approves the exact text. Link to the template page on this site, with UTM tags.
+- Pinterest: [docs/marketing/pinterest.md](../marketing/pinterest.md).
+- UI8 and Craftwork: [../marketing/marketplaces.md](../marketing/marketplaces.md).
+- Instagram, Threads, X and TikTok: [../marketing/social.md](../marketing/social.md). Publish only after Vladimir approves the exact text. Link to the template page on this site, with UTM tags.
 - When everything is live, run `npm run clean`.

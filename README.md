@@ -15,7 +15,9 @@ Working on the project with Claude Code or Codex? The shared rules are in [AGENT
 | `npm run add-template -- <url>` | Add a template from its Framer Marketplace URL (data, pictures, preview image) |
 | `npm run sync-templates` | Refresh every template from its Marketplace page |
 | `npm run og` | Regenerate the social preview images in `public/og/` |
-| `npm run pins:capture`, `pins:render`, `pins:sheet`, `pins:upload`, `pins:csv` | Pinterest pins for a template, see [scripts/pinterest/README.md](scripts/pinterest/README.md) |
+| `npm run capture -- <slug> <url>` | Screenshots of a live demo, used by pins and posts |
+| `npm run pins:render`, `pins:sheet`, `pins:upload`, `pins:csv` | Pinterest pins, see [docs/marketing/pinterest.md](docs/marketing/pinterest.md) |
+| `npm run social:ruler`, `social:motion`, `social:static` | Social posts, see [docs/marketing/social.md](docs/marketing/social.md) |
 | `npm run clean` | Remove captures, scratch folders and build caches (`-- --all` also empties the `.work/` folder) |
 
 ## Check the site locally before deploy
@@ -99,10 +101,13 @@ src/
   pages/                       index, templates, templates/[slug], 404, design-system, sitemap.xml, robots.txt
   styles/global.css            design tokens and shared classes
   data/site.ts                 site name, contacts, socials, navigation, analytics token
+docs/                          rules; docs/README.md is the map of the whole project
+  production/                  template pipeline, code versions
+  marketing/                   Pinterest, UI8 and Craftwork, social posts
 scripts/
-  add-template.mjs             import / refresh templates from Framer Marketplace
-  generate-og.mjs              social preview images in public/og/
-  lib/                         helpers for the scripts (Framer page reader, image download)
+  production/                  import / refresh templates, social preview images in public/og/
+  marketing/                   live demo capture, Pinterest pins, social posts
+  clean.mjs                    removes temporary files
 public/                        files served as is: favicons, og-image.png, og/, _headers
 ```
 

@@ -1,5 +1,5 @@
 // Renders the static posts and carousels of statics.html through headless Chromium.
-//   node scripts/social/statics.mjs [slug]   (no slug: empty frames; run motion.mjs first for the feed preview)
+//   node scripts/marketing/social/statics.mjs [slug]   (no slug: empty frames; run motion.mjs first for the feed preview)
 import sharp from 'sharp';
 import path from 'node:path';
 import { spawn } from 'node:child_process';
@@ -12,7 +12,7 @@ import { loadSite } from './site.mjs';
 const slug = process.argv[2];
 const site = await loadSite(slug);
 const S = 1080, H = 1350, N = 5, PORT = 9334;
-const out = path.resolve('.work/social', slug || 'empty', 'static');
+const out = path.resolve('.work/marketing/social', slug || 'empty', 'static');
 const posts = ['flat', 'stacked', 'phone', 'tablet', 'wall', 'row'], carousels = ['c1', 'c2', 'c3'];
 const browser = [process.env.BROWSER_PATH, 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Google/Chrome/Application/chrome.exe'].find((p) => p && existsSync(p));
 const proc = spawn(browser, ['--headless=new', `--remote-debugging-port=${PORT}`, '--remote-allow-origins=*', '--hide-scrollbars', `--user-data-dir=${mkdtempSync(path.join(tmpdir(), 'statics-'))}`, 'about:blank'], { stdio: 'ignore' });
@@ -27,7 +27,7 @@ let id = 0; const wait = new Map();
 ws.onmessage = (e) => { const m = JSON.parse(e.data); if (m.id && wait.has(m.id)) { wait.get(m.id)(m.result); wait.delete(m.id); } };
 const cdp = (method, params = {}) => new Promise((r) => { wait.set(++id, r); ws.send(JSON.stringify({ id, method, params })); });
 await cdp('Page.enable');
-const page = pathToFileURL(path.resolve('scripts/social/statics.html')).href;
+const page = pathToFileURL(path.resolve('scripts/marketing/social/statics.html')).href;
 const shot = async (scene, width) => {
   await cdp('Emulation.setDeviceMetricsOverride', { width, height: H, deviceScaleFactor: 1, mobile: false });
   await cdp('Page.navigate', { url: `${page}?scene=${scene}&site=${site}` });
@@ -51,7 +51,7 @@ const sheet = async (files, cols, name) => {
   const rows = Math.ceil(files.length / cols);
   await sharp({ create: { width: cols * tw + (cols - 1) * gap, height: rows * th + (rows - 1) * gap, channels: 3, background: '#fff' } }).composite(tiles).png().toFile(path.join(out, name));
 };
-const P = (n) => path.join(out, 'posts', `${n}.jpg`), C = (c, i) => path.join(out, c, `slide-${i}.jpg`), V = (p) => path.resolve('.work/social', slug || 'empty', `motion/pack-${p}/slide-1.jpg`);
+const P = (n) => path.join(out, 'posts', `${n}.jpg`), C = (c, i) => path.join(out, c, `slide-${i}.jpg`), V = (p) => path.resolve('.work/marketing/social', slug || 'empty', `motion/pack-${p}/slide-1.jpg`);
 await sheet([1, 2, 3, 4, 5].flatMap((i) => ['c1', 'c2', 'c3'].map((c) => C(c, i))), 3, 'carousels.png');
 await sheet([P('flat'), V(2), C('c2', 1), P('phone'), C('c3', 1), V(1), V(3), P('stacked'), P('tablet')], 3, 'feed-preview.png');
 console.log('done', out);

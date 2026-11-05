@@ -16,7 +16,7 @@ import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
 import { parse as parseYaml } from 'yaml';
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const dir = path.join(root, 'src/content/templates');
 const outDir = path.join(root, 'public/og');
 const only = process.argv.slice(2);

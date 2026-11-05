@@ -17,7 +17,7 @@ import { parse as parseYaml, stringify as toYaml } from 'yaml';
 import { readTemplate, decode } from './lib/framer.mjs';
 import { download, toWebp } from './lib/media.mjs';
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const contentDir = path.join(root, 'src/content/templates');
 const assetsDir = path.join(root, 'src/assets/templates');
 
@@ -127,7 +127,7 @@ async function importOne(slug, { flags }) {
   const notes = [];
   if (!d) {
     d = metaFallback(res.html ?? '', slug);
-    notes.push('Framer page format was not recognised: only the meta tags were read (no description sections, gallery or features). Check scripts/lib/framer.mjs.');
+    notes.push('Framer page format was not recognised: only the meta tags were read (no description sections, gallery or features). Check scripts/production/lib/framer.mjs.');
   }
   if (!d.name) fail('could not read the template name from the page');
   if (d.price === undefined) fail('could not detect the price');
@@ -196,7 +196,7 @@ async function importOne(slug, { flags }) {
     console.log(`  ${had ? 'updated' : 'created'} ${rel(yamlPath)} (${gallery.length} gallery items, ${d.sections.length} text sections)`);
     for (const [p, buf] of files) console.log(`  wrote ${rel(p)} (${(buf.length / 1024).toFixed(0)} kB)`);
     // Social preview image: public/og/<slug>.png
-    execFileSync(process.execPath, [path.join(root, 'scripts/generate-og.mjs'), slug], { stdio: 'inherit' });
+    execFileSync(process.execPath, [path.join(root, 'scripts/production/generate-og.mjs'), slug], { stdio: 'inherit' });
   }
 
   if (!(opt.affiliate ?? old.affiliateUrl)) notes.push('no --affiliate link: "Open on Framer" goes to the Marketplace page without your referral');

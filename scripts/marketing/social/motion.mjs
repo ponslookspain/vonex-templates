@@ -1,6 +1,6 @@
 // Renders the looping motion packs of motion.html frame by frame through headless Chromium,
 // so easing stays exact and the last frame meets the first.
-//   node scripts/social/motion.mjs [slug]   (no slug: empty frames)
+//   node scripts/marketing/social/motion.mjs [slug]   (no slug: empty frames)
 import sharp from 'sharp';
 import path from 'node:path';
 import { spawn, execFileSync } from 'node:child_process';
@@ -13,7 +13,7 @@ import { loadSite } from './site.mjs';
 const slug = process.argv[2], packs = ['1', '2', '3'];
 const site = await loadSite(slug);
 const FPS = 30, T = 8, W = 1080, H = 1920, PORT = 9333;
-const out = path.resolve('.work/social', slug || 'empty', 'motion');
+const out = path.resolve('.work/marketing/social', slug || 'empty', 'motion');
 const browser = [process.env.BROWSER_PATH, 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Microsoft/Edge/Application/msedge.exe', 'C:/Program Files/Google/Chrome/Application/chrome.exe'].find((p) => p && existsSync(p));
 const proc = spawn(browser, ['--headless=new', `--remote-debugging-port=${PORT}`, '--remote-allow-origins=*', '--hide-scrollbars', `--user-data-dir=${mkdtempSync(path.join(tmpdir(), 'motion-'))}`, `--window-size=${W},${H}`, 'about:blank'], { stdio: 'ignore' });
 
@@ -30,7 +30,7 @@ const cdp = (method, params = {}) => new Promise((r) => { wait.set(++id, r); ws.
 await cdp('Page.enable');
 await cdp('Emulation.setDeviceMetricsOverride', { width: W, height: H, deviceScaleFactor: 1, mobile: false });
 
-const page = pathToFileURL(path.resolve('scripts/social/motion.html')).href;
+const page = pathToFileURL(path.resolve('scripts/marketing/social/motion.html')).href;
 for (const p of packs) {
   const dir = path.join(out, `pack-${p}`), frames = path.join(dir, 'tmp');
   await mkdir(frames, { recursive: true });

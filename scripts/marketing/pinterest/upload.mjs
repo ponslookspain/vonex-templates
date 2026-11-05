@@ -1,7 +1,7 @@
 // Upload the rendered pins of one template to the public R2 bucket vonex-pins as JPG
 // (Pinterest's CSV upload needs a public URL per image; they are not part of the site).
-//   node scripts/pinterest/upload.mjs <slug>
-// Reads .work/pinterest/<slug>/pins/*.png, writes JPG (quality 88, mozjpeg) to .work/pinterest/<slug>/jpg/
+//   node scripts/marketing/pinterest/upload.mjs <slug>
+// Reads .work/marketing/pinterest/<slug>/pins/*.png, writes JPG (quality 88, mozjpeg) to .work/marketing/pinterest/<slug>/jpg/
 // and puts each one into the bucket with wrangler (needs CLOUDFLARE_API_TOKEN, as the repo's deploy does).
 import sharp from 'sharp';
 import path from 'node:path';
@@ -10,8 +10,8 @@ import { mkdir, readdir } from 'node:fs/promises';
 
 const slug = process.argv[2];
 if (!slug) throw new Error('usage: upload.mjs <slug>');
-const src = path.resolve('.work/pinterest', slug, 'pins');
-const dst = path.resolve('.work/pinterest', slug, 'jpg');
+const src = path.resolve('.work/marketing/pinterest', slug, 'pins');
+const dst = path.resolve('.work/marketing/pinterest', slug, 'jpg');
 await mkdir(dst, { recursive: true });
 let n = 0;
 for (const f of (await readdir(src)).filter((x) => x.startsWith(slug) && x.endsWith('.png'))) {

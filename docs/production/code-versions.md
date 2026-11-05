@@ -1,6 +1,6 @@
-# CODE_TEMPLATES.md
+# Code versions
 
-Plan and rules for selling the **code version** of a template: the same design as the Framer template, rewritten by hand as a clean Astro project and sold as a zip. Read it before touching anything about code versions. The site itself stays a Framer showcase first (see [AGENTS.md](AGENTS.md)); the code version is an extra option on the template page.
+Plan and rules for selling the **code version** of a template: the same design as the Framer template, rewritten by hand as a clean Astro project and sold as a zip. Read it before touching anything about code versions. The site itself stays a Framer showcase first (see [AGENTS.md](../../AGENTS.md)); the code version is an extra option on the template page.
 
 ## What this is
 
@@ -75,7 +75,7 @@ Things that cost time and are now solved:
 - The FAQ is native `<details>`. The pricing switch is a 10-line script.
 - Check with `scroll-behavior: smooth` in mind: scroll with `behavior: 'instant'` before taking screenshots.
 
-Scratch material while porting (screenshots, Framer snapshots, section-height comparisons) goes to `.work/code/<slug>/` in this repository, which is git-ignored, and is removed with `npm run clean` when the version is packed (see AGENTS.md, "Work folder"). The code itself lives only in `vonex-code`.
+Scratch material while porting (screenshots, Framer snapshots, section-height comparisons) goes to `.work/production/code/<slug>/` in this repository, which is git-ignored, and is removed with `npm run clean` when the version is packed (see AGENTS.md, "Work folder"). The code itself lives only in `vonex-code`.
 
 ## Fidelity: what we check and what we may promise
 
@@ -115,7 +115,7 @@ Done once, before the first launch:
 - Template page: a "Buy code" button next to "View on Framer", a short "Code version" block (what is inside, stack, license, host anywhere). Follows DESIGN.md and uses existing tokens and button classes.
 - Pages `/license/`, `/refunds/` (and `/terms/`, `/privacy/` if missing), linked in the footer. Add to the sitemap by hand (see AGENTS.md).
 - Copy: the site stays Framer-first. Add a short mention that most templates also come as clean code, in the FAQ and in a new guide ("Framer or code: which one to pick").
-- Template schema and `scripts/add-template.mjs` keep `codeUrl` and `codePrice` as hand-edited fields that `sync-templates` never overwrites.
+- Template schema and `scripts/production/add-template.mjs` keep `codeUrl` and `codePrice` as hand-edited fields that `sync-templates` never overwrites.
 
 ## Why not export
 

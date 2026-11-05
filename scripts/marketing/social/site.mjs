@@ -14,8 +14,8 @@ const check = (list, need, name, height, slug) => {
 
 export async function loadSite(slug) {
   if (!slug) return '';
-  const cfg = JSON.parse(await readFile(`scripts/social/configs/${slug}.json`, 'utf8'));
-  const dir = path.resolve('.work/pinterest', slug, 'raw');
+  const cfg = JSON.parse(await readFile(`scripts/marketing/social/configs/${slug}.json`, 'utf8'));
+  const dir = path.resolve('.work/marketing/captures', slug);
   const read = async (name, list, need, key) => {
     const file = path.join(dir, `${name}.png`), { height } = await sharp(file).metadata();
     check(list, need, key, height, slug);

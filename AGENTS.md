@@ -1,16 +1,16 @@
 # AGENTS.md
 
-The one guide for every coding agent working on this repository (Claude Code, Codex and others). `CLAUDE.md` only imports this file, so edit the rules here. Read it before changing anything. Human-facing setup and commands are in [README.md](README.md); the design direction is [DESIGN.md](DESIGN.md) and how it is built in code is [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md). Selling code versions of templates (stack, flow, rules) is in [CODE_TEMPLATES.md](CODE_TEMPLATES.md). The full path of a new template, from niche to social posts, is [TEMPLATE_PIPELINE.md](TEMPLATE_PIPELINE.md).
+The one guide for every coding agent working on this repository (Claude Code, Codex and others). `CLAUDE.md` only imports this file, so edit the rules here. Read it before changing anything. Human-facing setup and commands are in [README.md](README.md); the design direction is [DESIGN.md](DESIGN.md) and how it is built in code is [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md). [docs/README.md](docs/README.md) is the map: where every file lives, what goes to GitHub, what is temporary. Selling code versions of templates is in [docs/production/code-versions.md](docs/production/code-versions.md). The full path of a new template, from niche to social posts, is [docs/production/template-pipeline.md](docs/production/template-pipeline.md).
 
 ## Project
 
-**Vonex Design** is a catalog of Framer templates made by Vladimir (GitHub `ponslookspain`). Live at https://vonexdesign.com. It is a showcase only: no checkout, no accounts, no editor. Every "View on Framer" button goes to the template's Framer Marketplace page, through Vladimir's Framer referral link (`affiliateUrl`, `framer.link/...`) when there is one. A template can instead be sold directly on Contra: set `buyUrl` (and `soldOn`) in its YAML and the main button goes there, with no referral and the label "Buy template" (see `src/lib/buy.ts`). Framer stays the main product. Some templates also have a hand-written **code version** (Astro + Tailwind zip) sold on Contra; the site only links to it with a "Buy code" button (`codeUrl`, `codePrice` in the YAML). Details in [CODE_TEMPLATES.md](CODE_TEMPLATES.md).
+**Vonex Design** is a catalog of Framer templates made by Vladimir (GitHub `ponslookspain`). Live at https://vonexdesign.com. It is a showcase only: no checkout, no accounts, no editor. Every "View on Framer" button goes to the template's Framer Marketplace page, through Vladimir's Framer referral link (`affiliateUrl`, `framer.link/...`) when there is one. A template can instead be sold directly on Contra: set `buyUrl` (and `soldOn`) in its YAML and the main button goes there, with no referral and the label "Buy template" (see `src/lib/buy.ts`). Framer stays the main product. Some templates also have a hand-written **code version** (Astro + Tailwind zip) sold on Contra; the site only links to it with a "Buy code" button (`codeUrl`, `codePrice` in the YAML). Details in [docs/production/code-versions.md](docs/production/code-versions.md).
 
 ## Rules
 
 - **Talk to Vladimir in Russian.** The site itself, code, comments, commit messages and PR descriptions are in English.
 - Keep each change focused. Riskier ideas go to Vladimir as recommendations, not into the diff.
-- **Code versions** (see CODE_TEMPLATES.md): always written by hand from the Framer project, never exported or scraped from a Framer site. Same stack for every template, the design matching Framer at all three breakpoints (say "closely matches" in public text, never "identical" or "pixel-perfect"; see CODE_TEMPLATES.md, "Fidelity"), and only assets and fonts we are allowed to redistribute. The code lives in the private `vonex-code` repository, not here.
+- **Code versions** (see docs/production/code-versions.md): always written by hand from the Framer project, never exported or scraped from a Framer site. Same stack for every template, the design matching Framer at all three breakpoints (say "closely matches" in public text, never "identical" or "pixel-perfect"; see docs/production/code-versions.md, "Fidelity"), and only assets and fonts we are allowed to redistribute. The code lives in the private `vonex-code` repository, not here.
 
 ## Workflow
 
@@ -47,10 +47,9 @@ Never push straight to `main`, never force-push. Delete branches once they are m
 | `src/components/` | UI and layout components. |
 | `src/styles/global.css` | Design tokens (`@theme static`) and shared classes. |
 | `src/data/site.ts` | Site name, texts, contacts, socials, nav, analytics token. |
-| `scripts/add-template.mjs` | Import / refresh templates from Framer Marketplace. |
-| `scripts/generate-og.mjs` | Social preview images `public/og/<slug>.png`. |
-| `scripts/pinterest/` | Pinterest pins for a template: capture, render, upload, CSV, one config per template. Its README is the procedure. |
-| `scripts/social/` | Social media visuals for a template: looping video packs, posts, carousels, one config per template. Its README is the procedure. |
+| `docs/` | Rules and procedures, split into `production/` and `marketing/`. [docs/README.md](docs/README.md) is the map of the whole project. |
+| `scripts/production/` | Import / refresh templates from Framer Marketplace, social preview images `public/og/<slug>.png`. |
+| `scripts/marketing/` | Live demo capture, `pinterest/` pins, `social/` posts; one config per template in each. |
 | `scripts/clean.mjs` | `npm run clean`: removes captures, scratch folders and build caches. |
 | `.work/` | Local work folder, ignored by git (see "Work folder"). |
 | `public/` | Served as is: favicons, `og-image.png`, `og/`, `_headers`. |
@@ -64,7 +63,7 @@ Never push straight to `main`, never force-push. Delete branches once they are m
 
 Hand-edited fields that `npm run sync-templates` never overwrites: `description`, `affiliateUrl`, `featured`, `tags`, `types`, `category`, `added`, `preview`, `pageKind`, `seoDescription`, `overview`, `preparation`, `codeUrl`, `codePrice`, `codeVersion`, `buyUrl`, `soldOn`. `codeUrl`, `codePrice` and `codeVersion` belong to the code version (Contra product link, price in USD, zip version); when `codeUrl` is set, the template page shows "Buy code", a "Code version" block and one more FAQ answer. Leave them out for templates without a code version. Write these four for every new template: they feed the title, search description, intro and "Before you publish" block of its page. Everything else in the YAML comes from Framer and can be refreshed.
 
-Guides are listed in `src/data/guides.ts`; a new guide also needs its accent word in `ACCENTS` in `scripts/generate-og.mjs`, then `npm run og` makes `public/og/guides/<slug>.png`.
+Guides are listed in `src/data/guides.ts`; a new guide also needs its accent word in `ACCENTS` in `scripts/production/generate-og.mjs`, then `npm run og` makes `public/og/guides/<slug>.png`.
 
 After changing a name, tagline, price or cover, run `npm run og` (or `npm run og -- <slug>`). The og images depend on the fonts installed on the machine (Segoe UI on Windows), so images made on Linux look different: regenerate them on Vladimir's machine, or leave the committed ones alone.
 
@@ -74,25 +73,15 @@ Categories live in `src/data/categories.json`. `types` in a template YAML must u
 
 ## Work folder
 
-Everything generated while working lives in one git-ignored folder, `.work/<area>/<slug>/`: never in `src/`, `public/` or the repo root, and never in an agent's own folder (`.omc/`, `.claude/`, `.codex/` belong to the agent tool). Whatever must be reused is committed as a script or a config, not as output.
-
-| Area | What goes in `.work/` | What is committed |
-| --- | --- | --- |
-| Template pages | Nothing: `npm run add-template` writes straight to `src/` and `public/og/` | YAML, pictures, og image |
-| Code versions (`.work/code/<slug>/`) | Screenshots, Framer snapshots and section-height comparisons while porting a template | The code itself, in the private `vonex-code` repo (see CODE_TEMPLATES.md), not here |
-| Pinterest (`.work/pinterest/<slug>/`) | Captures (`raw/`), pin images, JPGs, contact sheet, CSV files | `scripts/pinterest/` and `configs/<slug>.json` |
-| Social visuals (`.work/social/<slug>/`) | Videos, posts, carousels, previews, captions | `scripts/social/` and `configs/<slug>.json` |
-| Generated visuals (`.work/visuals/<slug>/`) | ComfyUI output, workflows and seeds | Final images, in the template itself |
-
-Name scratch subfolders `raw`, `screens` or `tmp`: `npm run clean` removes exactly those, plus `dist`, `.astro` and `.wrangler`. `npm run clean -- --all` removes the whole `.work/` (look first with `--dry-run`). Clean up when a job is finished: the pins are live in Pinterest, or the code version is packed and uploaded.
+Everything generated while working lives in one git-ignored folder, `.work/<part>/<area>/<slug>/`, where the part is `production` or `marketing`: never in `src/`, `public/` or the repo root, and never in an agent's own folder (`.omc/`, `.claude/`, `.codex/` belong to the agent tool). Whatever must be reused is committed as a script or a config, not as output. The full layout, what goes to GitHub and what `npm run clean` removes are in [docs/README.md](docs/README.md).
 
 ## Pinterest pins
 
-Vladimir says "делаем изображения для Пинтереста" (or similar) after a template is ready. Follow [scripts/pinterest/README.md](scripts/pinterest/README.md): capture the live demo, render 18 text-free pins in the approved style and, once he approves them, host the images in Cloudflare R2 and make the CSV he uploads to Pinterest. Pin images are never part of the site or its deploy. Pins link to the template page on this site with UTM tags, not to Framer.
+Vladimir says "делаем изображения для Пинтереста" (or similar) after a template is ready. Follow [docs/marketing/pinterest.md](docs/marketing/pinterest.md): capture the live demo, render 18 text-free pins in the approved style and, once he approves them, host the images in Cloudflare R2 and make the CSV he uploads to Pinterest. Pin images are never part of the site or its deploy. Pins link to the template page on this site with UTM tags, not to Framer.
 
 ## Social visuals
 
-Vladimir says "делаем визуал для соцсетей" (or similar) and names a template. Follow [scripts/social/README.md](scripts/social/README.md): it holds the approved base look for Instagram, Threads, X and TikTok, three looping video packs, six posts, three carousels and captions. Keep that look for every template and do not redesign it without asking. A light site goes on ink, a dark site on paper. Posts link to our site with UTM tags, not to Framer. Nothing is published without Vladimir.
+Vladimir says "делаем визуал для соцсетей" (or similar) and names a template. Follow [docs/marketing/social.md](docs/marketing/social.md): it holds the approved base look for Instagram, Threads, X and TikTok, three looping video packs, six posts, three carousels and captions. Keep that look for every template and do not redesign it without asking. A light site goes on ink, a dark site on paper. Posts link to our site with UTM tags, not to Framer. Nothing is published without Vladimir.
 
 ## Template offers
 

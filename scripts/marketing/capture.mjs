@@ -1,8 +1,8 @@
 // Capture a live template site for pins: desktop (1440 wide) and mobile (390 @2x, real mobile
 // emulation) full pages through headless Edge or Chrome + DevTools protocol, then print where sections
 // start and save a contact thumbnail.
-//   node scripts/pinterest/capture.mjs <slug> <live url>
-// Output: .work/pinterest/<slug>/raw/{desktop,mobile}.png and thumbs.png (desktop at 1/9 scale,
+//   node scripts/marketing/capture.mjs <slug> <live url>
+// Output: .work/marketing/captures/<slug>/{desktop,mobile}.png and thumbs.png (desktop at 1/9 scale,
 // mobile at 1/13, so y on the thumb x9 / x13 = y on the page).
 //
 // A plain `msedge --screenshot --window-size=390,...` is not enough: headless windows cannot be
@@ -18,7 +18,7 @@ import { mkdir, mkdtemp } from 'node:fs/promises';
 
 const [slug, url] = process.argv.slice(2);
 if (!slug || !url) throw new Error('usage: capture.mjs <slug> <url>');
-const dir = path.resolve('.work/pinterest', slug, 'raw');
+const dir = path.resolve('.work/marketing/captures', slug);
 await mkdir(dir, { recursive: true });
 // Any Chromium works. Set BROWSER_PATH to use a specific one, otherwise the usual install paths are tried.
 const edge = [process.env.BROWSER_PATH,

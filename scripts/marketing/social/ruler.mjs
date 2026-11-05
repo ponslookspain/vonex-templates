@@ -1,9 +1,9 @@
 // Contact sheet of a capture with a y ruler, for picking exact section bounds for a config.
-//   node scripts/social/ruler.mjs <slug>
+//   node scripts/marketing/social/ruler.mjs <slug>
 import sharp from 'sharp';
 import path from 'node:path';
 
-const slug = process.argv[2], dir = path.resolve('.work/pinterest', slug, 'raw');
+const slug = process.argv[2], dir = path.resolve('.work/marketing/captures', slug);
 const svg = (w, h, b) => Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}">${b}</svg>`);
 for (const [name, seg, scale] of [['desktop', 1500, 0.3], ['mobile', 3000, 0.16]]) {
   const file = path.join(dir, `${name}.png`), { width, height } = await sharp(file).metadata();

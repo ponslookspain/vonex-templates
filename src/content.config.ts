@@ -37,7 +37,7 @@ const templates = defineCollection({
       preparation: z.string().optional(),
       // Optional code version of the template (clean Astro project), sold on Contra. Set `codeUrl`
       // to show the "Buy code" button and the "Code version" block; `codePrice` is in USD and
-      // `codeVersion` the version of the zip. See CODE_TEMPLATES.md.
+      // `codeVersion` the version of the zip. See docs/production/code-versions.md.
       codeUrl: z.url().optional(),
       codePrice: z.number().min(0).optional(),
       codeVersion: z.string().optional(),

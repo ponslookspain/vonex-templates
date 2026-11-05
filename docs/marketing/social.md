@@ -4,15 +4,15 @@ Makes the base visual set for Instagram, Threads, X and TikTok from a template's
 
 This look was approved by Vladimir on 2026-11-05. It is the base for every template: do not change the packs, layouts or rules without asking.
 
-Everything generated goes to `.work/social/<slug>/` (git-ignored). Only the scripts and `configs/<slug>.json` are in git.
+Everything generated goes to `.work/marketing/social/<slug>/` (git-ignored). Only the scripts and `configs/<slug>.json` are in git.
 
 | Command | What |
 | --- | --- |
-| `npm run pins:capture -- <slug> <live url>` | Capture the desktop and phone pages into `.work/pinterest/<slug>/raw/` |
+| `npm run capture -- <slug> <live url>` | Capture the desktop and phone pages into `.work/marketing/captures/<slug>/` |
 | `npm run social:motion -- <slug>` | The three looping videos and their 4:5 slides |
 | `npm run social:static -- <slug>` | Six posts, three carousels, `carousels.png`, `feed-preview.png` |
 
-Without a slug both commands render empty frames into `.work/social/empty/`, for trying a layout. Run `social:motion` before `social:static`: the feed preview uses the video covers. Needs Edge or Chrome (`BROWSER_PATH` to override), `ffmpeg` and `sharp`.
+Without a slug both commands render empty frames into `.work/marketing/social/empty/`, for trying a layout. Run `social:motion` before `social:static`: the feed preview uses the video covers. Needs Edge or Chrome (`BROWSER_PATH` to override), `ffmpeg` and `sharp`.
 
 ## Visual rules
 
@@ -40,7 +40,7 @@ Sizes: video 1080x1920, slides and posts 1080x1350, with the important part insi
 
 ## Pinterest
 
-This set is not for Pinterest. Pins keep their own approved style and procedure in `scripts/pinterest/README.md`: 1000x1500 (2:3), no text, the backgrounds from the template's palette. Do not upload anything from this set to Pinterest and do not change the pin rules unless Vladimir asks. If he asks later, these are the limits: videos can become video pins, but the CSV flow is built for images and needs checking first; posts must be remade in 2:3; carousels and the "Free on Framer" slide do not work as single pins.
+This set is not for Pinterest. Pins keep their own approved style and procedure in [pinterest.md](pinterest.md): 1000x1500 (2:3), no text, the backgrounds from the template's palette. Do not upload anything from this set to Pinterest and do not change the pin rules unless Vladimir asks. If he asks later, these are the limits: videos can become video pins, but the CSV flow is built for images and needs checking first; posts must be remade in 2:3; carousels and the "Free on Framer" slide do not work as single pins.
 
 ## Quality check
 
@@ -57,8 +57,8 @@ Rendering fails if the config has the wrong number of sections, overlapping sect
 ## Steps
 
 1. Live demo URL: `preview` in `src/content/templates/<slug>.yaml`.
-2. Capture it, unless `.work/pinterest/<slug>/raw/` already exists. Read `thumbs.png` (desktop thumb x9, mobile thumb x13 = page y).
-3. Run `node scripts/social/ruler.mjs <slug>` and read `ruler-desktop.png` and `ruler-mobile.png` in the raw folder: they show the page with a y scale. Write `scripts/social/configs/<slug>.json`:
+2. Capture it, unless `.work/marketing/captures/<slug>/` already exists.
+3. Run `npm run social:ruler -- <slug>` and read `ruler-desktop.png` and `ruler-mobile.png` in the capture folder: they show the page with a y scale. Write `scripts/marketing/social/configs/<slug>.json`:
    - `ground`: `ink` or `paper`, by the rule above;
    - `titleHtml`: the name, with one word in `<em>`;
    - `screens`: exactly 8 desktop sections as `[top, height]`, each from the first to the last pixel of one section;
@@ -66,7 +66,7 @@ Rendering fails if the config has the wrong number of sections, overlapping sect
    - add `"cover"` as a third value to a full-bleed photo or gradient section: it then fills the frame from its left edge. Use it only when the section is close to 16:10 and its headline is on the left.
 4. Render with `social:motion`, then `social:static`.
 5. Run the quality check below. Show Vladimir the feed preview and the videos only after it passes.
-6. Write `.work/social/<slug>/captions.md`, plain English:
+6. Write `.work/marketing/social/<slug>/captions.md`, plain English:
    - video: "<Name> 01", "Remix. Edit. Publish.", one line on who it is for;
    - carousel: one line hook, one line on what is inside, "Free on Framer.";
    - Instagram and TikTok end with "Link in bio." and 5 hashtags; Threads and X end with the link.

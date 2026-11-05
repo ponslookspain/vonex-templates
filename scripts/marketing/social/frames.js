@@ -24,7 +24,7 @@ const fillFrames = () => {
     f.innerHTML = '';
     f.style.background = sec.fill;
     const inner = document.createElement('div');
-    inner.style.cssText = `position:absolute;left:0;top:${y}px;width:${w}px;height:${sh}px;background:url(../../.work/pinterest/${site.slug}/raw/${phone ? 'mobile' : 'desktop'}.png) 0 ${-sec.top * fit}px / ${pageW}px auto no-repeat`;
+    inner.style.cssText = `position:absolute;left:0;top:${y}px;width:${w}px;height:${sh}px;background:url(../../../.work/marketing/captures/${site.slug}/${phone ? 'mobile' : 'desktop'}.png) 0 ${-sec.top * fit}px / ${pageW}px auto no-repeat`;
     f.append(inner);
   });
 };

@@ -2,14 +2,14 @@
 // long page strips, monitor / laptop / phone mockups, tilted collages, on solid, gradient
 // and blurred-photo backgrounds. Sources come from capture.mjs; the layout of each pin
 // is in a per-template config (see configs/ and SKILL.md).
-//   node scripts/pinterest/pins.mjs scripts/pinterest/configs/<slug>.json [filter]
+//   node scripts/marketing/pinterest/pins.mjs scripts/marketing/pinterest/configs/<slug>.json [filter]
 import sharp from 'sharp';
 import path from 'node:path';
 import { mkdir, readFile } from 'node:fs/promises';
 
 const cfg = JSON.parse(await readFile(process.argv[2], 'utf8'));
-const base = path.resolve('.work/pinterest', cfg.slug);
-const raw = (n) => path.join(base, 'raw', `${n}.png`);
+const base = path.resolve('.work/marketing/pinterest', cfg.slug);
+const raw = (n) => path.resolve('.work/marketing/captures', cfg.slug, `${n}.png`);
 const out = path.join(base, 'pins');
 await mkdir(out, { recursive: true });
 const PW = 1000, PH = 1500;
