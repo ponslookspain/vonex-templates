@@ -98,5 +98,7 @@ const scenes = {
   },
 };
 scenes[scene]();
+// X shows images as a grid, not a swipe: anything lying across a seam would just look cut, so it goes.
+if (query.get('x')) [...stage.children].filter((n) => n.offsetWidth < S).forEach((n) => { const a = n.offsetLeft, b = a + n.offsetWidth; if (a < 0 || Math.floor(a / S) !== Math.floor((b - 1) / S)) n.remove(); });
 fillFrames();
 </script>

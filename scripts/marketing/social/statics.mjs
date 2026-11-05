@@ -7,7 +7,7 @@ import { existsSync, mkdtempSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { pathToFileURL } from 'node:url';
-import { loadSite, loadSet } from './site.mjs';
+import { loadSite, loadSet, reportFrames } from './site.mjs';
 
 const slug = process.argv[2], { packs, carousels } = await loadSet(slug);
 const site = await loadSite(slug);
@@ -28,10 +28,11 @@ ws.onmessage = (e) => { const m = JSON.parse(e.data); if (m.id && wait.has(m.id)
 const cdp = (method, params = {}) => new Promise((r) => { wait.set(++id, r); ws.send(JSON.stringify({ id, method, params })); });
 await cdp('Page.enable');
 const page = pathToFileURL(path.resolve('scripts/marketing/social/statics.html')).href;
-const shot = async (scene, width) => {
+const shot = async (scene, width, extra = '') => {
   await cdp('Emulation.setDeviceMetricsOverride', { width, height: H, deviceScaleFactor: 1, mobile: false });
-  await cdp('Page.navigate', { url: `${page}?scene=${scene}&site=${site}` });
+  await cdp('Page.navigate', { url: `${page}?scene=${scene}&site=${site}${extra}` });
   await new Promise((r) => setTimeout(r, slug ? 5000 : 900));
+  await reportFrames(cdp, scene);
   return Buffer.from((await cdp('Page.captureScreenshot', { format: 'png' })).data, 'base64');
 };
 await mkdir(path.join(out, 'posts'), { recursive: true });
@@ -41,6 +42,10 @@ for (const c of carousels) {
   await mkdir(dir, { recursive: true });
   await writeFile(path.join(dir, 'strip.png'), strip);
   for (let i = 0; i < N; i++) await sharp(strip).extract({ left: i * S, top: 0, width: S, height: H }).jpeg({ quality: 92 }).toFile(path.join(dir, `slide-${i + 1}.jpg`));
+  // X takes four images: its own render, with slides 1, 2, 3 and the closing one.
+  const xStrip = await shot(c, S * N, '&x=1');
+  await mkdir(path.join(dir, 'x'), { recursive: true });
+  for (const [k, i] of [0, 1, 2, 4].entries()) await sharp(xStrip).extract({ left: i * S, top: 0, width: S, height: H }).jpeg({ quality: 92 }).toFile(path.join(dir, 'x', `slide-${k + 1}.jpg`));
 }
 ws.close(); proc.kill();
 

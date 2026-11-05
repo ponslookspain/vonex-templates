@@ -77,11 +77,11 @@ Everything generated while working lives in one git-ignored folder, `.work/<part
 
 ## Pinterest pins
 
-Vladimir says "делаем изображения для Пинтереста" (or similar) after a template is ready. Follow [docs/marketing/pinterest.md](docs/marketing/pinterest.md): capture the live demo, render 18 text-free pins in the approved style and, once he approves them, host the images in Cloudflare R2 and make the CSV he uploads to Pinterest. Pin images are never part of the site or its deploy. Pins link to the template page on this site with UTM tags, not to Framer.
+Vladimir says "делаем изображения для Пинтереста" (or similar) after a template is ready. Follow [docs/marketing/pinterest.md](docs/marketing/pinterest.md): capture the live demo, render 18 text-free pins in the approved style and, once he approves them, publish them through the PostVIA MCP (the CSV upload is the fallback). Pin images are never part of the site or its deploy. Pins link to the template page on this site with UTM tags, not to Framer.
 
 ## Social visuals
 
-Vladimir says "делаем визуал для соцсетей" (or similar) and names a template. Follow [docs/marketing/social.md](docs/marketing/social.md): it holds the approved base look for Instagram, Threads, X and TikTok, three looping videos and three carousels picked from a pool, six posts and captions. Keep that look for every template and do not redesign it without asking. The ground is measured so it never melts into the site. Posts link to our site with UTM tags, not to Framer. Nothing is published without Vladimir.
+Vladimir says "делаем визуал для соцсетей" (or similar) and names a template. Follow [docs/marketing/social.md](docs/marketing/social.md): it holds the approved base look for Instagram, Threads, X and TikTok, three looping videos and three carousels picked from a pool, six posts, captions and a version for each network. The whole flow is at the top of that file. Keep that look for every template and do not redesign it without asking. The ground is measured so it never melts into the site. Posts link to our site with UTM tags, not to Framer. Nothing is published without Vladimir.
 
 ## Template offers
 

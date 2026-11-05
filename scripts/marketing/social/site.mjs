@@ -52,6 +52,35 @@ const check = (list, need, name, height, slug) => {
   });
 };
 
+// Rows of one colour are empty. They give the block's own margins, which are trimmed so the content
+// fills a frame, and the places where a block may be cut without going through text.
+const KEEP = 40, MIN_GAP = 16;
+async function measure(file, top, h) {
+  const { data, info } = await sharp(file).extract({ left: 0, top, width: (await sharp(file).metadata()).width, height: h }).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+  const row = info.width * 3, empty = [];
+  for (let y = 0; y < h; y++) {
+    let flat = true;
+    for (let x = 0; x < info.width && flat; x += 3) for (let c = 0; c < 3; c++) if (Math.abs(data[y * row + x * 3 + c] - data[y * row + c]) > 10) flat = false;
+    empty.push(flat);
+  }
+  let first = empty.indexOf(false), last = empty.lastIndexOf(false);
+  if (first < 0) return { top, h, cuts: [] };
+  first = Math.max(0, first - KEEP); last = Math.min(h - 1, last + KEEP);
+  const cuts = [];
+  for (let y = first, run = 0; y <= last; y++) {
+    if (empty[y]) run++;
+    else { if (run >= MIN_GAP) cuts.push(y - first - (run >> 1)); run = 0; }
+  }
+  return { top: top + first, h: last - first + 1, cuts };
+}
+
+// Prints every frame that lost too much of its block or shows too much empty ground.
+export async function reportFrames(cdp, label) {
+  const { result } = await cdp('Runtime.evaluate', { expression: 'JSON.stringify(window.frameReport || [])' });
+  const lines = JSON.parse(result.value).filter((f) => f.crop > .05 || f.pad > .15).map((f) => `check ${label}: section ${f.section} in a ${f.size} frame, cut ${Math.round(f.crop * 100)}%, empty ${Math.round(f.pad * 100)}%`);
+  for (const line of new Set(lines)) console.warn(line); // a wall repeats the same frame many times
+}
+
 export async function loadSite(slug) {
   if (!slug) return '';
   const cfg = JSON.parse(await readFile(`scripts/marketing/social/configs/${slug}.json`, 'utf8'));
@@ -61,7 +90,8 @@ export async function loadSite(slug) {
     check(list, need, key, height, slug);
     return Promise.all(list.map(async ([top, h, mode]) => {
       const { data } = await sharp(file).extract({ left: 4, top: top + 2, width: 1, height: 1 }).removeAlpha().raw().toBuffer({ resolveWithObject: true });
-      return { top, h, cover: mode === 'cover', rgb: [...data], fill: `rgb(${data[0]},${data[1]},${data[2]})` };
+      const box = name === 'desktop' && mode !== 'cover' ? await measure(file, top, h) : { top, h, cuts: [] };
+      return { ...box, cover: mode === 'cover', rgb: [...data], fill: `rgb(${data[0]},${data[1]},${data[2]})` };
     }));
   };
   const screens = await read('desktop', cfg.screens, 8, 'screens'), phones = await read('mobile', cfg.phones, 4, 'phones');

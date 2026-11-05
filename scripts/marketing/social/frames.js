@@ -36,19 +36,34 @@ const stackSize = (group, maxW, maxH) => {
 };
 
 // A frame shows exactly one section: never the next block, never a stretched crop.
-// A short section sits centred on its own ground colour; a tall one starts at its top.
+// A frame with data-kind was cut to its own section. Any other desktop frame has a fixed shape, so it takes
+// the sections closest to that shape, in page order, one after another: a good fit without repeating a neighbour.
+const closest = (ratio, used) => {
+  const key = ratio.toFixed(2), n = used[key] = (used[key] || 0) + 1;
+  const gap = (s) => Math.abs(Math.log(s.h / 1440 / ratio));
+  const near = site.screens.map((s, i) => ({ i, g: gap(s) })).sort((a, b) => a.g - b.g).slice(0, 5).sort((a, b) => a.i - b.i);
+  return site.screens[near[(n - 1) % near.length].i];
+};
 const fillFrames = () => {
   if (!site) return;
+  const used = {};
+  window.frameReport = [];
   document.querySelectorAll('.f').forEach((f) => {
     const w = f.offsetWidth, h = f.offsetHeight, phone = f.dataset.kind ? f.dataset.kind === 'phone' : h > w * 1.4, i = +f.dataset.i || 0;
-    const list = phone ? site.phones : site.screens, sec = list[i % list.length], scale = w / (phone ? 780 : 1440);
+    const list = phone ? site.phones : site.screens, sec = phone || f.dataset.kind ? list[i % list.length] : closest(h / w, used), scale = w / (phone ? 780 : 1440);
     // Photo and gradient sections are marked `cover`: they fill the frame from the left edge, where the headline sits, because a flat fill would read as a band.
-    const fit = sec.cover ? Math.max(scale, h / sec.h) : scale, pageW = (phone ? 780 : 1440) * fit;
-    const sh = Math.min(sec.h * fit, h), y = (h - sh) / 2;
+    let fit = sec.cover ? Math.max(scale, h / sec.h) : scale, shown = sec.h;
+    // Too tall: cut on an empty row if that keeps most of the frame, otherwise show the whole block a little smaller.
+    if (!sec.cover && !phone && sec.h * fit > h + 1) {
+      const room = h / fit, cut = Math.max(0, ...(sec.cuts || []).filter((c) => c <= room));
+      if (cut >= room * .7) shown = cut; else fit = h / sec.h;
+    }
+    const pageW = (phone ? 780 : 1440) * fit, innerW = Math.min(pageW, w), sh = Math.min(shown * fit, h), y = Math.round((h - sh) / 2), x = (w - innerW) / 2;
+    window.frameReport.push({ section: list.indexOf(sec), size: `${w}x${h}`, crop: Math.max(1 - sh / (sec.h * fit), 1 - w / pageW, 0), pad: 1 - sh * innerW / (h * w) });
     f.innerHTML = '';
     f.style.background = sec.fill;
     const inner = document.createElement('div');
-    inner.style.cssText = `position:absolute;left:0;top:${y}px;width:${w}px;height:${sh}px;background:url(../../../.work/marketing/captures/${site.slug}/${phone ? 'mobile' : 'desktop'}.png) 0 ${-sec.top * fit}px / ${pageW}px auto no-repeat`;
+    inner.style.cssText = `position:absolute;left:${x}px;top:${y}px;width:${innerW}px;height:${sh}px;background:url(../../../.work/marketing/captures/${site.slug}/${phone ? 'mobile' : 'desktop'}.png) 0 ${-sec.top * fit}px / ${pageW}px auto no-repeat`;
     f.append(inner);
   });
 };

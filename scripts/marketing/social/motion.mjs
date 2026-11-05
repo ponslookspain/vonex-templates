@@ -8,7 +8,7 @@ import { existsSync, mkdtempSync } from 'node:fs';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { pathToFileURL } from 'node:url';
-import { loadSite, loadSet } from './site.mjs';
+import { loadSite, loadSet, reportFrames } from './site.mjs';
 
 const slug = process.argv[2], { packs } = await loadSet(slug);
 const site = await loadSite(slug);
@@ -36,6 +36,7 @@ for (const p of packs) {
   await mkdir(frames, { recursive: true });
   await cdp('Page.navigate', { url: `${page}?pack=${p}&site=${site}` });
   await new Promise((r) => setTimeout(r, slug ? 6000 : 1500));
+  await reportFrames(cdp, `pack ${p}`);
   const n = FPS * T;
   for (let i = 0; i < n; i++) {
     await cdp('Runtime.evaluate', { expression: `seek(${i / FPS})` });
