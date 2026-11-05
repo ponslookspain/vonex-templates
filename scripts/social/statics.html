@@ -1,0 +1,72 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:Archivo;src:url(../../node_modules/@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2);font-weight:100 900}
+@font-face{font-family:'Instrument Serif';font-style:italic;src:url(../../node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2)}
+*{box-sizing:border-box}
+html,body{margin:0;overflow:hidden}
+#stage{position:absolute;inset:0;overflow:hidden;perspective:2200px}
+.abs{position:absolute;transform-style:preserve-3d}
+.f{background:#fff;overflow:hidden;position:absolute}
+.f i{position:absolute;display:block;background:#e4e4e2}
+.f i.d{background:#101014}
+.f i.l{background:#c9c9c6}
+.cap{position:absolute;text-align:center;font:500 54px/1.12 Archivo;letter-spacing:-.02em}
+.cap em{font:italic 400 62px/1 'Instrument Serif'}
+</style>
+<div id="stage"></div>
+<script src="frames.js"></script>
+<script>
+const scene = new URLSearchParams(location.search).get('scene');
+const stage = document.getElementById('stage');
+const GREY = palette ? palette.bg : '#c9c9c6', INK = palette ? palette.bg : '#101014', TEXT = palette ? palette.fg : '#101014', S = 1080, H = 1350;
+const el = (cls, css, parent = stage, html = '') => { const n = document.createElement('div'); n.className = cls; n.style.cssText = css; n.innerHTML = html; parent.append(n); return n; };
+const frame = (i, x, y, w, h, parent = stage) => { const n = el('f', `left:${x}px;top:${y}px;width:${w}px;height:${h}px`, parent, layouts[i % 4]()); n.dataset.i = i; return n; };
+const ground = (c) => { document.body.style.background = c; };
+const device = (x, y, w, h, r, i, transform = '', parent = stage) => {
+  const d = el('abs', `left:${x}px;top:${y}px;width:${w}px;height:${h}px;transform:${transform}`, parent);
+  for (let k = 0; k < 14; k++) el('abs', `inset:0;border-radius:${r}px;background:${k === 13 ? '#2a2a2f' : '#55555c'};transform:translateZ(${-k * 1.6}px)`, d);
+  el('abs', `inset:0;border-radius:${r}px;background:#050506;transform:translateZ(1px)`, d);
+  const glass = el('abs', `inset:14px;border-radius:${r - 10}px;overflow:hidden;background:#fff;transform:translateZ(2px)`, d);
+  frame(i, 0, 0, w - 28, h - 28, glass);
+};
+// A tilted field of frames; one wide field also serves as a seamless carousel.
+const wall = (cx, cy, cols, rows, fw, fh, gap, rot) => {
+  const w = el('abs', `left:${cx}px;top:${cy}px;width:0;height:0;transform:rotateX(10deg) rotateZ(${rot}deg)`);
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) frame((2 * r + c) % 8, (c - cols / 2) * (fw + gap) + (r % 2) * (fw / 2), (r - rows / 2) * (fh + gap), fw, fh, w);
+};
+const closing = (cx, color) => el('cap', `left:${cx - 400}px;width:800px;top:610px;color:${color}`, stage, 'Free on <em>Framer</em>');
+
+const scenes = {
+  // Single posts
+  flat() { ground(GREY); frame(0, 150, 440, 780, 470); },
+  stacked() { ground(GREY); frame(3, 190, 190, 700, 460); frame(2, 190, 690, 700, 460); },
+  phone() { ground(INK); device(320, 130, 440, 950, 62, 3, 'rotateY(-20deg) rotateX(14deg) rotateZ(14deg)'); },
+  tablet() { ground(INK); device(130, 400, 820, 560, 32, 1, 'rotateY(-26deg) rotateX(18deg) rotateZ(-7deg)'); },
+  wall() { ground(INK); wall(540, 675, 6, 8, 560, 360, 26, -17); },
+  row() { ground(GREY); for (let i = 0; i < 4; i++) device(66 + i * 244, 460, 216, 450, 34, i); },
+  // Carousels: 5 slides on one strip, so a swipe reads as a single surface.
+  c1() { // Slate: one flat screen per slide, a phone sits on each seam and pulls you to the next one
+    ground(GREY); stage.style.perspective = 'none';
+    for (let i = 0; i < 4; i++) frame(i * 2, i * S + 160, 440, 760, 470);
+    for (let i = 1; i < 4; i++) device(i * S - 100, 455, 200, 440, 30, i + 1);
+    closing(4 * S + 540, TEXT);
+  },
+  c2() { // Tilted wall running through all slides, words only at the end
+    ground(INK); wall(2160, 675, 16, 8, 560, 360, 26, -17);
+    el('abs', `left:${4 * S}px;top:0;width:${S}px;height:${H}px;background:${INK}`);
+    closing(4 * S + 540, palette ? palette.fg : '#f2f1ee');
+  },
+  c3() { // Long columns that bleed off top and bottom, each one straddling a seam
+    ground(GREY);
+    for (let c = 0; c < 9; c++) {
+      const x = c * 540 - 230, off = c % 2 ? -220 : -60;
+      for (let k = 0; k < 7; k++) frame((3 * c + k) % 8, x, off + k * 320, 460, 296);
+    }
+    el('abs', `left:${4 * S}px;top:0;width:${S}px;height:${H}px;background:${GREY}`);
+    closing(4 * S + 540, TEXT);
+  },
+};
+scenes[scene]();
+fillFrames();
+</script>

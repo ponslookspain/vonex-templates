@@ -16,6 +16,8 @@
     "pins:sheet": "node scripts/pinterest/sheet.mjs",
     "pins:upload": "node scripts/pinterest/upload.mjs",
     "pins:csv": "node scripts/pinterest/csv.mjs",
+    "social:motion": "node scripts/social/motion.mjs",
+    "social:static": "node scripts/social/statics.mjs",
     "clean": "node scripts/clean.mjs"
   },
   "dependencies": {
