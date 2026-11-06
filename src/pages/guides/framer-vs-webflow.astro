@@ -36,7 +36,7 @@ const faq = [
   jsonLd={{
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'Article', headline: title, description, url, mainEntityOfPage: url, dateModified: '2026-11-03', author: { '@type': 'Organization', name: 'Vonex Design', url: new URL('/', Astro.site).href } },
+      { '@type': 'Article', headline: title, description, url, mainEntityOfPage: url, dateModified: '2026-11-03', author: { '@type': 'Person', name: site.author, url: new URL('/about/', Astro.site).href } },
       { '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
     ],
   }}

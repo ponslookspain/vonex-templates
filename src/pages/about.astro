@@ -8,12 +8,12 @@ import { site } from '../data/site';
   title={`About ${site.name}`}
   seoTitle="About: Framer templates by Vladimir"
   description={`${site.name} is a small catalog of Framer templates made by Vladimir. Find out who makes them, where to find them on Framer and how to get in touch.`}
-  updated="November 3, 2026"
+  updated="November 6, 2026"
   jsonLd={{
     '@context': 'https://schema.org',
     '@type': 'AboutPage',
     url: new URL('/about/', Astro.site).href,
-    mainEntity: { '@type': 'Organization', name: site.name, url: new URL('/', Astro.site).href, sameAs: [site.framerProfile, ...site.socials.map((s) => s.href)] },
+    mainEntity: { '@type': 'Organization', name: site.name, url: new URL('/', Astro.site).href, founder: { '@type': 'Person', name: site.author, url: new URL('/about/', Astro.site).href }, sameAs: [site.framerProfile, ...site.socials.map((s) => s.href)] },
   }}
 >
   <h2>Who makes the templates</h2>
@@ -25,10 +25,21 @@ import { site } from '../data/site';
   </p>
 
   <h2>How the templates are made</h2>
+  <ol>
+    <li>Each template starts with one kind of client and what their visitors need to find.</li>
+    <li>The design is built in Framer and checked on desktop, tablet and phone.</li>
+    <li>The sample content is written for that kind of site, so you can see what belongs on each page.</li>
+    <li>Code versions are written by hand in Astro and Tailwind CSS, not exported from Framer.</li>
+  </ol>
   <p>
-    The design is black on white with square corners and thin lines. Templates are responsive, edited visually and need
-    no code. Each template page lists the pages it includes and whether it has a CMS, so you can judge it before you
-    open Framer.
+    Templates are edited visually and need no code. Each template page lists the pages it includes and whether it has a
+    CMS, so you can judge it before you open Framer.
+  </p>
+
+  <h2>Guides</h2>
+  <p>
+    Vladimir also writes the <a href="/guides/">guides</a> on this site. They cover how to plan, build and publish a
+    website with a template.
   </p>
 
   <h2>Find the work</h2>

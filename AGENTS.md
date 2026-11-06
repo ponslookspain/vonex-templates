@@ -42,7 +42,7 @@ Never push straight to `main`, never force-push. Delete branches once they are m
 | `src/pages/templates/[slug].astro` | Template page: gallery, description blocks, stats, FAQ, other templates. |
 | `src/lib/template-content.ts` | Turns the imported Marketplace description into page blocks and FAQ. |
 | `src/pages/design-system.astro` | Live style guide at `/design-system/`, only in `npm run dev`: `astro.config.mjs` removes it from the production build. |
-| `src/pages/sitemap.xml.ts`, `robots.txt.ts` | Generated at build. Static pages are listed by hand in the sitemap; template pages are added automatically. |
+| `src/pages/sitemap.xml.ts`, `robots.txt.ts`, `llms.txt.ts` | Generated at build. Static pages are listed by hand in the sitemap; template pages are added automatically. |
 | `src/layouts/Base.astro` | `<head>` (SEO, Open Graph, JSON-LD, analytics), header, footer. |
 | `src/components/` | UI and layout components. |
 | `src/styles/global.css` | Design tokens (`@theme static`) and shared classes. |
@@ -107,7 +107,7 @@ Rules:
 ## Style
 
 - Before changing layout, read DESIGN_SYSTEM.md: "Breakpoints and responsive rules", "Section anatomy", "Pages" and "Template page" describe how every page is put together and how it must behave from 340px up.
-- Alpine: ink on warm paper (quiet text and lines are the same ink at lower opacity, through tokens), square corners, hairlines, headlines in sentence case with one italic serif accent word (DESIGN.md). Read DESIGN.md before writing any UI. All visual values come from tokens in `src/styles/global.css`; text sizes from the `.type-*` classes; spacing from the named steps (`p-lg`, `mt-xl`); layout on the 4-column grid (`.grid-4`, `Section`, `Container`). Details and the checklist are in DESIGN_SYSTEM.md.
+- Alpine: ink on warm paper (quiet text is the same ink at lower opacity, lines are solid tints of it, through tokens), square corners, hairlines, headlines in sentence case with one italic serif accent word (DESIGN.md). Read DESIGN.md before writing any UI. All visual values come from tokens in `src/styles/global.css`; text sizes from the `.type-*` classes; spacing from the named steps (`p-lg`, `mt-xl`); layout on the 4-column grid (`.grid-4`, `Section`, `Container`). Details and the checklist are in DESIGN_SYSTEM.md.
 - Pages are static HTML with small inline scripts only. Do not add a UI framework (React and similar) or client-side rendering.
 - Images go through `astro:assets` (`<Image>`), never straight from Framer at runtime.
 - Site copy in plain English, short sentences.

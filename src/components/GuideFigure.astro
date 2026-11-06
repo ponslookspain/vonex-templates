@@ -9,12 +9,14 @@ interface Props {
   // Gallery picture index; leave out for the cover.
   picture?: number;
   caption: string;
+  // What the picture shows, when the gallery text is only "preview 2".
+  alt?: string;
 }
-const { template, picture, caption } = Astro.props;
+const { template, picture, caption, alt: altText } = Astro.props;
 const t = template.data;
 const shot = picture !== undefined ? t.gallery[picture] : undefined;
 const src = shot?.src ?? t.image;
-const alt = shot?.alt ?? `${t.name} Framer template: ${t.tagline}`;
+const alt = altText ?? shot?.alt ?? `${t.name} Framer template: ${t.tagline}`;
 ---
 
 <figure class="guide-figure">

@@ -37,9 +37,9 @@
   --color-muted: rgb(16 16 20 / 0.62); /* Captions, labels, metadata (on-surface-muted) */
   --color-primary: #101014; /* Main action, black bands (primary) */
   --color-on-primary: #f2f1ee; /* Text and icons on the primary color (on-primary) */
-  --color-line: rgb(16 16 20 / 0.16); /* Hairlines: rails, section lines, cell borders */
-  --color-line-inverse: rgb(242 241 238 / 0.22); /* Hairlines on the black band */
-  --color-line-strong: rgb(16 16 20 / 0.4); /* Outlines of buttons and tags, heavy picture frames */
+  --color-line: #cecdcb; /* Hairlines: rails, section lines, cell borders. Solid, so crossing lines do not darken */
+  --color-line-inverse: #424244; /* Hairlines on the black band */
+  --color-line-strong: #989797; /* Outlines of buttons and tags, heavy picture frames */
 
   /* Type scale. Headlines step by about 1.78. The big sizes shrink on small screens (see clamp). */
   --text-display: clamp(3.25rem, 12.5vw, 9.375rem); /* headline-display: 150px, one per page */

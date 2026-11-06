@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Section from './Section.astro';
 import { withAccent } from '../lib/accent';
+import { site } from '../data/site';
 
 // Shared shell for the short text pages (privacy, terms, guides, about): a centered title block,
 // then the title on the left and the running text on the right, on the 4-column grid.
@@ -42,7 +43,7 @@ const image = Astro.props.image ?? (guideSlug ? `/og/guides/${guideSlug}.png` : 
   <Section class="text-center" labelledby="legal-title">
     <span class="kicker type-label">{kicker}</span>
     <h1 id="legal-title" class="type-headline-lg" set:html={withAccent(title, accent) + (/[.?!]$/.test(title) ? '' : '.')} />
-    <p class="type-label mt-lg">Last updated {updated}</p>
+    <p class="type-label mt-lg">{guideSlug && <>By <a href="/about/" class="underline underline-offset-4">{site.author}</a> · </>}Last updated {updated}</p>
   </Section>
   <Section label={title} bar={{ left: kicker, right: `Updated ${updated}` }}>
     <div class="grid-4 gap-y-xl">

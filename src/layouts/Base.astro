@@ -23,7 +23,8 @@ interface Props {
   gridOverlay?: boolean;
 }
 const { title, description = site.description, jsonLd, noindex = false, gridOverlay = false, image = '/og-image.png' } = Astro.props;
-const fullTitle = title ? `${title} | ${site.name}` : `${site.name}: ${site.tagline}`;
+// Search results cut titles at about 60 characters, so a long title goes without the site name.
+const fullTitle = !title ? `${site.name}: ${site.tagline}` : title.length > 45 ? title : `${title} | ${site.name}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(image, Astro.site).href;
 const siteSchema = [
