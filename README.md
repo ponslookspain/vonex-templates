@@ -55,7 +55,7 @@ Afterwards: open the generated YAML and write a proper `description`, then commi
 npm run sync-templates
 ```
 
-Updates every template from its Marketplace page (new text, price, categories, features). What you wrote yourself is kept: `description`, `affiliateUrl`, `featured`, `tags`, `category`, `added`, `preview`.
+Updates every template from its Marketplace page (new text, price, categories, features). What you wrote yourself is kept: `description`, `affiliateUrl`, `featured`, `tags`, `types`, `category`, `added`, `preview`, the page texts (`pageKind`, `seoDescription`, `overview`, `preparation`) and the code and direct-sale fields (`codeUrl`, `codePrice`, `codeVersion`, `buyUrl`, `soldOn`). If the Marketplace page cannot be read, the existing file is left as it is and the command exits with an error.
 
 ### Where the files live
 

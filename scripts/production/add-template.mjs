@@ -126,6 +126,9 @@ async function importOne(slug, { flags }) {
   let d = res.data;
   const notes = [];
   if (!d) {
+    // Refreshing a template we already have must never replace its text and gallery with the
+    // few fields the meta tags carry. Keep the file as it is and report the failure.
+    if (had) throw new Error('Framer page format was not recognised, so the existing file was kept. Check scripts/production/lib/framer.mjs.');
     d = metaFallback(res.html ?? '', slug);
     notes.push('Framer page format was not recognised: only the meta tags were read (no description sections, gallery or features). Check scripts/production/lib/framer.mjs.');
   }
@@ -181,7 +184,19 @@ async function importOne(slug, { flags }) {
     gallery,
   };
   for (const k of ['pageKind', 'seoDescription', 'overview', 'preparation', 'codeUrl', 'codePrice', 'codeVersion', 'buyUrl', 'soldOn']) if (old[k] !== undefined) data[k] = old[k];
-  for (const k of MANUAL) if (old[k] !== undefined && opt[k] === undefined && k in data) data[k] = old[k] instanceof Date ? day(old[k].toISOString()) : old[k];
+  // The flag --affiliate fills the field affiliateUrl, so the two names differ.
+  const given = { ...opt, affiliateUrl: opt.affiliate };
+  for (const k of MANUAL) if (old[k] !== undefined && given[k] === undefined && k in data) data[k] = old[k] instanceof Date ? day(old[k].toISOString()) : old[k];
+  // A refresh that comes back without the description or the pictures is a broken read, not news.
+  if (had && !data.sections.length && old.sections?.length) {
+    data.intro = old.intro ?? [];
+    data.sections = old.sections;
+    notes.push('Framer returned no description sections, so the old ones were kept');
+  }
+  if (had && !data.gallery.length && old.gallery?.length) {
+    data.gallery = old.gallery;
+    notes.push('Framer returned no pictures, so the old gallery was kept');
+  }
 
   const yaml = toYaml(data, { lineWidth: 0 });
   if (opt['dry-run']) {
@@ -226,11 +241,18 @@ if (opt.all) {
   }
   slugs = [slug];
 }
+const failed = [];
 for (const slug of slugs) {
   try {
     await importOne(slug, { flags: opt });
   } catch (e) {
     if (slugs.length === 1) fail(e.message);
     console.error(`  ${slug}: ${e.message}`);
+    failed.push(slug);
   }
+}
+// A refresh of everything must not look successful when some templates failed.
+if (failed.length) {
+  console.error(`\n${failed.length} of ${slugs.length} templates failed: ${failed.join(', ')}`);
+  process.exitCode = 1;
 }

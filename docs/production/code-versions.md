@@ -10,10 +10,10 @@ Plan and rules for selling the **code version** of a template: the same design a
 
 ## How it works
 
-Pricing follows the four template offers in [AGENTS.md](AGENTS.md#template-offers): code for a free template is $19, code for a paid template costs the same as the Framer version.
+Pricing follows the four template offers in [AGENTS.md](../../AGENTS.md#template-offers): code for a free template is $19, code for a paid template costs the same as the Framer version.
 
 1. **Source of truth for design** is the Framer project. Claude reads it through the Framer MCP (pages, components, styles, texts, breakpoints) and compares against the published site.
-2. **Code** lives in a private repository `vonex-code`, one folder per template (`vonex-code/<slug>/`). A shared `vonex-code/_base/` holds the starting point (Astro and Tailwind config, fonts, `pack` script, README and LICENSE templates). A new template starts as a copy of `_base`.
+2. **Code** lives in a private repository `vonex-code`, one folder per template (`vonex-code/<slug>/`). The `pack` script lives in `vonex-code/scripts/`, next to the fidelity checks. A shared `vonex-code/_base/` starting point (Astro and Tailwind config, fonts, README and LICENSE templates) is planned but does not exist yet: today a new template starts as a copy of the latest finished one (Fallow), and the things that should be in `_base` are noted while doing it.
 3. **Packing.** `npm run pack <slug>` builds the check, then writes `<slug>-v<version>.zip` with sources only (no `node_modules`, `dist`, `.git`), plus `README.md`, `LICENSE.md`, `CHANGELOG.md`.
 4. **Selling and delivery** go through Contra (Products, merchant of record: payments, taxes and disputes are handled by Contra). Vladimir uploads the zip in the product's "Files" field (limit 5 GB) and writes the "After purchase description". No GitHub Actions, releases, demo subdomains or buyer access to the repository.
 5. **Demo** is the template's existing Live Preview (the Framer site). The code version must match it, so no separate demo.
@@ -94,7 +94,7 @@ Every code version's README has a "Fidelity and known differences" section that 
 
 1. Vladimir changes the design in Framer (alone or with Claude) and publishes.
 2. He says "синхронизируй `<slug>`".
-3. Claude reads the current Framer project and diffs it against `framer-snapshot` kept in `vonex-code/<slug>/`.
+3. Claude reads the current Framer project and diffs it against `framer-snapshot` kept in `vonex-code/<slug>/`. No template has a snapshot yet: for the first sync, compare the Framer project with the published site and the code, and save the snapshot then.
 4. Claude ports only what changed, checks screenshots against the published site, updates the snapshot, bumps the version and the changelog.
 5. `npm run pack <slug>`, Vladimir uploads the new zip to the Contra product.
 6. Contra lets the seller update a product's delivery files at any time, and past buyers get the current version (Contra help center). Check it once with a test purchase.

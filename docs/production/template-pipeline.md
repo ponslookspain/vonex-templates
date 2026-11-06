@@ -43,7 +43,7 @@ Local ComfyUI may be used to generate images when a template needs them (photos,
 
 ## 3. Marketplace
 
-Publish the demo, submit the template, and write the demo URL into the template's status notes.
+Publish the demo, submit the template, and note the demo URL: it becomes `preview` in the template's YAML at stage 6. Write the referral link (`framer.link/...`) down at the same time and open it once: it must lead to the template's remix page with `via` and `dub_id` in the address, not to the Framer home page.
 
 Every template gets exactly 4 Marketplace preview images:
 
@@ -91,5 +91,5 @@ Follow "Adding or changing a template" and "Workflow" in [AGENTS.md](../../AGENT
 
 - Pinterest: [docs/marketing/pinterest.md](../marketing/pinterest.md).
 - UI8 and Craftwork: [../marketing/marketplaces.md](../marketing/marketplaces.md).
-- Instagram, Threads, X and TikTok: [../marketing/social.md](../marketing/social.md). Publish only after Vladimir approves the exact text. Link to the template page on this site, with UTM tags.
+- Instagram, Threads, X, TikTok and YouTube: [../marketing/social.md](../marketing/social.md). Publish only after Vladimir approves the exact text. Link to the template page on this site, with UTM tags.
 - When everything is live, run `npm run clean`.

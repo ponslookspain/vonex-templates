@@ -89,8 +89,8 @@ Every template is exactly one of four offers. `offer()` in `src/lib/buy.ts` name
 
 | Offer | YAML | Buttons on the page | Example |
 | --- | --- | --- | --- |
-| `free` | `price: 0`, no `codeUrl` | Use free on Framer | Harrier, Ethan Walker, Softic Studio |
-| `free-code` | `price: 0`, `codeUrl`, `codePrice: 19` | Use free on Framer · Buy code $19 | Alpine App |
+| `free` | `price: 0`, no `codeUrl` | Use free on Framer | Ethan Walker, Softic Studio |
+| `free-code` | `price: 0`, `codeUrl`, `codePrice: 19` | Use free on Framer · Buy code $19 | Alpine App, Harrier, Fallow |
 | `paid` | `price: 49`, no `codeUrl` | Get on Framer (or Buy template with `buyUrl`) | none now |
 | `paid-code` | `price: 49`, `codeUrl`, `codePrice: 49` | Get on Framer · Buy code $49 | none yet |
 
