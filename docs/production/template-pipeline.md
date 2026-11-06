@@ -4,7 +4,7 @@ The full path of a new template, from choosing a niche to posting it on social m
 
 | # | Stage | Done when | Who decides |
 | --- | --- | --- | --- |
-| 1 | Niche | One-page brief is written | Vladimir picks the niche |
+| 1 | Niche | Brief with the thesis is written | Vladimir picks the niche |
 | 2 | Framer template | Framer checklist passes, design is frozen | Vladimir freezes the design |
 | 3 | Marketplace | Demo is published, template is submitted | Vladimir submits |
 | 4 | Code version | Fidelity and device checks pass, zip is packed | Agent reports, Vladimir accepts |
@@ -16,20 +16,20 @@ Stage 4 runs while the Marketplace reviews the template. Stages 5, 6 and 7 stay 
 
 ## 1. Niche
 
-- Study competing templates on the Framer Marketplace: what exists, how it looks, what it costs.
-- Check demand through treg when it helps: search volume and difficulty of the main queries. Tell Vladimir the price of any call above one cent.
-- The brief holds the niche, the audience, the main queries, and how this template differs.
+The design process has its own document in the private `framer-templates` repository: `docs/00-design-process.md`. Briefs, demand data and the taste library live there too, not in this public repository. Stages 1 and 2 here are its summary.
+
+Done when `templates/<slug>/brief.md` holds the niche, the audience, the main queries, the clichés we refuse and the thesis of the template.
 
 ## 2. Framer template
 
-Framer comes first, because design is found faster visually and code then has one fixed source. Build it so that both customers and the code port have an easy time:
+Three HTML directions come first, then Vladimir picks one and it is built in Framer. Framer stays the one source for the code port. The port then reads the design from `vonex-code/specs/<slug>/`. Build it so that both customers and the port have an easy time:
 
-- [ ] Every section is a component, with clear names (`Sections/Hero/Phone-Rise`).
+- [ ] Every section is a component, with clear names. Special behavior is in the name: `Sections/Seasons [sticky-scroll]`.
 - [ ] Colors and text use Framer styles only, no one-off values.
 - [ ] Repeating content uses CMS where it fits.
 - [ ] Desktop, Tablet and Phone are all designed.
 - [ ] Customers get instructions for changing content, colors and fonts.
-- [ ] Effects can be rebuilt with CSS and IntersectionObserver.
+- [ ] Custom code is agreed, and what it does is written in `component-map.md`.
 - [ ] Every font and image may be redistributed in the code zip (see "Redistribution rights" in [docs/production/code-versions.md](code-versions.md)).
 
 ### Generated visuals
@@ -59,15 +59,16 @@ Follow [docs/production/code-versions.md](code-versions.md). The Framer site is 
 
 ### Design match with Framer
 
-- [ ] `vonex-code/scripts/fidelity/compare.py`: every page at phone, tablet and desktop, height within 2 px.
-- [ ] Same script: line breaks of every text match. Explain every difference.
-- [ ] Colors, fonts, borders, corners and shadows: compare computed styles and screenshots, section by section. The script does not cover these.
-- [ ] Motion: load entrance, scroll reveals, loops, accordions and hover states match in timing. `prefers-reduced-motion` works.
+`npm run fidelity -- <slug>` in `vonex-code` runs all the automatic checks below and writes one report.
+
+- [ ] `compare`: every page at phone, tablet and desktop, height within 2 px, line breaks match. Explain every difference.
+- [ ] `styles`: read the list of font, color, corner and shadow differences and explain each one.
+- [ ] `motion`: scroll reveals match the spec in timing. Custom code, shaders, hover states and loops are checked by eye. `prefers-reduced-motion` works.
 - [ ] Every link, menu, form and interactive block works on every page.
 
 ### Virtual devices
 
-- [ ] `vonex-code/scripts/fidelity/devices.py` passes on every page: emulated iPhone, iPad, Android and a 340px phone, in WebKit (the Safari engine) and Chromium. It covers the overflow, covered elements, field size and tap checks below, and also console and request errors. Check the list of tap checks it prints; sliders are checked by hand.
+- [ ] `devices` passes on every page: emulated iPhone, iPad, Android and a 340px phone, in WebKit (the Safari engine) and Chromium. It covers the overflow, covered elements, field size and tap checks below, and also console and request errors. Check the list of tap checks it prints; sliders are checked by hand.
 - [ ] No horizontal overflow from 340px up, and nothing covered by something else.
 - [ ] Menu, FAQ, tabs and sliders work by touch.
 - [ ] Form fields are 16px on touch screens.

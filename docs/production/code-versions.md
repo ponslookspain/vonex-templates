@@ -13,7 +13,7 @@ Plan and rules for selling the **code version** of a template: the same design a
 Pricing follows the four template offers in [AGENTS.md](../../AGENTS.md#template-offers): code for a free template is $19, code for a paid template costs the same as the Framer version.
 
 1. **Source of truth for design** is the Framer project. Claude reads it through the Framer MCP (pages, components, styles, texts, breakpoints) and compares against the published site.
-2. **Code** lives in a private repository `vonex-code`, one folder per template (`vonex-code/<slug>/`). The `pack` script lives in `vonex-code/scripts/`, next to the fidelity checks. A shared `vonex-code/_base/` starting point (Astro and Tailwind config, fonts, README and LICENSE templates) is planned but does not exist yet: today a new template starts as a copy of the latest finished one (Fallow), and the things that should be in `_base` are noted while doing it.
+2. **Code** lives in a private repository `vonex-code`, one folder per template (`vonex-code/<slug>/`). The `pack` script lives in `vonex-code/scripts/`, next to the fidelity checks. A new template starts from `vonex-code/_base/` with `npm run new <slug> "<Name>"`: Astro and Tailwind config, tokens, hairlines, scroll reveal, menu, tabs, FAQ, form, README and LICENSE templates. Layout goes in Tailwind classes; plain CSS only for effects, states and pseudo-elements. `pack` refuses a template with an unfilled `__PLACEHOLDER__`. Ready effects are in `vonex-code/recipes/`: copy only what a template uses.
 3. **Packing.** `npm run pack <slug>` builds the check, then writes `<slug>-v<version>.zip` with sources only (no `node_modules`, `dist`, `.git`), plus `README.md`, `LICENSE.md`, `CHANGELOG.md`.
 4. **Selling and delivery** go through Contra (Products, merchant of record: payments, taxes and disputes are handled by Contra). Vladimir uploads the zip in the product's "Files" field (limit 5 GB) and writes the "After purchase description". No GitHub Actions, releases, demo subdomains or buyer access to the repository.
 5. **Demo** is the template's existing Live Preview (the Framer site). The code version must match it, so no separate demo.
@@ -60,10 +60,25 @@ Archive layout:
 - **Fast by default.** No client JS unless needed, images optimized, Lighthouse near 100 on the built output.
 - **One version number per template** (`v1.0`), written in the zip name, `CHANGELOG.md` and the Contra description.
 
+## Port step by step
+
+The design must be frozen and published first. All commands run in `vonex-code`, on a branch from `main`.
+
+1. **Spec.** Open the Framer project, run `scripts/framer/extract.js` with `exec` (it must report `changedNodeCount: 0`) and save it with `save-spec.mjs`. Details: `scripts/framer/README.md`.
+2. **Project.** `npm run new <slug> "<Name>"`, then `npm install`. Add the live URL and pages to `scripts/fidelity/sites.json`.
+3. **Foundation.** From `specs/<slug>/tokens.json` write `theme.css`, fonts and text styles. Copy images. Fill `site.ts` from the texts and `cms.json`.
+4. **Sections.** One component per Framer section, reading only its spec file. Check each at three widths before the next. Independent sections can go to parallel agents, one file each.
+5. **Motion.** `appearEffect` becomes `data-reveal` with the same values. A type in a section name points to `recipes/`: copy only what is used. For `codeOverride`, read the code and its note in `component-map.md` and rewrite it by hand.
+6. **Check.** `npm run fidelity -- <slug>`. Fix or explain every line, repeat. Then check by eye what the report lists, plus hover states.
+7. **Package.** Fill the README and its known differences, the LICENSE fonts and the CHANGELOG. `npm run pack <slug>`, unpack into an empty folder, install and build there.
+8. **Report.** Show Vladimir the fidelity report, the differences and the time per step. He accepts it; then stage 5 of the pipeline starts.
+
+Never copy Framer's published HTML, CSS, JS or shader code. Style values and behavior are ours to rebuild; the output is not.
+
 ## How to match Framer exactly (learned on Alpine)
 
-1. Read the Framer project through the MCP for structure, component names, copy and styles.
-2. Open the published site and read computed styles and sizes with a small script (the layers keep their Framer names in `data-framer-name`). Do this at three widths: 1440, 1000 and 390.
+1. Read the Framer project into `vonex-code/specs/<slug>/` (see `vonex-code/scripts/framer/README.md`): tokens, text styles, layout per breakpoint, texts with italic words, motion timing, CMS and the names of custom code. Write the port from this spec, one section at a time.
+2. Open the published site and read computed styles only for what the spec does not settle, such as the result of custom code. The layers keep their Framer names in `data-framer-name`. Use three widths: 1440, 1000 and 390.
 3. Write the Astro components, then compare **every section's height and top position** with Framer at the three widths. If all section heights match, the page matches. Alpine matched on desktop to the pixel and on tablet and phone within a few sections.
 4. Then compare screenshots section by section.
 
@@ -94,8 +109,8 @@ Every code version's README has a "Fidelity and known differences" section that 
 
 1. Vladimir changes the design in Framer (alone or with Claude) and publishes.
 2. He says "синхронизируй `<slug>`".
-3. Claude reads the current Framer project and diffs it against `framer-snapshot` kept in `vonex-code/<slug>/`. No template has a snapshot yet: for the first sync, compare the Framer project with the published site and the code, and save the snapshot then.
-4. Claude ports only what changed, checks screenshots against the published site, updates the snapshot, bumps the version and the changelog.
+3. Claude extracts the spec again and reads `git diff specs/<slug>` in `vonex-code`. Only Fallow has a spec so far: for a first sync of another template, compare the Framer project with the published site and the code, and save the spec then.
+4. Claude ports only what changed, checks screenshots against the published site, commits the new spec, bumps the version and the changelog.
 5. `npm run pack <slug>`, Vladimir uploads the new zip to the Contra product.
 6. Contra lets the seller update a product's delivery files at any time, and past buyers get the current version (Contra help center). Check it once with a test purchase.
 
