@@ -107,7 +107,7 @@ Headlines in this voice:
 
 ## Colors
 
-The page is set on warm off-white paper with soft near-black ink; the accent is spent, not spread. Quieter text and lines are the same ink at lower opacity, never a separate gray.
+The page is set on warm off-white paper with soft near-black ink; the accent is spent, not spread. Quieter text is the same ink at lower opacity, and lines are solid tints of that ink on paper, never a separate gray.
 
 - **neutral (#f2f1ee), paper:** the page ground, about 89% of the page.
 - **surface (#f2f1ee), paper:** panels, cards and inputs, set apart by lines.

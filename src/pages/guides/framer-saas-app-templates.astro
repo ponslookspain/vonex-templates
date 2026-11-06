@@ -1,4 +1,5 @@
 ---
+import { site } from '../../data/site';
 import { getEntry } from 'astro:content';
 import LegalPage from '../../components/LegalPage.astro';
 import Button from '../../components/Button.astro';
@@ -37,7 +38,7 @@ const apps = [
   seoTitle="12 best free Framer SaaS and app templates (2026)"
   description={description}
   updated="November 3, 2026"
-  jsonLd={{ '@context': 'https://schema.org', '@type': 'Article', headline: title, description, url, mainEntityOfPage: url, dateModified: '2026-11-03', author: { '@type': 'Organization', name: 'Vonex Design', url: new URL('/', Astro.site).href } }}
+  jsonLd={{ '@context': 'https://schema.org', '@type': 'Article', headline: title, description, url, mainEntityOfPage: url, dateModified: '2026-11-03', author: { '@type': 'Person', name: site.author, url: new URL('/about/', Astro.site).href } }}
 >
   <p>
     A product site has one job: explain what the product does and get a sign-up or a download. These free Framer

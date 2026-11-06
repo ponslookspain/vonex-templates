@@ -1,10 +1,14 @@
 ---
+import { getEntry } from 'astro:content';
+import { site } from '../../data/site';
 import LegalPage from '../../components/LegalPage.astro';
 import Button from '../../components/Button.astro';
+import GuideFigure from '../../components/GuideFigure.astro';
 
 const title = 'What to put on a therapist website';
-const description = 'What a therapist website needs: your approach, fees, openings and a simple contact page, with a checklist before you publish.';
+const description = 'What a therapist website needs: your approach, fees, openings and a simple contact page, with examples and a checklist before you publish.';
 const url = new URL('/guides/therapist-website/', Astro.site).href;
+const fallow = await getEntry('templates', 'fallow');
 ---
 
 <LegalPage accent="therapist"
@@ -12,7 +16,7 @@ const url = new URL('/guides/therapist-website/', Astro.site).href;
   title={title}
   seoTitle="Therapist website: what to include and how to start"
   description={description}
-  updated="November 4, 2026"
+  updated="November 6, 2026"
   jsonLd={{
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -20,30 +24,79 @@ const url = new URL('/guides/therapist-website/', Astro.site).href;
     description,
     url,
     mainEntityOfPage: url,
-    dateModified: '2026-11-04',
-    author: { '@type': 'Organization', name: 'Vonex Design', url: new URL('/', Astro.site).href },
+    dateModified: '2026-11-06',
+    author: { '@type': 'Person', name: site.author, url: new URL('/about/', Astro.site).href },
   }}
 >
   <p>
     <strong>Short answer:</strong> people visiting a therapist website want to know if you can help, what it costs and
     how to reach you. Answer those three questions in plain, calm language.
   </p>
+  <p>The screens below come from <a href="/templates/fallow/">Fallow</a>, our therapist template. "Marlow Therapy" and its fees are sample content.</p>
+
+  <h2>What the first screen should say</h2>
+  <p>Someone may arrive tired or worried. Tell them who you help, how you meet and what to do next, before they have to scroll.</p>
+  <ul>
+    <li><strong>Who you help:</strong> "Individual therapy for adults working through anxiety, burnout and change."</li>
+    <li><strong>Practical details:</strong> online or in person, your area, session length and fee.</li>
+    <li><strong>One next step:</strong> "Book a free call."</li>
+  </ul>
 
   <h2>Who you work with</h2>
   <p>Say which people and issues you work with, and how you work. Write as you would speak to someone in a first conversation.</p>
+  {fallow && <GuideFigure template={fallow} picture={2} caption="Fallow: a short topic list lets people find what brought them here" alt="Fallow therapist template with a calm headline and a phone showing topics such as anxiety, burnout and grief" />}
+  <p>A short list of topics helps people recognise themselves. Use their words, like "burnout" or "life changes", more than clinical terms.</p>
 
   <h2>Your background</h2>
   <p>List your training and any registration or license that applies where you practice. A real photo helps people feel they know who they will meet.</p>
 
   <h2>Fees and session details</h2>
   <p>Show your fee, session length, and whether you work online, in person or both. Clear details save time for you and for the person reading.</p>
+  {fallow && <GuideFigure template={fallow} picture={1} caption="Fallow: the fee, sliding scale, free first call and insurance notes on one page" alt="Fallow fees page with a session price, sliding scale, free first call, superbill example and common questions" />}
+  <p>If they apply to you, also explain:</p>
+  <ul>
+    <li>Whether you take insurance, or offer superbills.</li>
+    <li>Whether you have a sliding scale.</li>
+    <li>Your cancellation policy.</li>
+    <li>Whether the first call is free, and how long it lasts.</li>
+  </ul>
+  <p>Rules on fee estimates differ by place. In the US, check what the Good Faith Estimate rules ask of you.</p>
 
   <h2>Current openings</h2>
   <p>Tell people if you have space now. If you have a waiting list, say so. Keep this part up to date.</p>
 
+  <h2>Answer common questions</h2>
+  <p>A short list of questions can settle doubts before the first call:</p>
+  <ul>
+    <li>Is what I share confidential?</li>
+    <li>Do you take insurance?</li>
+    <li>Can we meet online?</li>
+    <li>What happens in the first session?</li>
+    <li>How long does therapy usually last?</li>
+  </ul>
+
   <h2>A simple contact page</h2>
   <p>Ask only for what you need to reply. Do not invite people to share health details in a form, and check which privacy rules apply to your practice.</p>
   <p>Explain that the form is not for emergencies, and say where people can get urgent help in your area.</p>
+  <p>Say how soon you usually reply. In the US, ask what HIPAA means for your forms and booking tools before you connect them.</p>
+
+  <h2>Which pages you need</h2>
+  <div class="overflow-x-auto">
+    <table class="doc-table">
+      <thead>
+        <tr><th>Page</th><th>What it answers</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Home</td><td>Can you help me, and what do I do next?</td></tr>
+        <tr><td>About</td><td>Who will I meet, and are they qualified?</td></tr>
+        <tr><td>Services</td><td>What do you work with, and how?</td></tr>
+        <tr><td>Fees</td><td>What does it cost, and can I use insurance?</td></tr>
+        <tr><td>Contact</td><td>How do I start, and when will you reply?</td></tr>
+        <tr><td>Privacy</td><td>What happens to the details I send?</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>A journal is optional. Add one only if you will write for it.</p>
 
   <h2>Before you publish</h2>
   <ul>
@@ -51,6 +104,9 @@ const url = new URL('/guides/therapist-website/', Astro.site).href;
     <li>Test the contact form.</li>
     <li>Add a privacy page.</li>
     <li>Check your fees and openings.</li>
+    <li>Check your license details and the area you serve.</li>
+    <li>Add the urgent help note to the contact page and footer.</li>
+    <li>Replace all sample names, prices and photos.</li>
   </ul>
 
   <h2>Start from a template</h2>

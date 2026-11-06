@@ -4,6 +4,8 @@ export type SocialIcon = 'x' | 'threads' | 'tiktok';
 
 export const site = {
   name: 'Vonex Design',
+  // The person behind the site: guide bylines and structured data.
+  author: 'Vladimir',
   tagline: 'Ready-made website templates for Framer and code.',
   description:
     'Ready-made, responsive website templates by Vonex Design. Remix a template in Framer without writing code, or get selected designs as Astro code.',

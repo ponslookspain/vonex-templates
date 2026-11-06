@@ -1,18 +1,24 @@
 ---
+import { getEntry } from 'astro:content';
+import { site } from '../../data/site';
 import LegalPage from '../../components/LegalPage.astro';
 import Button from '../../components/Button.astro';
+import GuideFigure from '../../components/GuideFigure.astro';
 
 const title = 'Portfolio website examples';
-const description = 'Portfolio website examples from two live template demos: a personal portfolio and a dark studio site, and what you can take from each.';
+const description = 'Six real portfolio website examples for designers, developers and studios, what each one does well and a checklist for your own site.';
 const url = new URL('/guides/portfolio-website-examples/', Astro.site).href;
+const ethan = await getEntry('templates', 'ethan-walker');
+const softic = await getEntry('templates', 'softic-studio');
+const external = { target: '_blank', rel: 'noopener noreferrer' };
 ---
 
 <LegalPage accent="examples"
   kicker="Examples"
   title={title}
-  seoTitle="Portfolio website examples and what to learn from them"
+  seoTitle="6 portfolio website examples and what to learn"
   description={description}
-  updated="November 4, 2026"
+  updated="November 6, 2026"
   jsonLd={{
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -20,27 +26,74 @@ const url = new URL('/guides/portfolio-website-examples/', Astro.site).href;
     description,
     url,
     mainEntityOfPage: url,
-    dateModified: '2026-11-04',
-    author: { '@type': 'Organization', name: 'Vonex Design', url: new URL('/', Astro.site).href },
+    dateModified: '2026-11-06',
+    author: { '@type': 'Person', name: site.author, url: new URL('/about/', Astro.site).href },
   }}
 >
   <p>
     <strong>Short answer:</strong> a good portfolio makes three things clear fast: what you do, what you have done and
-    how to contact you. The two examples below are our own templates, so you can open each demo and reuse the layout.
+    how to contact you. The first four examples below are live sites by working designers and developers. The last two
+    are our own templates, so you can open the demo and reuse the layout.
   </p>
+  <p>We link to the outside sites instead of showing screenshots, because the work belongs to their authors.</p>
 
-  <h2>Personal portfolio: Ethan Walker</h2>
+  <h2>1. Brittany Chiang: one clear page</h2>
+  <p>
+    <a href="https://brittanychiang.com" {...external}>Brittany Chiang's site</a> opens with a name, a job title and one
+    sentence about the work. About, experience and projects follow on the same page.
+  </p>
+  <p><strong>What to take from it:</strong> if you are looking for a job, make your role and history easy to scan.</p>
+
+  <h2>2. Adham Dannaway: two skills, one headline</h2>
+  <p>
+    <a href="https://adhamdannaway.com" {...external}>Adham Dannaway's home page</a> sets the designer and the coder side
+    by side, then goes straight to recent work.
+  </p>
+  <p><strong>What to take from it:</strong> if you do two jobs, show both in the first screen so nobody has to guess.</p>
+
+  <h2>3. Robb Owen: personality and a clear offer</h2>
+  <p>
+    <a href="https://robbowen.digital" {...external}>Robb Owen's site</a> introduces a person, says where he works and
+    keeps a "Hire me" link close at hand.
+  </p>
+  <p><strong>What to take from it:</strong> a freelance site can have character, as long as the next step stays obvious.</p>
+
+  <h2>4. Lynn Fisher: the site is the portfolio</h2>
+  <p>
+    <a href="https://lynnandtonic.com" {...external}>Lynn Fisher's site</a> keeps its navigation short and shows its
+    version number, because the site itself is an ongoing piece of work.
+  </p>
+  <p><strong>What to take from it:</strong> a designer can let the site prove the skill. This works best when the idea is yours.</p>
+
+  <h2>5. Personal portfolio: Ethan Walker</h2>
+  {ethan && <GuideFigure template={ethan} caption="Ethan Walker: large type, project pages and a clear way to start a project" alt="Pages of the dark Ethan Walker portfolio template with large headlines and blue portraits" />}
   <p>
     <a href="/templates/ethan-walker/">Ethan Walker</a> is built for designers and freelancers. Projects live in a CMS
     and services have their own place on the site.
   </p>
   <p><strong>What to take from it:</strong> make the person and the work the focus, and let large type carry the design.</p>
 
-  <h2>Studio portfolio: Softic Studio</h2>
+  <h2>6. Studio portfolio: Softic Studio</h2>
+  {softic && <GuideFigure template={softic} picture={1} caption="Softic Studio: team, process and projects sit in one dark system" alt="Pages of the dark Softic Studio template showing the team, process, pricing and projects" />}
   <p>
     <a href="/templates/softic-studio/">Softic Studio</a> is a dark agency site with CMS projects and a team section.
   </p>
   <p><strong>What to take from it:</strong> when several people do the work, show the team next to the projects.</p>
+
+  <h2>Which example fits you</h2>
+  <div class="overflow-x-auto">
+    <table class="doc-table">
+      <thead>
+        <tr><th>You are</th><th>Look at</th><th>Put first</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Looking for a job</td><td>Brittany Chiang</td><td>Role, experience, selected projects</td></tr>
+        <tr><td>Doing two kinds of work</td><td>Adham Dannaway</td><td>Both skills, then recent work</td></tr>
+        <tr><td>A freelancer</td><td>Robb Owen, Ethan Walker</td><td>Who you are, your offer, a contact button</td></tr>
+        <tr><td>A studio</td><td>Softic Studio</td><td>Projects, services, the team</td></tr>
+      </tbody>
+    </table>
+  </div>
 
   <h2>What good portfolios have in common</h2>
   <ul>
@@ -57,6 +110,16 @@ const url = new URL('/guides/portfolio-website-examples/', Astro.site).href;
     <li>Using images with no context.</li>
     <li>Leaving placeholder text or broken links.</li>
     <li>Making visitors search for a way to contact you.</li>
+  </ul>
+
+  <h2>Checklist for your own portfolio</h2>
+  <ul>
+    <li>A stranger can say what you do after ten seconds.</li>
+    <li>Your best project comes first.</li>
+    <li>Each project says what your role was.</li>
+    <li>You are allowed to show every client project.</li>
+    <li>Contact is one click away on every page.</li>
+    <li>Every page works on a phone.</li>
   </ul>
 
   <div class="mt-xl flex flex-wrap gap-sm">

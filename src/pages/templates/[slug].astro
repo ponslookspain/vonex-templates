@@ -10,7 +10,7 @@ import FaqItem from '../../components/FaqItem.astro';
 import FaqBlock from '../../components/FaqBlock.astro';
 import Icon from '../../components/Icon.astro';
 import TemplateCard from '../../components/TemplateCard.astro';
-import TemplateGallery from '../../components/TemplateGallery.astro';
+import LivePreview from '../../components/LivePreview.astro';
 import { site } from '../../data/site';
 import { buildContent, buildFaq, richText, plainText } from '../../lib/template-content';
 import { buyLink, buyLabel } from '../../lib/buy';
@@ -46,13 +46,15 @@ const ogPath = `/og/${template.id}.png`;
 const pad = (n: number) => String(n).padStart(2, '0');
 
 const gallery = t.gallery.length ? t.gallery : [{ type: 'image' as const, src: t.image, alt: `${t.name} Framer template` }];
+// With a live demo its poster is the first picture, so the list below starts from the second.
+const screens = t.preview ? gallery.slice(1) : gallery;
 const updatedAt = t.updated ?? t.added;
 const updatedLabel = updatedAt.toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
 
 const stats = [
   c.pages.length ? { value: pad(c.pages.length), label: 'Pages' } : c.sectionNames.length ? { value: pad(c.sectionNames.length), label: 'Sections' } : null,
   { value: c.hasCms ? 'Yes' : 'No', label: 'CMS' },
-  t.framerFeatures.length ? { value: pad(t.framerFeatures.length), label: 'Framer features' } : null,
+  { value: codeUrl ? 'Framer, Astro' : 'Framer', label: 'Formats' },
   { value: updatedLabel, label: 'Updated' },
 ].filter((x): x is { value: string; label: string } => x !== null);
 
@@ -67,6 +69,13 @@ const templateKind = t.pageKind ?? t.category;
 // A code version is named in the title too: it is the only page that answers "Astro template" searches.
 const title = `${t.name} — ${free ? 'Free ' : ''}Framer ${templateKind} Template${free ? '' : ` ($${t.price})`}${codeUrl ? ' + Astro Code' : ''}`;
 
+// Short index beside the screens. Only the blocks people look for, so it stays one glance long.
+const pageLinks = [
+  ...c.blocks.filter((b) => b.kind === 'features' || b.kind === 'pages' || b.kind === 'sections').map((b) => ({ href: `#${b.id}`, label: b.title })),
+  { href: '#formats', label: codeUrl ? 'Framer or code' : 'Publish' },
+  { href: '#questions', label: 'Questions' },
+];
+
 // The imported intro often starts with a one-line headline, followed by the real text.
 const leadHead = c.leadTitle ?? (c.lead.length > 1 && c.lead[0].length < 110 ? c.lead[0] : undefined);
 const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
@@ -80,8 +89,8 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     '@context': 'https://schema.org',
     '@graph': [
       {
-        // CreativeWork, not Product: the site sells nothing itself, so Google should not
-        // treat template pages as merchant listings (no offers, ratings or shipping).
+        // The Framer template stays a CreativeWork: it is not sold here. Only the code version
+        // has a price of ours, so it alone gets a Product below.
         '@type': 'CreativeWork',
         name: `${t.name}: ${t.tagline}`,
         description: t.description,
@@ -92,6 +101,25 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
         creator: { '@type': 'Organization', name: site.name, url: new URL('/', Astro.site).href },
         sameAs: t.url,
       },
+      ...(codeUrl && t.codePrice !== undefined
+        ? [
+            {
+              '@type': 'Product',
+              name: `${t.name} Astro code`,
+              description: `Hand-written Astro and Tailwind CSS code version of the ${t.name} template.`,
+              image: new URL(ogPath, Astro.site).href,
+              url: pageUrl,
+              brand: { '@type': 'Brand', name: site.name },
+              offers: {
+                '@type': 'Offer',
+                url: codeUrl,
+                price: t.codePrice,
+                priceCurrency: 'USD',
+                availability: 'https://schema.org/InStock',
+              },
+            },
+          ]
+        : []),
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -121,38 +149,37 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
       <span class="hidden text-right sm:inline">{priceLabel} · {templateKind}</span>
     </div>
 
-    <!-- A spec sheet on the page rails: the gallery on the left, everything about the template on
-         the right, split by one vertical hairline. Each block on the right sits between two
-         horizontal lines that run from that line to the rail. On phones: name, gallery, the rest. -->
+    <!-- A spec sheet on the page rails. First the decision: name and price with every action, then
+         the facts. Below them the screens, with a buy column that stays in view on large screens,
+         then the details as label + content rows. -->
     <div class="product flush-rails">
-      <header class="p-head p-block">
-        <p class="type-label">{free ? 'Free ' : ''}Framer {templateKind} template</p>
-        <h1 class="type-headline-lg mt-lg break-words">{t.name}</h1>
-        <p class="type-body type-pillar mt-lg">{t.tagline}</p>
-      </header>
-
-      <div class="p-gallery">
-        <div class="p-gallery-inner">
-          <TemplateGallery items={gallery} name={t.name} />
-          <!-- The live preview belongs to the pictures: it sits right under them, not among the buy buttons. -->
-          {t.preview && (
-            <Button href={t.preview} variant="secondary" arrow target="_blank" rel="noopener noreferrer" class="mt-lg">
-              View live preview
-            </Button>
-          )}
-        </div>
-      </div>
-
-      <!-- Right: everything about the template. -->
-      <div class="doc p-doc">
-        <div class="buy p-block">
+      <div class="p-top">
+        <header class="p-head p-block">
+          <p class="type-label">{free ? 'Free ' : ''}Framer {templateKind} template</p>
+          <h1 class="type-headline-lg mt-lg break-words">{t.name}</h1>
+          <p class="type-body type-pillar mt-lg">{t.tagline}</p>
+        </header>
+        {editorial ? (
+          <div class="lead p-block p-about">
+            <p class="type-label mb-sm">About</p>
+            <h2 class="lead-head">{templateKind} template for Framer</h2>
+            <p>{editorial.overview}</p>
+          </div>
+        ) : (leadHead || leadText.length > 0) && (
+          <div class="lead p-block p-about">
+            <p class="type-label mb-sm">About</p>
+            {leadHead && <h2 class="lead-head">{leadHead}</h2>}
+            {leadText.map((p) => <p set:html={richText(p)} />)}
+          </div>
+        )}
+        <div class="buy p-block lg:hidden">
           <p class="type-label">Price</p>
           <p class="type-headline-md mt-sm">{priceLabel}</p>
-          <!-- The two ways to get the template sit side by side. -->
           <div class="buy-actions">
             <Button href={buy.href} arrow target="_blank" rel={buy.sponsored ? 'noopener noreferrer sponsored' : 'noopener noreferrer'} data-umami-event="framer_click" data-umami-event-template={template.id} data-umami-event-placement="top">
               {framerLabel}
             </Button>
+            {t.preview && <Button href="#live-preview" variant="secondary">Live preview</Button>}
             {codeUrl && (
               <Button href={codeUrl} variant="secondary" arrow target="_blank" rel="noopener noreferrer" data-umami-event="buy_code_click" data-umami-event-template={template.id} data-umami-event-placement="top">
                 Buy code · {codePriceLabel}
@@ -160,68 +187,49 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
             )}
           </div>
         </div>
+      </div>
 
-        <dl class="stats">
-          {stats.map((s) => (
-            <div class="stat">
-              <dt class="stat-label">{s.label}</dt>
-              <dd class="stat-value">{s.value}</dd>
-            </div>
+      <dl class="stats">
+        {stats.map((s) => (
+          <div class="stat">
+            <dt class="stat-label">{s.label}</dt>
+            <dd class="stat-value">{s.value}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <div class="p-media">
+        <div class="p-screens">
+          {t.preview && <LivePreview url={t.preview} name={t.name} poster={t.image} />}
+          {screens.map((item, i) => (
+            <figure class="screen">
+              <Image src={item.src} alt={item.alt} widths={[640, 960, 1400]} sizes="(min-width: 1024px) 75vw, 100vw" class="w-full" />
+              <figcaption class="screen-caption type-label">Screen {pad(i + (t.preview ? 2 : 1))}</figcaption>
+            </figure>
           ))}
-        </dl>
-
-        {editorial ? (
-          <div class="lead p-block">
-            <h2 class="lead-head">{templateKind} template for Framer</h2>
-            <p>{editorial.overview}</p>
-          </div>
-        ) : (leadHead || leadText.length > 0) && (
-          <div class="lead p-block">
-            {leadHead && <h2 class="lead-head">{leadHead}</h2>}
-            {leadText.map((p) => <p set:html={richText(p)} />)}
-          </div>
-        )}
-
-        {codeUrl && (
-          <section class="doc-section p-block" aria-labelledby="code-version">
-            <h2 class="kicker" id="code-version">Code version</h2>
-            <div class="body-text">
-              <p>
-                Prefer not to use Framer? {t.name} also comes as a clean Astro and Tailwind CSS project: the same design,
-                on phone, tablet and desktop, as code you own and host anywhere. It closely follows the Framer design. The
-                README lists the few known differences.
-              </p>
-            </div>
-            <ul class="checks mt-lg">
-              <li><Icon name="check" class="check" /><span>Every text, link and price in one file, so you edit content without touching the layout</span></li>
-              <li><Icon name="check" class="check" /><span>Static build: no framework runtime, deploys to Cloudflare, Netlify, Vercel or your own server</span></li>
-              <li><Icon name="check" class="check" /><span>README with setup and deploy steps, license and changelog included</span></li>
-            </ul>
-            <div class="buy-actions">
-              <Button href={codeUrl} arrow target="_blank" rel="noopener noreferrer" data-umami-event="buy_code_click" data-umami-event-template={template.id} data-umami-event-placement="code-section">
+        </div>
+        <aside class="p-side" aria-label="Get this template">
+          <div class="p-side-inner">
+            <p class="type-label">{priceLabel}</p>
+            <div class="side-actions">
+              <Button href={buy.href} arrow target="_blank" rel={buy.sponsored ? 'noopener noreferrer sponsored' : 'noopener noreferrer'} data-umami-event="framer_click" data-umami-event-template={template.id} data-umami-event-placement="side">
+              {framerLabel}
+            </Button>
+              {codeUrl && (
+                <Button href={codeUrl} variant="secondary" arrow target="_blank" rel="noopener noreferrer" data-umami-event="buy_code_click" data-umami-event-template={template.id} data-umami-event-placement="side">
                 Buy code · {codePriceLabel}
               </Button>
-              <Button href="/license/" variant="secondary">Read the license</Button>
+              )}
             </div>
-          </section>
-        )}
-
-        <section class="doc-section p-block" aria-labelledby="before-you-publish">
-          <h2 class="kicker" id="before-you-publish">Before you publish</h2>
-          <div class="body-text">
-            {t.preparation && <p>{t.preparation}</p>}
-            <p>
-              The free Framer plan publishes on a framer.website address. Your own domain needs a paid site plan, from
-              Basic: <a href={site.framerReferral} class="link" target="_blank" rel="noopener noreferrer sponsored">see Framer plans</a>,
-              or compare them in <a href="/guides/framer-pricing/" class="link">Framer pricing explained</a>.
-            </p>
-            <p>
-              Step by step, with costs: <a href="/guides/how-to-use-framer-templates/" class="link">how to use a Framer template</a>.
-              Questions about this template? <a href={`mailto:${site.email}`} class="link">Write to the author</a>.
-            </p>
+            <nav class="side-nav type-label" aria-label="On this page">
+              {pageLinks.map((l) => <a href={l.href}>{l.label}</a>)}
+            </nav>
           </div>
-        </section>
+        </aside>
+      </div>
 
+      <!-- Details: a label on the left, its content on the right. -->
+      <div class="doc p-doc">
         {c.about.length > 0 && (
           <section class="doc-section p-block" aria-labelledby="about">
             <h2 class="kicker" id="about">About</h2>
@@ -284,6 +292,56 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
           </section>
         ))}
 
+        <!-- The formats side by side, then what publishing takes. -->
+        <div class="formats" id="formats">
+          <section class="format" aria-labelledby="framer-version">
+            <h2 class="kicker" id="framer-version">Framer</h2>
+            <p class="type-label">{priceLabel}</p>
+            <div class="body-text">
+              <p>Edit the template visually, with no code, and publish it from Framer.</p>
+            </div>
+          </section>
+          {codeUrl && (
+            <section class="format" aria-labelledby="code-version">
+              <h2 class="kicker" id="code-version">Astro code</h2>
+              <p class="type-label">{codePriceLabel}</p>
+              <div class="body-text">
+                <p>
+                  Prefer not to use Framer? {t.name} also comes as a clean Astro and Tailwind CSS project: the same design,
+                  on phone, tablet and desktop, as code you own and host anywhere. It closely follows the Framer design. The
+                  README lists the few known differences.
+                </p>
+              </div>
+              <ul class="checks mt-lg">
+                <li><Icon name="check" class="check" /><span>Every text, link and price in one file, so you edit content without touching the layout</span></li>
+                <li><Icon name="check" class="check" /><span>Static build: no framework runtime, deploys to Cloudflare, Netlify, Vercel or your own server</span></li>
+                <li><Icon name="check" class="check" /><span>README with setup and deploy steps, license and changelog included</span></li>
+              </ul>
+              <div class="buy-actions">
+                <Button href={codeUrl} arrow target="_blank" rel="noopener noreferrer" data-umami-event="buy_code_click" data-umami-event-template={template.id} data-umami-event-placement="code-section">
+                  Buy code · {codePriceLabel}
+                </Button>
+                <Button href="/license/" variant="secondary">Read the license</Button>
+              </div>
+            </section>
+          )}
+          <section class="format" aria-labelledby="before-you-publish">
+            <h2 class="kicker" id="before-you-publish">Before you publish</h2>
+            <div class="body-text">
+              {t.preparation && <p>{t.preparation}</p>}
+              <p>
+                The free Framer plan publishes on a framer.website address. Your own domain needs a paid site plan, from
+                Basic: <a href={site.framerReferral} class="link" target="_blank" rel="noopener noreferrer sponsored">see Framer plans</a>,
+                or compare them in <a href="/guides/framer-pricing/" class="link">Framer pricing explained</a>.
+              </p>
+              <p>
+                Step by step, with costs: <a href="/guides/how-to-use-framer-templates/" class="link">how to use a Framer template</a>.
+                Questions about this template? <a href={`mailto:${site.email}`} class="link">Write to the author</a>.
+              </p>
+            </div>
+          </section>
+        </div>
+
         {(t.framerFeatures.length > 0 || t.styles.length > 0) && (
           <section class="doc-section p-block" aria-labelledby="built-with">
             <h2 class="kicker" id="built-with">Built with Framer</h2>
@@ -336,6 +394,7 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     </div>
   </Section>
 
+  <div id="questions" class="scroll-mt-(--space-header)"></div>
   <FaqBlock title="Questions." accent="Questions" bar={{ left: 'FAQ', right: `${String(faq.length).padStart(2, '0')} answers` }}>
     {faq.map((f) => <FaqItem question={f.q}><Fragment set:html={richText(f.a)} /></FaqItem>)}
   </FaqBlock>
@@ -355,7 +414,7 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
       )}
     </div>
     <div slot="media" class="border-(length:--border-frame) border-on-primary">
-      <Image src={t.image} alt="" widths={[640, 960, 1400]} sizes="(min-width: 1024px) 50vw, 100vw" class="aspect-[4/3] w-full object-cover" />
+      <Image src={t.image} alt={`${t.name} Framer template: ${t.tagline}`} widths={[640, 960, 1400]} sizes="(min-width: 1024px) 50vw, 100vw" class="aspect-[4/3] w-full object-cover" />
     </div>
   </CtaBand>
 
@@ -369,6 +428,13 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
       </ul>
     </Section>
   )}
+  <!-- Phones and tablets: the price and main action stay on screen. -->
+  <div class="mobile-buy" data-reveal-skip>
+    <span class="type-label">{priceLabel}</span>
+    <Button href={buy.href} arrow target="_blank" rel={buy.sponsored ? 'noopener noreferrer sponsored' : 'noopener noreferrer'} data-umami-event="framer_click" data-umami-event-template={template.id} data-umami-event-placement="mobile-bar">
+              {framerLabel}
+            </Button>
+  </div>
 </Base>
 
 <style>
@@ -378,24 +444,13 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     min-width: 0;
   }
 
-  /* Product grid on the rails. Phones: one column. From 1024px: gallery | details, split by the
-     center hairline; the gallery stays in view while the details scroll. */
+  /* Product on the rails. Phones: one column. From 1024px: name | price, the facts in one row,
+     screens | buy column, and label + content rows for the details. */
   .product {
-    display: grid;
-    /* minmax(0, 1fr): an implicit auto column grows to its widest content and pushes the page past the phone screen. */
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: 'head' 'gallery' 'doc';
     /* Same place as the page rails: keeps them visible past the opaque stat cells. */
     border-inline: var(--border-hairline) solid var(--color-line);
   }
-  .p-head { grid-area: head; }
-  .p-doc { grid-area: doc; }
-  .p-gallery {
-    grid-area: gallery;
-    padding: var(--spacing-xl) var(--rail-inset);
-    border-top: var(--border-hairline) solid var(--color-line);
-  }
-  /* One block of the right column: generous padding, a line above it from edge to edge. */
+  /* One block: generous padding, a line above it from edge to edge. */
   .p-block {
     padding: var(--spacing-xl) var(--rail-inset);
     border-top: var(--border-hairline) solid var(--color-line);
@@ -403,21 +458,119 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
   .p-head {
     border-top: 0;
   }
+  .p-doc > :first-child {
+    border-top: 0;
+  }
+  .p-media {
+    border-block: var(--border-hairline) solid var(--color-line);
+  }
+  .p-screens {
+    min-width: 0;
+  }
+  .screen {
+    border-top: var(--border-hairline) solid var(--color-line);
+  }
+  .p-screens > :first-child {
+    border-top: 0;
+  }
+  .screen-caption {
+    padding: var(--spacing-sm) var(--rail-inset);
+    border-top: var(--border-hairline) solid var(--color-line);
+    color: var(--color-muted);
+  }
+  .p-side {
+    display: none;
+  }
+  .side-actions {
+    display: grid;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+  }
+  .side-nav {
+    display: grid;
+    margin-top: var(--spacing-xl);
+    border-top: var(--border-hairline) solid var(--color-line);
+  }
+  .side-nav a {
+    padding: var(--spacing-sm) 0;
+    border-bottom: var(--border-hairline) solid var(--color-line);
+  }
+  .side-nav a:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .p-doc [id] {
+    scroll-margin-top: var(--space-header);
+  }
+  .formats {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--border-hairline);
+    background: var(--color-line);
+    border-top: var(--border-hairline) solid var(--color-line);
+  }
+  .format {
+    padding: var(--spacing-xl) var(--rail-inset);
+    background: var(--color-surface);
+  }
+  .format .kicker {
+    margin-bottom: var(--spacing-sm);
+  }
+  .mobile-buy {
+    position: sticky;
+    bottom: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm) var(--space-page);
+    background: var(--color-bg);
+    border-top: var(--border-hairline) solid var(--color-line-strong);
+  }
   @media (min-width: 64rem) {
-    .product {
+    .p-top {
+      display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-template-areas: 'gallery head' 'gallery doc';
     }
-    .p-head,
-    .p-doc {
+    .p-about {
+      display: block;
+      border-top: 0;
       border-left: var(--border-hairline) solid var(--color-line);
     }
-    .p-gallery {
-      border-top: 0;
+    .p-media {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
     }
-    .p-gallery-inner {
+    .p-side {
+      display: block;
+      padding: var(--spacing-lg);
+      border-left: var(--border-hairline) solid var(--color-line);
+    }
+    .p-side-inner {
       position: sticky;
-      top: calc(var(--space-header) + var(--spacing-xl));
+      top: calc(var(--space-header) + var(--spacing-lg));
+    }
+    .doc-section {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+      column-gap: var(--grid-gutter);
+    }
+    .doc-section > * {
+      grid-column: 2;
+    }
+    .doc-section > .kicker {
+      grid-column: 1;
+      grid-row: 1 / span 6;
+      margin-bottom: 0;
+    }
+    .formats {
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(0, 1fr);
+      grid-template-columns: none;
+    }
+    .mobile-buy {
+      display: none;
     }
   }
   .buy-actions {
@@ -447,6 +600,21 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
   .stat:last-child:nth-child(odd) {
     grid-column: 1 / -1;
   }
+  @media (min-width: 64rem) {
+    .stats {
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(0, 1fr);
+      /* Borders, not gaps: a gap sits half a pixel off the lines of the rows above and below. */
+      gap: 0;
+    }
+    .stat:last-child:nth-child(odd) {
+      grid-column: auto;
+    }
+    .stat + .stat {
+      border-left: var(--border-hairline) solid var(--color-line);
+    }
+  }
   .stat-label {
     font-family: var(--font-mono);
     font-size: var(--text-label);
@@ -461,7 +629,6 @@ const leadText = c.leadTitle ? c.lead : leadHead ? c.lead.slice(1) : c.lead;
     font-weight: var(--weight-display);
     font-stretch: var(--display-stretch);
     letter-spacing: var(--tracking-headline);
-    white-space: nowrap;
   }
 
   /* text blocks */

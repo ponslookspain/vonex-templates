@@ -19,7 +19,7 @@ export const guides: Guide[] = [
     description: 'Seven steps from choosing your work to publishing the site.',
     group: 'guide',
     kind: 'How-to',
-    updated: 'November 4, 2026',
+    updated: 'November 6, 2026',
   },
   {
     href: '/guides/therapist-website/',
@@ -27,15 +27,15 @@ export const guides: Guide[] = [
     description: 'Your approach, fees, openings and a simple contact page.',
     group: 'guide',
     kind: 'How-to',
-    updated: 'November 4, 2026',
+    updated: 'November 6, 2026',
   },
   {
     href: '/guides/portfolio-website-examples/',
     title: 'Portfolio website examples',
-    description: 'Two live portfolio demos and what you can take from each.',
+    description: 'Six real portfolios and what you can take from each.',
     group: 'article',
     kind: 'Roundup',
-    updated: 'November 4, 2026',
+    updated: 'November 6, 2026',
   },
   {
     href: '/guides/how-to-use-framer-templates/',

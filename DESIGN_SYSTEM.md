@@ -11,7 +11,7 @@ A live version of everything below is at `/design-system/` (run `npm run dev`, o
 
 ## The look in one paragraph
 
-Warm paper (#f2f1ee), soft black ink (#101014). Quiet text and hairlines are the same ink at lower opacity; no other hues, no shadows, no rounded corners. Archivo set wide for headlines in sentence case, one Instrument Serif italic accent word in each section headline (`accent` prop, `.type-accent`), Inter for text, Geist Mono for labels and buttons. Hairlines separate things; a heavy 8px frame marks the one picture that matters. Short copy sits in narrow pillars. The only colour on the page comes from the template covers.
+Warm paper (#f2f1ee), soft black ink (#101014). Quiet text is the same ink at lower opacity; hairlines are solid tints of it, so crossings stay even; no other hues, no shadows, no rounded corners. Archivo set wide for headlines in sentence case, one Instrument Serif italic accent word in each section headline (`accent` prop, `.type-accent`), Inter for text, Geist Mono for labels and buttons. Hairlines separate things; a heavy 8px frame marks the one picture that matters. Short copy sits in narrow pillars. The only colour on the page comes from the template covers.
 
 ## Where things live
 
@@ -132,7 +132,7 @@ With `prefers-reduced-motion` every transition and animation is off (rule in `gl
 | `ColumnLines` | | The four column lines behind a block (`relative isolate` parent) |
 | `FaqBlock`, `FaqItem` | `title`, `index`, `rule` / `question` + slot | Title left, hairline rows right. Native `<details>` |
 | `TemplateCard` | `template`, `class` | Cover, price, name, tagline. Nothing else |
-| `TemplateGallery` | `items`, `name` | Picture slider with arrows, swipe, counter and thumbnails |
+| `LivePreview` | `url`, `name`, `poster` | Live demo in a frame from 1024px, loaded after the page, with desktop, tablet and phone sizes. A picture with a link on smaller screens. |
 | `Icon` | `name`, `class` | Lucide icon, 2px stroke, `currentColor`. Icons are in `components/icons.ts` |
 | `Header`, `Footer`, `Logo`, `SocialIcon`, `LegalPage` | | Site chrome |
 | `GridOverlay` | | Debug columns, toggled by G |
@@ -196,21 +196,16 @@ One layout for every template; what shows depends on the YAML (offer, `pageKind`
 ```
 Section.section-with-bar
   bar: Home / Templates / Name   ·   "$49 · Wedding Website" (hidden on phones)
-  .product.flush-rails                        phone: head, gallery, doc in one column
-  ├ .p-head     label "Free Framer Portfolio template", h1 name, tagline
-  ├ .p-gallery  TemplateGallery (slider, arrows, counter, thumbnails) + View live preview
-  │             lg+: left half, sticky
-  └ .p-doc      lg+: right half
-      ├ .buy        Price, main button, + "Buy code · $19" when codeUrl is set
-      ├ .stats      Pages · CMS · Updated, in 2-column cells
-      ├ .lead       "<Kind> template for Framer" + overview
-      ├ Code version        only with codeUrl (offers free-code, paid-code)
-      ├ Before you publish  from `preparation`
-      └ imported blocks     About, Why <name>, Features, Pages, Best for, Built with Framer,
-                            Updates, Support, policy; chosen by src/lib/template-content.ts
+  .product.flush-rails
+  ├ .p-top      name | About; below lg also price and all actions
+  ├ .stats      Pages · CMS · Formats · Updated, one row from lg
+  ├ .p-media    LivePreview and stacked screens | sticky buy column with page links (lg+)
+  └ .p-doc      imported blocks as label + content rows from lg
+      └ .formats  Framer · Astro code (with codeUrl) · Before you publish, side by side
 FaqBlock          questions built from the YAML (+ a code answer with codeUrl)
 CtaBand           closing black block
 Section Catalog   "More templates.", two other templates
+.mobile-buy       sticky price and main action below lg
 ```
 
 Price and buttons by offer (rules in AGENTS.md, "Template offers"; `buyLink`, `buyLabel`, `offer` in `src/lib/buy.ts`):

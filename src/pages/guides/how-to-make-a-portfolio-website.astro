@@ -1,10 +1,14 @@
 ---
+import { getEntry } from 'astro:content';
+import { site } from '../../data/site';
 import LegalPage from '../../components/LegalPage.astro';
 import Button from '../../components/Button.astro';
+import GuideFigure from '../../components/GuideFigure.astro';
 
 const title = 'How to make a portfolio website';
 const description = 'Make a portfolio website in seven steps: choose your work, write case studies, pick a template, add contact details and publish.';
 const url = new URL('/guides/how-to-make-a-portfolio-website/', Astro.site).href;
+const ethan = await getEntry('templates', 'ethan-walker');
 ---
 
 <LegalPage accent="portfolio"
@@ -12,7 +16,7 @@ const url = new URL('/guides/how-to-make-a-portfolio-website/', Astro.site).href
   title={title}
   seoTitle="How to make a portfolio website in 7 steps"
   description={description}
-  updated="November 4, 2026"
+  updated="November 6, 2026"
   jsonLd={{
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -20,8 +24,8 @@ const url = new URL('/guides/how-to-make-a-portfolio-website/', Astro.site).href
     description,
     url,
     mainEntityOfPage: url,
-    dateModified: '2026-11-04',
-    author: { '@type': 'Organization', name: 'Vonex Design', url: new URL('/', Astro.site).href },
+    dateModified: '2026-11-06',
+    author: { '@type': 'Person', name: site.author, url: new URL('/about/', Astro.site).href },
   }}
 >
   <p>
@@ -31,9 +35,14 @@ const url = new URL('/guides/how-to-make-a-portfolio-website/', Astro.site).href
 
   <h2>1. Decide who it is for</h2>
   <p>Write one sentence: what you do and who hires you. Use it as your headline. It also helps you decide which projects belong on the site.</p>
+  <ul>
+    <li><strong>Too vague:</strong> "Creative designer passionate about great ideas."</li>
+    <li><strong>Clear:</strong> "I design websites for small architecture studios."</li>
+  </ul>
 
   <h2>2. Choose three to six projects</h2>
   <p>Pick the work you want more of. A short list of strong projects is easier to read than everything you have made. Check that you are allowed to show client work.</p>
+  <p>No client work yet? Use personal projects, or redesign something real and say clearly that it is a concept.</p>
 
   <h2>3. Write a short case study for each</h2>
   <ul>
@@ -41,19 +50,39 @@ const url = new URL('/guides/how-to-make-a-portfolio-website/', Astro.site).href
     <li>What you did, and what your role was.</li>
     <li>What changed after the work. Use a real result if you have one.</li>
   </ul>
+  <p>A simple outline you can copy:</p>
+  <ol>
+    <li><strong>Goal:</strong> the bakery needed online orders before the holidays.</li>
+    <li><strong>My role:</strong> I designed the site and wrote the product pages.</li>
+    <li><strong>Work:</strong> three images and two sentences about the main decisions.</li>
+    <li><strong>Result:</strong> what changed, or what you learned if you have no numbers.</li>
+  </ol>
 
   <h2>4. Prepare your images</h2>
   <p>Collect images before you open an editor. Use one size and style for project covers, so the list looks consistent.</p>
+  <ul>
+    <li>Show the work in use, not only flat files.</li>
+    <li>Compress large images so pages load quickly on a phone.</li>
+    <li>Give files clear names, and add a short text description to each image.</li>
+  </ul>
 
   <h2>5. Pick a template</h2>
+  {ethan && <GuideFigure template={ethan} caption="A portfolio template gives you home, project, about and contact pages to fill in" alt="Pages of the Ethan Walker portfolio template: home, projects, about and contact" />}
   <p>
     A template gives you the layout, responsive screens and project pages. Compare our
     <a href="/templates/category/portfolio/">portfolio website templates</a>. If you are not sure about the format, read
     <a href="/guides/framer-or-code/">Framer template or code</a>.
   </p>
+  <p>Before you choose, check three things:</p>
+  <ul>
+    <li>It has project pages, not only a list of pictures.</li>
+    <li>You can add projects later without rebuilding the layout.</li>
+    <li>It still looks right with your images, not only with the demo ones.</li>
+  </ul>
 
   <h2>6. Add an about section and contact details</h2>
   <p>Say what you offer, where you work and how to reach you. Keep one main contact option and show it on every page.</p>
+  <p>Write the about section in your own voice. Three short parts are enough: what you do, how you got here and what you want to work on next.</p>
 
   <h2>7. Check and publish</h2>
   <ul>
@@ -63,6 +92,33 @@ const url = new URL('/guides/how-to-make-a-portfolio-website/', Astro.site).href
     <li>Connect your domain and publish.</li>
   </ul>
   <p>For a Framer walkthrough, see <a href="/guides/framer-portfolio-template/">how to build a portfolio with a Framer template</a>.</p>
+
+  <h2>Which pages you need</h2>
+  <div class="overflow-x-auto">
+    <table class="doc-table">
+      <thead>
+        <tr><th>Page</th><th>What it does</th><th>Needed?</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Home</td><td>Says what you do and shows selected work</td><td>Yes</td></tr>
+        <tr><td>Project pages</td><td>Explain the work behind each image</td><td>Yes</td></tr>
+        <tr><td>About</td><td>Shows who you are and what you offer</td><td>Yes, or a home section</td></tr>
+        <tr><td>Contact</td><td>Makes the next step easy</td><td>Yes, or a clear email link</td></tr>
+        <tr><td>Blog</td><td>Shares your thinking</td><td>Only if you will keep it updated</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Final checklist</h2>
+  <ul>
+    <li>The headline says what you do.</li>
+    <li>Your strongest project comes first.</li>
+    <li>Every project names your role.</li>
+    <li>No placeholder text or demo images remain.</li>
+    <li>The contact form reaches your inbox.</li>
+    <li>A friend can find your contact details in ten seconds.</li>
+  </ul>
+  <p>Need ideas first? See these <a href="/guides/portfolio-website-examples/">portfolio website examples</a>.</p>
 
   <div class="mt-xl flex flex-wrap gap-sm">
     <Button href="/templates/category/portfolio/" arrow>Portfolio templates</Button>
