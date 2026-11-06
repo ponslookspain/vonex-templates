@@ -37,7 +37,7 @@ const others = all
 const free = t.price === 0;
 const priceLabel = free ? 'Free' : `$${t.price}`;
 const buy = buyLink(t);
-// Optional code version, sold on Contra (see CODE_TEMPLATES.md).
+// Optional code version, sold on Contra (see docs/production/code-versions.md).
 const codeUrl = t.codeUrl;
 const framerLabel = buyLabel(t);
 const codePriceLabel =t.codePrice === undefined ? '' : t.codePrice === 0 ? 'Free' : `$${t.codePrice}`;

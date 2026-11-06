@@ -1,7 +1,7 @@
 // Pinterest bulk-create CSV for the pins of one or more templates.
-//   node scripts/pinterest/csv.mjs [--start 2026-11-04] [--per-day 6] [--pins-url https://pins.vonexdesign.com] [--only part,part] <config.json> [<config.json> ...]
+//   node scripts/marketing/pinterest/csv.mjs [--start 2026-11-04] [--per-day 6] [--pins-url https://pins.vonexdesign.com] [--only part,part] <config.json> [<config.json> ...]
 // Reads the "pinterest" block of each config (names, board, pitch, keywords) and the rendered
-// pins, which upload.mjs puts in the R2 bucket vonex-pins (served as <pins-url>/<slug>-NN-<layout>-<bg>.jpg). Writes .work/pinterest/pinterest-bulk.csv.
+// pins, which upload.mjs puts in the R2 bucket vonex-pins (served as <pins-url>/<slug>-NN-<layout>-<bg>.jpg). Writes .work/marketing/pinterest/pinterest-bulk.csv.
 // Pins of the templates are interleaved and layouts are spread out, so neighbours differ.
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -81,6 +81,6 @@ rows.forEach((r, i) => {
   if (keep && !keep.some((k) => r.media.includes(k))) return;
   lines.push([r.title, r.media, r.board, r.description, r.link, date, r.keywords].map(q).join(','));
 });
-const out = path.resolve(only ? '.work/pinterest/pinterest-bulk-fix.csv' : '.work/pinterest/pinterest-bulk.csv');
+const out = path.resolve(only ? '.work/marketing/pinterest/pinterest-bulk-fix.csv' : '.work/marketing/pinterest/pinterest-bulk.csv');
 await writeFile(out, lines.join('\r\n') + '\r\n');
 console.log(`${lines.length - 1} pins -> ${out}`);

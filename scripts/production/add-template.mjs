@@ -17,12 +17,12 @@ import { parse as parseYaml, stringify as toYaml } from 'yaml';
 import { readTemplate, decode } from './lib/framer.mjs';
 import { download, toWebp } from './lib/media.mjs';
 
-const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const contentDir = path.join(root, 'src/content/templates');
 const assetsDir = path.join(root, 'src/assets/templates');
 
 // Fields you own: never overwritten when a template is updated from Framer.
-const MANUAL = ['description', 'affiliateUrl', 'featured', 'tags', 'types', 'category', 'added', 'preview', 'pageKind', 'seoDescription', 'overview', 'preparation', 'codeUrl', 'codePrice', 'codeVersion', 'buyUrl', 'soldOn'];
+const MANUAL = ['description', 'affiliateUrl', 'featured', 'tags', 'types', 'category', 'added', 'preview', 'pageKind', 'seoDescription', 'overview', 'preparation', 'marketing', 'codeUrl', 'codePrice', 'codeVersion', 'buyUrl', 'soldOn'];
 
 const { values: opt, positionals } = parseArgs({
   allowPositionals: true,
@@ -126,8 +126,11 @@ async function importOne(slug, { flags }) {
   let d = res.data;
   const notes = [];
   if (!d) {
+    // Refreshing a template we already have must never replace its text and gallery with the
+    // few fields the meta tags carry. Keep the file as it is and report the failure.
+    if (had) throw new Error('Framer page format was not recognised, so the existing file was kept. Check scripts/production/lib/framer.mjs.');
     d = metaFallback(res.html ?? '', slug);
-    notes.push('Framer page format was not recognised: only the meta tags were read (no description sections, gallery or features). Check scripts/lib/framer.mjs.');
+    notes.push('Framer page format was not recognised: only the meta tags were read (no description sections, gallery or features). Check scripts/production/lib/framer.mjs.');
   }
   if (!d.name) fail('could not read the template name from the page');
   if (d.price === undefined) fail('could not detect the price');
@@ -180,8 +183,20 @@ async function importOne(slug, { flags }) {
     sections: d.sections ?? [],
     gallery,
   };
-  for (const k of ['pageKind', 'seoDescription', 'overview', 'preparation', 'codeUrl', 'codePrice', 'codeVersion', 'buyUrl', 'soldOn']) if (old[k] !== undefined) data[k] = old[k];
-  for (const k of MANUAL) if (old[k] !== undefined && opt[k] === undefined && k in data) data[k] = old[k] instanceof Date ? day(old[k].toISOString()) : old[k];
+  for (const k of ['pageKind', 'seoDescription', 'overview', 'preparation', 'marketing', 'codeUrl', 'codePrice', 'codeVersion', 'buyUrl', 'soldOn']) if (old[k] !== undefined) data[k] = old[k];
+  // The flag --affiliate fills the field affiliateUrl, so the two names differ.
+  const given = { ...opt, affiliateUrl: opt.affiliate };
+  for (const k of MANUAL) if (old[k] !== undefined && given[k] === undefined && k in data) data[k] = old[k] instanceof Date ? day(old[k].toISOString()) : old[k];
+  // A refresh that comes back without the description or the pictures is a broken read, not news.
+  if (had && !data.sections.length && old.sections?.length) {
+    data.intro = old.intro ?? [];
+    data.sections = old.sections;
+    notes.push('Framer returned no description sections, so the old ones were kept');
+  }
+  if (had && !data.gallery.length && old.gallery?.length) {
+    data.gallery = old.gallery;
+    notes.push('Framer returned no pictures, so the old gallery was kept');
+  }
 
   const yaml = toYaml(data, { lineWidth: 0 });
   if (opt['dry-run']) {
@@ -196,7 +211,7 @@ async function importOne(slug, { flags }) {
     console.log(`  ${had ? 'updated' : 'created'} ${rel(yamlPath)} (${gallery.length} gallery items, ${d.sections.length} text sections)`);
     for (const [p, buf] of files) console.log(`  wrote ${rel(p)} (${(buf.length / 1024).toFixed(0)} kB)`);
     // Social preview image: public/og/<slug>.png
-    execFileSync(process.execPath, [path.join(root, 'scripts/generate-og.mjs'), slug], { stdio: 'inherit' });
+    execFileSync(process.execPath, [path.join(root, 'scripts/production/generate-og.mjs'), slug], { stdio: 'inherit' });
   }
 
   if (!(opt.affiliate ?? old.affiliateUrl)) notes.push('no --affiliate link: "Open on Framer" goes to the Marketplace page without your referral');
@@ -226,11 +241,18 @@ if (opt.all) {
   }
   slugs = [slug];
 }
+const failed = [];
 for (const slug of slugs) {
   try {
     await importOne(slug, { flags: opt });
   } catch (e) {
     if (slugs.length === 1) fail(e.message);
     console.error(`  ${slug}: ${e.message}`);
+    failed.push(slug);
   }
+}
+// A refresh of everything must not look successful when some templates failed.
+if (failed.length) {
+  console.error(`\n${failed.length} of ${slugs.length} templates failed: ${failed.join(', ')}`);
+  process.exitCode = 1;
 }

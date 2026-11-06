@@ -11,7 +11,7 @@ const categorySlugs = categories.map((c) => c.slug) as [string, ...string[]];
 // Most of the file is written by `npm run add-template` from the Framer Marketplace page, and
 // refreshed by `npm run sync-templates`. The fields you edit by hand (and that the script
 // never overwrites) are: description, affiliateUrl, featured, tags, types, category, added, preview,
-// pageKind, seoDescription, overview, preparation, codeUrl, codePrice, codeVersion, buyUrl, soldOn.
+// pageKind, seoDescription, overview, preparation, marketing, codeUrl, codePrice, codeVersion, buyUrl, soldOn.
 const templates = defineCollection({
   loader: glob({ pattern: '*.yaml', base: './src/content/templates' }),
   schema: ({ image }) =>
@@ -35,9 +35,12 @@ const templates = defineCollection({
       seoDescription: z.string().optional(),
       overview: z.string().optional(),
       preparation: z.string().optional(),
+      // Hints for the posts and pins made from this template (scripts/marketing/draft-configs.mjs):
+      // who it is for, extra hashtags and Pinterest keywords, the Pinterest topic board. All optional.
+      marketing: z.object({ audience: z.string(), hashtags: z.array(z.string()), keywords: z.array(z.string()), topicBoard: z.string() }).partial().optional(),
       // Optional code version of the template (clean Astro project), sold on Contra. Set `codeUrl`
       // to show the "Buy code" button and the "Code version" block; `codePrice` is in USD and
-      // `codeVersion` the version of the zip. See CODE_TEMPLATES.md.
+      // `codeVersion` the version of the zip. See docs/production/code-versions.md.
       codeUrl: z.url().optional(),
       codePrice: z.number().min(0).optional(),
       codeVersion: z.string().optional(),

@@ -1,0 +1,106 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>
+@font-face{font-family:Archivo;src:url(../../../node_modules/@fontsource-variable/archivo/files/archivo-latin-wght-normal.woff2);font-weight:100 900}
+@font-face{font-family:'Instrument Serif';font-style:italic;src:url(../../../node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2)}
+*{box-sizing:border-box}
+html,body{margin:0;width:1080px;height:1920px;overflow:hidden}
+#stage{position:absolute;inset:0;overflow:hidden;perspective:2200px}
+.abs{position:absolute;transform-style:preserve-3d}
+/* An empty site frame: only the rhythm of a page, no content yet. */
+.f{background:#fff;overflow:hidden;position:absolute;backface-visibility:hidden}
+.f i{position:absolute;display:block;background:#e4e4e2}
+.f i.d{background:#101014}
+.f i.l{background:#c9c9c6}
+.cap{position:absolute;left:0;right:0;text-align:center;font:500 54px/1.12 Archivo;letter-spacing:-.02em}
+.cap em{font:italic 400 62px/1 'Instrument Serif'}
+</style>
+<div id="stage"></div>
+<script src="frames.js"></script>
+<script>
+const pack = new URLSearchParams(location.search).get('pack') || '1';
+const stage = document.getElementById('stage');
+const T = 8;
+const el = (cls, css, parent = stage, html = '') => { const n = document.createElement('div'); n.className = cls; n.style.cssText = css; n.innerHTML = html; parent.append(n); return n; };
+
+// Slow start, fast middle, soft landing with a small overshoot: the inertia of a real object.
+const inOut = (x) => x < .5 ? 16 * x ** 5 : 1 - (-2 * x + 2) ** 5 / 2;
+const back = (x) => { const c = 1.25, k = c + 1, y = x - 1; return 1 + k * y ** 3 + c * y ** 2; };
+const settle = (x) => x < .62 ? inOut(x / .62) * 1.0 : 1 + Math.sin((x - .62) / .38 * Math.PI) * .018 * (1 - (x - .62) / .38);
+const clamp = (x) => Math.max(0, Math.min(1, x));
+// n equal moves per loop; each one fills `part` of its slot, the rest is a rest pose.
+const steps = (t, n, part, f = settle) => { const s = t / T * n, i = Math.floor(s), p = clamp((s - i) / part); return i + f(p); };
+
+const frame = (parent, i, css) => { const n = el('f', css, parent, layouts[i % 4]()); n.dataset.i = i; return n; };
+const caption = (top, html, color) => el('cap', `top:${top}px;color:${color};opacity:0`, stage, html);
+const fade = (t, a, b, d = .5) => clamp((t - a) / d) * clamp((b - t) / d);
+
+let draw;
+if (pack === '1') {
+  // Barrel: four screens on an X axis, turned a quarter at a time. The words appear only after the clean first frame.
+  document.body.style.background = palette ? palette.bg : '#c9c9c6';
+  const W = 760, H = 475, R = H / 2;
+  const barrel = el('abs', `left:${(1080 - W) / 2}px;top:${(1920 - H) / 2}px;width:${W}px;height:${H}px`);
+  for (let i = 0; i < 4; i++) frame(barrel, i, `inset:0;transform:rotateX(${i * -90}deg) translateZ(${R}px)`);
+  const a = caption(340, site ? site.titleHtml : 'From empty <em>frame</em><br>to finished site', palette ? palette.fg : '#101014'), b = caption(1500, 'Free on Framer', palette ? palette.fg : '#101014');
+  draw = (t) => {
+    barrel.style.transform = `translateZ(${-R}px) rotateX(${steps(t, 4, .72) * 90}deg) rotateY(${Math.sin(t / T * 2 * Math.PI) * 5}deg)`;
+    a.style.opacity = b.style.opacity = fade(t, .8, 7.4);
+  };
+} else if (pack === '2') {
+  // Devices: a tablet and a phone hang in space at different depths and swing through three axes.
+  document.body.style.background = palette ? palette.bg : '#101014';
+  const device = (w, h, r, z, screens) => {
+    const d = el('abs', `left:${(1080 - w) / 2}px;top:${(1920 - h) / 2}px;width:${w}px;height:${h}px`);
+    // Stacked slices give the body real thickness when it turns.
+    for (let k = 0; k < 14; k++) el('abs', `inset:0;border-radius:${r}px;background:${k === 13 ? '#2a2a2f' : '#55555c'};transform:translateZ(${-k * 1.6}px)`, d);
+    el('abs', `inset:0;border-radius:${r}px;background:#050506;transform:translateZ(1px)`, d);
+    const glass = el('abs', `inset:16px;border-radius:${r - 12}px;overflow:hidden;background:#fff;transform:translateZ(2px)`, d);
+    const strip = el('abs', `left:0;top:0;width:100%`, glass);
+    const fh = h - 32;
+    for (let i = 0; i < screens + 1; i++) frame(strip, i % screens, `left:0;width:100%;height:${fh}px;top:${i * fh}px;position:absolute`);
+    return { d, strip, fh, screens };
+  };
+  const tablet = device(860, 620, 34, 0, 4), phone = device(300, 640, 52, 0, 4);
+  const pose = [[-24, 16, -7], [20, -12, 6], [-10, 24, 3], [-24, 16, -7]];
+  const mix = (a, b, p) => a.map((v, i) => v + (b[i] - v) * p);
+  const at = (s) => { const i = Math.min(2, Math.floor(s)); return mix(pose[i], pose[i + 1], settle(clamp((s - i) / .8))); };
+  draw = (t) => {
+    const s = t / T * 3, [ry, rx, rz] = at(s), [py, px, pz] = at((s + .22) % 3);
+    const bob = Math.sin(t / T * 2 * Math.PI) * 26;
+    tablet.d.style.transform = `translate3d(-90px,${-150 + bob}px,-260px) rotateY(${ry}deg) rotateX(${rx}deg) rotateZ(${rz}deg)`;
+    phone.d.style.transform = `translate3d(270px,${250 - bob}px,180px) rotateY(${py - 8}deg) rotateX(${px}deg) rotateZ(${pz + 6}deg)`;
+    tablet.strip.style.transform = `translateY(${-(steps(t, 4, .6) % 4) * tablet.fh}px)`;
+    phone.strip.style.transform = `translateY(${-(steps((t + 1) % T, 4, .6) % 4) * phone.fh}px)`;
+  };
+} else if (pack === '3') {
+  // Wall: a tilted field of screens bleeding off every edge; rows slide against each other, the camera breathes.
+  document.body.style.background = palette ? palette.bg : '#101014';
+  // Eight screens, index 2r+c: no neighbour matches at any rest pose, and a row repeats every 8 frames, so it can wrap unseen.
+  const fw = 620, fh = 400, gap = 30, pitch = fw + gap, cols = 20, rows = 7;
+  const wall = el('abs', `left:540px;top:960px;width:0;height:0`);
+  const lines = [];
+  for (let r = 0; r < rows; r++) {
+    const line = el('abs', `left:${-pitch * 10}px;top:${(r - rows / 2) * (fh + gap)}px;width:${pitch * cols}px;height:${fh}px`, wall);
+    // The content must repeat with the eight-frame travel, including at the loop seam.
+    for (let c = 0; c < cols; c++) frame(line, (2 * r + c) % 8, `left:${c * pitch}px;top:0;width:${fw}px;height:${fh}px`).dataset.kind = 'desktop';
+    lines.push(line);
+  }
+  draw = (t) => {
+    const w = t / T * 2 * Math.PI;
+    wall.style.transform = `translateZ(${Math.sin(w) * 90}px) rotateX(${10 + Math.sin(w) * 4}deg) rotateY(${Math.cos(w) * 6}deg) rotateZ(-17deg)`;
+    lines.forEach((l, r) => {
+      const dir = r % 2 ? 1 : -1, travel = (steps((t + r * .14) % T, 4, .62) % 4) * 2 * pitch; // 4 moves of 2 frames = one full period
+      l.style.transform = `translateX(${dir * (travel - 4 * pitch)}px)`;
+    });
+  };
+}
+</script>
+<script src="packs.js"></script>
+<script>
+fillFrames();
+window.seek = (t) => draw(((t % T) + T) % T);
+window.seek(0);
+// ?play=1 runs the loop live, for looking at a pack in a browser.
+if (new URLSearchParams(location.search).get('play')) { const go = (ms) => { window.seek(ms / 1000); requestAnimationFrame(go); }; requestAnimationFrame(go); }
+</script>
