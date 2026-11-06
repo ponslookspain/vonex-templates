@@ -82,7 +82,8 @@ if (pack === '1') {
   const lines = [];
   for (let r = 0; r < rows; r++) {
     const line = el('abs', `left:${-pitch * 10}px;top:${(r - rows / 2) * (fh + gap)}px;width:${pitch * cols}px;height:${fh}px`, wall);
-    for (let c = 0; c < cols; c++) frame(line, (2 * r + c) % 8, `left:${c * pitch}px;top:0;width:${fw}px;height:${fh}px`);
+    // The content must repeat with the eight-frame travel, including at the loop seam.
+    for (let c = 0; c < cols; c++) frame(line, (2 * r + c) % 8, `left:${c * pitch}px;top:0;width:${fw}px;height:${fh}px`).dataset.kind = 'desktop';
     lines.push(line);
   }
   draw = (t) => {

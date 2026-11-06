@@ -33,7 +33,8 @@ const device = (x, y, w, h, r, i, transform = '', parent = stage) => {
 // A tilted field of frames; one wide field also serves as a seamless carousel.
 const wall = (cx, cy, cols, rows, fw, fh, gap, rot) => {
   const w = el('abs', `left:${cx}px;top:${cy}px;width:0;height:0;transform:rotateX(10deg) rotateZ(${rot}deg)`);
-  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) frame((2 * r + c) % 8, (c - cols / 2) * (fw + gap) + (r % 2) * (fw / 2), (r - rows / 2) * (fh + gap), fw, fh, w);
+  // Keep the spatial sequence: shape-based picking can repeat a diagonal neighbour.
+  for (let r = 0; r < rows; r++) for (let c = 0; c < cols; c++) frame((2 * r + c) % 8, (c - cols / 2) * (fw + gap) + (r % 2) * (fw / 2), (r - rows / 2) * (fh + gap), fw, fh, w).dataset.kind = 'desktop';
 };
 const closing = (cx, color) => el('cap', `left:${cx - 400}px;width:800px;top:610px;color:${color}`, stage, 'Free on <em>Framer</em>');
 
@@ -68,7 +69,15 @@ const scenes = {
     closing(4 * S + 540, TEXT);
   },
   c2() { // Tilted wall running through all slides, words only at the end
-    ground(INK); wall(2160, 675, 16, 8, 560, 360, 26, -17);
+    ground(INK);
+    if (query.get('x')) {
+      // X has separate tiles: each tilted column fits entirely inside its own slide.
+      stage.style.perspective = 'none';
+      for (let slide = 0; slide < 4; slide++) {
+        const column = el('abs', `left:${slide * S + S / 2}px;top:675px;width:0;height:0;transform:rotateX(10deg) rotateZ(-17deg)`);
+        for (let row = 0; row < 3; row++) frame((slide * 3 + row) % 8, -280, -566 + row * 386, 560, 360, column).dataset.kind = 'desktop';
+      }
+    } else wall(2160, 675, 16, 8, 560, 360, 26, -17);
     el('abs', `left:${4 * S}px;top:0;width:${S}px;height:${H}px;background:${INK}`);
     closing(4 * S + 540, palette ? palette.fg : '#f2f1ee');
   },
@@ -99,6 +108,6 @@ const scenes = {
 };
 scenes[scene]();
 // X shows images as a grid, not a swipe: anything lying across a seam would just look cut, so it goes.
-if (query.get('x')) [...stage.children].filter((n) => n.offsetWidth < S).forEach((n) => { const a = n.offsetLeft, b = a + n.offsetWidth; if (a < 0 || Math.floor(a / S) !== Math.floor((b - 1) / S)) n.remove(); });
+if (query.get('x')) [...stage.children].filter((n) => n.offsetWidth > 0 && n.offsetWidth < S).forEach((n) => { const a = n.offsetLeft, b = a + n.offsetWidth; if (a < 0 || Math.floor(a / S) !== Math.floor((b - 1) / S)) n.remove(); });
 fillFrames();
 </script>
