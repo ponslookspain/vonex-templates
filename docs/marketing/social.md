@@ -18,7 +18,7 @@ Without a slug both commands render empty frames into `.work/marketing/social/em
 
 1. **Template is ready.** It is live on the site with a `preview` URL. Vladimir says "делаем визуал для соцсетей".
 2. **Capture.** `npm run capture` saves the desktop and phone pages.
-3. **Config.** `social:ruler` shows the page with a scale; write `configs/<slug>.json` with 8 desktop and 4 phone sections.
+3. **Config.** `npm run draft -- <slug>` drafts `configs/<slug>.json` from the section bounds that `capture` saved (8 desktop and 4 phone sections), plus the Pinterest config and a caption draft. `social:ruler` shows the page with a scale: check the draft against it, add `"cover"` where needed and fix what looks wrong.
 4. **Render.** `social:motion`, then `social:static`. The first render picks the template's 3 animations and 3 carousels and writes them to the config. The ground is measured, blocks are fitted to frames, and the X version of each carousel is made.
 5. **Check.** Read every `check` line, then go through the quality check by eye. Fix the config and render again.
 6. **Approval.** Show Vladimir the feed preview and the videos. Change nothing in the look without asking.

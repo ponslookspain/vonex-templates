@@ -45,10 +45,11 @@ Local ComfyUI may be used to generate images when a template needs them (photos,
 
 Publish the demo, submit the template, and note the demo URL: it becomes `preview` in the template's YAML at stage 6. Write the referral link (`framer.link/...`) down at the same time and open it once: it must lead to the template's remix page with `via` and `dub_id` in the address, not to the Framer home page.
 
-Every template gets exactly 4 Marketplace preview images:
+Every template gets exactly 4 Marketplace preview images, each 1600x1200 px (4:3), the size the upload form asks for. Make them at 2400x1800 and scale down. The Marketplace shows the first one at about 280 px wide in the grid and the other three as small thumbnails, so a headline must still read at that size:
 
-1. Images 1 to 3: a polished view of one part of the site each, showing a strong section or screen.
-2. Image 4: all pages of the site together, set at an angle.
+1. Images 1 and 2, always the same composition (approved by Vladimir on 2026-11-06): image 1 is the whole hero section with its menu, image 2 one strong section (pricing, features), each as one flat card about 85% of the image wide, square corners, centred, with a deep soft shadow on a blurred ground made from the hero itself, the same ground on both.
+2. Image 3: a strong colour section of the site with phones showing the mobile layout.
+3. Image 4: all pages of the site together, set at an angle.
 
 Do not use plain screenshots.
 
@@ -85,7 +86,7 @@ Follow "Contra setup" in [docs/production/code-versions.md](code-versions.md). U
 
 ## 6. Site
 
-Follow "Adding or changing a template" and "Workflow" in [AGENTS.md](../../AGENTS.md). After the merge, open the page on vonexdesign.com and click every button.
+Follow "Adding or changing a template" and "Workflow" in [AGENTS.md](../../AGENTS.md). Run `npm run verify -- <slug>` before "коммит, пуш": it must show no errors. After the merge run it again and click every button on vonexdesign.com. `npm run status` shows what every template still lacks.
 
 ## 7. Promotion
 

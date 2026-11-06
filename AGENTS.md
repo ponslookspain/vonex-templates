@@ -61,7 +61,7 @@ Never push straight to `main`, never force-push. Delete branches once they are m
 2. Check the YAML: write a short `description` for the card (one sentence), check `category`, `price` (0 = Free) and `affiliateUrl`.
 3. Commit the YAML, the pictures and the og image together.
 
-Hand-edited fields that `npm run sync-templates` never overwrites: `description`, `affiliateUrl`, `featured`, `tags`, `types`, `category`, `added`, `preview`, `pageKind`, `seoDescription`, `overview`, `preparation`, `codeUrl`, `codePrice`, `codeVersion`, `buyUrl`, `soldOn`. `codeUrl`, `codePrice` and `codeVersion` belong to the code version (Contra product link, price in USD, zip version); when `codeUrl` is set, the template page shows "Buy code", a "Code version" block and one more FAQ answer. Leave them out for templates without a code version. Write these four for every new template: they feed the title, search description, intro and "Before you publish" block of its page. Everything else in the YAML comes from Framer and can be refreshed.
+Hand-edited fields that `npm run sync-templates` never overwrites: `description`, `affiliateUrl`, `featured`, `tags`, `types`, `category`, `added`, `preview`, `pageKind`, `seoDescription`, `overview`, `preparation`, `marketing`, `codeUrl`, `codePrice`, `codeVersion`, `buyUrl`, `soldOn`. `marketing` is optional hints for posts and pins (`audience`, `hashtags`, `keywords`, `topicBoard`), read by `npm run draft`. `codeUrl`, `codePrice` and `codeVersion` belong to the code version (Contra product link, price in USD, zip version); when `codeUrl` is set, the template page shows "Buy code", a "Code version" block and one more FAQ answer. Leave them out for templates without a code version. Write these four for every new template: they feed the title, search description, intro and "Before you publish" block of its page. Everything else in the YAML comes from Framer and can be refreshed.
 
 Guides are listed in `src/data/guides.ts`; a new guide also needs its accent word in `ACCENTS` in `scripts/production/generate-og.mjs`, then `npm run og` makes `public/og/guides/<slug>.png`.
 
@@ -116,6 +116,8 @@ Rules:
 ## Checks
 
 ```
+npm run status  # where each template is in the pipeline, and what is next (local files only)
+npm run verify  # per template: texts written, referral link opens the remix page, Contra price = codePrice, zip version = codeVersion, page live. Run it before "коммит, пуш" and after "в продакшн"; -- <slug> for one, -- --offline to skip the internet checks
 npm run check   # types and content schema
 npm run build   # must build all pages
 npm run dev     # http://localhost:4321, /design-system/ for the style guide, G toggles the grid

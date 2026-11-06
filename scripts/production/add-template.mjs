@@ -22,7 +22,7 @@ const contentDir = path.join(root, 'src/content/templates');
 const assetsDir = path.join(root, 'src/assets/templates');
 
 // Fields you own: never overwritten when a template is updated from Framer.
-const MANUAL = ['description', 'affiliateUrl', 'featured', 'tags', 'types', 'category', 'added', 'preview', 'pageKind', 'seoDescription', 'overview', 'preparation', 'codeUrl', 'codePrice', 'codeVersion', 'buyUrl', 'soldOn'];
+const MANUAL = ['description', 'affiliateUrl', 'featured', 'tags', 'types', 'category', 'added', 'preview', 'pageKind', 'seoDescription', 'overview', 'preparation', 'marketing', 'codeUrl', 'codePrice', 'codeVersion', 'buyUrl', 'soldOn'];
 
 const { values: opt, positionals } = parseArgs({
   allowPositionals: true,
@@ -183,7 +183,7 @@ async function importOne(slug, { flags }) {
     sections: d.sections ?? [],
     gallery,
   };
-  for (const k of ['pageKind', 'seoDescription', 'overview', 'preparation', 'codeUrl', 'codePrice', 'codeVersion', 'buyUrl', 'soldOn']) if (old[k] !== undefined) data[k] = old[k];
+  for (const k of ['pageKind', 'seoDescription', 'overview', 'preparation', 'marketing', 'codeUrl', 'codePrice', 'codeVersion', 'buyUrl', 'soldOn']) if (old[k] !== undefined) data[k] = old[k];
   // The flag --affiliate fills the field affiliateUrl, so the two names differ.
   const given = { ...opt, affiliateUrl: opt.affiliate };
   for (const k of MANUAL) if (old[k] !== undefined && given[k] === undefined && k in data) data[k] = old[k] instanceof Date ? day(old[k].toISOString()) : old[k];

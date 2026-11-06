@@ -15,6 +15,9 @@ Working on the project with Claude Code or Codex? The shared rules are in [AGENT
 | `npm run add-template -- <url>` | Add a template from its Framer Marketplace URL (data, pictures, preview image) |
 | `npm run sync-templates` | Refresh every template from its Marketplace page |
 | `npm run og` | Regenerate the social preview images in `public/og/` |
+| `npm run status` | Table of every template: site, code, Marketplace images, pins, posts, calendar, next step |
+| `npm run verify -- [slug]` | Checks a template is ready to sell: texts, referral link, Contra price, zip version, live page |
+| `npm run draft -- <slug>` | Drafts the social and Pinterest configs and the captions from a capture |
 | `npm run capture -- <slug> <url>` | Screenshots of a live demo, used by pins and posts |
 | `npm run pins:render`, `pins:sheet`, `pins:upload`, `pins:csv` | Pinterest pins, see [docs/marketing/pinterest.md](docs/marketing/pinterest.md) |
 | `npm run social:ruler`, `social:motion`, `social:static` | Social posts, see [docs/marketing/social.md](docs/marketing/social.md) |
